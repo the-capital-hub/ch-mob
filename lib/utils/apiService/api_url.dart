@@ -101,5 +101,9 @@ class ApiUrl {
   static const String groupChatMemberList = "community/getAllCommunitiesByUserId";
   static const String createGroup = "community/createCommunity";
 
+  static String getPublicProfileUrl = "users/getFounderProfilePageData/";
+  static String addFounderEmailUrl = "users/addFounderEmailToCurrentUser/";
+
+
 
 }

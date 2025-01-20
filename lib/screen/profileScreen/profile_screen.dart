@@ -78,7 +78,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                           children: [
                             CircleAvatar(
                               radius: 42,
-                              backgroundColor: AppColors.golden,
+                              backgroundColor:
+                                  profileController.profileData.isSubscribed!
+                                      ? AppColors.golden
+                                      : AppColors.transparent,
                               child: CircleAvatar(
                                 radius: 40,
                                 backgroundImage: NetworkImage(

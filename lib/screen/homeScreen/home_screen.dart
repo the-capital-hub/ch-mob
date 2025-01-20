@@ -11,6 +11,7 @@ import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/homeScreen/widget/fullscreen_image_view.dart';
 import 'package:capitalhub_crm/screen/homeScreen/widget/polls_widget.dart';
 import 'package:capitalhub_crm/screen/homeScreen/widget/startup_corner_widget.dart';
+import 'package:capitalhub_crm/screen/publicProfileScreen/public_profile_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
@@ -95,9 +96,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(
-          milliseconds:
-              300), // 0.3 seconds here is the length of the animation itself
+      duration: const Duration(milliseconds: 300),
     );
 
     _opacityAnimation = Tween<double>(begin: 0, end: 1).animate(
@@ -127,12 +126,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         homeController.getStartupNews(offSet: 10)
       ]);
     } catch (e) {
-      // Handle errors if needed
       print("Error calling APIs: $e");
     }
   }
 
-// continued from code above
   @override
   void dispose() {
     _animationController.dispose();
@@ -217,55 +214,60 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     Padding(
                       padding:
                           const EdgeInsets.only(left: 8.0, right: 8, top: 8),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: ListView.separated(
-                              controller: scrollController,
-                              itemCount: calculateTotalItems(
-                                  homeController.postList.length,
-                                  newsController.newsList.length),
-                              separatorBuilder: (context, index) {
-                                return const SizedBox(height: 8);
-                              },
-                              shrinkWrap: true,
-                              itemBuilder: (BuildContext context, int index) {
-                                int feedIndex = index -
-                                    (index ~/
-                                        4); // Account for the startup section and news posts
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          return _fetchAllApis();
+                        },
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: ListView.separated(
+                                controller: scrollController,
+                                itemCount: calculateTotalItems(
+                                    homeController.postList.length,
+                                    newsController.newsList.length),
+                                separatorBuilder: (context, index) {
+                                  return const SizedBox(height: 8);
+                                },
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index) {
+                                  int feedIndex = index -
+                                      (index ~/
+                                          4); // Account for the startup section and news posts
 
-                                // Calculate the news index
-                                int newsIndex = (index - (index ~/ 4)) ~/
-                                    4; // News posts appear after every 3 feed posts
+                                  // Calculate the news index
+                                  int newsIndex = (index - (index ~/ 4)) ~/
+                                      4; // News posts appear after every 3 feed posts
 
-                                // Insert Startup Corner after every 3 feed posts, once only
-                                if (feedIndex == 3 &&
-                                    index > 2 &&
-                                    (index - 3) % 4 == 0) {
-                                  return startupCorner();
-                                }
+                                  // Insert Startup Corner after every 3 feed posts, once only
+                                  if (feedIndex == 3 &&
+                                      index > 2 &&
+                                      (index - 3) % 4 == 0) {
+                                    return startupCorner();
+                                  }
 
-                                // Show news after every 3 feed posts
-                                if ((index + 1) % 4 == 0 &&
-                                    newsIndex <
-                                        newsController.newsList.length) {
-                                  return news(
-                                      newsIndex); // Show news after every 3 feed posts
-                                }
+                                  // Show news after every 3 feed posts
+                                  if ((index + 1) % 4 == 0 &&
+                                      newsIndex <
+                                          newsController.newsList.length) {
+                                    return news(
+                                        newsIndex); // Show news after every 3 feed posts
+                                  }
 
-                                // Show feed posts
-                                if (feedIndex <
-                                    homeController.postList.length) {
-                                  return feeds(feedIndex); // Show feed post
-                                }
+                                  // Show feed posts
+                                  if (feedIndex <
+                                      homeController.postList.length) {
+                                    return feeds(feedIndex); // Show feed post
+                                  }
 
-                                // If there are no more feed posts or news, return an empty widget
-                                return const SizedBox
-                                    .shrink(); // No more items to display
-                              },
+                                  // If there are no more feed posts or news, return an empty widget
+                                  return const SizedBox
+                                      .shrink(); // No more items to display
+                                },
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     if (isPaginationLoad)
@@ -322,10 +324,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             children: [
                               Row(
                                 children: [
-                                  TextWidget(
-                                      text:
-                                          "${homeController.postList[index].userFirstName} ${homeController.postList[index].userLastName}",
-                                      textSize: 14),
+                                  InkWell(
+                                    onTap: () {
+                                      Get.to(PublicProfileScreen(
+                                          id: homeController
+                                              .postList[index].userId!));
+                                    },
+                                    child: TextWidget(
+                                        text:
+                                            "${homeController.postList[index].userFirstName} ${homeController.postList[index].userLastName}",
+                                        textSize: 14),
+                                  ),
                                   const SizedBox(width: 4),
                                   if (homeController
                                       .postList[index].userIsSubscribed!)
