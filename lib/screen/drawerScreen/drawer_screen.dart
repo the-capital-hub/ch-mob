@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:capitalhub_crm/controller/newsController/news_controller.dart';
+import 'package:capitalhub_crm/screen/meetingsScreen/events_screen.dart';
 import 'package:capitalhub_crm/screen/analyticsScreen/analytics_screen.dart';
 import 'package:capitalhub_crm/screen/companyScreen/company_screen.dart';
 import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';
@@ -51,6 +52,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     "Company",
     "Team",
     "Analytics",
+    "Meetings",
     "Investors",
     "Help",
     "Log Out",
@@ -65,6 +67,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     PngAssetPath.financeIcon,
     PngAssetPath.teamIcon,
     PngAssetPath.customerIcon,
+    PngAssetPath.meetingIcon,
     PngAssetPath.investorsIcon,
     PngAssetPath.helpIcon,
     PngAssetPath.logoutIcon,
@@ -79,6 +82,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     const CompanyScreen(),
     const ConnectionScreen(),
     const AnalyticsScreen(),
+    const EventsScreen(),
     const LandingScreen(),
     const HelpScreen(),
     const LogoutScreen(),

@@ -18,6 +18,7 @@ class PngAssetPath {
   static const String verifyImg = 'assets/img/verify.png';
   static const String loginSuccessImg =
       'assets/img/onboarding&auth/loginSuccess.png';
+  
   //drawer
   static const String homeIcon = 'assets/img/drawerIcon/home.png';
   static const String documentIcon = 'assets/img/drawerIcon/document.png';
@@ -28,6 +29,7 @@ class PngAssetPath {
   static const String financeIcon = 'assets/img/drawerIcon/finance.png';
   static const String teamIcon = 'assets/img/drawerIcon/team.png';
   static const String customerIcon = 'assets/img/drawerIcon/customer.png';
+  static const String meetingIcon = 'assets/img/drawerIcon/meeting.png';
   static const String investorsIcon = 'assets/img/drawerIcon/investors.png';
   static const String helpIcon = 'assets/img/drawerIcon/help.png';
   static const String logoutIcon = 'assets/img/drawerIcon/logout.png';
