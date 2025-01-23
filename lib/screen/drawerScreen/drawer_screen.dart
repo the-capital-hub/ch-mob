@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:capitalhub_crm/controller/newsController/news_controller.dart';
+import 'package:capitalhub_crm/screen/meetingsScreen/availability_screen.dart';
+import 'package:capitalhub_crm/screen/meetingsScreen/create_new_webinar_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/events_screen.dart';
 import 'package:capitalhub_crm/screen/analyticsScreen/analytics_screen.dart';
 import 'package:capitalhub_crm/screen/companyScreen/company_screen.dart';
@@ -10,6 +12,9 @@ import 'package:capitalhub_crm/screen/homeScreen/home_screen.dart';
 import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:capitalhub_crm/screen/logoutScreen/logout_Screen.dart';
 import 'package:capitalhub_crm/screen/manageAccountScreen/manage_account_Screen.dart';
+import 'package:capitalhub_crm/screen/meetingsScreen/plans_screen.dart';
+import 'package:capitalhub_crm/screen/meetingsScreen/priority_dm_screen.dart';
+import 'package:capitalhub_crm/screen/meetingsScreen/webinars_screen.dart';
 import 'package:capitalhub_crm/screen/newsScreen/news_screen.dart';
 import 'package:capitalhub_crm/screen/oneLinkScreen/one_link_screen.dart';
 import 'package:capitalhub_crm/screen/profileScreen/profile_screen.dart';
@@ -57,6 +62,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     "Help",
     "Log Out",
   ];
+  List<String> meetingsSubItems = [
+    "Events",
+    "Plans",
+    "Availability",
+    "Webinars",
+    "Priority DMS"
+  ];
   List icons = [
     PngAssetPath.homeIcon,
     PngAssetPath.documentIcon,
@@ -87,6 +99,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     const HelpScreen(),
     const LogoutScreen(),
   ];
+  List meetingsSubPages = [
+    const EventsScreen(),
+    const PlansScreen(),
+    const AvailabilityScreen(),
+    const WebinarsScreen(),
+    const PriorityDMScreen()
+  ];
+  bool isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -162,66 +182,47 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         left: 0,
                       ),
                       physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) => InkWell(
-                        onTap: () {
-                          Get.to(page[index]);
-
-                          // if (index == 0) {
-                          //   Get.to(() => const LandingScreen());
-                          // } else if (index == 1) {
-                          //   Get.to(() => const DocumentationScreen());
-                          // } else if (index == 2) {
-                          //   Get.to(() => const SavedPostScreen());
-                          // } else if (index == 3) {
-                          //   Get.to(() => const ExploreScreen());
-                          // } else if (index == 9) {
-                          //   Get.to(() => const HelpScreen());
-                          // } else if (index == 10) {
-                          //   Get.to(() => const LogoutScreen());
-                          // }
-
-                          //else if (index == 1) {
-                          //   Get.to(() => const BookingScreen());
-                          // } else if (index == 2) {
-                          //   Get.to(() => const HomeScreenTransport());
-                          // } else if (index == 3) {
-                          //   Get.to(() => const AccountScreen());
-                          // } else if (index == 4) {
-                          //   Get.to(() => const HelpScreen());
-                          // }
-                          // Get.to(() => profileController.onTapList[index]);
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(100),
-                                  bottomRight: Radius.circular(100))),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: 10, top: 10, left: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Image.asset(
-                                  icons[index],
-                                  color: AppColors.white,
-                                  height: 22,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (index == 9) {
+                          return _buildExpansionTile();
+                        } else {
+                          return InkWell(
+                            onTap: () {
+                              Get.to(page[index]);
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(100),
+                                      bottomRight: Radius.circular(100))),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: 10, top: 10, left: 20),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Image.asset(
+                                      icons[index],
+                                      color: AppColors.white,
+                                      height: 22,
+                                    ),
+                                    const SizedBox(
+                                      width: 12,
+                                    ),
+                                    TextWidget(
+                                        text: items[index],
+                                        textSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        maxLine: 1,
+                                        align: TextAlign.center),
+                                  ],
                                 ),
-                                const SizedBox(
-                                  width: 12,
-                                ),
-                                TextWidget(
-                                    text: items[index],
-                                    textSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    maxLine: 1,
-                                    align: TextAlign.center),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
+                          );
+                        }
+                      },
                       separatorBuilder: (BuildContext context, int index) {
                         return const SizedBox(height: 0);
                       },
@@ -278,6 +279,68 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildExpansionTile() {
+    return Theme(
+      data: ThemeData(
+        dividerColor: Colors.transparent,
+      ),
+      child: ExpansionTile(
+        visualDensity: VisualDensity.compact,
+        dense: true,
+        tilePadding: const EdgeInsets.only(left: 20),
+        collapsedIconColor: AppColors.white,
+        iconColor: AppColors.primary,
+        onExpansionChanged: (bool expanded) {
+          setState(() {
+            isExpanded = expanded;
+          });
+        },
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Image.asset(
+              PngAssetPath.meetingIcon,
+              color: isExpanded ? AppColors.primary : AppColors.white,
+              height: 22,
+            ),
+            const SizedBox(width: 12),
+            TextWidget(
+              text: "Meetings",
+              textSize: 16,
+              fontWeight: FontWeight.w500,
+              maxLine: 1,
+              align: TextAlign.center,
+              color: isExpanded ? AppColors.primary : AppColors.white,
+            ),
+          ],
+        ),
+        children: meetingsSubItems.map((meetingsSubItemsTitle) {
+          int meetingsSubItemsIndex =
+              meetingsSubItems.indexOf(meetingsSubItemsTitle);
+          return SizedBox(
+            height: 30,
+            child: ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
+              contentPadding:
+                  const EdgeInsets.only(left: 55, top: 0, bottom: 0),
+              title: TextWidget(
+                text: meetingsSubItemsTitle,
+                textSize: 16,
+                fontWeight: FontWeight.w500,
+                maxLine: 1,
+                color: AppColors.white,
+              ),
+              onTap: () {
+                Get.to(meetingsSubPages[meetingsSubItemsIndex]);
+              },
+            ),
+          );
+        }).toList(),
       ),
     );
   }

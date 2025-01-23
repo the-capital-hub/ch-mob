@@ -18,6 +18,11 @@ class PngAssetPath {
   static const String verifyImg = 'assets/img/verify.png';
   static const String loginSuccessImg =
       'assets/img/onboarding&auth/loginSuccess.png';
+  static const String plansCardImg = 'assets/img/plansCardBackground.png';
+  static const String facebookIcon = 'assets/img/facebookIcon.png';
+  static const String twitterIconSmall = 'assets/img/twitterIcon.png';
+  static const String instagramIcon = 'assets/img/instagramIcon.png';
+  static const String youtubeIcon = 'assets/img/youtubeIcon.png';
   
   //drawer
   static const String homeIcon = 'assets/img/drawerIcon/home.png';
