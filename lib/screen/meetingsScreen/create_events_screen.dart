@@ -5,6 +5,7 @@ import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dropdownWidget/drop_down_widget.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
+import 'package:capitalhub_crm/widget/timePicker/timePicker.dart';
 import 'package:flutter/material.dart';
 
 class CreateEventsScreen extends StatefulWidget {
@@ -15,12 +16,12 @@ class CreateEventsScreen extends StatefulWidget {
 }
 
 class _CreateEventsScreenState extends State<CreateEventsScreen> {
-  TextEditingController eventTitleController = TextEditingController();
-  TextEditingController eventDescriptionController = TextEditingController();
-  TextEditingController eventDurationMinutesController = TextEditingController();
-  TextEditingController eventPrivacyController = TextEditingController();
-  TextEditingController eventPriceController = TextEditingController();
-  TextEditingController eventPriceDiscountController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController durationMinutesController = TextEditingController();
+  TextEditingController privacyController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController priceDiscountController = TextEditingController();
   String privacyStatus = "Private";
   @override
   Widget build(BuildContext context) {
@@ -37,64 +38,70 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
             child: Column(
               children: [
                 sizedTextfield,
-                
                 MyCustomTextField.textField(
                     lableText: "Event Title",
-                    hintText: "Event Title",
-                    controller: eventTitleController),
+                    hintText: "Enter Title",
+                    controller: titleController),
                 sizedTextfield,
-              
                 MyCustomTextField.textField(
-                    lableText: "Company",
+                    lableText: "Description",
                     hintText: "Enter Description",
                     maxLine: 7,
-                    controller: eventTitleController),
+                    controller: descriptionController),
                 sizedTextfield,
-                
                 MyCustomTextField.textField(
+                  hintText: "Select Duration(Minutes)",
+                  readonly: true,
                   lableText: "Duration(Minutes)",
-                  hintText: "30",
-                  controller: eventTitleController,
+                  onTap: () async {
+                    DateTime? selectedTime = await selectTime(context, true);
+
+                    if (selectedTime != null) {
+                      durationMinutesController.text =
+                          selectedTime.minute.toString();
+                    }
+                  },
+                  controller: durationMinutesController,
                 ),
                 sizedTextfield,
-                
                 DropDownWidget(
                     status: privacyStatus,
                     lable: "Event Privacy",
-                    statusList: ["Public","Private","Pitch Day"],
+                    statusList: const ["Public", "Private", "Pitch Day"],
                     onChanged: (val) {
                       setState(() {
                         privacyStatus = val.toString();
                       });
                     }),
                 sizedTextfield,
-                
                 MyCustomTextField.textField(
                     lableText: "Event Price",
-                    hintText: "0",
-                    controller: eventTitleController),
+                    hintText: "Enter Price",
+                    controller: priceController),
                 sizedTextfield,
                 MyCustomTextField.textField(
                     lableText: "Price Discount(%)",
-                    hintText: "0",
-                    controller: eventTitleController),
+                    hintText: "Enter Price Discount(%)",
+                    controller: priceDiscountController),
                 sizedTextfield,
-                
               ],
             ),
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: EdgeInsets.all(12),
+          padding: const EdgeInsets.all(12),
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            AppButton.primaryButton(
-                width: 150, onButtonPressed: () {}, title: "Create Event"),
-                SizedBox(width:12),
-            AppButton.outlineButton(
-                width: 150,
-                borderColor: AppColors.orange,
-                onButtonPressed: () {},
-                title: "Cancel"),
+            Expanded(
+              child: AppButton.primaryButton(
+                  onButtonPressed: () {}, title: "Create Event"),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: AppButton.outlineButton(
+                  borderColor: AppColors.primary,
+                  onButtonPressed: () {},
+                  title: "Cancel"),
+            ),
           ]),
         ),
       ),

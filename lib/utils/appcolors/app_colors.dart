@@ -17,8 +17,7 @@ class AppColors {
   static const Color lightBlue = Color(0xff2A384E);
   static const Color navyBlue = Color(0xff2A2B4E);
   static const Color oliveGreen = Color(0xff294136);
-  static const Color orange = Color(0xffFF620E);
-
+  static const Color brown = Color(0Xff65350F);
 
 
   
@@ -35,5 +34,6 @@ class AppColors {
   static Color white38 = Colors.white38;
   static Color white54 = Colors.white54;
   static Color whiteCard = Color(0XFFFF8F8F8);
+  static Color whiteShade = Color(0XFFD9D9D9);
 
 }
