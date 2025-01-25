@@ -118,12 +118,17 @@ class _PlansScreenState extends State<PlansScreen>
                                       scrollDirection: Axis.horizontal,
                                       itemCount: 4,
                                       itemBuilder: (context, index) {
-                                        return CircleAvatar(
-                                          backgroundColor: AppColors.whiteShade,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(9.0),
-                                            child: Image.asset(iconPath[index]),
-                                          ),
+                                        return 
+                                          CircleAvatar(
+                                            backgroundColor:
+                                                AppColors.whiteShade,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(9.0),
+                                              child:
+                                                  Image.asset(iconPath[index]),
+                                            ),
+                                         
                                         );
                                       },
                                     ),

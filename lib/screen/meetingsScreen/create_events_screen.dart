@@ -1,3 +1,4 @@
+import 'package:capitalhub_crm/controller/eventController/event_controller.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
@@ -93,7 +94,17 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Expanded(
               child: AppButton.primaryButton(
-                  onButtonPressed: () {}, title: "Create Event"),
+                  onButtonPressed: () async {
+                  
+                  await EventController().createEvent(
+                    titleController.text,
+                    descriptionController.text,
+                    int.tryParse(durationMinutesController.text),
+                    privacyStatus,
+                    int.tryParse(priceController.text),
+                    int.tryParse(priceDiscountController.text),
+                  );
+                }, title: "Create Event"),
             ),
             const SizedBox(width: 12),
             Expanded(

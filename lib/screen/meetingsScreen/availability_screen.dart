@@ -1,3 +1,4 @@
+import 'package:capitalhub_crm/controller/availabilityController/availability_controller.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
@@ -266,7 +267,27 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
             bottomNavigationBar: Padding(
               padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
               child: AppButton.primaryButton(
-                  onButtonPressed: () {}, title: "Update Availability"),
+                onButtonPressed: () async {
+                  List<Map<String, dynamic>> dayAvailability = [];
+
+                  for (int i = 0; i < daysOfWeek.length; i++) {
+                    if (isChecked[i]) {
+                      dayAvailability.add({
+                        "day": daysOfWeek[i],
+                        "startTime":
+                            "${startTimes[i].hour}:${startTimes[i].minute}",
+                        "endTime": "${endTimes[i].hour}:${endTimes[i].minute}",
+                      });
+                    }
+                  }
+
+                  await AvailabilityController().updateAvailability(
+                    dayAvailability,
+                    selectedMinutes,
+                  );
+                },
+                title: "Update Availability",
+              ),
             )));
   }
 }
