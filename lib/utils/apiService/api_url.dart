@@ -104,6 +104,8 @@ class ApiUrl {
   static String getPublicProfileUrl = "users/getFounderProfilePageData/";
   static String addFounderEmailUrl = "users/addFounderEmailToCurrentUser/";
 
-
+  static const String updateAvailability = "meetings/updateAvailability";
+  static const String createEvent = "meetings/createEvent";
+  
 
 }

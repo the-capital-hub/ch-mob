@@ -1,6 +1,11 @@
 import 'dart:ui';
 
 import 'package:capitalhub_crm/controller/newsController/news_controller.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingScreen/community_landing_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/create_community_over_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/create_community_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/create_community_start_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/my_community_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/availability_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/create_new_webinar_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/events_screen.dart';
@@ -57,6 +62,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     "Company",
     "Team",
     "Analytics",
+    "Community",
     "Meetings",
     "Investors",
     "Help",
@@ -69,6 +75,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     "Webinars",
     "Priority DMS"
   ];
+  List<String> communitySubItems = [
+    "Home",
+    "Create a Community",
+    "My Community",
+  ];
   List icons = [
     PngAssetPath.homeIcon,
     PngAssetPath.documentIcon,
@@ -79,6 +90,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     PngAssetPath.financeIcon,
     PngAssetPath.teamIcon,
     PngAssetPath.customerIcon,
+    PngAssetPath.communityIcon,
     PngAssetPath.meetingIcon,
     PngAssetPath.investorsIcon,
     PngAssetPath.helpIcon,
@@ -105,6 +117,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     const AvailabilityScreen(),
     const WebinarsScreen(),
     const PriorityDMScreen()
+  ];
+  List communitySubPages = [
+    CommunityLandingScreen(),
+    const CreateCommunityScreen(),
+    // CreateCommunityOverScreen()
+    MyCommunityScreen()
   ];
   bool isExpanded = false;
   @override
@@ -184,7 +202,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         if (index == 9) {
-                          return _buildExpansionTile();
+                          return _buildExpansionTile(index); // For index 8
+                        } else if (index == 10) {
+                          return _buildExpansionTile(index); // For index 9
                         } else {
                           return InkWell(
                             onTap: () {
@@ -283,7 +303,68 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
-  Widget _buildExpansionTile() {
+  // Widget _buildExpansionTile() {
+  //   return Theme(
+  //     data: ThemeData(
+  //       dividerColor: Colors.transparent,
+  //     ),
+  //     child: ExpansionTile(
+  //       visualDensity: VisualDensity.compact,
+  //       dense: true,
+  //       tilePadding: const EdgeInsets.only(left: 20),
+  //       collapsedIconColor: AppColors.white,
+  //       iconColor: AppColors.primary,
+  //       onExpansionChanged: (bool expanded) {
+  //         setState(() {
+  //           isExpanded = expanded;
+  //         });
+  //       },
+  //       title: Row(
+  //         mainAxisAlignment: MainAxisAlignment.start,
+  //         children: [
+  //           Image.asset(
+  //             PngAssetPath.meetingIcon,
+  //             color: isExpanded ? AppColors.primary : AppColors.white,
+  //             height: 22,
+  //           ),
+  //           const SizedBox(width: 12),
+  //           TextWidget(
+  //             text: "Meetings",
+  //             textSize: 16,
+  //             fontWeight: FontWeight.w500,
+  //             maxLine: 1,
+  //             align: TextAlign.center,
+  //             color: isExpanded ? AppColors.primary : AppColors.white,
+  //           ),
+  //         ],
+  //       ),
+  //       children: meetingsSubItems.map((meetingsSubItemsTitle) {
+  //         int meetingsSubItemsIndex =
+  //             meetingsSubItems.indexOf(meetingsSubItemsTitle);
+  //         return SizedBox(
+  //           height: 30,
+  //           child: ListTile(
+  //             dense: true,
+  //             visualDensity: VisualDensity.compact,
+  //             contentPadding:
+  //                 const EdgeInsets.only(left: 55, top: 0, bottom: 0),
+  //             title: TextWidget(
+  //               text: meetingsSubItemsTitle,
+  //               textSize: 16,
+  //               fontWeight: FontWeight.w500,
+  //               maxLine: 1,
+  //               color: AppColors.white,
+  //             ),
+  //             onTap: () {
+  //               Get.to(meetingsSubPages[meetingsSubItemsIndex]);
+  //             },
+  //           ),
+  //         );
+  //       }).toList(),
+  //     ),
+  //   );
+  // }
+  Widget _buildExpansionTile(int index) {
     return Theme(
       data: ThemeData(
         dividerColor: Colors.transparent,
@@ -303,13 +384,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Image.asset(
-              PngAssetPath.meetingIcon,
+              icons[index],
               color: isExpanded ? AppColors.primary : AppColors.white,
               height: 22,
             ),
             const SizedBox(width: 12),
             TextWidget(
-              text: "Meetings",
+              text: items[index],
               textSize: 16,
               fontWeight: FontWeight.w500,
               maxLine: 1,
@@ -318,7 +399,33 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           ],
         ),
-        children: meetingsSubItems.map((meetingsSubItemsTitle) {
+        children: 
+        items[index]=="Community"?
+        
+         communitySubItems.map((communitySubItemsTitle) {
+          int communitySubItemsIndex =
+              communitySubItems.indexOf(communitySubItemsTitle);
+          return SizedBox(
+            height: 30,
+            child: ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
+              contentPadding:
+                  const EdgeInsets.only(left: 55, top: 0, bottom: 0),
+              title: TextWidget(
+                text: communitySubItemsTitle,
+                textSize: 16,
+                fontWeight: FontWeight.w500,
+                maxLine: 1,
+                color: AppColors.white,
+              ),
+              onTap: () {
+                Get.to(communitySubPages[communitySubItemsIndex]);
+              },
+            ),
+          );
+        }).toList():
+        meetingsSubItems.map((meetingsSubItemsTitle) {
           int meetingsSubItemsIndex =
               meetingsSubItems.indexOf(meetingsSubItemsTitle);
           return SizedBox(
@@ -340,7 +447,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               },
             ),
           );
-        }).toList(),
+        }).toList()
       ),
     );
   }
