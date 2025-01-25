@@ -24,6 +24,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import '../../model/01-StartupModel/publicPostModel/public_post_model.dart';
 import '../../utils/constant/app_var.dart';
+import '../chatScreen/chat_member_screen.dart';
 import '../homeScreen/widget/polls_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -714,49 +715,232 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       children: [
                                         const SizedBox(height: 8),
                                         const TextWidget(
-                                            text: "Company",
-                                            fontWeight: FontWeight.w300,
-                                            textSize: 13),
+                                            text: "Experience",
+                                            fontWeight: FontWeight.w500,
+                                            textSize: 14),
                                         const SizedBox(height: 4),
-                                        TextWidget(
-                                            text:
-                                                "${profileController.profileData.companyName}",
-                                            textSize: 15,
-                                            fontWeight: FontWeight.w500),
-                                        const SizedBox(height: 8),
-                                        const TextWidget(
-                                            text: "Designation",
-                                            fontWeight: FontWeight.w300,
-                                            textSize: 13),
-                                        const SizedBox(height: 4),
-                                        TextWidget(
-                                            text:
-                                                "${profileController.profileData.designation}",
-                                            textSize: 15,
-                                            fontWeight: FontWeight.w500),
+                                        profileController
+                                                .profileData.experience!.isEmpty
+                                            ? Center(
+                                                child: TextWidget(
+                                                    text: "No Experience Found",
+                                                    color: AppColors.white54,
+                                                    textSize: 14),
+                                              )
+                                            : ListView.separated(
+                                                shrinkWrap: true,
+                                                itemCount: profileController
+                                                    .profileData
+                                                    .experience!
+                                                    .length,
+                                                separatorBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return SizedBox(
+                                                    height: 4,
+                                                  );
+                                                },
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return Container(
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors.white12,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      border: Border.all(
+                                                          color:
+                                                              AppColors.white38,
+                                                          width: 0.5),
+                                                    ),
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        CircleAvatar(
+                                                          radius: 25,
+                                                          backgroundImage: NetworkImage(
+                                                              profileController
+                                                                  .profileData
+                                                                  .experience![
+                                                                      index]
+                                                                  .companyLogo),
+                                                        ),
+                                                        SizedBox(width: 8),
+                                                        Expanded(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              TextWidget(
+                                                                  text: profileController
+                                                                      .profileData
+                                                                      .experience![
+                                                                          index]
+                                                                      .companyName,
+                                                                  textSize: 14),
+                                                              TextWidget(
+                                                                  text: profileController
+                                                                      .profileData
+                                                                      .experience![
+                                                                          index]
+                                                                      .location,
+                                                                  textSize: 14),
+                                                              TextWidget(
+                                                                  text: profileController
+                                                                      .profileData
+                                                                      .experience![
+                                                                          index]
+                                                                      .role,
+                                                                  textSize: 14),
+                                                              TextWidget(
+                                                                text: profileController
+                                                                    .profileData
+                                                                    .experience![
+                                                                        index]
+                                                                    .description,
+                                                                textSize: 14,
+                                                                maxLine: 2,
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Column(
+                                                          children: [
+                                                            TextWidget(
+                                                                text: profileController
+                                                                    .profileData
+                                                                    .experience![
+                                                                        index]
+                                                                    .startYear,
+                                                                textSize: 12),
+                                                            const TextWidget(
+                                                                text: "To",
+                                                                textSize: 12),
+                                                            TextWidget(
+                                                                text: profileController
+                                                                    .profileData
+                                                                    .experience![
+                                                                        index]
+                                                                    .endYear,
+                                                                textSize: 12),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              ),
                                         const SizedBox(height: 8),
                                         const TextWidget(
                                             text: "Education",
-                                            fontWeight: FontWeight.w300,
-                                            textSize: 13),
+                                            fontWeight: FontWeight.w500,
+                                            textSize: 14),
                                         const SizedBox(height: 4),
-                                        TextWidget(
-                                            text:
-                                                "${profileController.profileData.education}",
-                                            textSize: 15,
-                                            fontWeight: FontWeight.w500),
-                                        const SizedBox(height: 8),
-                                        const TextWidget(
-                                            text: "Experience",
-                                            fontWeight: FontWeight.w300,
-                                            textSize: 13),
-                                        const SizedBox(height: 4),
-                                        TextWidget(
-                                            text:
-                                                "${profileController.profileData.experience}",
-                                            textSize: 15,
-                                            maxLine: 3,
-                                            fontWeight: FontWeight.w500),
+                                        profileController
+                                                .profileData.education!.isEmpty
+                                            ? Center(
+                                                child: TextWidget(
+                                                    text: "No Education Found",
+                                                    color: AppColors.white54,
+                                                    textSize: 14),
+                                              )
+                                            : ListView.separated(
+                                                shrinkWrap: true,
+                                                itemCount: profileController
+                                                    .profileData
+                                                    .education!
+                                                    .length,
+                                                separatorBuilder:
+                                                    (context, index) =>
+                                                        SizedBox(height: 4),
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return Container(
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors.white12,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      border: Border.all(
+                                                          color:
+                                                              AppColors.white38,
+                                                          width: 0.5),
+                                                    ),
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        CircleAvatar(
+                                                          radius: 25,
+                                                          backgroundImage: NetworkImage(
+                                                              profileController
+                                                                  .profileData
+                                                                  .education![
+                                                                      index]
+                                                                  .educationLogo),
+                                                        ),
+                                                        SizedBox(width: 8),
+                                                        Expanded(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              TextWidget(
+                                                                  text: profileController
+                                                                      .profileData
+                                                                      .education![
+                                                                          index]
+                                                                      .educationSchoolName,
+                                                                  textSize: 14),
+                                                              TextWidget(
+                                                                  text: profileController
+                                                                      .profileData
+                                                                      .education![
+                                                                          index]
+                                                                      .educationLocation,
+                                                                  textSize: 14),
+                                                              TextWidget(
+                                                                  text: profileController
+                                                                      .profileData
+                                                                      .education![
+                                                                          index]
+                                                                      .educationCourse,
+                                                                  textSize: 14),
+                                                              TextWidget(
+                                                                text: profileController
+                                                                    .profileData
+                                                                    .education![
+                                                                        index]
+                                                                    .educationDescription,
+                                                                textSize: 14,
+                                                                maxLine: 2,
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        TextWidget(
+                                                            text: profileController
+                                                                .profileData
+                                                                .education![
+                                                                    index]
+                                                                .educationPassYear,
+                                                            textSize: 12),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              ),
                                       ],
                                     ),
                                   ),
@@ -821,11 +1005,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 ],
                               ),
                             ),
-                            if (profileController
-                                .profileData.companyData!.companyName!.isEmpty)
+                            if (profileController.profileData.companyData!
+                                .companyName!.isNotEmpty)
                               sizedTextfield,
-                            if (profileController
-                                .profileData.companyData!.companyName!.isEmpty)
+                            if (profileController.profileData.companyData!
+                                .companyName!.isNotEmpty)
                               Card(
                                 color: AppColors.blackCard,
                                 surfaceTintColor: AppColors.blackCard,
@@ -867,12 +1051,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                                               const SizedBox(height: 4),
                                               TextWidget(
                                                 text:
-                                                    "${profileController.profileData.companyData!.location} Founded in ${profileController.profileData.companyData!.startedAtDate}",
+                                                    "${profileController.profileData.companyData!.location} - Founded in ${profileController.profileData.companyData!.startedAtDate}",
                                                 textSize: 11,
                                               ),
                                               TextWidget(
                                                 text:
-                                                    "Last funding ${profileController.profileData.companyData!.lastFunding} Sector ${profileController.profileData.companyData!.sector}",
+                                                    "Last funding ${profileController.profileData.companyData!.lastFunding} - Sector ${profileController.profileData.companyData!.sector}",
                                                 textSize: 11,
                                               ),
                                               TextWidget(
@@ -993,7 +1177,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                   textSize: 12),
                                               const SizedBox(height: 8),
                                               AppButton.primaryButton(
-                                                  onButtonPressed: () {},
+                                                  onButtonPressed: () {
+                                                    Get.to(
+                                                        const ChatMemberScreen());
+                                                  },
                                                   title: "Message",
                                                   width: 92,
                                                   fontSize: 12,

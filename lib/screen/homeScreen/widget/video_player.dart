@@ -14,7 +14,7 @@ class VideoPlayerItem extends StatefulWidget {
 
 class _VideoPlayerItemState extends State<VideoPlayerItem> {
   late VideoPlayerController _controller;
-  bool _showControls = true; // Flag to show/hide play/pause button
+  bool _showControls = true; 
   Timer? _hideControlsTimer;
 
   @override
@@ -22,10 +22,9 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
     super.initState();
     _controller = VideoPlayerController.network(widget.videoUrl)
       ..initialize().then((_) {
-        setState(() {}); // Refresh to display the initialized video
+        setState(() {});
       });
 
-    // Start hiding controls after a few seconds of initialization
     _startHideControlsTimer();
   }
 
@@ -37,10 +36,10 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
   }
 
   void _startHideControlsTimer() {
-    _hideControlsTimer?.cancel(); // Cancel any existing timer
+    _hideControlsTimer?.cancel(); 
     _hideControlsTimer = Timer(const Duration(seconds: 3), () {
       setState(() {
-        _showControls = false; // Hide controls
+        _showControls = false; 
       });
     });
   }
@@ -52,7 +51,7 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
       } else {
         _controller.play();
       }
-      _showControls = true; // Show controls when toggling playback
+      _showControls = true; 
     });
     _startHideControlsTimer();
   }
@@ -62,7 +61,7 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          _showControls = true; // Show controls on tap
+          _showControls = true; 
         });
         _startHideControlsTimer();
       },
@@ -81,7 +80,6 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
                     )
                   : const Center(child: CircularProgressIndicator()),
 
-              // Play/Pause Button
               if (_showControls)
                 IconButton(
                   icon: Icon(

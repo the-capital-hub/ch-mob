@@ -23,6 +23,8 @@ class PngAssetPath {
   static const String twitterIconSmall = 'assets/img/twitterIcon.png';
   static const String instagramIcon = 'assets/img/instagramIcon.png';
   static const String youtubeIcon = 'assets/img/youtubeIcon.png';
+  static const String collegeImg = 'assets/img/college.png';
+  static const String companyImg = 'assets/img/Company.png';
   
   //drawer
   static const String homeIcon = 'assets/img/drawerIcon/home.png';

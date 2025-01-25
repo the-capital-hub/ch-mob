@@ -42,8 +42,8 @@ class ProfileData {
   String? companyName;
   String? location;
   String? bio;
-  String? education;
-  String? experience;
+  List<Education>? education;
+  List<Experience>? experience;
   int? connectionsCount;
   int? followersCount;
   Milestone? milestoneProfile;
@@ -88,8 +88,10 @@ class ProfileData {
         companyName: json["companyName"],
         location: json["location"],
         bio: json["bio"],
-        education: json["education"],
-        experience: json["experience"],
+        education: List<Education>.from(
+            json["education"].map((x) => Education.fromJson(x))),
+        experience: List<Experience>.from(
+            json["experience"].map((x) => Experience.fromJson(x))),
         connectionsCount: json["connectionsCount"],
         followersCount: json["followersCount"],
         isSubscribed: json["isSubscribed"],
@@ -121,6 +123,63 @@ class ProfileData {
             List<dynamic>.from(recentConnections!.map((x) => x.toJson())),
         "companyData": companyData!.toJson(),
       };
+}
+
+class Experience {
+  String companyLogo;
+  String companyName;
+  String location;
+  String role;
+  String description;
+  String startYear;
+  String endYear;
+
+  Experience({
+    required this.companyLogo,
+    required this.companyName,
+    required this.location,
+    required this.role,
+    required this.description,
+    required this.startYear,
+    required this.endYear,
+  });
+
+  factory Experience.fromJson(Map<String, dynamic> json) => Experience(
+        companyLogo: json["companyLogo"],
+        companyName: json["companyName"],
+        location: json["companyLocation"],
+        role: json["companyRole"],
+        description: json["companyDescription"],
+        startYear: json["companyStartDate"].toString(),
+        endYear: json["companyEndDate"].toString(),
+      );
+}
+
+class Education {
+  String educationLogo;
+  String educationSchoolName;
+  String educationLocation;
+  String educationCourse;
+  String educationPassYear;
+  String educationDescription;
+
+  Education({
+    required this.educationLogo,
+    required this.educationSchoolName,
+    required this.educationLocation,
+    required this.educationCourse,
+    required this.educationDescription,
+    required this.educationPassYear,
+  });
+
+  factory Education.fromJson(Map<String, dynamic> json) => Education(
+        educationLogo: json["educationLogo"],
+        educationSchoolName: json["educationSchool"],
+        educationLocation: json["educationLocation"],
+        educationCourse: json["educationCourse"],
+        educationPassYear: json["educationPassoutDate"].toString(),
+        educationDescription: json["educationDescription"],
+      );
 }
 
 class Milestone {

@@ -125,20 +125,6 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                   ],
                                 ),
                                 const SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    const Expanded(
-                                        child: TextWidget(
-                                            text: "Education", textSize: 15)),
-                                    Expanded(
-                                        child: TextWidget(
-                                            text: publicProfileController
-                                                .publicData
-                                                .userProfile!
-                                                .education,
-                                            textSize: 15)),
-                                  ],
-                                ),
                                 const SizedBox(height: 8),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,

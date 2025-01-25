@@ -1,7 +1,6 @@
 import 'package:capitalhub_crm/controller/loginController/login_controller.dart';
 import 'package:capitalhub_crm/controller/profileController/profile_controller.dart';
 import 'package:capitalhub_crm/screen/01-Investor-Section/landingScreen/landing_screen_inv.dart';
-import 'package:capitalhub_crm/screen/Auth-Process/welcomeCompanyScreen/welcome_company_screen.dart';
 import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
@@ -13,7 +12,6 @@ import 'package:get/get.dart';
 import '../../../utils/constant/app_var.dart';
 import '../../../widget/buttons/button.dart';
 import '../../../widget/textwidget/text_widget.dart';
-import '../selectedIndustryScreen/select_field_screen.dart';
 
 class BioScreen extends StatefulWidget {
   bool? isEdit;

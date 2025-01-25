@@ -85,11 +85,13 @@ class _PollWidgetProfileState extends State<PollWidgetProfile> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              TextWidget(
-                                text: '${pollOptions[i].option}',
-                                textSize: 12,
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w500,
+                              Expanded(
+                                child: TextWidget(
+                                  text: '${pollOptions[i].option}',
+                                  textSize: 12,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                               Row(
                                 children: [

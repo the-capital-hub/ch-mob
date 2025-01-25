@@ -165,7 +165,7 @@ class UserProfile {
   String companyName;
   String location;
   String bio;
-  String education;
+  List<Education> education;
   List<Experience> experience;
   bool isSubscribed;
 
@@ -192,7 +192,8 @@ class UserProfile {
         companyName: json["companyName"],
         location: json["location"],
         bio: json["bio"],
-        education: json["education"],
+        education: List<Education>.from(
+            json["education"].map((x) => Education.fromJson(x))),
         experience: List<Experience>.from(
             json["experience"].map((x) => Experience.fromJson(x))),
         isSubscribed: json["isSubscribed"],
@@ -207,7 +208,6 @@ class UserProfile {
         "location": location,
         "bio": bio,
         "education": education,
-        "experience": List<dynamic>.from(experience.map((x) => x.toJson())),
         "isSubscribed": isSubscribed,
       };
 }
@@ -218,8 +218,8 @@ class Experience {
   String location;
   String role;
   String description;
-  int startYear;
-  int endYear;
+  String startYear;
+  String endYear;
 
   Experience({
     required this.companyLogo,
@@ -234,20 +234,37 @@ class Experience {
   factory Experience.fromJson(Map<String, dynamic> json) => Experience(
         companyLogo: json["companyLogo"],
         companyName: json["companyName"],
-        location: json["location"],
-        role: json["role"],
-        description: json["description"],
-        startYear: json["startYear"],
-        endYear: json["endYear"],
+        location: json["companyLocation"],
+        role: json["companyRole"],
+        description: json["companyDescription"],
+        startYear: json["companyStartDate"],
+        endYear: json["companyEndDate"],
       );
+}
 
-  Map<String, dynamic> toJson() => {
-        "companyLogo": companyLogo,
-        "companyName": companyName,
-        "location": location,
-        "role": role,
-        "description": description,
-        "startYear": startYear,
-        "endYear": endYear,
-      };
+class Education {
+  String educationLogo;
+  String educationSchoolName;
+  String educationLocation;
+  String educationCourse;
+  String educationPassYear;
+  String educationDescription;
+
+  Education({
+    required this.educationLogo,
+    required this.educationSchoolName,
+    required this.educationLocation,
+    required this.educationCourse,
+    required this.educationDescription,
+    required this.educationPassYear,
+  });
+
+  factory Education.fromJson(Map<String, dynamic> json) => Education(
+        educationLogo: json["educationLogo"],
+        educationSchoolName: json["educationSchool"],
+        educationLocation: json["educationLocation"],
+        educationCourse: json["educationCourse"],
+        educationPassYear: json["educationPassoutDate"],
+        educationDescription: json["educationDescription"],
+      );
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:capitalhub_crm/screen/profileScreen/personal_info_screen.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,9 @@ class ProfileController extends GetxController {
       if (data['status'] == true) {
         ProfileModel profileModel = ProfileModel.fromJson(data);
         profileData = profileModel.data!;
+        firstNameController.text = profileData.firstName!;
+        lastNameController.text = profileData.lastName!;
+        userNameController.text = profileData.userName!;
       }
     } catch (e) {
       log("getProfileddd $e");
@@ -60,14 +64,36 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future updateProfile(String? base64, BuildContext context) async {
+  Future updateProfile(String? base64, List<CompanyInfo> experience,
+      List<EducationInfo> education, BuildContext context) async {
     Helper.loader(context);
     isLoading.value = true;
+    List<Map<String, dynamic>> experienceJsonList =
+        experience.map((e) => e.toJson()).toList();
+    List<Map<String, dynamic>> educationJsonList =
+        education.map((e) => e.toJson()).toList();
+
     var body = {
       if (base64 != null) "profilePicture": base64,
-      "designation": designationController.text,
-      "education": educationController.text,
-      "experience": experienceController.text,
+      "firstName": firstNameController.text,
+      "lastName": lastNameController.text,
+      "userName": userNameController.text,
+      "experiences": experienceJsonList,
+      "educations": educationJsonList
+
+      // "companyName": companyNameController.text,
+      // "companyLocation": companyLocationController.text,
+      // "companyRole": companyRoleController.text,
+      // "companyStartDate": companyStartDateController.text,
+      // "companyEndDate": companyEndDateController.text,
+      // "companyDescription": companyDescriptionController.text,
+      // "companyLogo": "",
+      // "educationSchool": eduSchoolNameController.text,
+      // "educationLocation": eduLocationController.text,
+      // "educationCource": eduCourceController.text,
+      // "educationPassoutDate": eduPassOutDateController.text,
+      // "educationDescription": eduDescriptionController.text,
+      // "educationLogo": "",
     };
     var response = await ApiBase.pachRequest(
         body: body, extendedURL: "${ApiUrl.updateProfile}", withToken: true);
@@ -91,7 +117,7 @@ class ProfileController extends GetxController {
 
     var body = {"bio": bio};
     var response = await ApiBase.pachRequest(
-        body: body, extendedURL: "${ApiUrl.updateProfile}", withToken: true);
+        body: body, extendedURL: ApiUrl.updateProfile, withToken: true);
     log(response.body);
 
     var data = json.decode(response.body);
@@ -128,8 +154,11 @@ class ProfileController extends GetxController {
     isTabLoading.value = false;
   }
 
-  TextEditingController companyController = TextEditingController();
-  TextEditingController designationController = TextEditingController();
-  TextEditingController educationController = TextEditingController();
-  TextEditingController experienceController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
+
+  // TextEditingController designationController = TextEditingController();
+  // TextEditingController educationController = TextEditingController();
+  // TextEditingController experienceController = TextEditingController();
 }
