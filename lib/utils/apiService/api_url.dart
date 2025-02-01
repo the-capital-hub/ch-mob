@@ -104,8 +104,20 @@ class ApiUrl {
   static String getPublicProfileUrl = "users/getFounderProfilePageData/";
   static String addFounderEmailUrl = "users/addFounderEmailToCurrentUser/";
 
+  static const String getAvailability = "meetings/getAvailability";
   static const String updateAvailability = "meetings/updateAvailability";
   static const String createEvent = "meetings/createEvent";
+  static const String getEvents = 'meetings/getEvents';
+  static const String disableEvent = "meetings/disableEvent/";
+  static const String getALLScheduledMeetings = 'meetings/getALLScheduledMeetings/';
+  static String cancelScheduledMeeting = "meetings/cancelScheduledMeeting/";
+  static String getWebinars= "webinars/getWebinars";
+  static String createWebinar = "webinars/createWebinar";
+  static String deleteWebinar = "webinars/deleteWebinar/";
+  static String getPriorityDMForUser = "priorityDM/getPriority-DMForUser";
+  static String getPriorityDMForFounder = "priorityDM/getPriority-DMForFounder";
+
+  
   
 
 }

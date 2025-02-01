@@ -1,4 +1,6 @@
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/community_home_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/community_people_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/community_products_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/create_community_over_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/my_community_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
@@ -23,18 +25,20 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
   
   int selectIndex = 0;
   List icons = [
-    Icons.home,
-    Icons.grid_view_outlined,
-    Icons.calendar_month_outlined,
-    Icons.groups,
-    Icons.person,
+   PngAssetPath.homeIcon,
+     PngAssetPath.categoryIcon,
+     PngAssetPath.meetingIcon,
+     PngAssetPath.teamIcon,
+    
+    PngAssetPath.userIcon,
   ];
   List title = ["Home", "Products", "Events", "People", "Profile"];
   List screen = [
     CommunityHomeScreen(),
-    CreateCommunityOverScreen(),
+    CommunityProductsScreen(),
+    
     MyCommunityScreen(),
-    MyCommunityScreen(),
+    CommunityPeopleScreen(),
     MyCommunityScreen(),
   ];
   @override
@@ -75,13 +79,13 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      icons[index],
-                      size: 24,
-                      color:selectIndex == index
+                    Image.asset(
+                                      icons[index],
+                                      color: selectIndex == index
                           ? AppColors.primary
                           : AppColors.whiteCard,
-                    ),
+                                      height: 22,
+                                    ),
                     const SizedBox(height: 2),
                     TextWidget(
                       text: title[index],

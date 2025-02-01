@@ -59,7 +59,7 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
                 itemCount: communityNames.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    leading: CircleAvatar(
+                    leading: const CircleAvatar(
                       backgroundImage: NetworkImage(
                         "https://i0.wp.com/mymotionguy.com/wp-content/uploads/2024/03/port-img02-1.jpg?fit=630,400&ssl=1",
                       ),

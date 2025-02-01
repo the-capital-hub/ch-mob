@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:capitalhub_crm/controller/newsController/news_controller.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/community_people_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/create_community_over_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/create_community_screen.dart';
@@ -119,7 +120,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     const PriorityDMScreen()
   ];
   List communitySubPages = [
-    CommunityLandingScreen(),
+    CommunityPeopleScreen(),
     const CreateCommunityScreen(),
     // CreateCommunityOverScreen()
     MyCommunityScreen()

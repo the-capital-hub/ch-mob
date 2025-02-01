@@ -299,7 +299,7 @@ class MyCustomTextField {
             borderRadius: BorderRadius.circular(6),
           ),
           filled: true,
-          fillColor: AppColors.grey3Color,
+          fillColor: AppColors.white,
           suffixIcon: Padding(
             padding: const EdgeInsets.all(8),
             child: Container(

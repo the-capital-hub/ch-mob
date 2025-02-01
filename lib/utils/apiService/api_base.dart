@@ -15,6 +15,7 @@ class ApiBase {
     var requestHeaders = {
       'Content-Type': 'application/json',
       "authorization": "Bearer ${GetStoreData.getStore.read('access_token')}",
+      
     };
     return requestHeaders;
   }
