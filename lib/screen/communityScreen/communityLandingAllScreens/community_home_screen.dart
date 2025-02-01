@@ -1,8 +1,11 @@
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/community_drawer_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
+import 'package:capitalhub_crm/widget/buttons/button.dart';
+import 'package:capitalhub_crm/widget/dropdownWidget/drop_down_widget.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,13 +21,16 @@ class CommunityHomeScreen extends StatefulWidget {
 
 class _CommunityHomeScreenState extends State<CommunityHomeScreen> {
   TextEditingController searchController = TextEditingController();
+ bool isCardVisible = true;
+ String privacyStatus = "Public";
+ List<String> postsFilter = ['All Posts', 'Admin Posts', 'Member Posts' ];
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: bgDec,
       child: Scaffold(
         backgroundColor: AppColors.transparent,
-        drawer: const DrawerWidget(),
+        drawer: const CommunityDrawerWidget(),
         appBar: HelperAppBar.appbarHelper(
           title: "Home",
           hideBack: true,
@@ -34,6 +40,60 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen> {
           padding: EdgeInsets.all(12),
           child: Column(
             children: [
+              if(isCardVisible)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Card(
+                  color: AppColors.darkGreen,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(Icons.chat_bubble_rounded,color: AppColors.white,),
+                        SizedBox(width: 8,),
+                        
+                        Expanded(
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,children: [TextWidget(text: "Join our WhatsApp Community", textSize: 16,fontWeight: FontWeight.bold,),
+                          TextWidget(text: "Get instant updates and connect with members", textSize: 11),
+                          sizedTextfield,
+                          
+                           Padding(
+                             padding: const EdgeInsets.only(right:25),
+                             child: AppButton.primaryButton(onButtonPressed: (){}, title: "Join Now",textColor: AppColors.darkGreen,bgColor: AppColors.white,height: 30),
+                           ),
+                          
+                          
+                                                 
+                          
+                          ],
+                                                
+                                               
+                          
+                              
+                              
+                            
+                          ),
+                        ),
+                        
+
+                        InkWell(
+                          child: CircleAvatar(radius: 12,
+                            backgroundColor: AppColors.white38,
+                            
+                              child: Icon(Icons.close,color: AppColors.white,size: 15,),),
+                              onTap: (){setState(() {
+                            isCardVisible = false; // Hide the card when pressed
+                          });},
+                        ),
+
+                      ],
+                      
+                    ),
+                  ),
+                
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [CircleAvatar(
@@ -43,7 +103,7 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen> {
                               ),
                               SizedBox(width: 8),
                               Flexible(child: MyCustomTextField.textField(
-                    fillColor: AppColors.blackCard,
+                    fillColor: AppColors.white,
                     hintText: "Share an idea",
                     controller: searchController),),
                     SizedBox(width: 8),
@@ -54,12 +114,68 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen> {
                                 child: TextWidget(text: "Post", textSize: 16),
                               ),
                               SizedBox(width: 8),
-                              CircleAvatar(
-                                radius: 25,
+            //                   InkWell(
+            //                     child: CircleAvatar(
+            //                       radius: 25,
+            //                       backgroundColor: AppColors.primary,
+            //                       child: Icon(Icons.filter_list,color: AppColors.white,)
+            //                     ),
+            //                     onTap: (){
+            //         //               DropDownWidget(
+            //         // status: postType,
+            //         // lable: "Filter",
+            //         // statusList: const ["Public", "Private", "Pitch Day"],
+            //         // onChanged: (val) {
+            //         //   setState(() {
+            //         //     privacyStatus = val.toString();
+            //         //   });
+            //         // });
+            //           DropdownButton<String>(
+            //   value: selectedItem,
+            //   onChanged: (String? newValue) {
+            //     setState(() {
+            //       selectedItem = newValue!;
+            //     });
+            //   },
+            //   items: postType.map<DropdownMenuItem<String>>((String value) {
+            //     return DropdownMenuItem<String>(
+            //       value: value,
+            //       child: Text(value),
+            //     );
+            //   }).toList(),
+            // ),
+            //         }
+            //                   ),
+                    CircleAvatar(
+                      radius: 25,
                                 backgroundColor: AppColors.primary,
-                                child: Icon(Icons.filter_list,color: AppColors.white,)
-                              ),
-                    
+                      child: PopupMenuButton<String>(
+                        icon: Icon(Icons.filter_list),
+                      iconColor: AppColors.white,
+                      color: AppColors.blackCard,
+                      offset: Offset(0, 55),
+                      onSelected: (value) {
+                       
+                        },
+                      
+                      itemBuilder: (context) => [
+                            const PopupMenuItem(
+                              
+                              child: TextWidget(text: "All Posts", textSize: 14),
+                            ),
+                            PopupMenuItem(
+                              
+                              child: TextWidget(text:
+                                   "Admin Posts",
+                                    
+                                  textSize: 14),
+                            ),
+                            const PopupMenuItem(
+                              
+                              child: TextWidget(text: "Member Posts", textSize: 14),
+                            ),
+                          ]),
+                    )
                     
                     ],),
                 

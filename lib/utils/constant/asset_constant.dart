@@ -44,6 +44,9 @@ class PngAssetPath {
   static const String mystartupIcon = 'assets/img/drawerIcon/mystartup.png';
   static const String myscheduleIcon = 'assets/img/drawerIcon/myschedule.png';
   static const String liveDealIcon = 'assets/img/drawerIcon/livedeal.png';
+  static const String categoryIcon = 'assets/img/drawerIcon/category.png';
+  static const String infoIcon = 'assets/img/drawerIcon/info.png';
+  static const String userIcon = 'assets/img/drawerIcon/user.png';
 
   static const String fundingAskIcon = 'assets/img/FundingAsk.png';
   static const String fundingRaisedIcon = 'assets/img/Fundingraised.png';

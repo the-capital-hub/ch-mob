@@ -1,5 +1,6 @@
-import 'package:capitalhub_crm/controller/eventController/event_controller.dart';
+import 'package:capitalhub_crm/controller/meetingController/meeting_controller.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
+import 'package:capitalhub_crm/screen/meetingsScreen/events_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
@@ -8,6 +9,7 @@ import 'package:capitalhub_crm/widget/dropdownWidget/drop_down_widget.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:capitalhub_crm/widget/timePicker/timePicker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CreateEventsScreen extends StatefulWidget {
   const CreateEventsScreen({super.key});
@@ -95,16 +97,18 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
             Expanded(
               child: AppButton.primaryButton(
                   onButtonPressed: () async {
-                  
-                  await EventController().createEvent(
-                    titleController.text,
-                    descriptionController.text,
-                    int.tryParse(durationMinutesController.text),
-                    privacyStatus,
-                    int.tryParse(priceController.text),
-                    int.tryParse(priceDiscountController.text),
-                  );
-                }, title: "Create Event"),
+                    await MeetingController().createEvent(
+                      context: context,
+                      title: titleController.text,
+                      description: descriptionController.text,
+                      duration: durationMinutesController.text,
+                      eventType: privacyStatus,
+                      price: priceController.text,
+                      discount: priceDiscountController.text,
+                    );
+                    Get.to(() => const EventsScreen(), preventDuplicates: false);
+                  },
+                  title: "Create Event"),
             ),
             const SizedBox(width: 12),
             Expanded(
