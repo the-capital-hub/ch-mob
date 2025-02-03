@@ -1,15 +1,10 @@
 import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
-import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
-import 'package:capitalhub_crm/screen/profileScreen/challengeScreen/challenges_category_screen.dart';
-import 'package:capitalhub_crm/screen/profileScreen/experience_screen.dart';
 import 'package:capitalhub_crm/screen/profileScreen/personal_info_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/constant/app_var.dart';
@@ -107,7 +102,7 @@ class _ProfileScreenInvestorState extends State<ProfileScreenInvestor> {
                                 alignment: Alignment.center,
                                 clipBehavior: Clip.none,
                                 children: [
-                                  SizedBox(
+                                  SizedBox( 
                                     width: 50,
                                     height: 50,
                                     child: CircularProgressIndicator(

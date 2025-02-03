@@ -60,6 +60,9 @@ dependencies:
   cached_network_image: ^3.4.1
   multi_image_picker_plus: ^0.0.5
   syncfusion_flutter_pdfviewer: ^26.2.14
+  google_sign_in: ^6.2.2
+  # firebase_auth: 
+  # firebase_core: 
 
 dev_dependencies:
   flutter_test:

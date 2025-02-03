@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../controller/loginController/login_controller.dart';
+import '../../../utils/apiService/google_service.dart';
 import '../../../utils/appcolors/app_colors.dart';
 import '../../../widget/buttons/button.dart';
 import '../../../widget/text_field/text_field.dart';
@@ -201,6 +205,21 @@ class _LoginPageState extends State<LoginPage>
                       }
                     },
                   ),
+                  const SizedBox(height: 16),
+                  AppButton.outlineButton(
+                      borderColor: AppColors.primary,
+                      title: "Login With Google",
+                      onButtonPressed: () async {
+                        final user = await GoogleSignInService.signIn();
+                        if (user != null) {
+                          final GoogleSignInAuthentication auth =
+                              await user.authentication;
+                          log("token ${auth.accessToken}");
+                          log("Logged in as: ${user.displayName}");
+                        } else {
+                          log("Login failed");
+                        }
+                      }),
                 ],
               ),
             ),
