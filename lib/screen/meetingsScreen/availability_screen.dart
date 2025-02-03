@@ -308,13 +308,13 @@ class AvailabilityScreen extends StatefulWidget {
 class _AvailabilityScreenState extends State<AvailabilityScreen> {
   MeetingController availabilityController = Get.put(MeetingController());
   final List<String> daysOfWeek = [
-    'monday',
-    'tuesday',
-    'wednesday',
-    'thursday',
-    'friday',
-    'saturday',
-    'sunday'
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
   ];
 
   List<bool> isChecked = [false, false, false, false, false, false, false];
@@ -341,53 +341,54 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
 
   int selectedMinutes = 15;
 
-  @override
-  void initState() {
-    super.initState();
+ @override
+void initState() {
+  super.initState();
 
-    // Fetch the availability data when the screen is first loaded
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      availabilityController.getAvailability().then((_) {
-        // Populate data after it's fetched
-        _populateData();
-      });
-    });
-  }
+  SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+    await availabilityController.getAvailability().then((_) {
+      if (availabilityController.isAvailabilityAvailable) {
+        var availabilityData = availabilityController.availabilityList.isNotEmpty
+            ? availabilityController.availabilityList[0]
+            : null;
 
-  void _populateData() {
-    // Assuming availabilityController.availabilityList holds the data
-    var availabilityData = availabilityController.availabilityList;
-
-    if (availabilityData.isNotEmpty) {
-      var availability = availabilityData[0]; // Assuming data is a list with a single object
-
-      // Populate minimum gap
-      // setState(() {
-      //   selectedMinutes = int.parse(availability.minimumGap);
-      // });
-
-      // Populate day availability
-      for (int i = 0; i < daysOfWeek.length; i++) {
-        var dayData = availability.dayAvailability.firstWhere(
-            (day) => day.day == daysOfWeek[i],
-            orElse: () => DayAvailability(day: daysOfWeek[i], startTime: '', endTime: ''));
-
-        if (dayData != null) {
+        if (availabilityData != null) {
           setState(() {
-            isChecked[i] = true; // Mark the day as selected
-            startTimes[i] = _getTimeOfDay(dayData.startTime); // Convert start time to TimeOfDay
-            endTimes[i] = _getTimeOfDay(dayData.endTime); // Convert end time to TimeOfDay
+            selectedMinutes = availabilityData.minGap;
+
+            for (int i = 0; i < daysOfWeek.length; i++) {
+              var dayData = availabilityData.dayAvailability.firstWhere(
+                (data) => data.day.toLowerCase() == daysOfWeek[i].toLowerCase(),
+                orElse: () => DayAvailability(
+                  day: daysOfWeek[i],
+                  startTime: "09:00",  // Default start time
+                  endTime: "17:00",    // Default end time
+                ),
+              );
+
+              // If `dayData` is the default, uncheck the checkbox
+              if (dayData.startTime == "09:00" && dayData.endTime == "17:00") {
+                isChecked[i] = false;
+              } else {
+                isChecked[i] = true;
+              }
+
+              startTimes[i] = TimeOfDay(
+                hour: int.parse(dayData.startTime.split(':')[0]),
+                minute: int.parse(dayData.startTime.split(':')[1]),
+              );
+              endTimes[i] = TimeOfDay(
+                hour: int.parse(dayData.endTime.split(':')[0]),
+                minute: int.parse(dayData.endTime.split(':')[1]),
+              );
+            }
           });
         }
       }
-    }
-  }
-
-  TimeOfDay _getTimeOfDay(String timeString) {
-    List<String> timeParts = timeString.split(":");
-    return TimeOfDay(hour: int.parse(timeParts[0]), minute: int.parse(timeParts[1]));
-  }
-
+    });
+  });
+}
+  
   @override
   Widget build(BuildContext context) {
     return Container(

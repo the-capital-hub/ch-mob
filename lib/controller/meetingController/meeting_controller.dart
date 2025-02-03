@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MeetingController extends GetxController {
+   List<Map<String, dynamic>> availabilityData = [];
   var isLoading = false.obs;
   Future updateAvailability(context, dayAvailability, minimumGap) async {
     Helper.loader(context);
@@ -79,7 +80,7 @@ print(GetStoreData.getStore.read('access_token'));
       return false;
     }
   }
- RxList<Event> eventsList = <Event>[].obs;
+ RxList<Datum> eventsList = <Datum>[].obs;
   Future<void> getEvents() async {
   try {
     isLoading.value = true; // Set loading state to true
@@ -95,6 +96,8 @@ print(GetStoreData.getStore.read('access_token'));
 
       // Update the observable list with new data
       eventsList.assignAll(eventsModel.data); // Adding events to the list
+      // print(eventsList.toString());
+      log("Events List: ${eventsList.toString()}");
     } 
   } catch (e) {
     log("getEvents $e");
@@ -189,6 +192,7 @@ Future cancelScheduledMeeting(id) async {
 
       // Update the observable list with new data
       webinarsList.assignAll(webinarsModel.data); // Adding events to the list
+      log("Webinars List: ${webinarsList.toString()}");
     } 
   } catch (e) {
     log("getALLScheduledMeetings $e");
@@ -272,9 +276,11 @@ String? dateIso = date?.toUtc().toIso8601String();
   RxList<User> userList = <User>[].obs;
   Future<void> getPriorityDMForUser() async {
   try {
+    print("AAAA");
     isLoading.value = true; // Set loading state to true
     userList.clear();
     var response = await ApiBase.getRequest(extendedURL: ApiUrl.getPriorityDMForUser);
+    print("BBBBB");
     log(response.body);
     
     
@@ -285,7 +291,7 @@ String? dateIso = date?.toUtc().toIso8601String();
       GetPriorityDmUserModel userModel = GetPriorityDmUserModel.fromJson(data);
 
       // Update the observable list with new data
-      userList.assignAll([userModel.data]); // Adding events to the list
+      userList.assignAll(userModel.data); // Adding events to the list
     } 
   } catch (e) {
     log("getPriorityDMForUser $e");
@@ -310,7 +316,7 @@ String? dateIso = date?.toUtc().toIso8601String();
       GetPriorityDmFounderModel founderModel = GetPriorityDmFounderModel.fromJson(data);
 
       // Update the observable list with new data
-      founderList.assignAll([founderModel.data]); // Adding events to the list
+      founderList.assignAll(founderModel.data); // Adding events to the list
     } 
   } catch (e) {
     log("getPriorityDMForUser $e");
@@ -321,6 +327,7 @@ String? dateIso = date?.toUtc().toIso8601String();
 }
 RxList<Availability> availabilityList = <Availability>[].obs;
   Future<void> getAvailability() async {
+    
   try {
     isLoading.value = true; // Set loading state to true
     availabilityList.clear();
@@ -336,6 +343,7 @@ RxList<Availability> availabilityList = <Availability>[].obs;
 
       // Update the observable list with new data
       availabilityList.assignAll([availabilityModel.data]); // Adding events to the list
+      
     } 
   } catch (e) {
     log("getALLScheduledMeetings $e");
@@ -344,4 +352,7 @@ RxList<Availability> availabilityList = <Availability>[].obs;
     isLoading.value = false; // Set loading state to false after request
   }
 }
+bool get isAvailabilityAvailable {
+    return availabilityList.isNotEmpty;
+  }
 }

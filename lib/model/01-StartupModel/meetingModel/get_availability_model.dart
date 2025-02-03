@@ -34,20 +34,24 @@ class GetAvailabilityModel {
 
 class Availability {
     String minimumGap;
+    int minGap;
     List<DayAvailability> dayAvailability;
 
     Availability({
         required this.minimumGap,
+        required this.minGap,
         required this.dayAvailability,
     });
 
     factory Availability.fromJson(Map<String, dynamic> json) => Availability(
         minimumGap: json["minimumGap"],
+        minGap: json["minGap"],
         dayAvailability: List<DayAvailability>.from(json["dayAvailability"].map((x) => DayAvailability.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
         "minimumGap": minimumGap,
+        "minGap": minGap,
         "dayAvailability": List<dynamic>.from(dayAvailability.map((x) => x.toJson())),
     };
 }

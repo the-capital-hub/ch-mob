@@ -11,7 +11,7 @@ String getPriorityDmFounderModelToJson(GetPriorityDmFounderModel data) => json.e
 class GetPriorityDmFounderModel {
     bool status;
     String message;
-    Founder data;
+    List<Founder> data;
 
     GetPriorityDmFounderModel({
         required this.status,
@@ -22,13 +22,13 @@ class GetPriorityDmFounderModel {
     factory GetPriorityDmFounderModel.fromJson(Map<String, dynamic> json) => GetPriorityDmFounderModel(
         status: json["status"],
         message: json["message"],
-        data: Founder.fromJson(json["data"]),
+        data: List<Founder>.from(json["data"].map((x) => Founder.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
-        "data": data.toJson(),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
     };
 }
 
@@ -69,33 +69,11 @@ class Founder {
 }
 
 class Payment {
-    String paymentId;
-    String orderId;
-    String status;
-    int amount;
-    DateTime paymentTime;
-
-    Payment({
-        required this.paymentId,
-        required this.orderId,
-        required this.status,
-        required this.amount,
-        required this.paymentTime,
-    });
+    Payment();
 
     factory Payment.fromJson(Map<String, dynamic> json) => Payment(
-        paymentId: json["paymentId"],
-        orderId: json["orderId"],
-        status: json["status"],
-        amount: json["amount"],
-        paymentTime: DateTime.parse(json["paymentTime"]),
     );
 
     Map<String, dynamic> toJson() => {
-        "paymentId": paymentId,
-        "orderId": orderId,
-        "status": status,
-        "amount": amount,
-        "paymentTime": paymentTime.toIso8601String(),
     };
 }

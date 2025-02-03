@@ -35,6 +35,7 @@ class _WebinarsScreenState extends State<WebinarsScreen> {
 
   @override
   Widget build(BuildContext context) {
+   
     return Container(
       decoration: bgDec,
       child: Scaffold(
@@ -45,6 +46,7 @@ class _WebinarsScreenState extends State<WebinarsScreen> {
           hideBack: true,
           autoAction: true,
         ),
+         
         body: Obx(()=>
         webinarController.isLoading.value
                 ? Helper.pageLoading()

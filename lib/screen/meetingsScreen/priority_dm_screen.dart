@@ -137,13 +137,13 @@ class _PriorityDMScreenState extends State<PriorityDMScreen>
                                           maxLine: 2,
                                         ),
                                         sizedTextfield,
-                                        // TextWidget(
-                                        //   text:userController.userList[index].isAnswered?
-                                        //      userController.userList[index].answer:"Thank you for your question! When the founder answers your query, we will notify you via email.",
-                                        //   textSize: 16,
-                                        //   maxLine: 3,
-                                        //   color: AppColors.white54,
-                                        // ),
+                                        TextWidget(
+                                          text:userController.userList[index].isAnswered?
+                                             userController.userList[index].answer:"Thank you for your question! When the founder answers your query, we will notify you via email.",
+                                          textSize: 16,
+                                          maxLine: 3,
+                                          color: AppColors.white54,
+                                        ),
                                         sizedTextfield,
                                         TextWidget(
                                           text: userController
@@ -163,149 +163,216 @@ class _PriorityDMScreenState extends State<PriorityDMScreen>
                                 );
                               },
                             ),
-                            Obx(()=>
-                  ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    itemCount: founderController.founderList.length,
-                    itemBuilder: (context, index) {
-                      if(!founderController.founderList[index].isAnswered){
-                      return Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        color: AppColors.blackCard,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                               Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 18,
-                                    backgroundImage:
-                                        AssetImage(PngAssetPath.accountImg),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  TextWidget(
-                                    text: founderController.founderList[index].userName,
-                                    textSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  TextWidget(
-                                    text: "${founderController.founderList[index].userRating}/5",
-                                    textSize: 16,
-                                  )
-                                ],
-                              ),
-                              sizedTextfield,
-                               TextWidget(
-                                text:
-                                    founderController.founderList[index].question,
-                                textSize: 16,
-                                maxLine: 2,
-                              ),
-                              sizedTextfield,
-                              TextWidget(
-                                text:
-                                    "Thank you for your question! When the founder answers your query, we will notify you via email.",
-                                textSize: 16,
-                                maxLine: 3,
-                                color: AppColors.white54,
-                              ),
-                              sizedTextfield,
-                              TextWidget(
-                                text: "Unanswered",
-                                textSize: 16,
-                                maxLine: 3,
-                                color: AppColors.white54,
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                      }
-                      return  Center(child:TextWidget(
-                          text: "No Questions Available", textSize: 16));
-                    },
+                            
+                  // ListView.builder(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 8),
+                  //   itemCount: founderController.founderList.length,
+                  //   itemBuilder: (context, index) {
+                  //     if(founderController.founderList[index].isAnswered==false){
+                  //     return Card(
+                  //       shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(10)),
+                  //       color: AppColors.blackCard,
+                  //       child: Padding(
+                  //         padding: const EdgeInsets.all(12.0),
+                  //         child: Column(
+                  //           crossAxisAlignment: CrossAxisAlignment.start,
+                  //           children: [
+                  //              Row(
+                  //               children: [
+                  //                 CircleAvatar(
+                  //                   radius: 18,
+                  //                   backgroundImage:
+                  //                       AssetImage(PngAssetPath.accountImg),
+                  //                 ),
+                  //                 SizedBox(
+                  //                   width: 10,
+                  //                 ),
+                  //                 TextWidget(
+                  //                   text: founderController.founderList[index].userName,
+                  //                   textSize: 18,
+                  //                   fontWeight: FontWeight.bold,
+                  //                 ),
+                  //                 SizedBox(
+                  //                   width: 8,
+                  //                 ),
+                  //                 TextWidget(
+                  //                   text: "${founderController.founderList[index].userRating}/5",
+                  //                   textSize: 16,
+                  //                 )
+                  //               ],
+                  //             ),
+                  //             sizedTextfield,
+                  //              TextWidget(
+                  //               text:
+                  //                   founderController.founderList[index].question,
+                  //               textSize: 16,
+                  //               maxLine: 2,
+                  //             ),
+                  //             sizedTextfield,
+                  //             TextWidget(
+                  //               text:
+                  //                   "Thank you for your question! When the founder answers your query, we will notify you via email.",
+                  //               textSize: 16,
+                  //               maxLine: 3,
+                  //               color: AppColors.white54,
+                  //             ),
+                  //             sizedTextfield,
+                  //             TextWidget(
+                  //               text: "Unanswered",
+                  //               textSize: 16,
+                  //               maxLine: 3,
+                  //               color: AppColors.white54,
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     );
+                  //     }
+                  //     // return  Center(child:TextWidget(
+                  //     //     text: "No Questions Available", textSize: 16));
+                  //   },
+                  // ),
+                    
+                    ListView.builder(
+  padding: const EdgeInsets.symmetric(horizontal: 8),
+  itemCount: founderController.founderList.length,
+  itemBuilder: (context, index) {
+    if (founderController.founderList[index].isAnswered == false) {
+      return Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        color: AppColors.blackCard,
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 18,
+                    backgroundImage: AssetImage(PngAssetPath.accountImg),
                   ),
-                    ),
-                  Obx(() => 
-                  ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    itemCount: founderController.founderList.length,
-                    itemBuilder: (context, index) {
-                      if(founderController.founderList[index].isAnswered){
-                      return Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        color: AppColors.blackCard,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                               Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 18,
-                                    backgroundImage:
-                                        AssetImage(PngAssetPath.accountImg),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  TextWidget(
-                                    text: founderController.founderList[index].userName,
-                                    textSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  TextWidget(
-                                    text: "${founderController.founderList[index].userRating}/5",
-                                    textSize: 16,
-                                  )
-                                ],
-                              ),
-                              sizedTextfield,
-                               TextWidget(
-                                text:
-                                    founderController.founderList[index].question,
-                                textSize: 16,
-                                maxLine: 2,
-                              ),
-                              sizedTextfield,
-                              TextWidget(
-                                text:
-                                    founderController.founderList[index].answer,
-                                textSize: 16,
-                                maxLine: 3,
-                                color: AppColors.white54,
-                              ),
-                              sizedTextfield,
-                              const TextWidget(
-                                text: "Answered",
-                                textSize: 16,
-                                maxLine: 3,
-                                color: AppColors.primary,
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                      }
-                      return  Center(
-                              child: TextWidget(
-                                  text: "No Questions Available", textSize: 16));
-                    },
+                  SizedBox(
+                    width: 10,
                   ),
-                    )
+                  TextWidget(
+                    text: founderController.founderList[index].userName,
+                    textSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  TextWidget(
+                    text: "${founderController.founderList[index].userRating}/5",
+                    textSize: 16,
+                  ),
+                ],
+              ),
+              sizedTextfield,
+              TextWidget(
+                text: founderController.founderList[index].question,
+                textSize: 16,
+                maxLine: 2,
+              ),
+              sizedTextfield,
+              TextWidget(
+                text:
+                    "Thank you for your question! When the founder answers your query, we will notify you via email.",
+                textSize: 16,
+                maxLine: 3,
+                color: AppColors.white54,
+              ),
+              sizedTextfield,
+              TextWidget(
+                text: "Unanswered",
+                textSize: 16,
+                maxLine: 3,
+                color: AppColors.white54,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    // Return an empty sized box if the condition isn't met (no unanswered questions)
+    return const SizedBox.shrink();
+  },
+),
+                  
+                  ListView.builder(
+  padding: const EdgeInsets.symmetric(horizontal: 8),
+  itemCount: founderController.founderList.length,
+  itemBuilder: (context, index) {
+    if (founderController.founderList[index].isAnswered == true) {
+      return Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        color: AppColors.blackCard,
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 18,
+                    backgroundImage: AssetImage(PngAssetPath.accountImg),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  TextWidget(
+                    text: founderController.founderList[index].userName,
+                    textSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  TextWidget(
+                    text: "${founderController.founderList[index].userRating}/5",
+                    textSize: 16,
+                  ),
+                ],
+              ),
+              sizedTextfield,
+              TextWidget(
+                text: founderController.founderList[index].question,
+                textSize: 16,
+                maxLine: 2,
+              ),
+              sizedTextfield,
+              TextWidget(
+                text: founderController.founderList[index].answer,
+                textSize: 16,
+                maxLine: 3,
+                color: AppColors.white54,
+              ),
+              sizedTextfield,
+              const TextWidget(
+                text: "Answered",
+                textSize: 16,
+                maxLine: 3,
+                color: AppColors.primary,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    // If the condition is not met, return an empty SizedBox
+    return SizedBox.shrink();
+  },
+),
+
+                   
                 ])),
               ],
             ),

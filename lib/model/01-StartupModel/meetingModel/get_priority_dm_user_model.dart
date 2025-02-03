@@ -11,7 +11,7 @@ String getPriorityDmUserModelToJson(GetPriorityDmUserModel data) => json.encode(
 class GetPriorityDmUserModel {
     bool status;
     String message;
-    User data;
+    List<User> data;
 
     GetPriorityDmUserModel({
         required this.status,
@@ -22,13 +22,13 @@ class GetPriorityDmUserModel {
     factory GetPriorityDmUserModel.fromJson(Map<String, dynamic> json) => GetPriorityDmUserModel(
         status: json["status"],
         message: json["message"],
-        data: User.fromJson(json["data"]),
+        data: List<User>.from(json["data"].map((x) => User.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
-        "data": data.toJson(),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
     };
 }
 
@@ -36,7 +36,7 @@ class User {
     String founderName;
     String founderRating;
     String question;
-    // String answer;
+    String answer;
     bool isAnswered;
     Payment payment;
 
@@ -44,7 +44,7 @@ class User {
         required this.founderName,
         required this.founderRating,
         required this.question,
-        // required this.answer,
+        required this.answer,
         required this.isAnswered,
         required this.payment,
     });
@@ -53,7 +53,7 @@ class User {
         founderName: json["FounderName"],
         founderRating: json["FounderRating"],
         question: json["question"],
-        // answer: json["answer"],
+        answer: json["answer"],
         isAnswered: json["isAnswered"],
         payment: Payment.fromJson(json["payment"]),
     );
@@ -62,25 +62,25 @@ class User {
         "FounderName": founderName,
         "FounderRating": founderRating,
         "question": question,
-        // "answer": answer,
+        "answer": answer,
         "isAnswered": isAnswered,
         "payment": payment.toJson(),
     };
 }
 
 class Payment {
-    String paymentId;
-    String orderId;
-    String status;
-    int amount;
-    DateTime paymentTime;
+    String? paymentId;
+    String? orderId;
+    String? status;
+    int? amount;
+    DateTime? paymentTime;
 
     Payment({
-        required this.paymentId,
-        required this.orderId,
-        required this.status,
-        required this.amount,
-        required this.paymentTime,
+        this.paymentId,
+        this.orderId,
+        this.status,
+        this.amount,
+        this.paymentTime,
     });
 
     factory Payment.fromJson(Map<String, dynamic> json) => Payment(
@@ -88,7 +88,7 @@ class Payment {
         orderId: json["orderId"],
         status: json["status"],
         amount: json["amount"],
-        paymentTime: DateTime.parse(json["paymentTime"]),
+        paymentTime: json["paymentTime"] == null ? null : DateTime.parse(json["paymentTime"]),
     );
 
     Map<String, dynamic> toJson() => {
@@ -96,6 +96,6 @@ class Payment {
         "orderId": orderId,
         "status": status,
         "amount": amount,
-        "paymentTime": paymentTime.toIso8601String(),
+        "paymentTime": paymentTime?.toIso8601String(),
     };
 }
