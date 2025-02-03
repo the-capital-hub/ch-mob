@@ -178,7 +178,7 @@ class _EventsScreenState extends State<EventsScreen> {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       eventController.getEvents().then((v) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          
+         
         });
       });
     });
@@ -188,6 +188,7 @@ class _EventsScreenState extends State<EventsScreen> {
     
   @override
   Widget build(BuildContext context) {
+    
     return Container(
       decoration: bgDec,
       child: Scaffold(
@@ -197,19 +198,22 @@ class _EventsScreenState extends State<EventsScreen> {
             title: "Events", hideBack: true, autoAction: true),
         body: Obx(() => Padding(
             padding: const EdgeInsets.all(12.0),
-            child: eventController.isLoading.value
+            child: 
+            eventController.isLoading.value
                 ? Helper.pageLoading()
-                : eventController.eventsList.isEmpty
+                : 
+                eventController.eventsList.isEmpty
                       ? Center(child: TextWidget(text: "No Events Available", textSize: 16))
                       :
                  ListView.builder(
                     // padding: const EdgeInsets.all(12.0),
                     itemCount: eventController.eventsList.length,
+                    shrinkWrap: true,
                     itemBuilder: (context, index) {
                       
                       Color containerColor =
                           containerColors[index % containerColors.length];
-
+                 
                       return Card(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6)),
@@ -220,6 +224,8 @@ class _EventsScreenState extends State<EventsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TextWidget(text: eventController.eventsList[index].title, textSize: 25),
+                              eventController.eventsList[index].isActive?const SizedBox():
+                              TextWidget(text: "This meeting is cancelled.", textSize: 16,color: AppColors.grey,),
                               const SizedBox(height: 8),
                               Card(
                                 color: AppColors.white38,
@@ -256,8 +262,8 @@ class _EventsScreenState extends State<EventsScreen> {
                                       ),
                                       Spacer(),
                                      Container(
-                                       // padding: const EdgeInsets.symmetric(
-                                       //     horizontal: 5, vertical: 5),
+                                       padding: const EdgeInsets.symmetric(
+                                           horizontal: 5, vertical: 5),
                                        decoration: BoxDecoration(
                                          borderRadius:
                                              BorderRadius.circular(20),
@@ -268,11 +274,9 @@ class _EventsScreenState extends State<EventsScreen> {
                                          mainAxisAlignment:
                                              MainAxisAlignment.center,
                                          children: [
-                                           Expanded(
-                                             child: TextWidget(
-                                                 text: "Rs ${eventController.eventsList[index].price} +",
-                                                 textSize: 12),
-                                           ),
+                                           TextWidget(
+                                               text: "Rs ${eventController.eventsList[index].price} +",
+                                               textSize: 12),
                                            const SizedBox(width: 5),
                                            Icon(Icons.arrow_forward,
                                                color: AppColors.white,
@@ -297,7 +301,7 @@ class _EventsScreenState extends State<EventsScreen> {
                                       label: const TextWidget(
                                           text: "Copy Link", textSize: 14),
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppColors.blue,
+                                        backgroundColor: eventController.eventsList[index].isActive? AppColors.blue:AppColors.grey,
                                       ),
                                     ),
                                   ),
@@ -305,46 +309,48 @@ class _EventsScreenState extends State<EventsScreen> {
                                   Expanded(
                                     child: AppButton.primaryButton(
                                         onButtonPressed: () {
+                                          
                                           showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: AppColors.blackCard,
-          title:  TextWidget(text: 'Are you sure you want to cancel this event?', textSize: 16,maxLine: 2,),
-          content: TextWidget(text: 'No. of People :', textSize: 16),
-          actions: [
-            // "Cancel Event" button
-            AppButton.primaryButton(
-              title: 'Cancel Event',
-              onButtonPressed: () {
-                
-                // Call the delete event function
-                eventController.disableEvent(eventController.eventsList[index].id);
-                // Close the dialog after confirming
-                Navigator.of(context).pop();
-              },
-              
-            ),
-            sizedTextfield,
-            // "Back" button to close the dialog
-            AppButton.outlineButton(
-              borderColor: AppColors.primary,
-              title: 'Back',
-              onButtonPressed: () {
-                // Close the dialog without performing any action
-                Navigator.of(context).pop();
-              },
-              
-            ),
-          ],
-        );
-      },
-    );
-  },
+                       context: context,
+                       builder: (BuildContext context) {
+                         return AlertDialog(
+                           backgroundColor: AppColors.blackCard,
+                           title:  TextWidget(text: 'Are you sure you want to cancel this event?', textSize: 16,maxLine: 2,),
+                           content: TextWidget(text: 'No. of People who have booked this event : ${eventController.eventsList[index].bookings.length}', textSize: 16,maxLine: 2,),
+                           actions: [
+                             // "Cancel Event" button
+                             AppButton.primaryButton(
+                               title: 'Cancel Event',
+                               onButtonPressed: () {
+                                 
+                                 // Call the delete event function
+                                 eventController.disableEvent(eventController.eventsList[index].id);
+                                 // Close the dialog after confirming
+                                eventController.getEvents();
+                                //  Get.to(() => const EventsScreen(), preventDuplicates: false);
+                               },
+                               
+                             ),
+                             sizedTextfield,
+                             // "Back" button to close the dialog
+                             AppButton.outlineButton(
+                               borderColor: AppColors.primary,
+                               title: 'Back',
+                               onButtonPressed: () {
+                                 // Close the dialog without performing any action
+                                 Navigator.of(context).pop();
+                               },
+                               
+                             ),
+                           ],
+                         );
+                       },
+                     );
+                   },
                                               
                                         
                                         title: "Cancel Event",
-                                        bgColor: AppColors.redColor,
+                                        bgColor:eventController.eventsList[index].isActive? AppColors.redColor:AppColors.grey
                                         ),
                                   ),
                                 ],
