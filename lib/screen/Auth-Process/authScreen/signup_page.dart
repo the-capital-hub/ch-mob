@@ -114,26 +114,26 @@ class _SignupScreenState extends State<SignupScreen> {
                       MyCustomTextField.textField(
                           controller:
                               loginMobileController.companyNameController,
-                          lableText: 'Company',
-                          valText: "Please enter company name",
-                          hintText: "Enter Company Name"),
+                          lableText: 'User Name',
+                          valText: "Please enter user name",
+                          hintText: "Enter User Name"),
 
-                      sizedTextfield,
-                      loginMobileController.selectedRoleIndex == 0
-                          ? MyCustomTextField.textField(
-                              controller:
-                                  loginMobileController.designationController,
-                              lableText: 'Designation',
-                              valText: "Please enter designaiton",
-                              hintText: "Enter Designation")
-                          : DropDownWidget(
-                              status: loginMobileController.selectedIndustry,
-                              lable: "Industry",
-                              statusList: data,
-                              onChanged: (val) {
-                                loginMobileController.selectedIndustry = val!;
-                                setState(() {});
-                              }),
+                      // sizedTextfield,
+                      // loginMobileController.selectedRoleIndex == 0
+                      //     ? MyCustomTextField.textField(
+                              // controller:
+                      //             loginMobileController.designationController,
+                      //         lableText: 'Designation',
+                      //         valText: "Please enter designaiton",
+                      //         hintText: "Enter Designation")
+                      //     : DropDownWidget(
+                      //         status: loginMobileController.selectedIndustry,
+                      //         lable: "Industry",
+                      //         statusList: data,
+                      //         onChanged: (val) {
+                      //           loginMobileController.selectedIndustry = val!;
+                      //           setState(() {});
+                      //         }),
 
                       const SizedBox(height: 16),
                       Row(

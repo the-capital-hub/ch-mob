@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pinput/pinput.dart';
 
 import '../../../controller/loginController/login_controller.dart';
 import '../../../utils/apiService/google_service.dart';
@@ -214,8 +215,19 @@ class _LoginPageState extends State<LoginPage>
                         if (user != null) {
                           final GoogleSignInAuthentication auth =
                               await user.authentication;
-                          log("token ${auth.accessToken}");
-                          log("Logged in as: ${user.displayName}");
+                              
+                              
+
+                          loginMobileController.googleLogin(
+                              context, user, auth);
+                               var body = {
+      "credential": {
+        "displayName": user.displayName,
+        "email": user.email,
+        "id": user.id,
+        "photoURL": user.photoUrl
+      },};
+log(body.toString());
                         } else {
                           log("Login failed");
                         }

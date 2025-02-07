@@ -24,6 +24,32 @@ class CreateNewWebinarScreen extends StatefulWidget {
 class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
   MeetingController webinarController = Get.find();
   String privacyStatus = "Public";
+  @override
+  void initState() {
+    super.initState();
+    // Set the webinarController.type to the default privacy status in initState
+    webinarController.type = privacyStatus;
+  }
+
+  static void _validateDuration(String value, TextEditingController controller) {
+    if (value.isNotEmpty) {
+      int? duration = int.tryParse(value);
+      if (duration != null) {
+        // If the value is not in the range of 1 to 60, reset the input
+        if (duration < 1 || duration > 60) {
+          // Show a Snackbar or an error message to the user
+          print('Value should be between 1 and 60');
+          controller.text = '';  // Clear the input
+        }
+      } else {
+        // Handle invalid non-numeric input
+        print('Invalid input: please enter a number');
+        controller.text = '';  // Clear the input
+      }
+    }
+  }
+  
+  
 
   @override
   Widget build(BuildContext context) {
@@ -84,18 +110,15 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                     const SizedBox(width: 12),
                     Expanded(
                         child: MyCustomTextField.textField(
-                      hintText: "Select Duration(min)",
-                      readonly: true,
-                      lableText: "Duration(min)",
-                      onTap: () async {
-                        DateTime? selectedTime =
-                            await selectTime(context, true);
-
-                        if (selectedTime != null) {
-                          webinarController.durationMinutesController.text =
-                              selectedTime.minute.toString();
-                        }
-                      },
+                  hintText: "Enter Duration(min)",
+                  
+                  lableText: "Duration(min)",
+                  textInputType: TextInputType.number,
+                  onChange: (value) {
+        
+        _validateDuration(value, webinarController.durationMinutesController);
+      },
+                      
                       controller: webinarController.durationMinutesController,
                     )),
                   ],
@@ -115,6 +138,7 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                           if (selectedTime != null) {
                             webinarController.startTimeController.text =
                                 DateFormat('hh:mm a').format(selectedTime);
+                                
                           }
                         },
                         controller: webinarController.startTimeController,
@@ -133,6 +157,7 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                           if (selectedTime != null) {
                             webinarController.endTimeController.text =
                                 DateFormat('hh:mm a').format(selectedTime);
+                                
                           }
                         },
                         controller: webinarController.endTimeController,
@@ -147,16 +172,19 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                     statusList: const ["Public", "Private", "Pitch Day"],
                     onChanged: (val) {
                       setState(() {
-                        webinarController.type = val.toString();
+                        privacyStatus = val.toString();
+                        webinarController.type = privacyStatus;
                       });
                     }),
                 sizedTextfield,
                 MyCustomTextField.textField(
+                  textInputType: TextInputType.number,
                     lableText: "Webinar Price",
                     hintText: "Enter Price",
                     controller: webinarController.priceController),
                 sizedTextfield,
                 MyCustomTextField.textField(
+                  textInputType: TextInputType.number,
                     lableText: "Price Discount(%)",
                     hintText: "Enter Discount(%)",
                     controller: webinarController.priceDiscountController),
@@ -174,6 +202,8 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                      Helper.loader(context);
                       webinarController.createWebinar().then((val) {
                         setState(() {});
+
+
                       });
 
 
@@ -184,7 +214,22 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
               child: AppButton.outlineButton(
                   width: 150,
                   borderColor: AppColors.primary,
-                  onButtonPressed: () {},
+                  onButtonPressed: () {
+                    webinarController.titleController.clear();
+                    webinarController.descriptionController.clear();
+                    webinarController.dateController.clear();
+                    webinarController.durationMinutesController.clear();
+                    webinarController.startTimeController.clear();
+                    webinarController.endTimeController.clear();
+                    webinarController.priceController.clear();
+                    webinarController.priceDiscountController.clear();
+                    setState(() {
+                      privacyStatus = "Public";
+                    });
+                    
+
+
+                  },
                   title: "Cancel"),
             ),
           ]),

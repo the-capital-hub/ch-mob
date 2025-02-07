@@ -3,8 +3,10 @@ import 'dart:developer' as log;
 // import 'dart:io';
 import 'package:capitalhub_crm/screen/01-Investor-Section/landingScreen/landing_screen_inv.dart';
 import 'package:capitalhub_crm/screen/Auth-Process/userDetailsScreen/username_screen.dart';
+import 'package:capitalhub_crm/utils/apiService/google_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../../screen/Auth-Process/authScreen/otp_page.dart';
 
 import '../../screen/Auth-Process/selectWhatYouAreScreen/select_role_screen.dart';
@@ -29,6 +31,7 @@ class LoginController extends GetxController {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController companyNameController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
   TextEditingController designationController = TextEditingController();
   String selectedIndustry = "";
   bool isLogin = true;
@@ -123,6 +126,7 @@ class LoginController extends GetxController {
       "lastName": lastNameController.text,
       "email": emailController.text,
       "company": companyNameController.text,
+      "userName": userNameController.text,
       "isInvestor": selectedRoleIndex == 0 ? false : true,
       "industry": selectedIndustry,
       "designation": designationController.text,
@@ -138,7 +142,7 @@ class LoginController extends GetxController {
       loginApiPhoneOTP(context);
     } else {
       Get.back();
-      HelperSnackBar.snackBar("Error", data["message"]);
+      HelperSnackBar.snackBar("Error", data["error"]);
       return "";
     }
   }
@@ -268,6 +272,73 @@ class LoginController extends GetxController {
       Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
+    }
+  }
+
+  Future googleLogin(context, GoogleSignInAccount user,
+      GoogleSignInAuthentication auth) async {
+    var body = {
+      "credential": {
+        
+        "email": user.email,
+        "serverAuthCode": user.serverAuthCode
+       
+      },
+      
+      
+    };
+    log.log(body.toString());
+
+    log.log(auth.toString());
+
+    var response = await ApiBase.postRequest(
+      body: body,
+      extendedURL: ApiUrl.googleLogin,
+      withToken: false,
+    );
+
+    log.log("Response: ${response.body}");
+
+    var data = json.decode(response.body);
+    if (data["status"]) {
+      Get.back();
+      GetStoreData.storeUserData(
+          id: data['data']['user']['_id'],
+          name: data['data']['user']['firstName'] +
+              " " +
+              data['data']['user']['lastName'],
+          email: data['data']['user']['email'],
+          profileImage: data['data']['user']['profilePicture'],
+          phone: data['data']['user']['phoneNumber'],
+          authToken: data['data']['token'],
+          isInvestor: bool.parse(data['data']['user']['isInvestor']));
+      await GetStoreDataList.storeUserList(
+        UserModel(
+          id: data['data']['user']['_id'],
+          name: data['data']['user']['firstName'] +
+              " " +
+              data['data']['user']['lastName'],
+          email: data['data']['user']['email'],
+          profileImage: data['data']['user']['profilePicture'],
+          phone: data['data']['user']['phoneNumber'],
+          authToken: data['data']['token'],
+          isInvestor: bool.parse(data['data']['user']['isInvestor']),
+        ),
+      );
+      log.log(GetStoreData.getStore.read('access_token'));
+      if (GetStoreData.getStore.read('isInvestor') == false &&
+          selectedRoleIndex == 0) {
+        Get.offAll(const LandingScreen());
+      } else if (GetStoreData.getStore.read('isInvestor') == true &&
+          selectedRoleIndex == 1) {
+        Get.offAll(const LandingScreenInvestor(),
+            transition: Transition.fadeIn, duration: transDuration);
+      } else {
+        HelperSnackBar.snackBar("Error", "Choose a correct role");
+      }
+    } else {
+      Get.back();
+      HelperSnackBar.snackBar("Error", data["message"]);
     }
   }
 

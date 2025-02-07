@@ -5,7 +5,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 class GoogleSignInService {
   static final GoogleSignIn _googleSignIn = GoogleSignIn( serverClientId: "556993160670-mb0ek9ukp41t6402t61vkktpmek415qe.apps.googleusercontent.com",
     clientId: "556993160670-o4cv647m8768qdoqp9od19egqgaq9rcb.apps.googleusercontent.com", 
-    scopes: ['email', 'profile', 'openid'],
+    scopes: ['email',
+    'profile',
+    'https://www.googleapis.com/auth/calendar', // Google Calendar access
+],
+forceCodeForRefreshToken: true,
+    
   );
 
   static Future<GoogleSignInAccount?> signIn() async {

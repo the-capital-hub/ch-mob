@@ -11,6 +11,8 @@ class ApiUrl {
   static const String resendOTPUrl = "users/resend_otp";
   static const String getUserByNameUrl = "users/getuserbyusername";
   static const String updateFounderUrl = "users/updateFounder";
+  static const String googleLogin = "users/googleLogin";
+
 
 //startup
   static const String getPublicPostUrl = "api/posts/getPublicPosts?page=";
@@ -113,11 +115,12 @@ class ApiUrl {
   static String cancelScheduledMeeting = "meetings/cancelScheduledMeeting/";
   static String getWebinars= "webinars/getWebinars";
   static String createWebinar = "webinars/createWebinar";
-  static String deleteWebinar = "webinars/deleteWebinar/";
+  static String disableWebinar = "webinars/disableWebinar/";
   static String getPriorityDMForUser = "priorityDM/getPriority-DMForUser";
   static String getPriorityDMForFounder = "priorityDM/getPriority-DMForFounder";
 
-  
+  static const String createCommunity = "Communities/createCommunity";
+  static const String getCommunityById = "Communities/getCommunityById/";
   
 
 }

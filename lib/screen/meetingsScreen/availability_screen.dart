@@ -6,6 +6,7 @@ import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
+import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:capitalhub_crm/widget/timePicker/timePicker.dart';
 import 'package:flutter/material.dart';
@@ -307,6 +308,25 @@ class AvailabilityScreen extends StatefulWidget {
 
 class _AvailabilityScreenState extends State<AvailabilityScreen> {
   MeetingController availabilityController = Get.put(MeetingController());
+  TextEditingController durationMinutesController = TextEditingController(text: "15");
+  static void _validateDuration(String value, TextEditingController controller) {
+    if (value.isNotEmpty) {
+      int? duration = int.tryParse(value);
+      if (duration != null) {
+        // If the value is not in the range of 1 to 60, reset the input
+        if (duration < 1 || duration > 60) {
+          // Show a Snackbar or an error message to the user
+          print('Value should be between 1 and 60');
+          controller.text = '';  // Clear the input
+        }
+      } else {
+        // Handle invalid non-numeric input
+        print('Invalid input: please enter a number');
+        controller.text = '';  // Clear the input
+      }
+    }
+  }
+
   final List<String> daysOfWeek = [
     'Monday',
     'Tuesday',
@@ -339,7 +359,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
     const TimeOfDay(hour: 17, minute: 0),
   ];
 
-  int selectedMinutes = 15;
+ 
 
  @override
 void initState() {
@@ -354,7 +374,7 @@ void initState() {
 
         if (availabilityData != null) {
           setState(() {
-            selectedMinutes = availabilityData.minGap;
+            durationMinutesController.text = availabilityData.minGap.toString();
 
             for (int i = 0; i < daysOfWeek.length; i++) {
               var dayData = availabilityData.dayAvailability.firstWhere(
@@ -593,40 +613,51 @@ void initState() {
                               sizedTextfield,
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
-                                child: InkWell(
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(
-                                        color: AppColors.grey700,
-                                        width: 1,
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        TextWidget(
-                                          text: '$selectedMinutes mins',
-                                          textSize: 16,
-                                          color: AppColors.white,
-                                        ),
-                                        const SizedBox(width: 8),
-                                        Icon(Icons.schedule,
-                                            color: AppColors.white, size: 20),
-                                      ],
+                                child: Container(
+                                  // padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                      color: AppColors.grey700,
+                                      width: 1,
                                     ),
                                   ),
-                                  onTap: () async {
-                                    DateTime? selectedTime =
-                                        await selectTime(context, true);
-
-                                    if (selectedTime != null) {
-                                      setState(() {
-                                        selectedMinutes = selectedTime.minute;
-                                      });
-                                    }
-                                  },
+                                  child: Row(
+                                    
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      // TextWidget(
+                                      //   text: '$selectedMinutes mins',
+                                      //   textSize: 16,
+                                      //   color: AppColors.white,
+                                      // ),
+                                      SizedBox(
+                                        width: 40,
+                                       
+                                        child: MyCustomTextField.textField(
+                                                          hintText: "30",
+                                                          
+                                                          
+                                                          textInputType: TextInputType.number,
+                                                          onChange: (value) {
+                                                // Validation when text changes
+                                                _validateDuration(value, durationMinutesController);
+                                              },
+                                                          
+                                                         
+                                                          controller: durationMinutesController,
+                                                        ),
+                                      ),TextWidget(
+                                    text:
+                                        "mins",
+                                    textSize: 16),
+                              
+                                      const SizedBox(width: 8),
+                                      Icon(Icons.schedule,
+                                          color: AppColors.white, size: 20),
+                                          const SizedBox(width: 8),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -655,7 +686,7 @@ void initState() {
                   await MeetingController().updateAvailability(
                     context,
                     dayAvailability,
-                    selectedMinutes,
+                    int.parse(durationMinutesController.text),
                   );
                 },
                 title: "Update Availability",
