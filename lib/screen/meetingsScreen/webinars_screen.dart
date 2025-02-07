@@ -139,9 +139,13 @@ class _WebinarsScreenState extends State<WebinarsScreen> {
                         children: [
                           Expanded(
                             child: AppButton.primaryButton(
-                                onButtonPressed: () {},
+                                onButtonPressed: webinarController.webinarsList[index].isActive 
+    ?  () async {
+     
+      
+    }:null,
                                 title: "Join Webinar",
-                                bgColor: AppColors.brown,
+                                bgColor: webinarController.webinarsList[index].isActive? AppColors.brown:AppColors.grey
                                 ),
                           ),
                           const SizedBox(width: 8),
@@ -158,12 +162,48 @@ class _WebinarsScreenState extends State<WebinarsScreen> {
                           // ),
                           Expanded(
                             child: AppButton.primaryButton(
-                                onButtonPressed: () {
-                                  webinarController
-                                            .deleteWebinar(webinarController.webinarsList[index].id);
-                                },
+                                onButtonPressed: webinarController.webinarsList[index].isActive 
+    ? () {
+                                          
+                                          showDialog(
+                       context: context,
+                       builder: (BuildContext context) {
+                         return AlertDialog(
+                           backgroundColor: AppColors.blackCard,
+                           title:  TextWidget(text: 'Are you sure you want to cancel this webinar?', textSize: 16,maxLine: 2,),
+                           content: TextWidget(text: 'No. of Users who have joined this webinar : ${webinarController.webinarsList[index].joinedUsers.length}', textSize: 16,maxLine: 2,),
+                           actions: [
+                             // "Cancel Event" button
+                             AppButton.primaryButton(
+                               title: 'Cancel Webinar',
+                               onButtonPressed: () {
+                                 
+                                 // Call the delete event function
+                                 webinarController.disableWebinar(webinarController.webinarsList[index].id);
+                                 // Close the dialog after confirming
+                                webinarController.getWebinars();
+                                //  Get.to(() => const EventsScreen(), preventDuplicates: false);
+                               },
+                               
+                             ),
+                             sizedTextfield,
+                             // "Back" button to close the dialog
+                             AppButton.outlineButton(
+                               borderColor: AppColors.primary,
+                               title: 'Back',
+                               onButtonPressed: () {
+                                 // Close the dialog without performing any action
+                                 Navigator.of(context).pop();
+                               },
+                               
+                             ),
+                           ],
+                         );
+                       },
+                     );
+                   }: null,
                                 title: "Cancel Webinar",
-                                bgColor: AppColors.redColor,
+                                bgColor: webinarController.webinarsList[index].isActive? AppColors.redColor:AppColors.grey
                                 ),
                           ),
 
@@ -179,11 +219,24 @@ class _WebinarsScreenState extends State<WebinarsScreen> {
         ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(12),
+          // child: AppButton.primaryButton(
+          //     onButtonPressed: () {
+          //       // Get.to(() => const CreateNewWebinarScreen());
+          //       print('Current route: ${Get.toString()}'); 
+          //       Get.toNamed('/createNewWebinar');
+                
+          //     },
+          //     title: "+ Create Webinars"),
           child: AppButton.primaryButton(
-              onButtonPressed: () {
-                Get.to(() => const CreateNewWebinarScreen());
-              },
-              title: "+ Create Webinars"),
+  onButtonPressed: () {
+    // Log the current route before navigating (or after, depending on use case)
+    print('Current route: ${Get.currentRoute}'); 
+    
+    // Navigate to the named route
+    Get.toNamed('/createNewWebinar');
+  },
+  title: "+ Create Webinars"
+)
         ),
       ),
     );

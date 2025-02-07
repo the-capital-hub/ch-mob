@@ -14,6 +14,7 @@ import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class MeetingController extends GetxController {
    List<Map<String, dynamic>> availabilityData = [];
@@ -201,15 +202,17 @@ Future cancelScheduledMeeting(id) async {
     isLoading.value = false; // Set loading state to false after request
   }
 }
-Future deleteWebinar(id) async {
-    var response = await ApiBase.deleteRequest(
-      extendedURL: ApiUrl.deleteWebinar + id,
+Future disableWebinar(id) async {
+  var body = {"webinarId": id};
+    var response = await ApiBase.pachRequest(
+      extendedURL: ApiUrl.disableWebinar+id, body: body, withToken: true
+
     );
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"]) {
       // messages.removeWhere((item) => item.messageId == id);
-      webinarsList.removeWhere((webinar) => webinar.id == id);
+      // webinarsList.removeWhere((webinar) => webinar.id == id);
       HelperSnackBar.snackBar("Success", data["message"]);
       
       return true;
@@ -228,17 +231,51 @@ Future deleteWebinar(id) async {
   TextEditingController priceController = TextEditingController();
   TextEditingController priceDiscountController = TextEditingController();
   String type = "";
+  String convertToIsoFormat(String timeString, DateTime? date) {
+  // Specify the time format explicitly as "hh:mm a" for 12-hour format with AM/PM
+  DateFormat inputFormat = DateFormat('hh:mm a');
   
+  // Parse the time string (e.g., "08:41 AM") to a DateTime object
+  DateTime time = inputFormat.parse(timeString);
+
+  // Format the DateTime to the desired format with current date and time
+  DateFormat outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+  // Use the provided date with the parsed time, ensure it's in 24-hour format
+  DateTime finalDateTime = DateTime(
+    date!.year, 
+    date.month, 
+    date.day, 
+    time.hour, // Time parsed will already be in 24-hour format
+    time.minute,
+  );
+
+  // Convert to string in the required format
+  return outputFormat.format(finalDateTime);
+}
   Future createWebinar()
        async {
-        DateTime? startTime = DateTime.tryParse(startTimeController.text);
-DateTime? endTime = DateTime.tryParse(endTimeController.text);
-DateTime? date = DateTime.tryParse(dateController.text);
+        DateTime? date = DateTime.tryParse(dateController.text);
+        String? dateIso = date!.toIso8601String() + "Z";
+        String startTime = convertToIsoFormat(startTimeController.text,date);
+        String endTime = convertToIsoFormat(endTimeController.text,date);
 
-// If startTime, endTime, and date are not null, convert to UTC and then format them as ISO 8601 strings
-String? startTimeIso = startTime?.toUtc().toIso8601String();
-String? endTimeIso = endTime?.toUtc().toIso8601String();
-String? dateIso = date?.toUtc().toIso8601String();
+
+var webdata = {
+        
+        "date": dateIso,
+        "title": titleController.text,
+        "description": descriptionController.text,
+        "webinarType": type,
+        "startTime": startTime,
+        "endTime": endTime,
+        "duration": int.tryParse(durationMinutesController.text),
+        "discount": int.tryParse(priceDiscountController.text),
+        "price": int.tryParse(priceController.text),
+        
+      };
+
+      log(webdata.toString());
     
     var response = await ApiBase.postRequest(
       body: {
@@ -247,8 +284,8 @@ String? dateIso = date?.toUtc().toIso8601String();
         "title": titleController.text,
         "description": descriptionController.text,
         "webinarType": type,
-        "startTime": startTimeIso,
-        "endTime": endTimeIso,
+        "startTime": startTime,
+        "endTime": endTime,
         "duration": int.tryParse(durationMinutesController.text),
         "discount": int.tryParse(priceDiscountController.text),
         "price": int.tryParse(priceController.text),

@@ -8,11 +8,13 @@ import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
+import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class EventsScreen extends StatefulWidget {
@@ -295,20 +297,34 @@ class _EventsScreenState extends State<EventsScreen> {
                                 children: [
                                   Expanded(
                                     child: ElevatedButton.icon(
-                                      onPressed: () {},
+                                      onPressed: eventController.eventsList[index].isActive 
+    ?  () async {
+     
+      // Copy the text to the clipboard
+      await Clipboard.setData(ClipboardData(text: eventController.eventsList[index].url));
+
+      // Optionally, show a snackbar or a confirmation that the text was copied
+      HelperSnackBar.snackBar("Success", "Link copied to clipboard!" );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text("Link copied to clipboard!")),
+      // );
+    }:null,
                                       icon: Icon(Icons.file_copy_outlined,
                                           color: AppColors.white, size: 14),
                                       label: const TextWidget(
                                           text: "Copy Link", textSize: 14),
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: eventController.eventsList[index].isActive? AppColors.blue:AppColors.grey,
+                                        backgroundColor: AppColors.blue,
+                                        disabledBackgroundColor: AppColors.grey,
                                       ),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: AppButton.primaryButton(
-                                        onButtonPressed: () {
+                                      height: 40,
+                                        onButtonPressed: eventController.eventsList[index].isActive 
+    ? () {
                                           
                                           showDialog(
                        context: context,
@@ -346,10 +362,10 @@ class _EventsScreenState extends State<EventsScreen> {
                          );
                        },
                      );
-                   },
+                   }: null,
                                               
                                         
-                                        title: "Cancel Event",
+                                        title: "Cancel Event",fontSize: 14,
                                         bgColor:eventController.eventsList[index].isActive? AppColors.redColor:AppColors.grey
                                         ),
                                   ),
@@ -366,6 +382,7 @@ class _EventsScreenState extends State<EventsScreen> {
           child: AppButton.primaryButton(
             onButtonPressed: () {
               Get.to(() => const CreateEventsScreen());
+              //  Get.toNamed('/createEvents');
             },
             title: "+ Create Event",
           ),

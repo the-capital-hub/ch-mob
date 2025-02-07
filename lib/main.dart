@@ -1,5 +1,6 @@
 import 'package:capitalhub_crm/screen/01-Investor-Section/landingScreen/landing_screen_inv.dart';
 import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
+import 'package:capitalhub_crm/screen/meetingsScreen/create_new_webinar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -27,6 +28,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Capitalhub',
+      initialRoute: '/', // Initial route of your app
+      getPages: [
+        // Define your routes here
+        GetPage(name: '/', page: () => LoginPage()),
+        GetPage(name: '/createNewWebinar', page: () => const CreateNewWebinarScreen()), // Route for CreateEventsScreen
+      ],
       debugShowCheckedModeBanner: false,
       home: GetStoreData.getStore.read('access_token') == null
           ? const SelectRoleScreen()

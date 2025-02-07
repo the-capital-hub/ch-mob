@@ -34,6 +34,7 @@ class GetWebinarsModel {
 
 class Webinar {
     String id;
+    bool isActive;
     String date;
     String title;
     String description;
@@ -42,11 +43,13 @@ class Webinar {
     String duration;
     String discount;
     String price;
-    String link;
+    String webinarLink;
     String creatorName;
+    List<JoinedUser> joinedUsers;
 
     Webinar({
         required this.id,
+        required this.isActive,
         required this.date,
         required this.title,
         required this.description,
@@ -55,12 +58,14 @@ class Webinar {
         required this.duration,
         required this.discount,
         required this.price,
-        required this.link,
+        required this.webinarLink,
         required this.creatorName,
+        required this.joinedUsers,
     });
 
     factory Webinar.fromJson(Map<String, dynamic> json) => Webinar(
         id: json["_id"],
+        isActive: json["isActive"],
         date: json["date"],
         title: json["title"],
         description: json["description"],
@@ -69,12 +74,14 @@ class Webinar {
         duration: json["duration"],
         discount: json["discount"],
         price: json["price"],
-        link: json["link"],
+        webinarLink: json["webinarLink"],
         creatorName: json["creatorName"],
+        joinedUsers: List<JoinedUser>.from(json["joinedUsers"].map((x) => JoinedUser.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
         "_id": id,
+        "isActive": isActive,
         "date": date,
         "title": title,
         "description": description,
@@ -83,7 +90,56 @@ class Webinar {
         "duration": duration,
         "discount": discount,
         "price": price,
-        "link": link,
+        "webinarLink": webinarLink,
         "creatorName": creatorName,
+        "joinedUsers": List<dynamic>.from(joinedUsers.map((x) => x.toJson())),
+    };
+}
+
+class JoinedUser {
+    String name;
+    String email;
+    String mobile;
+    String orderId;
+    String paymentId;
+    String paymentStatus;
+    DateTime paymentTime;
+    int paymentAmount;
+    String id;
+
+    JoinedUser({
+        required this.name,
+        required this.email,
+        required this.mobile,
+        required this.orderId,
+        required this.paymentId,
+        required this.paymentStatus,
+        required this.paymentTime,
+        required this.paymentAmount,
+        required this.id,
+    });
+
+    factory JoinedUser.fromJson(Map<String, dynamic> json) => JoinedUser(
+        name: json["name"],
+        email: json["email"],
+        mobile: json["mobile"],
+        orderId: json["orderId"],
+        paymentId: json["paymentId"],
+        paymentStatus: json["paymentStatus"],
+        paymentTime: DateTime.parse(json["paymentTime"]),
+        paymentAmount: json["paymentAmount"],
+        id: json["_id"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "name": name,
+        "email": email,
+        "mobile": mobile,
+        "orderId": orderId,
+        "paymentId": paymentId,
+        "paymentStatus": paymentStatus,
+        "paymentTime": paymentTime.toIso8601String(),
+        "paymentAmount": paymentAmount,
+        "_id": id,
     };
 }

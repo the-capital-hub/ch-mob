@@ -22,10 +22,30 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController durationMinutesController = TextEditingController();
-  TextEditingController privacyController = TextEditingController();
+  TextEditingController privacyController = TextEditingController(text : "Public");
   TextEditingController priceController = TextEditingController();
   TextEditingController priceDiscountController = TextEditingController();
-  String privacyStatus = "Private";
+  String privacyStatus = "Public";
+  
+  static void _validateDuration(String value, TextEditingController controller) {
+    if (value.isNotEmpty) {
+      int? duration = int.tryParse(value);
+      if (duration != null) {
+        // If the value is not in the range of 1 to 60, reset the input
+        if (duration < 1 || duration > 60) {
+          // Show a Snackbar or an error message to the user
+          print('Value should be between 1 and 60');
+          controller.text = '';  // Clear the input
+        }
+      } else {
+        // Handle invalid non-numeric input
+        print('Invalid input: please enter a number');
+        controller.text = '';  // Clear the input
+      }
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -53,17 +73,23 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
                     controller: descriptionController),
                 sizedTextfield,
                 MyCustomTextField.textField(
-                  hintText: "Select Duration(Minutes)",
-                  readonly: true,
+                  hintText: "Enter Duration(Minutes)",
+                  
                   lableText: "Duration(Minutes)",
-                  onTap: () async {
-                    DateTime? selectedTime = await selectTime(context, true);
+                  textInputType: TextInputType.number,
+                  onChange: (value) {
+        // Validation when text changes
+        _validateDuration(value, durationMinutesController);
+      },
+                  
+                  // onTap: () async {
+                  //   DateTime? selectedTime = await selectTime(context, true);
 
-                    if (selectedTime != null) {
-                      durationMinutesController.text =
-                          selectedTime.minute.toString();
-                    }
-                  },
+                  //   if (selectedTime != null) {
+                  //     durationMinutesController.text =
+                  //         selectedTime.minute.toString();
+                  //   }
+                  // },
                   controller: durationMinutesController,
                 ),
                 sizedTextfield,
@@ -78,11 +104,13 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
                     }),
                 sizedTextfield,
                 MyCustomTextField.textField(
+                  textInputType: TextInputType.number,
                     lableText: "Event Price",
                     hintText: "Enter Price",
                     controller: priceController),
                 sizedTextfield,
                 MyCustomTextField.textField(
+                  textInputType: TextInputType.number,
                     lableText: "Price Discount(%)",
                     hintText: "Enter Price Discount(%)",
                     controller: priceDiscountController),
@@ -114,7 +142,18 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
             Expanded(
               child: AppButton.outlineButton(
                   borderColor: AppColors.primary,
-                  onButtonPressed: () {},
+                  onButtonPressed: () {
+                    titleController.clear();
+                    descriptionController.clear();
+                    
+                    durationMinutesController.clear();
+                   
+                    priceController.clear();
+                    priceDiscountController.clear();
+                    setState(() {
+                      privacyStatus = "Public";
+                    });
+                  },
                   title: "Cancel"),
             ),
           ]),
