@@ -22,7 +22,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker_plus/multi_image_picker_plus.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:video_player/video_player.dart';
-
 import '../profileScreen/polls_widget_profile.dart';
 import 'polladd_dilogue.dart';
 

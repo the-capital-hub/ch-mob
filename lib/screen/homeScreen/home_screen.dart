@@ -29,6 +29,7 @@ import 'package:get/get.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../utils/constant/app_var.dart';
 import '../../utils/constant/asset_constant.dart';
+import '../Auth-Process/authScreen/signup_info_page.dart';
 import '../chatScreen/chat_member_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -62,8 +63,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      Get.offAll(const SignupInfoScreen());
       _fetchAllApis().then((val) {
         {
           isLoading.value = false;

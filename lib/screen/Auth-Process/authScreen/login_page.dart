@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:capitalhub_crm/screen/Auth-Process/authScreen/signup_by_number_screen.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -15,7 +16,7 @@ import '../../../widget/text_field/text_field.dart';
 import '../../../widget/textwidget/text_widget.dart';
 import '../../../utils/constant/app_var.dart';
 import '../../../utils/constant/asset_constant.dart';
-import 'signup_page.dart';
+import 'signup_info_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -166,7 +167,8 @@ class _LoginPageState extends State<LoginPage>
                           textSize: 14),
                       InkWell(
                         onTap: () {
-                          Get.to(() => const SignupScreen());
+                          Get.to(() => const SignupByNumberScreen());
+                          // Get.to(() => const SignupScreen());
                         },
                         child: const TextWidget(
                           text: "Sign Up",

@@ -25,6 +25,12 @@ class PngAssetPath {
   static const String youtubeIcon = 'assets/img/youtubeIcon.png';
   static const String collegeImg = 'assets/img/college.png';
   static const String companyImg = 'assets/img/Company.png';
+  static const String avtar1Img = 'assets/img/onboarding&auth/avtar1.png';
+  static const String avtar2Img = 'assets/img/onboarding&auth/avtar2.png';
+  static const String avtar3Img = 'assets/img/onboarding&auth/avtar3.png';
+  static const String avtar4Img = 'assets/img/onboarding&auth/avtar4.png';
+  static const String avtar5Img = 'assets/img/onboarding&auth/avtar5.png';
+
   
   //drawer
   static const String homeIcon = 'assets/img/drawerIcon/home.png';
