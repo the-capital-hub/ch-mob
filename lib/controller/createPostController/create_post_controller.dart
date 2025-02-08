@@ -19,6 +19,7 @@ class CreatePostController extends GetxController {
   String documentBase64 = "";
   List<String> pollOptions = [];
   bool isPublicPost = true;
+  bool isCommunityPost = false;
   TextEditingController titleController = TextEditingController();
 
   base64Convert(context, List<Asset> selectedImages, video, document,
@@ -55,7 +56,7 @@ class CreatePostController extends GetxController {
       "video": videoBase64,
       "documentUrl": documentBase64,
       "pollOptions": pollOptions,
-      "postType": isPublicPost ? "public" : "company",
+      "postType": isCommunityPost?"community":isPublicPost ? "public" : "company",
       "resharedPostId": postId ?? "",
     };
     log(body.toString());
@@ -70,6 +71,8 @@ class CreatePostController extends GetxController {
       documentBase64 = "";
       pollOptions.clear();
       isPublicPost = true;
+      isCommunityPost = false;
+
 
       return true;
     } else {

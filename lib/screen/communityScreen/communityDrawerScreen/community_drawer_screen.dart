@@ -1,4 +1,4 @@
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/community_home_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityHomeScreen/community_home_screen.dart';
 import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';
 import 'package:capitalhub_crm/screen/manageAccountScreen/manage_account_Screen.dart';
 import 'package:capitalhub_crm/screen/profileScreen/profile_screen.dart';

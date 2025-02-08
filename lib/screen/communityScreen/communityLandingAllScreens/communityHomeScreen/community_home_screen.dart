@@ -1,4 +1,9 @@
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/community_drawer_screen.dart';
+import 'dart:developer';
+
+import 'package:capitalhub_crm/controller/community_controller/community_controller.dart';
+import 'package:capitalhub_crm/controller/createPostController/create_post_controller.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityDrawerScreen/community_drawer_screen.dart';
+import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
@@ -11,6 +16,7 @@ import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
 class CommunityHomeScreen extends StatefulWidget {
   const CommunityHomeScreen({super.key});
@@ -21,6 +27,7 @@ class CommunityHomeScreen extends StatefulWidget {
 
 class _CommunityHomeScreenState extends State<CommunityHomeScreen> {
   TextEditingController searchController = TextEditingController();
+  CreatePostController createCommunityPostController = Get.put(CreatePostController());
  bool isCardVisible = true;
  String privacyStatus = "Public";
  List<String> postsFilter = ['All Posts', 'Admin Posts', 'Member Posts' ];
@@ -60,7 +67,9 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen> {
                           
                            Padding(
                              padding: const EdgeInsets.only(right:25),
-                             child: AppButton.primaryButton(onButtonPressed: (){}, title: "Join Now",textColor: AppColors.darkGreen,bgColor: AppColors.white,height: 30),
+                             child: AppButton.primaryButton(onButtonPressed: (){
+                              CommunityController().sendJoinRequest();
+                             }, title: "Join Now",textColor: AppColors.darkGreen,bgColor: AppColors.white,height: 30),
                            ),
                           
                           
@@ -108,11 +117,20 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen> {
                     controller: searchController),),
                     SizedBox(width: 8),
 
-                    CircleAvatar(
-                                radius: 25,
-                                backgroundColor: AppColors.primary,
-                                child: TextWidget(text: "Post", textSize: 16),
-                              ),
+                    InkWell(
+                      child: CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: AppColors.primary,
+                                  child: TextWidget(text: "Post", textSize: 16),
+                                ),
+                                onTap: (){Get.to(CreatePostScreen());
+                                 log(createCommunityPostController.isCommunityPost.toString());
+                                setState(() {
+                                  createCommunityPostController.isCommunityPost = true;
+                                  
+                                  log(createCommunityPostController.isCommunityPost.toString());
+                                });} 
+                    ),
                               SizedBox(width: 8),
             //                   InkWell(
             //                     child: CircleAvatar(
