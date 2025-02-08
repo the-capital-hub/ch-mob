@@ -229,11 +229,7 @@ class _WebinarsScreenState extends State<WebinarsScreen> {
           //     title: "+ Create Webinars"),
           child: AppButton.primaryButton(
   onButtonPressed: () {
-    // Log the current route before navigating (or after, depending on use case)
-    print('Current route: ${Get.currentRoute}'); 
-    
-    // Navigate to the named route
-    Get.toNamed('/createNewWebinar');
+    Get.to(() => const CreateNewWebinarScreen());
   },
   title: "+ Create Webinars"
 )

@@ -121,6 +121,7 @@ class ApiUrl {
 
   static const String createCommunity = "Communities/createCommunity";
   static const String getCommunityById = "Communities/getCommunityById/";
+  static const String sendJoinRequest = "Communities/sendJoinRequest";
   
 
 }

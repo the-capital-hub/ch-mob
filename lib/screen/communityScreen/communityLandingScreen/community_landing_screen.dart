@@ -1,6 +1,6 @@
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/community_home_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/community_people_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/community_products_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityHomeScreen/community_home_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPeopleScreen/community_people_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityProductsScreen/community_products_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/create_community_over_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/my_community_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';

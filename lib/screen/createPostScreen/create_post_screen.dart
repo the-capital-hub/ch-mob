@@ -79,6 +79,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                 textSize: 16,
                                 fontWeight: FontWeight.w500),
                             const SizedBox(height: 4),
+                            if(!createPostController.isCommunityPost)
                             Row(
                               children: [
                                 InkWell(
@@ -122,8 +123,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                         fontWeight: FontWeight.w300),
                                   ),
                                 ),
+                                
                               ],
                             ),
+                            
                           ],
                         )
                       ],

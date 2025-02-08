@@ -28,12 +28,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Capitalhub',
-      initialRoute: '/', // Initial route of your app
-      getPages: [
-        // Define your routes here
-        GetPage(name: '/', page: () => LoginPage()),
-        GetPage(name: '/createNewWebinar', page: () => const CreateNewWebinarScreen()), // Route for CreateEventsScreen
-      ],
       debugShowCheckedModeBanner: false,
       home: GetStoreData.getStore.read('access_token') == null
           ? const SelectRoleScreen()
