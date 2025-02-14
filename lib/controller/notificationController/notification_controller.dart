@@ -69,7 +69,7 @@ class NotificaitonController extends GetxController {
       return "";
     }
   }
-
+  bool isRequiredFieldsExist = true;
   var notificationCount = "".obs;
   Future getNotificationCount() async {
     try {
@@ -79,6 +79,7 @@ class NotificaitonController extends GetxController {
       var data = jsonDecode(response.body);
       if (data['status'] == true) {
         notificationCount.value = data['data']['unreadCount'].toString();
+        isRequiredFieldsExist = data['data']['isRequiredFieldsExist'];
       }
     } catch (e) {
       log("getnotificationCount $e");

@@ -128,7 +128,7 @@ class _SignupOtpPageState extends State<SignupOtpPage> {
             child: AppButton.primaryButton(
                 title: 'Verify',
                 onButtonPressed: () {
-                  loginMobileController.verifyOtpApi(context);
+                  loginMobileController.verifySignupOtpApi(context);
                 }),
           ),
         ));

@@ -1,9 +1,13 @@
 import 'dart:developer';
 
 import 'package:capitalhub_crm/controller/profileController/profile_controller.dart';
+import 'package:capitalhub_crm/controller/publicProfileController/public_profile_controller.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/profileModel/profile_model.dart';
 import 'package:capitalhub_crm/screen/Auth-Process/userDetailsScreen/bio_screen.dart';
+import 'package:capitalhub_crm/screen/companyScreen/add_company_screen.dart';
+import 'package:capitalhub_crm/screen/companyScreen/company_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
+import 'package:capitalhub_crm/screen/manageAccountScreen/manage_account_Screen.dart';
 import 'package:capitalhub_crm/screen/profileScreen/challengeScreen/challenges_category_screen.dart';
 import 'package:capitalhub_crm/screen/profileScreen/experience_screen.dart';
 import 'package:capitalhub_crm/screen/profileScreen/personal_info_screen.dart';
@@ -42,12 +46,22 @@ class _ProfileScreenState extends State<ProfileScreen>
   final List<String> tabs = ["Featured Posts", "Company Update", "My Posts"];
   PageController _pageController = PageController();
   int _currentIndex = 0;
+  double profilePercentageValue = 0;
+  double profileValueInDecimal = 0;
+  double companyPercentageValue = 0;
+  double companyValueInDecimal = 0;
   @override
   void initState() {
     _tabController = TabController(length: tabs.length, vsync: this);
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      profileController.getProfile();
-      profileController.getProfilePost(0);
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async{
+      await profileController.getProfile();
+      await profileController.getProfilePost(0);
+      profilePercentageValue = double.parse(profileController.profileData.banner!.profileCompletionPercentage.replaceAll('%', ''));
+      profileValueInDecimal = profilePercentageValue/100;
+      print("PROFILEVALUE"+profileValueInDecimal.toString());
+      companyPercentageValue = double.parse(profileController.profileData.banner!.companyCompletionPercentage.replaceAll('%', ''));
+      companyValueInDecimal = companyPercentageValue/100;
+      print("PROFILEVALUE"+companyValueInDecimal.toString());
     });
     super.initState();
   }
@@ -58,6 +72,9 @@ class _ProfileScreenState extends State<ProfileScreen>
     super.dispose();
   }
 
+  String reportReason = "";
+  bool isExpanded = false;
+ 
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -77,16 +94,354 @@ class _ProfileScreenState extends State<ProfileScreen>
                       child: Center(
                         child: Column(
                           children: [
+                            if (!(profileController
+                                    .profileData.banner!.isProfileCompleted &&
+                                profileController
+                                    .profileData.banner!.isCompanyAdded &&
+                                profileController
+                                    .profileData.banner!.isPasswordSet))
+                                    
+                              ExpansionTile(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      12), // Rounded corners
+                                ),
+                                collapsedShape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      12), // Rounded corners
+                                ),
+                                backgroundColor: AppColors.primary,
+                                collapsedBackgroundColor: AppColors.primary,
+                                collapsedIconColor: AppColors.white,
+                                iconColor: AppColors.white,
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(Icons.rocket_launch,
+                                        color: AppColors.white),
+                                    const SizedBox(width: 5),
+                                    TextWidget(
+                                        text: "Boost Your Presence!",
+                                        textSize: 16,
+                                        color: AppColors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ],
+                                ),
+                                onExpansionChanged: (bool expanded) {
+                                  setState(() {
+                                    isExpanded =
+                                        expanded; // Track expansion state
+                                  });
+                                },
+                                children: [
+                                  Container(
+                                    color: AppColors.blackCard,
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 4,
+                                        ),
+                                        if (!profileController.profileData
+                                            .banner!.isProfileCompleted)
+                                            
+                                          InkWell(
+                                            onTap: (){Get.to(() => PersonalInfoScreen());},
+                                            child: Card(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        5), // Rounded corners
+                                              ),
+                                              color: AppColors.primary
+                                                  .withOpacity(0.1),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        TextWidget(
+                                                          text:
+                                                              "Stand Out with Your Profile",
+                                                          textSize: 16,
+                                                          color:
+                                                              AppColors.primary,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                        Card(
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5), // Rounded corners
+                                                          ),
+                                                          color: AppColors
+                                                              .primary
+                                                              .withOpacity(0.2),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: TextWidget(
+                                                                text:
+                                                                    "${profileController.profileData.banner!.profileCompletionPercentage} Complete",
+                                                                textSize: 13,
+                                                                color: AppColors
+                                                                    .primary,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    // Title section
+                                                          
+                                                    // Progress Bar Section
+                                                    SizedBox(
+                                                        height:
+                                                            4), // Add spacing for better readability
+                                                    LinearProgressIndicator(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      backgroundColor:
+                                                          AppColors.black,
+                                                      color: AppColors.primary,
+                                                      value:
+                                                          profileValueInDecimal, // Progress value between 0.0 and 1.0
+                                                      minHeight:
+                                                          6.0, // Height of the progress bar
+                                                    ),
+                                                          
+                                                    // Progress description text
+                                                    SizedBox(
+                                                        height:
+                                                            8), // Add spacing
+                                                    TextWidget(
+                                                      text:
+                                                          "Showcase your expertise and make a lasting impression",
+                                                      textSize: 12,
+                                                      color: AppColors.white,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        SizedBox(
+                                          height: 4,
+                                        ),
+                           if (!profileController.profileData
+                                            .banner!.isCompanyAdded)
+                                        InkWell(
+                                          onTap: (){Get.to(() => const CompanyScreen());},
+                                          child: Card(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        5), // Rounded corners
+                                              ),
+                                              color: AppColors.primary
+                                                  .withOpacity(0.1),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        TextWidget(
+                                                          text:
+                                                              "Add Your Company to Shine",
+                                                          textSize: 16,
+                                                          color:
+                                                              AppColors.primary,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                        Card(
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5), // Rounded corners
+                                                          ),
+                                                          color: AppColors
+                                                              .primary
+                                                              .withOpacity(0.2),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: TextWidget(
+                                                                text:
+                                                                    "${profileController.profileData.banner!.companyCompletionPercentage} Complete",
+                                                                textSize: 13,
+                                                                color: AppColors
+                                                                    .primary,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    // Title section
+                                                          
+                                                    // Progress Bar Section
+                                                    SizedBox(
+                                                        height:
+                                                            4), // Add spacing for better readability
+                                                    LinearProgressIndicator(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      backgroundColor:
+                                                          AppColors.black,
+                                                      color: AppColors.primary,
+                                                      value:
+                                                          companyValueInDecimal, // Progress value between 0.0 and 1.0
+                                                      minHeight:
+                                                          6.0, // Height of the progress bar
+                                                    ),
+                                                          
+                                                    // Progress description text
+                                                    SizedBox(
+                                                        height:
+                                                            8), // Add spacing
+                                                    TextWidget(
+                                                      text:
+                                                          "Put your company in the spotlight and attract opportunities",
+                                                      textSize: 12,
+                                                      color: AppColors.white,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                        ),
+                                        SizedBox(
+                                          height: 4,
+                                        ),
+                                        if (!profileController.profileData
+                                            .banner!.isPasswordSet)
+                                            
+                                        InkWell(
+                                          onTap: (){Get.to(() => const ManageAccountScreen());},
+                                          child: Card(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        5), // Rounded corners
+                                              ),
+                                              color: AppColors.primary
+                                                  .withOpacity(0.1),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        TextWidget(
+                                                          text:
+                                                              "Secure Your Journey",
+                                                          textSize: 16,
+                                                          color:
+                                                              AppColors.primary,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                        Card(
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5), // Rounded corners
+                                                          ),
+                                                          color: AppColors
+                                                              .primary
+                                                              .withOpacity(0.2),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: TextWidget(
+                                                                text:
+                                                                    "Essential",
+                                                                textSize: 13,
+                                                                color: AppColors
+                                                                    .primary,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                   
+                                                    SizedBox(
+                                                        height:
+                                                            8), // Add spacing
+                                                    TextWidget(
+                                                      text:
+                                                          "Protect your growing network with a strong password",
+                                                      textSize: 12,
+                                                      color: AppColors.white,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                        ),
+                                        SizedBox(
+                                          height: 4,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            SizedBox(
+                              height: 12,
+                            ),
                             CircleAvatar(
                               radius: 42,
-                              backgroundColor:
-                                  profileController.profileData.isSubscribed!
-                                      ? AppColors.golden
-                                      : AppColors.transparent,
+                              backgroundColor: profileController
+                                      .profileData.user!.isSubscribed!
+                                  ? AppColors.golden
+                                  : AppColors.transparent,
                               child: CircleAvatar(
                                 radius: 40,
                                 backgroundImage: NetworkImage(
-                                    '${profileController.profileData.profilePicture}'),
+                                    '${profileController.profileData.user!.profilePicture}'),
                               ),
                             ),
                             sizedTextfield,
@@ -101,7 +456,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 // const SizedBox(width: 8),
                                 TextWidget(
                                     text:
-                                        "${profileController.profileData.firstName} ${profileController.profileData.lastName}",
+                                        "${profileController.profileData.user!.firstName} ${profileController.profileData.user!.lastName}",
                                     textSize: 18,
                                     fontWeight: FontWeight.w500),
                                 // const SizedBox(width: 8),
@@ -125,11 +480,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                               children: [
                                 TextWidget(
                                     text:
-                                        "${profileController.profileData.userName}",
+                                        "${profileController.profileData.user!.userName}",
                                     textSize: 15),
-                                if (profileController.profileData.isSubscribed!)
+                                if (profileController
+                                    .profileData.user!.isSubscribed!)
                                   const SizedBox(width: 6),
-                                if (profileController.profileData.isSubscribed!)
+                                if (profileController
+                                    .profileData.user!.isSubscribed!)
                                   Image.asset(PngAssetPath.verifyImg,
                                       height: 18)
                               ],
@@ -137,12 +494,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                             const SizedBox(height: 6),
                             TextWidget(
                                 text:
-                                    "${profileController.profileData.designation} of ${profileController.profileData.companyName}, ${profileController.profileData.location}",
+                                    "${profileController.profileData.user!.designation} of ${profileController.profileData.user!.companyName}, ${profileController.profileData.user!.location}",
                                 textSize: 14),
                             const SizedBox(height: 6),
                             TextWidget(
                                 text:
-                                    "${profileController.profileData.followersCount} Followers  |  ${profileController.profileData.connectionsCount} Connections",
+                                    "${profileController.profileData.user!.followersCount} Followers  |  ${profileController.profileData.user!.connectionsCount} Connections",
                                 color: AppColors.primary,
                                 textSize: 14),
                             // const SizedBox(height: 12),
@@ -227,7 +584,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             //     ),
                             //   ),
                             // ),
-
+                        
                             // const SizedBox(height: 14),
                             // Align(
                             //     alignment: Alignment.bottomLeft,
@@ -301,9 +658,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                             //         ),
                             //       ),
                             //     )),
-
+                        
                             const SizedBox(height: 12),
-
+                        
                             TabBar(
                               indicator:
                                   const BoxDecoration(), // Removes the indicator
@@ -555,7 +912,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         ),
                             ),
                             const SizedBox(height: 8),
-
+                        
                             Divider(
                               color: AppColors.whiteCard,
                               thickness: 0.5,
@@ -661,7 +1018,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             //   ),
                             // ),
                             // sizedTextfield,
-
+                        
                             Card(
                               color: AppColors.blackCard,
                               surfaceTintColor: AppColors.blackCard,
@@ -719,8 +1076,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                             fontWeight: FontWeight.w500,
                                             textSize: 14),
                                         const SizedBox(height: 4),
-                                        profileController
-                                                .profileData.experience!.isEmpty
+                                        profileController.profileData.user!
+                                                .experience!.isEmpty
                                             ? Center(
                                                 child: TextWidget(
                                                     text: "No Experience Found",
@@ -731,6 +1088,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                 shrinkWrap: true,
                                                 itemCount: profileController
                                                     .profileData
+                                                    .user!
                                                     .experience!
                                                     .length,
                                                 separatorBuilder:
@@ -766,6 +1124,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                           backgroundImage: NetworkImage(
                                                               profileController
                                                                   .profileData
+                                                                  .user!
                                                                   .experience![
                                                                       index]
                                                                   .companyLogo),
@@ -780,6 +1139,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                               TextWidget(
                                                                   text: profileController
                                                                       .profileData
+                                                                      .user!
                                                                       .experience![
                                                                           index]
                                                                       .companyName,
@@ -787,6 +1147,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                               TextWidget(
                                                                   text: profileController
                                                                       .profileData
+                                                                      .user!
                                                                       .experience![
                                                                           index]
                                                                       .location,
@@ -794,6 +1155,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                               TextWidget(
                                                                   text: profileController
                                                                       .profileData
+                                                                      .user!
                                                                       .experience![
                                                                           index]
                                                                       .role,
@@ -801,6 +1163,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                               TextWidget(
                                                                 text: profileController
                                                                     .profileData
+                                                                    .user!
                                                                     .experience![
                                                                         index]
                                                                     .description,
@@ -815,6 +1178,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                             TextWidget(
                                                                 text: profileController
                                                                     .profileData
+                                                                    .user!
                                                                     .experience![
                                                                         index]
                                                                     .startYear,
@@ -825,6 +1189,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                             TextWidget(
                                                                 text: profileController
                                                                     .profileData
+                                                                    .user!
                                                                     .experience![
                                                                         index]
                                                                     .endYear,
@@ -842,8 +1207,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                             fontWeight: FontWeight.w500,
                                             textSize: 14),
                                         const SizedBox(height: 4),
-                                        profileController
-                                                .profileData.education!.isEmpty
+                                        profileController.profileData.user!
+                                                .education!.isEmpty
                                             ? Center(
                                                 child: TextWidget(
                                                     text: "No Education Found",
@@ -854,6 +1219,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                 shrinkWrap: true,
                                                 itemCount: profileController
                                                     .profileData
+                                                    .user!
                                                     .education!
                                                     .length,
                                                 separatorBuilder:
@@ -885,6 +1251,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                           backgroundImage: NetworkImage(
                                                               profileController
                                                                   .profileData
+                                                                  .user!
                                                                   .education![
                                                                       index]
                                                                   .educationLogo),
@@ -899,6 +1266,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                               TextWidget(
                                                                   text: profileController
                                                                       .profileData
+                                                                      .user!
                                                                       .education![
                                                                           index]
                                                                       .educationSchoolName,
@@ -906,6 +1274,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                               TextWidget(
                                                                   text: profileController
                                                                       .profileData
+                                                                      .user!
                                                                       .education![
                                                                           index]
                                                                       .educationLocation,
@@ -913,6 +1282,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                               TextWidget(
                                                                   text: profileController
                                                                       .profileData
+                                                                      .user!
                                                                       .education![
                                                                           index]
                                                                       .educationCourse,
@@ -920,6 +1290,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                               TextWidget(
                                                                 text: profileController
                                                                     .profileData
+                                                                    .user!
                                                                     .education![
                                                                         index]
                                                                     .educationDescription,
@@ -932,6 +1303,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                         TextWidget(
                                                             text: profileController
                                                                 .profileData
+                                                                .user!
                                                                 .education![
                                                                     index]
                                                                 .educationPassYear,
@@ -998,17 +1370,17 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         left: 12, right: 12, bottom: 12),
                                     child: TextWidget(
                                         text:
-                                            "${profileController.profileData.bio}",
+                                            "${profileController.profileData.user!.bio}",
                                         maxLine: 10,
                                         textSize: 13),
                                   ),
                                 ],
                               ),
                             ),
-                            if (profileController.profileData.companyData!
+                            if (profileController.profileData.user!.companyData!
                                 .companyName!.isNotEmpty)
                               sizedTextfield,
-                            if (profileController.profileData.companyData!
+                            if (profileController.profileData.user!.companyData!
                                 .companyName!.isNotEmpty)
                               Card(
                                 color: AppColors.blackCard,
@@ -1033,6 +1405,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                     image: NetworkImage(
                                                         profileController
                                                                 .profileData
+                                                                .user!
                                                                 .companyData!
                                                                 .logo ??
                                                             ""))),
@@ -1044,24 +1417,24 @@ class _ProfileScreenState extends State<ProfileScreen>
                                             children: [
                                               TextWidget(
                                                 text:
-                                                    "${profileController.profileData.companyData!.companyName}",
+                                                    "${profileController.profileData.user!.companyData!.companyName}",
                                                 textSize: 16,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                               const SizedBox(height: 4),
                                               TextWidget(
                                                 text:
-                                                    "${profileController.profileData.companyData!.location} - Founded in ${profileController.profileData.companyData!.startedAtDate}",
+                                                    "${profileController.profileData.user!.companyData!.location} - Founded in ${profileController.profileData.user!.companyData!.startedAtDate}",
                                                 textSize: 11,
                                               ),
                                               TextWidget(
                                                 text:
-                                                    "Last funding ${profileController.profileData.companyData!.lastFunding} - Sector ${profileController.profileData.companyData!.sector}",
+                                                    "Last funding ${profileController.profileData.user!.companyData!.lastFunding} - Sector ${profileController.profileData.user!.companyData!.sector}",
                                                 textSize: 11,
                                               ),
                                               TextWidget(
                                                 text:
-                                                    "Stage ${profileController.profileData.companyData!.stage}",
+                                                    "Stage ${profileController.profileData.user!.companyData!.stage}",
                                                 textSize: 11,
                                               ),
                                             ],
@@ -1069,7 +1442,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         ],
                                       ),
                                       const SizedBox(height: 8),
-                                      if (profileController.profileData
+                                      if (profileController.profileData.user!
                                           .companyData!.description!.isNotEmpty)
                                         Card(
                                           color: AppColors.white12,
@@ -1077,7 +1450,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                             padding: const EdgeInsets.all(12.0),
                                             child: TextWidget(
                                                 text:
-                                                    "${profileController.profileData.companyData!.description}",
+                                                    "${profileController.profileData.user!.companyData!.description}",
                                                 maxLine: 12,
                                                 textSize: 13),
                                           ),
@@ -1117,10 +1490,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                             //       ),
                             //     )),
                             if (profileController
-                                .profileData.recentConnections!.isNotEmpty)
+                                .profileData.user!.recentConnections!.isNotEmpty)
                               sizedTextfield,
                             if (profileController
-                                .profileData.recentConnections!.isNotEmpty)
+                                .profileData.user!.recentConnections!.isNotEmpty)
                               const Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 4),
                                 child: Row(
@@ -1139,13 +1512,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 ),
                               ),
                             if (profileController
-                                .profileData.recentConnections!.isNotEmpty)
+                                .profileData.user!.recentConnections!.isNotEmpty)
                               SizedBox(
                                 height: 179,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: profileController
-                                      .profileData.recentConnections!.length,
+                                  itemCount: profileController.profileData.user!
+                                      .recentConnections!.length,
                                   padding: const EdgeInsets.only(top: 8),
                                   itemBuilder:
                                       (BuildContext context, int index) {
@@ -1163,17 +1536,17 @@ class _ProfileScreenState extends State<ProfileScreen>
                                               CircleAvatar(
                                                 radius: 28,
                                                 backgroundImage: NetworkImage(
-                                                    '${profileController.profileData.recentConnections![index].profilePicture}'),
+                                                    '${profileController.profileData.user!.recentConnections![index].profilePicture}'),
                                               ),
                                               const SizedBox(height: 6),
                                               TextWidget(
                                                   text:
-                                                      "${profileController.profileData.recentConnections![index].firstName} ${profileController.profileData.recentConnections![index].lastName}",
+                                                      "${profileController.profileData.user!.recentConnections![index].firstName} ${profileController.profileData.user!.recentConnections![index].lastName}",
                                                   fontWeight: FontWeight.w500,
                                                   textSize: 14),
                                               TextWidget(
                                                   text:
-                                                      "${profileController.profileData.recentConnections![index].designation}",
+                                                      "${profileController.profileData.user!.recentConnections![index].designation}",
                                                   textSize: 12),
                                               const SizedBox(height: 8),
                                               AppButton.primaryButton(
@@ -1218,27 +1591,27 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   children: [
                                     mileStoneWidget(
                                         profileController
-                                            .profileData.milestoneProfile!,
+                                            .profileData.user!.milestoneProfile!,
                                         "User profile",
                                         () {}),
                                     mileStoneWidget(
                                         profileController
-                                            .profileData.milestoneCompany!,
+                                            .profileData.user!.milestoneCompany!,
                                         "Company profile",
                                         () {}),
                                     mileStoneWidget(
                                         profileController
-                                            .profileData.milestoneOnelink!,
+                                            .profileData.user!.milestoneOnelink!,
                                         "One link",
                                         () {}),
                                     mileStoneWidget(
-                                        profileController
-                                            .profileData.milestoneDocuments!,
+                                        profileController.profileData.user!
+                                            .milestoneDocuments!,
                                         "Document upload",
                                         () {}),
                                     mileStoneWidget(
                                         profileController
-                                            .profileData.milestonePosts!,
+                                            .profileData.user!.milestonePosts!,
                                         "Create first post",
                                         () {}),
                                   ]),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:capitalhub_crm/model/01-StartupModel/community_model/getCreatedCommunityModel/get_created_community_model.dart';
+// import 'package:capitalhub_crm/model/01-StartupModel/community_model/getCommunityPostsModel/community_post_model.dart';
+import 'package:capitalhub_crm/model/01-StartupModel/communityModel/getCreatedCommunityModel/get_created_community_model.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
@@ -9,8 +10,8 @@ import 'package:get/get.dart';
 String createdCommunityId = "";
 class CommunityController extends GetxController {
   
-  
   var isLoading = false.obs;
+ 
   Future createCommunity(name, size, subscriptionAmount, subscription, base64) async {
 
     var dataSent = {
@@ -84,32 +85,6 @@ class CommunityController extends GetxController {
     isLoading.value = false; // Set loading state to false after request
   }
 }
-Future<bool> sendJoinRequest(
-   ) async {
-   var  wbody = {
-   "name" : "${GetStoreData.getStore.read('name')}",
-   "email" : "${GetStoreData.getStore.read('email')}",
-   "requestedNumber":"${GetStoreData.getStore.read('phone')
-      }", 
-      "adminEmail" : "${GetStoreData.getStore.read('email')}",
-      "phoneNumber": "${GetStoreData.getStore.read('phone')
-      }"};
 
-    
-    var response = await ApiBase.postRequest(
-      body: wbody,
-      withToken: true,
-      extendedURL: ApiUrl.sendJoinRequest,
-    );
-    log(wbody.toString());
-    log(response.body);
-    var data = json.decode(response.body);
-    if (data["status"] == 200) {
-
-      return true;
-    } else {
-      return false;
-    }
-  }
 
 }

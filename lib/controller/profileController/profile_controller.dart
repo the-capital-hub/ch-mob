@@ -17,6 +17,8 @@ class ProfileController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isTabLoading = false.obs;
   ProfileData profileData = ProfileData();
+  
+
   Future getProfile() async {
     try {
       isLoading.value = true;
@@ -28,9 +30,12 @@ class ProfileController extends GetxController {
       if (data['status'] == true) {
         ProfileModel profileModel = ProfileModel.fromJson(data);
         profileData = profileModel.data!;
-        firstNameController.text = profileData.firstName!;
-        lastNameController.text = profileData.lastName!;
-        userNameController.text = profileData.userName!;
+        firstNameController.text = profileData.user!.firstName;
+        lastNameController.text = profileData.user!.lastName;
+        userNameController.text = profileData.user!.userName;
+        print("PROFILECOMPLETED"+profileData.banner!.isProfileCompleted.toString());
+
+
       }
     } catch (e) {
       log("getProfileddd $e");

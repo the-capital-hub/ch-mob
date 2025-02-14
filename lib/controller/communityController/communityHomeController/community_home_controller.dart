@@ -1,37 +1,34 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:capitalhub_crm/model/01-StartupModel/publicPostModel/public_post_model.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/savedCollectionModel/saved_collection_model.dart';
+import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityPostModel/community_post_model.dart';
+import 'package:capitalhub_crm/model/01-StartupModel/communityModel/savedCommunityCollectionModel/saved_community_collection_model.dart';
+import 'package:capitalhub_crm/utils/apiService/api_base.dart';
+import 'package:capitalhub_crm/utils/apiService/api_url.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
+import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
-import '../../model/01-StartupModel/newsModel/startup_corner_news_model.dart';
-import '../../utils/apiService/api_base.dart';
-import '../../utils/apiService/api_url.dart';
-import '../../utils/helper/helper.dart';
-
-class HomeController extends GetxController {
+class CommunityHomeController extends GetxController {
   int selectIndex = 0;
-  RxBool isLoading = false.obs;
-
-  List<PostPublic> postList = [];
-
-  Future getPublicPost(int page, bool isLoadOn) async {
+  var isLoading = false.obs;
+  List<CommunityPost> communityPostList = [];
+  Future getCommunityPosts(int page, bool isLoadOn) async {
     try {
       if (page == 1) {
-        postList.clear();
+        communityPostList.clear();
         isLoading.value = isLoadOn;
       }
       var response = await ApiBase.getRequest(
-          extendedURL: ApiUrl.getPublicPostUrl + page.toString());
+          extendedURL: ApiUrl.getCommunityPosts + page.toString());
       log(response.body);
       var data = jsonDecode(response.body);
       if (data['status'] == true) {
-        PublicPostModel publicPostModel = PublicPostModel.fromJson(data);
-        postList.addAll(publicPostModel.data!);
+        CommunityPostModel communityPostModel =
+            CommunityPostModel.fromJson(data);
+        communityPostList.addAll(communityPostModel.data!);
       }
     } catch (e) {
       log("getHome Feed $e");
@@ -40,41 +37,45 @@ class HomeController extends GetxController {
     }
   }
 
-  List<StartupNews> startUpNewsList = [];
+  Future<bool> sendJoinRequest() async {
+    var wbody = {
+      "name": "${GetStoreData.getStore.read('name')}",
+      "email": "${GetStoreData.getStore.read('email')}",
+      "requestedNumber": "${GetStoreData.getStore.read('phone')}",
+      "adminEmail": "${GetStoreData.getStore.read('email')}",
+      "phoneNumber": "${GetStoreData.getStore.read('phone')}"
+    };
 
-  Future getStartupNews({required int offSet}) async {
-    try {
-      if (offSet == 10) {
-        isLoading.value = true;
-        startUpNewsList.clear();
-      }
-      var response = await ApiBase.getRequest(
-          extendedURL: ApiUrl.getStartupCornerNews + offSet.toString());
-      log(response.body);
-      var data = jsonDecode(response.body);
-      if (data['status'] == true) {
-        StartupCornerNews startupCornerNews = StartupCornerNews.fromJson(data);
-        startUpNewsList.addAll(startupCornerNews.data!);
-      }
-    } catch (e) {
-      log("getHome Feed $e");
-    } finally {
-      isLoading.value = false;
+    var response = await ApiBase.postRequest(
+      body: wbody,
+      withToken: true,
+      extendedURL: ApiUrl.sendJoinRequest,
+    );
+    log(wbody.toString());
+    log(response.body);
+    var data = json.decode(response.body);
+    if (data["status"] == 200) {
+      HelperSnackBar.snackBar("Success", data["message"]);
+
+      return true;
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
     }
   }
 
-  Future likeUnlike(postID) async {
+  Future likeUnlikeCommunityPost(postID) async {
     // Helper.loader(context);
     var body = {};
     var response = await ApiBase.postRequest(
         body: body,
-        extendedURL: ApiUrl.likeUnlikePostUrl + postID,
+        extendedURL: ApiUrl.likeUnlikeCommunityPost + postID,
         withToken: true);
     log(response.body);
     var data = json.decode(response.body);
   }
 
-  Future<bool> commentPost(context,
+  Future<bool> commentCommunityPost(context,
       {required String postID,
       required String userId,
       required String text}) async {
@@ -82,7 +83,7 @@ class HomeController extends GetxController {
     var body = {"userId": userId, "text": text};
     var response = await ApiBase.postRequest(
         body: body,
-        extendedURL: ApiUrl.commentPostUrl + postID,
+        extendedURL: ApiUrl.commentCommunityPost + postID,
         withToken: true);
     log(response.body);
     var data = json.decode(response.body);
@@ -97,7 +98,7 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<bool> commentDelete(
+  Future<bool> deleteCommentCommunityPost(
     context, {
     required String postID,
     required String commentID,
@@ -105,7 +106,7 @@ class HomeController extends GetxController {
     Helper.loader(context);
 
     var response = await ApiBase.deleteRequest(
-      extendedURL: "${ApiUrl.deleteCommentUrl}$postID/$commentID",
+      extendedURL: "${ApiUrl.deleteCommentCommunityPost}$postID/$commentID",
     );
     log(response.body);
     var data = json.decode(response.body);
@@ -120,7 +121,7 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<bool> commentLikeDislike(
+  Future<bool> toggleLikeCommentCommunityPost(
     context, {
     required String postID,
     required String commentID,
@@ -128,7 +129,7 @@ class HomeController extends GetxController {
     var response = await ApiBase.postRequest(
       body: {},
       withToken: true,
-      extendedURL: "${ApiUrl.commentLikeUnlikeUrl}$postID/$commentID",
+      extendedURL: "${ApiUrl.toggleLikeCommentCommunityPost}$postID/$commentID",
     );
     log(response.body);
     var data = json.decode(response.body);
@@ -139,13 +140,13 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<bool> postDelete(
+  Future<bool> deleteCommunityPost(
     context, {
     required String postID,
   }) async {
     Helper.loader(context);
     var response = await ApiBase.deleteRequest(
-      extendedURL: "${ApiUrl.deletePostUrl}$postID",
+      extendedURL: "${ApiUrl.deleteCommunityPost}$postID",
     );
     log(response.body);
     var data = json.decode(response.body);
@@ -160,39 +161,84 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<bool> addPostCompany(
-    context, {
-    required String postID,
-  }) async {
-    var response = await ApiBase.postRequest(
-      body: {},
-      withToken: true,
-      extendedURL: "${ApiUrl.addPostCompanyUrl}$postID",
-    );
+  List<CommunityCollection> communityCollectionList = [];
+  Future getSavedCommunityPostCollections() async {
+    try {
+      communityCollectionList.clear();
+      isLoading.value = true;
+      var response = await ApiBase.getRequest(
+          extendedURL: ApiUrl.getSavedCommunityPostCollections +
+              GetStoreData.getStore.read('id').toString());
+      log(response.body);
+      var data = jsonDecode(response.body);
+      if (data['status'] == true) {
+        SavedCommunityCollectionModel savedCommunityCollectionModel =
+            SavedCommunityCollectionModel.fromJson(data);
+        communityCollectionList.addAll(savedCommunityCollectionModel.data!);
+      }
+    } catch (e) {
+      log("getcollection $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<bool> saveCommunityPost(context,
+      {required String postID, required String colelctionName}) async {
+    Helper.loader(context);
+    var body = {
+      "userId": GetStoreData.getStore.read('id').toString(),
+      "collectionName": colelctionName
+    };
+    var response = await ApiBase.pachRequest(
+        body: body,
+        extendedURL: ApiUrl.saveCommunityPost + postID,
+        withToken: true);
     log(response.body);
     var data = json.decode(response.body);
+
     if (data["status"] == true) {
-      HelperSnackBar.snackBar("Success", data["message"]);
       return true;
     } else {
+      Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
     }
   }
 
-  Future<bool> addPostFeature(
+  Future<bool> unsaveCommunityPost(
     context, {
     required String postID,
   }) async {
-    var response = await ApiBase.postRequest(
-      body: {},
-      withToken: true,
-      extendedURL: "${ApiUrl.addPostFeatureUrl}$postID",
-    );
+    Helper.loader(context);
+    var body = {
+      "userId": GetStoreData.getStore.read('id').toString(),
+      "postId": postID
+    };
+    var response = await ApiBase.pachRequest(
+        body: body, extendedURL: ApiUrl.unsaveCommunityPost, withToken: true);
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"] == true) {
-      HelperSnackBar.snackBar("Success", data["message"]);
+      return true;
+    } else {
+      Get.back();
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
+  }
+
+  Future<bool> voteCommunityPost(
+    context, {
+    required String postID,
+    required String optionID,
+  }) async {
+    var body = {"optionId": optionID, "postId": postID};
+    var response = await ApiBase.pachRequest(
+        body: body, extendedURL: ApiUrl.voteCommunityPost, withToken: true);
+    log(response.body);
+    var data = json.decode(response.body);
+    if (data["status"] == true) {
       return true;
     } else {
       HelperSnackBar.snackBar("Error", data["message"]);
@@ -211,111 +257,6 @@ class HomeController extends GetxController {
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"] == true) {
-      return true;
-    } else {
-      HelperSnackBar.snackBar("Error", data["message"]);
-      return false;
-    }
-  }
-
-  List<CollectionList> collectionList = [];
-  Future getUserCollection() async {
-    try {
-      collectionList.clear();
-      isLoading.value = true;
-      var response = await ApiBase.getRequest(
-          extendedURL: ApiUrl.collectionGetUrl +
-              GetStoreData.getStore.read('id').toString());
-      log(response.body);
-      var data = jsonDecode(response.body);
-      if (data['status'] == true) {
-        SavedCollectionModel savedCollectionModel =
-            SavedCollectionModel.fromJson(data);
-        collectionList.addAll(savedCollectionModel.data!);
-      }
-    } catch (e) {
-      log("getcollection $e");
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  Future<bool> savePost(context,
-      {required String postID, required String colelctionName}) async {
-    Helper.loader(context);
-    var body = {
-      "userId": GetStoreData.getStore.read('id').toString(),
-      "collectionName": colelctionName
-    };
-    var response = await ApiBase.pachRequest(
-        body: body, extendedURL: ApiUrl.savePostUrl + postID, withToken: true);
-    log(response.body);
-    var data = json.decode(response.body);
-
-    if (data["status"] == true) {
-      return true;
-    } else {
-      Get.back();
-      HelperSnackBar.snackBar("Error", data["message"]);
-      return false;
-    }
-  }
-
-  Future<bool> unSavePost(
-    context, {
-    required String postID,
-  }) async {
-    Helper.loader(context);
-    var body = {
-      "userId": GetStoreData.getStore.read('id').toString(),
-      "postId": postID
-    };
-    var response = await ApiBase.pachRequest(
-        body: body, extendedURL: ApiUrl.unSavePostUrl, withToken: true);
-    log(response.body);
-    var data = json.decode(response.body);
-    if (data["status"] == true) {
-      return true;
-    } else {
-      Get.back();
-      HelperSnackBar.snackBar("Error", data["message"]);
-      return false;
-    }
-  }
-
-  Future<bool> votePoll(
-    context, {
-    required String postID,
-    required String optionID,
-  }) async {
-    var body = {"optionId": optionID, "postId": postID};
-    var response = await ApiBase.pachRequest(
-        body: body, extendedURL: ApiUrl.pollVote, withToken: true);
-    log(response.body);
-    var data = json.decode(response.body);
-    if (data["status"] == true) {
-      return true;
-    } else {
-      HelperSnackBar.snackBar("Error", data["message"]);
-      return false;
-    }
-  }
-
-  Future<bool> followUnfollow({
-    required String userId,
-    required String connectionStatus,
-  }) async {
-    // pending==cancel accepted==unfollow notsent==follow
-    var body = {"userId": userId};
-    var response = connectionStatus == "not_sent"
-        ? await ApiBase.postRequest(
-            body: body, extendedURL: ApiUrl.sendReq + userId, withToken: true)
-        : await ApiBase.deleteRequest(
-            extendedURL: ApiUrl.removeConnectionReq + userId);
-    log(response.body);
-    var data = json.decode(response.body);
-    if (data["status"] == true) {
-      // HelperSnackBar.snackBar("Success", data["message"]);
       return true;
     } else {
       HelperSnackBar.snackBar("Error", data["message"]);

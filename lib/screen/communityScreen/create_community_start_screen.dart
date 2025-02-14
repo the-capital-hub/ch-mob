@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'dart:developer';
 
 
-import 'package:capitalhub_crm/controller/community_controller/community_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/communityScreen/create_community_over_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
@@ -60,14 +61,26 @@ class _CreateCommunityStartScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                InkWell(
-                    splashColor: AppColors.transparent,
-                    highlightColor: AppColors.transparent,
-                    onTap: () {
-                      uploadBottomSheet();
-                    },
-                    child: Center(
-                      child: base64 != ""
+                // InkWell(
+                //     splashColor: AppColors.transparent,
+                //     highlightColor: AppColors.transparent,
+                //     onTap: () {
+                //       uploadBottomSheet();
+                //     },
+                //     child: Center(
+                //       child: base64 != ""
+                //           ? CircleAvatar(
+                //               radius: 60,
+                //               backgroundImage: MemoryImage(
+                //                   base64Decode(base64)),
+                //             )
+                //           : const CircleAvatar(
+                //               radius: 60,
+                //               child: Icon(Icons.add_photo_alternate_outlined,
+                //                   size: 40)),
+                //     ),
+                //   ),
+                base64 != ""
                           ? CircleAvatar(
                               radius: 60,
                               backgroundImage: MemoryImage(
@@ -75,9 +88,32 @@ class _CreateCommunityStartScreenState
                             )
                           : const CircleAvatar(
                               radius: 60,
-                              child: Icon(Icons.add_photo_alternate_outlined,
-                                  size: 40)),
-                    ),
+                              foregroundImage: AssetImage(PngAssetPath.communityImg),),
+                                  SizedBox(height: 12,),
+                  InkWell(
+                    splashColor: AppColors.transparent,
+                    highlightColor: AppColors.transparent,
+                    onTap: () {
+                      uploadBottomSheet();
+                    },
+                    child: Column(
+                      children: [ 
+                                          
+                    Container(
+                                          decoration: BoxDecoration(
+                    color: 
+                         AppColors.white12,
+                    // color: Color(0xFFC8E0DA),
+                                          borderRadius: BorderRadius.circular(20)
+                    // border:
+                    //     Border.all(color: Colors.redAccent, width: 1)
+                                          ),
+                                          child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 12),
+                    child:  TextWidget(text: "Upload Pic", textSize: 13),
+                                          ),
+                                        ),
+                      ]),
                   ),
                 sizedTextfield,
                 const TextWidget(text: "Start Building A Business", textSize: 18),

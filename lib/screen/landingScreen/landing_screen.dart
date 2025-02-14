@@ -1,6 +1,8 @@
 import 'package:capitalhub_crm/controller/homeController/home_controller.dart';
 import 'package:capitalhub_crm/controller/notificationController/notification_controller.dart';
+import 'package:capitalhub_crm/screen/Auth-Process/authScreen/signup_info_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 
 import '../../controller/profileController/profile_controller.dart';
@@ -29,7 +31,17 @@ class _LandingScreenState extends State<LandingScreen> {
   @override
   void initState() {
     super.initState();
-    notificaitonController.getNotificationCount();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      
+      notificaitonController.getNotificationCount().then((val) {
+        {
+          if (notificaitonController.isRequiredFieldsExist==false)
+    {Get.offAll(const SignupInfoScreen());}
+        }
+      });
+    });
+    
+    
   }
 
   List icons = [

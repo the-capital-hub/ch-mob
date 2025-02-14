@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:capitalhub_crm/controller/newsController/news_controller.dart';
+import 'package:capitalhub_crm/screen/Auth-Process/authScreen/signup_info_page.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAboutScreen/community_about_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityEventsScreen/community_events_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityHomeScreen/community_home_screen.dart';
@@ -80,9 +81,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     "Priority DMS"
   ];
   List<String> communitySubItems = [
-    "Home",
     "Create a Community",
     "My Community",
+    "Explore Community"
   ];
   List icons = [
     PngAssetPath.homeIcon,
@@ -124,7 +125,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     const PriorityDMScreen()
   ];
   List communitySubPages = [
-    CommunityLandingScreen(),
+    CommunityHomeScreen(),
     CreateCommunityScreen(),
     MyCommunityScreen()
     
