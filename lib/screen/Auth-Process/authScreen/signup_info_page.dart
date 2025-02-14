@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:capitalhub_crm/controller/homeController/home_controller.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 
 import '../../../utils/constant/app_var.dart';
@@ -20,6 +23,7 @@ class SignupInfoScreen extends StatefulWidget {
 
 class _SignupInfoScreenState extends State<SignupInfoScreen> {
   LoginController loginMobileController = Get.put(LoginController());
+  Timer? _debounce;
   @override
   void initState() {
     super.initState();
@@ -31,6 +35,19 @@ class _SignupInfoScreenState extends State<SignupInfoScreen> {
   }
 
   GlobalKey<FormState> formkey = GlobalKey();
+
+  void onUserNameChanged(String userName) {
+    // Cancel any previous timer to wait for the next change
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+
+    // Start a new timer with a 1000ms delay
+    _debounce = Timer(const Duration(milliseconds: 1000), () async {
+      await loginMobileController.checkUsernameAvailability(userName);
+      setState(() {
+        loginMobileController.suggestions;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +103,10 @@ class _SignupInfoScreenState extends State<SignupInfoScreen> {
                         sizedTextfield,
                         MyCustomTextField.textField(
                             controller:
-                                loginMobileController.companyNameController,
+                                loginMobileController.userNameController,
+                            onChange: (String userName) {
+                              onUserNameChanged(userName);
+                            },
                             lableText: 'User Name',
                             valText: "Please enter user name",
                             hintText: "Enter User Name"),
@@ -106,17 +126,30 @@ class _SignupInfoScreenState extends State<SignupInfoScreen> {
                               Wrap(
                                 spacing: 4.0,
                                 runSpacing: 4.0,
-                                children: List.generate(5, (ind) {
-                                  return Card(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(4)),
-                                    color: AppColors.white12,
-                                    surfaceTintColor: AppColors.white12,
-                                    child: const Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 4),
-                                      child: TextWidget(
-                                          text: "meet1212", textSize: 14),
+                                children: List.generate(
+                                    loginMobileController.suggestions.length,
+                                    (index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      loginMobileController
+                                              .userNameController.text =
+                                          loginMobileController
+                                              .suggestions[index];
+                                    },
+                                    child: Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4)),
+                                      color: AppColors.white12,
+                                      surfaceTintColor: AppColors.white12,
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 4),
+                                        child: TextWidget(
+                                            text: loginMobileController
+                                                .suggestions[index],
+                                            textSize: 14),
+                                      ),
                                     ),
                                   );
                                 }),
@@ -140,8 +173,13 @@ class _SignupInfoScreenState extends State<SignupInfoScreen> {
                   : AppColors.primary,
               onButtonPressed: () {
                 // Get.offAll(SelectRoleScreen());
+                if (loginMobileController.firstNameController.text.isNotEmpty &&
+                    loginMobileController.lastNameController.text.isNotEmpty &&
+                    loginMobileController.emailController.text.isNotEmpty &&
+                    loginMobileController.userNameController.text.isNotEmpty)
+                  {loginMobileController.saveRequiredData(context);}
 
-                Get.back();
+                // Get.back();
               },
             ),
           ),

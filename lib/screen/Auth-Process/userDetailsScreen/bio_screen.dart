@@ -27,7 +27,7 @@ class _BioScreenState extends State<BioScreen> {
   @override
   void initState() {
     if (widget.isEdit == true) {
-      loginController.bioController.text = profileController.profileData.bio!;
+      loginController.bioController.text = profileController.profileData.user!.bio;
     }
     super.initState();
   }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:flutter/material.dart';
@@ -177,7 +178,10 @@ class _SignupByNumberScreenState extends State<SignupByNumberScreen> {
                   sizedTextfield,
                   AppButton.primaryButton(
                       onButtonPressed: () {
-                        Get.to(SignupOtpPage());
+                        // Get.to(SignupOtpPage());
+                        loginMobileController.signupApi(context);
+                        loginMobileController.base64 = _base64Image;
+                        
                       },
                       title: "Create Account")
                 ],

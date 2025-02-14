@@ -64,7 +64,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           : CircleAvatar(
                               radius: 60,
                               backgroundImage: NetworkImage(
-                                  "${profileController.profileData.profilePicture}"),
+                                  "${profileController.profileData.user!.profilePicture}"),
                             ),
                     ),
                   ),
@@ -517,42 +517,42 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   List<CompanyInfo> companyInfo = [];
   List<EducationInfo> educationInfo = [];
   populateData() {
-    for (var i = 0; i < profileController.profileData.education!.length; i++) {
+    for (var i = 0; i < profileController.profileData.user!.education!.length; i++) {
       educationInfo.add(EducationInfo(
           educationSchool: TextEditingController(
               text: profileController
-                  .profileData.education![i].educationSchoolName),
+                  .profileData.user!.education![i].educationSchoolName),
           educationLocation: TextEditingController(
               text: profileController
-                  .profileData.education![i].educationLocation),
+                  .profileData.user!.education![i].educationLocation),
           educationCourse: TextEditingController(
               text:
-                  profileController.profileData.education![i].educationCourse),
+                  profileController.profileData.user!.education![i].educationCourse),
           educationPassoutDate: TextEditingController(
               text: profileController
-                  .profileData.education![i].educationPassYear),
+                  .profileData.user!.education![i].educationPassYear),
           educationDescription: TextEditingController(
               text: profileController
-                  .profileData.education![i].educationDescription),
+                  .profileData.user!.education![i].educationDescription),
           educationLogo:
-              profileController.profileData.education![i].educationLogo));
+              profileController.profileData.user!.education![i].educationLogo));
     }
-    for (var i = 0; i < profileController.profileData.experience!.length; i++) {
+    for (var i = 0; i < profileController.profileData.user!.experience!.length; i++) {
       companyInfo.add(CompanyInfo(
           companyName: TextEditingController(
-              text: profileController.profileData.experience![i].companyName),
+              text: profileController.profileData.user!.experience![i].companyName),
           companyLocation: TextEditingController(
-              text: profileController.profileData.experience![i].location),
+              text: profileController.profileData.user!.experience![i].location),
           companyRole: TextEditingController(
-              text: profileController.profileData.experience![i].role),
+              text: profileController.profileData.user!.experience![i].role),
           companyStartDate: TextEditingController(
-              text: profileController.profileData.experience![i].startYear),
+              text: profileController.profileData.user!.experience![i].startYear),
           companyEndDate: TextEditingController(
-              text: profileController.profileData.experience![i].endYear),
+              text: profileController.profileData.user!.experience![i].endYear),
           companyDescription: TextEditingController(
-              text: profileController.profileData.experience![i].description),
+              text: profileController.profileData.user!.experience![i].description),
           companyLogo:
-              profileController.profileData.experience![i].companyLogo));
+              profileController.profileData.user!.experience![i].companyLogo));
     }
   }
 }

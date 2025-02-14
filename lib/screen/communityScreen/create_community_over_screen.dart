@@ -1,4 +1,5 @@
-import 'package:capitalhub_crm/controller/community_controller/community_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
@@ -72,6 +73,10 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              TextWidget(
+                  text: "Congrats! ${createdCommunity.createdCommunityDetails[0].name} is live!", textSize: 20),
+                  sizedTextfield,
+                  sizedTextfield,
                CircleAvatar(
                 radius: 50,
                 backgroundImage: NetworkImage(
@@ -79,9 +84,10 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
                 ),
               ),
               sizedTextfield,
-              TextWidget(text: createdCommunity.createdCommunityDetails[0].name, textSize: 18),
-              sizedTextfield,
-              const TextWidget(text: "Hosted By You", textSize: 13),
+              TextWidget(text: createdCommunity.createdCommunityDetails[0].name, textSize: 20,),
+             sizedTextfield,
+              createdCommunity.createdCommunityDetails[0].subscription == "free"?
+              TextWidget(text: "Any one can join for free", textSize: 13):  TextWidget(text: "Subscription Amount : ${createdCommunity.createdCommunityDetails[0].amount.toString()}", textSize: 13),
               sizedTextfield,
               Divider(
                 thickness: 1,
@@ -89,30 +95,11 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
               ),
               // SizedBox(height: 5,),
           
-              SizedBox(
-                height: 40,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return const Padding(
-                      padding:  EdgeInsets.only(right: 5),
-                      child:  CircleAvatar(
-                        radius: 20,
-                        foregroundImage: AssetImage(PngAssetPath.accountImg),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              sizedTextfield,
-              createdCommunity.createdCommunityDetails[0].subscription == "free"?
-              TextWidget(text: "Any one can join for free", textSize: 13):  TextWidget(text: "Subscription Amount : ${createdCommunity.createdCommunityDetails[0].amount.toString()}", textSize: 13),
-              sizedTextfield,
-              sizedTextfield,
-              TextWidget(
-                  text: "Congrats! ${createdCommunity.createdCommunityDetails[0].name} is live!", textSize: 20),
+              
+              
+             
+              
+              
               // sizedTextfield,
               // Flexible(
               //   child: MyCustomTextField.textField(
@@ -132,7 +119,7 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
           ),
           child: AppButton.primaryButton(
               onButtonPressed: () {
-                // Get.to(() => const CreateNewWebinarScreen());
+                Get.to(() =>  CommunityLandingScreen());
               },
               title: "Continue"),
         ),

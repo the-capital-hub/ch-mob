@@ -6,8 +6,12 @@ class ApiUrl {
       "http://ec2-3-7-68-117.ap-south-1.compute.amazonaws.com:8080/";
   static const String loginUrlEmail = "users/login";
   static const String loginUrlPhone = "users/send_otp";
-  static const String signupUrl = "users/createUser";
+//   static const String signupUrl = "users/createUser";
+  static const String signupUrl = "users/userSignupByOtp";
   static const String verifyOTPUrl = "users/verify_otp";
+  static const String verifyOtpForSignup = "users/verifyOtpForSignup";
+  static const String checkUsernameAvailability = "users/checkUsernameAvailability";
+  static const String saveRequiredData = "users/saveRequiredData";
   static const String resendOTPUrl = "users/resend_otp";
   static const String getUserByNameUrl = "users/getuserbyusername";
   static const String updateFounderUrl = "users/updateFounder";
@@ -122,6 +126,21 @@ class ApiUrl {
   static const String createCommunity = "Communities/createCommunity";
   static const String getCommunityById = "Communities/getCommunityById/";
   static const String sendJoinRequest = "Communities/sendJoinRequest";
+  static const String getCommunityPosts = "api/posts/getCommunityPosts?page=";
+  static const String likeUnlikeCommunityPost = "api/posts/likeUnlikeCommunityPost/";
+  static const String commentCommunityPost = "api/posts/commentCommunityPost/";
+  static const String deleteCommentCommunityPost = "api/posts/deleteCommentCommunityPost/";
+  static const String toggleLikeCommentCommunityPost = "api/posts/toggleLikeCommentCommunityPost/";
+  static const String reportPost = "users/report";
+  static const String deleteCommunityPost = "api/posts/deleteCommunityPost/";
+  static const String getSavedCommunityPostCollections = "api/posts/getSavedCommunityPostCollections/";
+  static const String saveCommunityPost = "api/posts/saveCommunityPost/";
+  static const String unsaveCommunityPost = "api/posts/unsaveCommunityPost";
+  static const String voteCommunityPost = "api/posts/voteCommunityPost";
+  
+
+
+
   
 
 }

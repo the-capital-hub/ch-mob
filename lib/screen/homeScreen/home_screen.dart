@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      Get.offAll(const SignupInfoScreen());
+      // Get.offAll(const SignupInfoScreen());
       _fetchAllApis().then((val) {
         {
           isLoading.value = false;
@@ -980,13 +980,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   // bool isLiked = false;
   feedBottomSheet(index) {
-    return Get.bottomSheet(
-        backgroundColor: AppColors.blackCard,
-        Container(
-          height: 251,
-          width: Get.width,
-          padding: const EdgeInsets.all(12),
-          decoration: const BoxDecoration(),
+    String reportReason = "";
+    bool isExpanded = false;
+    return Get.bottomSheet(backgroundColor: AppColors.blackCard,
+        StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+      return Container(
+        // height: 251,
+        width: Get.width,
+        padding: const EdgeInsets.all(12),
+        decoration: const BoxDecoration(),
+        child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
@@ -1052,11 +1055,136 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
+                    if (homeController.postList[index].isMyPost!)
+                      Theme(
+                        data: ThemeData(
+                          dividerColor: Colors.transparent,
+                        ),
+                        child: ExpansionTile(
+                          collapsedIconColor: AppColors.white,
+                          iconColor: AppColors.white,
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(Icons.report, color: AppColors.white),
+                              const SizedBox(width: 16),
+                              TextWidget(
+                                text: "Report",
+                                textSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.white,
+                              ),
+                            ],
+                          ),
+                          onExpansionChanged: (bool expanded) {
+                            setState(() {
+                              isExpanded = expanded;
+                            });
+                          },
+                          childrenPadding: const EdgeInsets.only(left: 40),
+                          children: [
+                            ListTile(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              dense: true,
+                              visualDensity: VisualDensity.compact,
+                              title: const TextWidget(
+                                text: "Harassment",
+                                textSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              tileColor: reportReason == "Harassment"
+                                  ? AppColors.white38
+                                  : null,
+                              onTap: () {
+                                reportReason = "Harassment";
+                                setState(() {});
+                              },
+                            ),
+                            ListTile(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              dense: true,
+                              visualDensity: VisualDensity.compact,
+                              title: const TextWidget(
+                                text: "Spam",
+                                textSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              tileColor: reportReason == "Spam"
+                                  ? AppColors.white38
+                                  : null,
+                              onTap: () {
+                                reportReason = "Spam";
+                                setState(() {});
+                              },
+                            ),
+                            ListTile(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              dense: true,
+                              visualDensity: VisualDensity.compact,
+                              title: const TextWidget(
+                                text: "Fraud or scam",
+                                textSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              tileColor: reportReason == "Fraud or scam"
+                                  ? AppColors.white38
+                                  : null,
+                              onTap: () {
+                                reportReason = "Fraud or scam";
+                                setState(() {});
+                              },
+                            ),
+                            ListTile(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              dense: true,
+                              visualDensity: VisualDensity.compact,
+                              title: const TextWidget(
+                                text: "Hateful Speech",
+                                textSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              tileColor: reportReason == "Hateful Speech"
+                                  ? AppColors.white38
+                                  : null,
+                              onTap: () {
+                                reportReason = "Hateful Speech";
+                                setState(() {});
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    const SizedBox(height: 12),
+                    if (isExpanded && reportReason != "")
+                      Padding(
+                        padding: const EdgeInsets.only(left: 43),
+                        child: AppButton.primaryButton(
+                            onButtonPressed: () {
+                              homeController
+                                  .reportPost(context,
+                                      postID: homeController
+                                          .postList[index].postId!,
+                                      reportReason: reportReason)
+                                  .then((val) {
+                                if (val) {
+                                  Get.back();
+                                  homeController.getPublicPost(1, true);
+                                }
+                              });
+                            },
+                            title: "Submit report"),
+                      )
                   ],
                 ),
             ],
           ),
-        ));
+        ),
+      );
+    }));
   }
 
   commentBottomSheet(Index) {
