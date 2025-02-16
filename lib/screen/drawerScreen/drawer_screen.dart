@@ -10,6 +10,7 @@ import 'package:capitalhub_crm/screen/communityScreen/communityLandingScreen/com
 import 'package:capitalhub_crm/screen/communityScreen/create_community_over_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/create_community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/create_community_start_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/explore_community_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/my_community_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/availability_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/create_new_webinar_screen.dart';
@@ -126,8 +127,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   ];
   List communitySubPages = [
     CommunityHomeScreen(),
-    CreateCommunityScreen(),
-    MyCommunityScreen()
+    MyCommunityScreen(),
+    ExploreCommunityScreen()
+    
     
   ];
   bool isExpanded = false;

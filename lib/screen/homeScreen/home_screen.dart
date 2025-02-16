@@ -672,7 +672,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         InkWell(
                           onTap: () {
                             sharePostPopup(context,
-                                homeController.postList[index].postId!);
+                                homeController.postList[index].postId!,"");
                           },
                           child: Icon(
                             Icons.mobile_screen_share_rounded,
