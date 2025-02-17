@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../utils/appcolors/app_colors.dart';
 import '../../../widget/textwidget/text_widget.dart';
+import '../../homeScreen/home_screen.dart';
 import '../exploreScreen/explore_screen_inv.dart';
 import '../homeScreen/home_screen_inv.dart';
 import '../profileScreen/profile_screen_inv.dart';
@@ -29,7 +30,8 @@ class _LandingScreenInvestorState extends State<LandingScreenInvestor> {
   ];
   List title = ["Home", "Explore", "My Schedule", "Syndicates", "Profile"];
   List screen = [
-    const HomeScreenInvestor(),
+    // const HomeScreenInvestor(),
+    const HomeScreen(),
     const ExploreScreenInvestor(),
     const ExploreScreenInvestor(),
     const SyndicatesScreenInvestor(),

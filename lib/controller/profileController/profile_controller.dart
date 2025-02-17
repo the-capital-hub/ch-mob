@@ -48,10 +48,10 @@ class ProfileController extends GetxController {
   Future getProfilePost(tabindex) async {
     try {
       var tabValue = tabindex == 0
-          ? "featured"
+          ? "mypost"
           : tabindex == 1
-              ? "company"
-              : "mypost";
+              ? "featured"
+              : "company";
       profilePosts.clear();
       isTabLoading.value = true;
       var response = await ApiBase.getRequest(

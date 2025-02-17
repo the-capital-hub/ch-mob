@@ -43,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   ProfileController profileController = Get.find();
 
   late TabController _tabController;
-  final List<String> tabs = ["Featured Posts", "Company Update", "My Posts"];
+  final List<String> tabs = ["My Posts","Featured Posts", "Company Update"];
   PageController _pageController = PageController();
   int _currentIndex = 0;
   double profilePercentageValue = 0;
@@ -53,15 +53,19 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   void initState() {
     _tabController = TabController(length: tabs.length, vsync: this);
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async{
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
       await profileController.getProfile();
       await profileController.getProfilePost(0);
-      profilePercentageValue = double.parse(profileController.profileData.banner!.profileCompletionPercentage.replaceAll('%', ''));
-      profileValueInDecimal = profilePercentageValue/100;
-      print("PROFILEVALUE"+profileValueInDecimal.toString());
-      companyPercentageValue = double.parse(profileController.profileData.banner!.companyCompletionPercentage.replaceAll('%', ''));
-      companyValueInDecimal = companyPercentageValue/100;
-      print("PROFILEVALUE"+companyValueInDecimal.toString());
+      profilePercentageValue = double.parse(profileController
+          .profileData.banner!.profileCompletionPercentage
+          .replaceAll('%', ''));
+      profileValueInDecimal = profilePercentageValue / 100;
+      print("PROFILEVALUE" + profileValueInDecimal.toString());
+      companyPercentageValue = double.parse(profileController
+          .profileData.banner!.companyCompletionPercentage
+          .replaceAll('%', ''));
+      companyValueInDecimal = companyPercentageValue / 100;
+      print("PROFILEVALUE" + companyValueInDecimal.toString());
     });
     super.initState();
   }
@@ -74,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   String reportReason = "";
   bool isExpanded = false;
- 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -100,336 +104,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     .profileData.banner!.isCompanyAdded &&
                                 profileController
                                     .profileData.banner!.isPasswordSet))
-                                    
-                              ExpansionTile(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      12), // Rounded corners
-                                ),
-                                collapsedShape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      12), // Rounded corners
-                                ),
-                                backgroundColor: AppColors.primary,
-                                collapsedBackgroundColor: AppColors.primary,
-                                collapsedIconColor: AppColors.white,
-                                iconColor: AppColors.white,
-                                title: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Icon(Icons.rocket_launch,
-                                        color: AppColors.white),
-                                    const SizedBox(width: 5),
-                                    TextWidget(
-                                        text: "Boost Your Presence!",
-                                        textSize: 16,
-                                        color: AppColors.white,
-                                        fontWeight: FontWeight.bold),
-                                  ],
-                                ),
-                                onExpansionChanged: (bool expanded) {
-                                  setState(() {
-                                    isExpanded =
-                                        expanded; // Track expansion state
-                                  });
-                                },
-                                children: [
-                                  Container(
-                                    color: AppColors.blackCard,
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        if (!profileController.profileData
-                                            .banner!.isProfileCompleted)
-                                            
-                                          InkWell(
-                                            onTap: (){Get.to(() => PersonalInfoScreen());},
-                                            child: Card(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        5), // Rounded corners
-                                              ),
-                                              color: AppColors.primary
-                                                  .withOpacity(0.1),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        TextWidget(
-                                                          text:
-                                                              "Stand Out with Your Profile",
-                                                          textSize: 16,
-                                                          color:
-                                                              AppColors.primary,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                        Card(
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5), // Rounded corners
-                                                          ),
-                                                          color: AppColors
-                                                              .primary
-                                                              .withOpacity(0.2),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: TextWidget(
-                                                                text:
-                                                                    "${profileController.profileData.banner!.profileCompletionPercentage} Complete",
-                                                                textSize: 13,
-                                                                color: AppColors
-                                                                    .primary,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    // Title section
-                                                          
-                                                    // Progress Bar Section
-                                                    SizedBox(
-                                                        height:
-                                                            4), // Add spacing for better readability
-                                                    LinearProgressIndicator(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                      backgroundColor:
-                                                          AppColors.black,
-                                                      color: AppColors.primary,
-                                                      value:
-                                                          profileValueInDecimal, // Progress value between 0.0 and 1.0
-                                                      minHeight:
-                                                          6.0, // Height of the progress bar
-                                                    ),
-                                                          
-                                                    // Progress description text
-                                                    SizedBox(
-                                                        height:
-                                                            8), // Add spacing
-                                                    TextWidget(
-                                                      text:
-                                                          "Showcase your expertise and make a lasting impression",
-                                                      textSize: 12,
-                                                      color: AppColors.white,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                           if (!profileController.profileData
-                                            .banner!.isCompanyAdded)
-                                        InkWell(
-                                          onTap: (){Get.to(() => const CompanyScreen());},
-                                          child: Card(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        5), // Rounded corners
-                                              ),
-                                              color: AppColors.primary
-                                                  .withOpacity(0.1),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        TextWidget(
-                                                          text:
-                                                              "Add Your Company to Shine",
-                                                          textSize: 16,
-                                                          color:
-                                                              AppColors.primary,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                        Card(
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5), // Rounded corners
-                                                          ),
-                                                          color: AppColors
-                                                              .primary
-                                                              .withOpacity(0.2),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: TextWidget(
-                                                                text:
-                                                                    "${profileController.profileData.banner!.companyCompletionPercentage} Complete",
-                                                                textSize: 13,
-                                                                color: AppColors
-                                                                    .primary,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    // Title section
-                                                          
-                                                    // Progress Bar Section
-                                                    SizedBox(
-                                                        height:
-                                                            4), // Add spacing for better readability
-                                                    LinearProgressIndicator(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                      backgroundColor:
-                                                          AppColors.black,
-                                                      color: AppColors.primary,
-                                                      value:
-                                                          companyValueInDecimal, // Progress value between 0.0 and 1.0
-                                                      minHeight:
-                                                          6.0, // Height of the progress bar
-                                                    ),
-                                                          
-                                                    // Progress description text
-                                                    SizedBox(
-                                                        height:
-                                                            8), // Add spacing
-                                                    TextWidget(
-                                                      text:
-                                                          "Put your company in the spotlight and attract opportunities",
-                                                      textSize: 12,
-                                                      color: AppColors.white,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                        ),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        if (!profileController.profileData
-                                            .banner!.isPasswordSet)
-                                            
-                                        InkWell(
-                                          onTap: (){Get.to(() => const ManageAccountScreen());},
-                                          child: Card(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        5), // Rounded corners
-                                              ),
-                                              color: AppColors.primary
-                                                  .withOpacity(0.1),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        TextWidget(
-                                                          text:
-                                                              "Secure Your Journey",
-                                                          textSize: 16,
-                                                          color:
-                                                              AppColors.primary,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                        Card(
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5), // Rounded corners
-                                                          ),
-                                                          color: AppColors
-                                                              .primary
-                                                              .withOpacity(0.2),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: TextWidget(
-                                                                text:
-                                                                    "Essential",
-                                                                textSize: 13,
-                                                                color: AppColors
-                                                                    .primary,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                   
-                                                    SizedBox(
-                                                        height:
-                                                            8), // Add spacing
-                                                    TextWidget(
-                                                      text:
-                                                          "Protect your growing network with a strong password",
-                                                      textSize: 12,
-                                                      color: AppColors.white,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                        ),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            SizedBox(
+                              boostProfile(),
+                            const SizedBox(
                               height: 12,
                             ),
                             CircleAvatar(
@@ -584,7 +260,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             //     ),
                             //   ),
                             // ),
-                        
+
                             // const SizedBox(height: 14),
                             // Align(
                             //     alignment: Alignment.bottomLeft,
@@ -658,9 +334,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                             //         ),
                             //       ),
                             //     )),
-                        
+
                             const SizedBox(height: 12),
-                        
+
                             TabBar(
                               indicator:
                                   const BoxDecoration(), // Removes the indicator
@@ -912,7 +588,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         ),
                             ),
                             const SizedBox(height: 8),
-                        
+
                             Divider(
                               color: AppColors.whiteCard,
                               thickness: 0.5,
@@ -1018,7 +694,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             //   ),
                             // ),
                             // sizedTextfield,
-                        
+
                             Card(
                               color: AppColors.blackCard,
                               surfaceTintColor: AppColors.blackCard,
@@ -1094,7 +770,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                 separatorBuilder:
                                                     (BuildContext context,
                                                         int index) {
-                                                  return SizedBox(
+                                                  return const SizedBox(
                                                     height: 4,
                                                   );
                                                 },
@@ -1129,7 +805,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                                       index]
                                                                   .companyLogo),
                                                         ),
-                                                        SizedBox(width: 8),
+                                                        const SizedBox(
+                                                            width: 8),
                                                         Expanded(
                                                           child: Column(
                                                             crossAxisAlignment:
@@ -1222,9 +899,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                     .user!
                                                     .education!
                                                     .length,
-                                                separatorBuilder:
-                                                    (context, index) =>
-                                                        SizedBox(height: 4),
+                                                separatorBuilder: (context,
+                                                        index) =>
+                                                    const SizedBox(height: 4),
                                                 itemBuilder:
                                                     (BuildContext context,
                                                         int index) {
@@ -1256,7 +933,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                                       index]
                                                                   .educationLogo),
                                                         ),
-                                                        SizedBox(width: 8),
+                                                        const SizedBox(
+                                                            width: 8),
                                                         Expanded(
                                                           child: Column(
                                                             crossAxisAlignment:
@@ -1489,11 +1167,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                             //         ],
                             //       ),
                             //     )),
-                            if (profileController
-                                .profileData.user!.recentConnections!.isNotEmpty)
+                            if (profileController.profileData.user!
+                                .recentConnections!.isNotEmpty)
                               sizedTextfield,
-                            if (profileController
-                                .profileData.user!.recentConnections!.isNotEmpty)
+                            if (profileController.profileData.user!
+                                .recentConnections!.isNotEmpty)
                               const Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 4),
                                 child: Row(
@@ -1511,8 +1189,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   ],
                                 ),
                               ),
-                            if (profileController
-                                .profileData.user!.recentConnections!.isNotEmpty)
+                            if (profileController.profileData.user!
+                                .recentConnections!.isNotEmpty)
                               SizedBox(
                                 height: 179,
                                 child: ListView.builder(
@@ -1590,18 +1268,18 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   scrollDirection: Axis.horizontal,
                                   children: [
                                     mileStoneWidget(
-                                        profileController
-                                            .profileData.user!.milestoneProfile!,
+                                        profileController.profileData.user!
+                                            .milestoneProfile!,
                                         "User profile",
                                         () {}),
                                     mileStoneWidget(
-                                        profileController
-                                            .profileData.user!.milestoneCompany!,
+                                        profileController.profileData.user!
+                                            .milestoneCompany!,
                                         "Company profile",
                                         () {}),
                                     mileStoneWidget(
-                                        profileController
-                                            .profileData.user!.milestoneOnelink!,
+                                        profileController.profileData.user!
+                                            .milestoneOnelink!,
                                         "One link",
                                         () {}),
                                     mileStoneWidget(
@@ -1693,6 +1371,254 @@ class _ProfileScreenState extends State<ProfileScreen>
                   )),
           ),
         ));
+  }
+
+  boostProfile() {
+    return ExpansionTile(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12), // Rounded corners
+      ),
+      collapsedShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12), // Rounded corners
+      ),
+      backgroundColor: AppColors.primary,
+      collapsedBackgroundColor: AppColors.primary,
+      collapsedIconColor: AppColors.white,
+      iconColor: AppColors.white,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Icon(Icons.rocket_launch, color: AppColors.white),
+          const SizedBox(width: 5),
+          TextWidget(
+              text: "Boost Your Presence!",
+              textSize: 16,
+              color: AppColors.white,
+              fontWeight: FontWeight.bold),
+        ],
+      ),
+      onExpansionChanged: (bool expanded) {
+        setState(() {
+          isExpanded = expanded; // Track expansion state
+        });
+      },
+      children: [
+        Container(
+          color: AppColors.blackCard,
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 4,
+              ),
+              if (!profileController.profileData.banner!.isProfileCompleted)
+                InkWell(
+                  onTap: () {
+                    Get.to(() => PersonalInfoScreen());
+                  },
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5), // Rounded corners
+                    ),
+                    color: AppColors.primary.withOpacity(0.1),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const TextWidget(
+                                text: "Stand Out with Your Profile",
+                                textSize: 16,
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      5), // Rounded corners
+                                ),
+                                color: AppColors.primary.withOpacity(0.2),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TextWidget(
+                                      text:
+                                          "${profileController.profileData.banner!.profileCompletionPercentage} Complete",
+                                      textSize: 13,
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                          // Title section
+
+                          // Progress Bar Section
+                          const SizedBox(
+                              height: 4), // Add spacing for better readability
+                          LinearProgressIndicator(
+                            borderRadius: BorderRadius.circular(5),
+                            backgroundColor: AppColors.black,
+                            color: AppColors.primary,
+                            value:
+                                profileValueInDecimal, // Progress value between 0.0 and 1.0
+                            minHeight: 6.0, // Height of the progress bar
+                          ),
+
+                          // Progress description text
+                          const SizedBox(height: 8), // Add spacing
+                          TextWidget(
+                            text:
+                                "Showcase your expertise and make a lasting impression",
+                            textSize: 12,
+                            color: AppColors.white,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              const SizedBox(
+                height: 4,
+              ),
+              if (!profileController.profileData.banner!.isCompanyAdded)
+                InkWell(
+                  onTap: () {
+                    Get.to(() => const CompanyScreen());
+                  },
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5), // Rounded corners
+                    ),
+                    color: AppColors.primary.withOpacity(0.1),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const TextWidget(
+                                text: "Add Your Company to Shine",
+                                textSize: 16,
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      5), // Rounded corners
+                                ),
+                                color: AppColors.primary.withOpacity(0.2),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TextWidget(
+                                      text:
+                                          "${profileController.profileData.banner!.companyCompletionPercentage} Complete",
+                                      textSize: 13,
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                          // Title section
+
+                          // Progress Bar Section
+                          const SizedBox(
+                              height: 4), // Add spacing for better readability
+                          LinearProgressIndicator(
+                            borderRadius: BorderRadius.circular(5),
+                            backgroundColor: AppColors.black,
+                            color: AppColors.primary,
+                            value:
+                                companyValueInDecimal, // Progress value between 0.0 and 1.0
+                            minHeight: 6.0, // Height of the progress bar
+                          ),
+
+                          // Progress description text
+                          const SizedBox(height: 8), // Add spacing
+                          TextWidget(
+                            text:
+                                "Put your company in the spotlight and attract opportunities",
+                            textSize: 12,
+                            color: AppColors.white,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              const SizedBox(
+                height: 4,
+              ),
+              if (!profileController.profileData.banner!.isPasswordSet)
+                InkWell(
+                  onTap: () {
+                    Get.to(() => const ManageAccountScreen());
+                  },
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5), // Rounded corners
+                    ),
+                    color: AppColors.primary.withOpacity(0.1),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const TextWidget(
+                                text: "Secure Your Journey",
+                                textSize: 16,
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      5), // Rounded corners
+                                ),
+                                color: AppColors.primary.withOpacity(0.2),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: TextWidget(
+                                      text: "Essential",
+                                      textSize: 13,
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 8), // Add spacing
+                          TextWidget(
+                            text:
+                                "Protect your growing network with a strong password",
+                            textSize: 12,
+                            color: AppColors.white,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              const SizedBox(
+                height: 4,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   mileStoneWidget(Milestone milestone, String title, Function() ontap) {

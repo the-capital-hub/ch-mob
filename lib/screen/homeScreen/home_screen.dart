@@ -48,7 +48,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   HomeController homeController = Get.put(HomeController());
   NewsController newsController = Get.put(NewsController());
   ProfileController profileController = Get.put(ProfileController());
-  NotificaitonController notificaitonController = Get.find();
+  NotificaitonController notificaitonController =
+      Get.put(NotificaitonController());
   late AnimationController _animationController;
   late Animation<double> _opacityAnimation;
   late Animation<double> _scaleAnimation;
@@ -272,10 +273,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                     ),
                     if (isPaginationLoad)
-                      const Positioned(
+                      Positioned(
                           bottom: 10,
                           child: SpinKitThreeBounce(
-                              size: 30, color: AppColors.primary))
+                              size: 30,
+                              color: GetStoreData.getStore.read('isInvestor')
+                                  ? AppColors.primaryInvestor
+                                  : AppColors.primary))
                   ],
                 )),
         ));
@@ -392,7 +396,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               : "Unfollow",
                                       textSize: 13,
                                       fontWeight: FontWeight.w500,
-                                      color: AppColors.primary,
+                                      color: GetStoreData.getStore
+                                              .read('isInvestor')
+                                          ? AppColors.primaryInvestor
+                                          : AppColors.primary,
                                     ),
                                   )
                                 ],
@@ -410,17 +417,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           ),
                         ),
                         const SizedBox(width: 12),
-                        if (homeController.postList[index].isMyPost!)
-                          InkWell(
-                            onTap: () {
-                              feedBottomSheet(index);
-                            },
-                            child: Icon(
-                              Icons.more_vert_rounded,
-                              color: AppColors.whiteCard,
-                              size: 20,
-                            ),
+                        InkWell(
+                          onTap: () {
+                            feedBottomSheet(index);
+                          },
+                          child: Icon(
+                            Icons.more_vert_rounded,
+                            color: AppColors.whiteCard,
+                            size: 20,
                           ),
+                        ),
                       ],
                     ),
                   ),
@@ -532,7 +538,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: _currentIndex == index
-                                          ? AppColors.primary
+                                          ? GetStoreData.getStore
+                                                  .read('isInvestor')
+                                              ? AppColors.primaryInvestor
+                                              : AppColors.primary
                                           : AppColors.grey,
                                     ),
                                   ),
@@ -999,10 +1008,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     borderRadius: BorderRadius.circular(12),
                     color: AppColors.whiteCard),
               ),
-              if (homeController.postList[index].isMyPost!)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (homeController.postList[index].isMyPost!)
                     ListTile(
                       onTap: () {
                         homeController
@@ -1019,6 +1028,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
+                  if (homeController.postList[index].isMyPost!)
                     ListTile(
                       onTap: () {
                         homeController
@@ -1038,6 +1048,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
+                  if (homeController.postList[index].isMyPost!)
                     ListTile(
                       onTap: () {
                         homeController
@@ -1055,131 +1066,130 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    if (homeController.postList[index].isMyPost!)
-                      Theme(
-                        data: ThemeData(
-                          dividerColor: Colors.transparent,
-                        ),
-                        child: ExpansionTile(
-                          collapsedIconColor: AppColors.white,
-                          iconColor: AppColors.white,
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(Icons.report, color: AppColors.white),
-                              const SizedBox(width: 16),
-                              TextWidget(
-                                text: "Report",
-                                textSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.white,
-                              ),
-                            ],
+                  // if (homeController.postList[index].isMyPost!)
+                  Theme(
+                    data: ThemeData(
+                      dividerColor: Colors.transparent,
+                    ),
+                    child: ExpansionTile(
+                      collapsedIconColor: AppColors.white,
+                      iconColor: AppColors.white,
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(Icons.report, color: AppColors.white),
+                          const SizedBox(width: 16),
+                          TextWidget(
+                            text: "Report",
+                            textSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.white,
                           ),
-                          onExpansionChanged: (bool expanded) {
-                            setState(() {
-                              isExpanded = expanded;
+                        ],
+                      ),
+                      onExpansionChanged: (bool expanded) {
+                        setState(() {
+                          isExpanded = expanded;
+                        });
+                      },
+                      childrenPadding: const EdgeInsets.only(left: 40),
+                      children: [
+                        ListTile(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          dense: true,
+                          visualDensity: VisualDensity.compact,
+                          title: const TextWidget(
+                            text: "Harassment",
+                            textSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          tileColor: reportReason == "Harassment"
+                              ? AppColors.white38
+                              : null,
+                          onTap: () {
+                            reportReason = "Harassment";
+                            setState(() {});
+                          },
+                        ),
+                        ListTile(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          dense: true,
+                          visualDensity: VisualDensity.compact,
+                          title: const TextWidget(
+                            text: "Spam",
+                            textSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          tileColor:
+                              reportReason == "Spam" ? AppColors.white38 : null,
+                          onTap: () {
+                            reportReason = "Spam";
+                            setState(() {});
+                          },
+                        ),
+                        ListTile(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          dense: true,
+                          visualDensity: VisualDensity.compact,
+                          title: const TextWidget(
+                            text: "Fraud or scam",
+                            textSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          tileColor: reportReason == "Fraud or scam"
+                              ? AppColors.white38
+                              : null,
+                          onTap: () {
+                            reportReason = "Fraud or scam";
+                            setState(() {});
+                          },
+                        ),
+                        ListTile(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          dense: true,
+                          visualDensity: VisualDensity.compact,
+                          title: const TextWidget(
+                            text: "Hateful Speech",
+                            textSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          tileColor: reportReason == "Hateful Speech"
+                              ? AppColors.white38
+                              : null,
+                          onTap: () {
+                            reportReason = "Hateful Speech";
+                            setState(() {});
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  if (isExpanded && reportReason != "")
+                    Padding(
+                      padding: const EdgeInsets.only(left: 43),
+                      child: AppButton.primaryButton(
+                          onButtonPressed: () {
+                            homeController
+                                .reportPost(context,
+                                    postID:
+                                        homeController.postList[index].postId!,
+                                    reportReason: reportReason)
+                                .then((val) {
+                              if (val) {
+                                Get.back();
+                                homeController.getPublicPost(1, true);
+                              }
                             });
                           },
-                          childrenPadding: const EdgeInsets.only(left: 40),
-                          children: [
-                            ListTile(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              dense: true,
-                              visualDensity: VisualDensity.compact,
-                              title: const TextWidget(
-                                text: "Harassment",
-                                textSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              tileColor: reportReason == "Harassment"
-                                  ? AppColors.white38
-                                  : null,
-                              onTap: () {
-                                reportReason = "Harassment";
-                                setState(() {});
-                              },
-                            ),
-                            ListTile(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              dense: true,
-                              visualDensity: VisualDensity.compact,
-                              title: const TextWidget(
-                                text: "Spam",
-                                textSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              tileColor: reportReason == "Spam"
-                                  ? AppColors.white38
-                                  : null,
-                              onTap: () {
-                                reportReason = "Spam";
-                                setState(() {});
-                              },
-                            ),
-                            ListTile(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              dense: true,
-                              visualDensity: VisualDensity.compact,
-                              title: const TextWidget(
-                                text: "Fraud or scam",
-                                textSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              tileColor: reportReason == "Fraud or scam"
-                                  ? AppColors.white38
-                                  : null,
-                              onTap: () {
-                                reportReason = "Fraud or scam";
-                                setState(() {});
-                              },
-                            ),
-                            ListTile(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              dense: true,
-                              visualDensity: VisualDensity.compact,
-                              title: const TextWidget(
-                                text: "Hateful Speech",
-                                textSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              tileColor: reportReason == "Hateful Speech"
-                                  ? AppColors.white38
-                                  : null,
-                              onTap: () {
-                                reportReason = "Hateful Speech";
-                                setState(() {});
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    const SizedBox(height: 12),
-                    if (isExpanded && reportReason != "")
-                      Padding(
-                        padding: const EdgeInsets.only(left: 43),
-                        child: AppButton.primaryButton(
-                            onButtonPressed: () {
-                              homeController
-                                  .reportPost(context,
-                                      postID: homeController
-                                          .postList[index].postId!,
-                                      reportReason: reportReason)
-                                  .then((val) {
-                                if (val) {
-                                  Get.back();
-                                  homeController.getPublicPost(1, true);
-                                }
-                              });
-                            },
-                            title: "Submit report"),
-                      )
-                  ],
-                ),
+                          title: "Submit report"),
+                    )
+                ],
+              ),
             ],
           ),
         ),

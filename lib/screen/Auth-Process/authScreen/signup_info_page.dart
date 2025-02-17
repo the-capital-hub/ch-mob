@@ -1,15 +1,10 @@
 import 'dart:async';
-
-import 'package:capitalhub_crm/controller/homeController/home_controller.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
-
 import '../../../utils/constant/app_var.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../controller/loginController/login_controller.dart';
 import '../../../utils/appcolors/app_colors.dart';
-import '../../../utils/constant/asset_constant.dart';
-import '../../../utils/helper/helper_sncksbar.dart';
 import '../../../widget/buttons/button.dart';
 import '../../../widget/text_field/text_field.dart';
 import '../../../widget/textwidget/text_widget.dart';
@@ -24,23 +19,9 @@ class SignupInfoScreen extends StatefulWidget {
 class _SignupInfoScreenState extends State<SignupInfoScreen> {
   LoginController loginMobileController = Get.put(LoginController());
   Timer? _debounce;
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   GlobalKey<FormState> formkey = GlobalKey();
-
   void onUserNameChanged(String userName) {
-    // Cancel any previous timer to wait for the next change
     if (_debounce?.isActive ?? false) _debounce?.cancel();
-
-    // Start a new timer with a 1000ms delay
     _debounce = Timer(const Duration(milliseconds: 1000), () async {
       await loginMobileController.checkUsernameAvailability(userName);
       setState(() {
@@ -58,7 +39,7 @@ class _SignupInfoScreenState extends State<SignupInfoScreen> {
           body: SafeArea(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(12),
                 child: Form(
                   key: formkey,
                   child: Center(
@@ -111,6 +92,7 @@ class _SignupInfoScreenState extends State<SignupInfoScreen> {
                             valText: "Please enter user name",
                             hintText: "Enter User Name"),
                         sizedTextfield,
+                        if(loginMobileController.suggestions.isNotEmpty)
                         Container(
                           width: Get.width,
                           decoration: BoxDecoration(
@@ -172,14 +154,9 @@ class _SignupInfoScreenState extends State<SignupInfoScreen> {
                   ? AppColors.primaryInvestor
                   : AppColors.primary,
               onButtonPressed: () {
-                // Get.offAll(SelectRoleScreen());
-                if (loginMobileController.firstNameController.text.isNotEmpty &&
-                    loginMobileController.lastNameController.text.isNotEmpty &&
-                    loginMobileController.emailController.text.isNotEmpty &&
-                    loginMobileController.userNameController.text.isNotEmpty)
-                  {loginMobileController.saveRequiredData(context);}
-
-                // Get.back();
+                if (formkey.currentState!.validate()) {
+                  loginMobileController.saveRequiredData(context);
+                }
               },
             ),
           ),

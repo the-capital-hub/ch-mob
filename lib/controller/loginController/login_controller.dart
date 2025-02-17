@@ -149,7 +149,7 @@ class LoginController extends GetxController {
   //     return "";
   //   }
   // }
-  
+
   Future signupApi(context) async {
     Helper.loader(context);
     var body = {
@@ -170,7 +170,6 @@ class LoginController extends GetxController {
     }
   }
 
-  
   Future verifyOtpApi(context) async {
     Helper.loader(context);
     var body = {
@@ -233,17 +232,14 @@ class LoginController extends GetxController {
     }
   }
 
-
-
-
   Future verifySignupOtpApi(context) async {
     Helper.loader(context);
     var body = {
       "phoneNumber": "91${loginPhoneController.text}",
       "orderId": orderId,
       "otp": otpcontroller.text,
-      "isInvestor" : selectedRoleIndex == 0 ? false : true,
-      "profilePicture" : base64
+      "isInvestor": selectedRoleIndex == 0 ? false : true,
+      "profilePicture": base64
     };
     var response = await ApiBase.postRequest(
         body: body, extendedURL: ApiUrl.verifyOtpForSignup, withToken: false);
@@ -271,28 +267,33 @@ class LoginController extends GetxController {
         ),
       );
 
-
-
-      print("PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCcc${GetStoreData.getStore.read('id')}");
-      print("PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCCCC${GetStoreData.getStore.read('name')}");
-      print("PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCCCc${GetStoreData.getStore.read('email')}");
-       print("PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCC${GetStoreData.getStore.read('profile_image')}");
-        print("PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${GetStoreData.getStore.read('phone')}");
-        print("PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${GetStoreData.getStore.read('access_token')}");
-        print("PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${GetStoreData.getStore.read('isInvestor')}");
+      print(
+          "PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCcc${GetStoreData.getStore.read('id')}");
+      print(
+          "PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCCCC${GetStoreData.getStore.read('name')}");
+      print(
+          "PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCCCc${GetStoreData.getStore.read('email')}");
+      print(
+          "PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCC${GetStoreData.getStore.read('profile_image')}");
+      print(
+          "PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${GetStoreData.getStore.read('phone')}");
+      print(
+          "PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${GetStoreData.getStore.read('access_token')}");
+      print(
+          "PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${GetStoreData.getStore.read('isInvestor')}");
 
       // log.log(GetStoreData.getStore.read('access_token'));
-      
-        if (GetStoreData.getStore.read('isInvestor') == false &&
-            selectedRoleIndex == 0) {
-          Get.offAll(const LandingScreen());
-        } else if (GetStoreData.getStore.read('isInvestor') == true &&
-            selectedRoleIndex == 1) {
-          Get.offAll(const LandingScreenInvestor(),
-              transition: Transition.fadeIn, duration: transDuration);
-        } else {
-          HelperSnackBar.snackBar("Error", "Choose a correct role");
-        }
+
+      if (GetStoreData.getStore.read('isInvestor') == false &&
+          selectedRoleIndex == 0) {
+        Get.offAll(const LandingScreen());
+      } else if (GetStoreData.getStore.read('isInvestor') == true &&
+          selectedRoleIndex == 1) {
+        Get.offAll(const LandingScreenInvestor(),
+            transition: Transition.fadeIn, duration: transDuration);
+      } else {
+        HelperSnackBar.snackBar("Error", "Choose a correct role");
+      }
       // } else {
       //   //signup onboarding process
       //   log.log("message ok");
@@ -376,13 +377,9 @@ class LoginController extends GetxController {
       GoogleSignInAuthentication auth) async {
     var body = {
       "credential": {
-        
         "email": user.email,
         "serverAuthCode": user.serverAuthCode
-       
       },
-      
-      
     };
     log.log(body.toString());
 
@@ -439,12 +436,8 @@ class LoginController extends GetxController {
     }
   }
 
-
-
-
-   List suggestions = [].obs;
+  List suggestions = [].obs;
   Future checkUsernameAvailability(userName) async {
-    
     var body = {"userName": userName};
     log.log(body.toString());
     var response = await ApiBase.postRequest(
@@ -454,8 +447,8 @@ class LoginController extends GetxController {
     log.log(response.body);
     var data = json.decode(response.body);
     if (data["status"] == true) {
-      suggestions = List.from(data["suggestions"]);   
-      print(suggestions); 
+      suggestions = List.from(data["suggestions"]);
+      print(suggestions);
       return true;
     } else {
       suggestions = List.from(data["suggestions"]);
@@ -466,20 +459,22 @@ class LoginController extends GetxController {
   }
 
   Future saveRequiredData(
-    context,) async {
-    var body = {"firstName": firstNameController.text, "lastName": lastNameController.text, "email":emailController.text, "userName": userNameController.text};
+    context,
+  ) async {
+    var body = {
+      "firstName": firstNameController.text,
+      "lastName": lastNameController.text,
+      "email": emailController.text,
+      "userName": userNameController.text
+    };
     log.log(body.toString());
     var response = await ApiBase.postRequest(
         body: body, extendedURL: ApiUrl.saveRequiredData, withToken: true);
-    // log.log(response.body);
     var data = json.decode(response.body);
     if (data["status"] == true) {
-      
       GetStoreData.storeUserData(
           id: data['data']['_id'],
-          name: data['data']['firstName'] +
-              " " +
-              data['data']['lastName'],
+          name: data['data']['firstName'] + " " + data['data']['lastName'],
           email: data['data']['email'],
           profileImage: GetStoreData.getStore.read('profile_image'),
           phone: GetStoreData.getStore.read('phone'),
@@ -487,23 +482,16 @@ class LoginController extends GetxController {
           isInvestor: GetStoreData.getStore.read('isInvestor'));
       await GetStoreDataList.storeUserList(
         UserModel(
-          id: data['data']['_id'],
-          name: data['data']['firstName'] +
-              " " +
-              data['data']['lastName'],
-          email: data['data']['email'],
-          profileImage: GetStoreData.getStore.read('profile_image'),
-          phone: GetStoreData.getStore.read('phone'),
-          authToken: GetStoreData.getStore.read('access_token'),
-          isInvestor: GetStoreData.getStore.read('isInvestor')
-        ),
+            id: data['data']['_id'],
+            name: data['data']['firstName'] + " " + data['data']['lastName'],
+            email: data['data']['email'],
+            profileImage: GetStoreData.getStore.read('profile_image'),
+            phone: GetStoreData.getStore.read('phone'),
+            authToken: GetStoreData.getStore.read('access_token'),
+            isInvestor: GetStoreData.getStore.read('isInvestor')),
       );
 
-      
-      // log.log(GetStoreData.getStore.read('access_token'));
-      
-        
-        if (GetStoreData.getStore.read('isInvestor') == false &&
+      if (GetStoreData.getStore.read('isInvestor') == false &&
           selectedRoleIndex == 0) {
         Get.offAll(const LandingScreen());
       } else if (GetStoreData.getStore.read('isInvestor') == true &&
@@ -513,20 +501,9 @@ class LoginController extends GetxController {
       } else {
         HelperSnackBar.snackBar("Error", "Choose a correct role");
       }
-      print("PPPPPPPPPPPPPPPPPP${GetStoreData.getStore.read('id')}");
-      print("PPPPPPPPPPPPPPPPPP${GetStoreData.getStore.read('name')}");
-      print("PPPPPPPPPPPPPPPPPP${GetStoreData.getStore.read('email')}");
-       print("PPPPPPPPPPPPPPPPPP${GetStoreData.getStore.read('profile_image')}");       
-        print("PPPPPPPPPPPPPPPPPP${GetStoreData.getStore.read('phone')}");
-        print("PPPPPPPPPPPPPPPPPP${GetStoreData.getStore.read('access_token')}");
-        print("PPPPPPPPPPPPPPPPPP${GetStoreData.getStore.read('isInvestor')}");
-      
     } else {
       HelperSnackBar.snackBar("Error", data["message"]);
-      
-       
- 
-      
+
       return false;
     }
   }
