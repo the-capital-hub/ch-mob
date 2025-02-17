@@ -125,6 +125,9 @@ class ApiUrl {
 
   static const String createCommunity = "Communities/createCommunity";
   static const String getCommunityById = "Communities/getCommunityById/";
+  static const String getAllCommunities = "Communities/getAllCommunities";
+  static const String getMyCommunities = "Communities/getAllCommunitiesByUserId";
+   static const String leaveCommunity = "Communities/leaveCommunity/";
   static const String sendJoinRequest = "Communities/sendJoinRequest";
   static const String getCommunityPosts = "api/posts/getCommunityPosts?page=";
   static const String likeUnlikeCommunityPost = "api/posts/likeUnlikeCommunityPost/";

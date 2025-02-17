@@ -8,10 +8,17 @@ import 'package:get/get.dart';
 import '../../utils/appcolors/app_colors.dart';
 import '../textWidget/text_widget.dart';
 
-Future<bool> sharePostPopup(BuildContext context, String postID) async {
+Future<bool> sharePostPopup(BuildContext context, String postID, String shareLink) async {
   TextEditingController whatsappMsgController = TextEditingController();
-  TextEditingController urlController = TextEditingController(
-      text: "https://www.thecapitalhub.in/post_details/$postID");
+  // TextEditingController urlController = TextEditingController(
+  //     text: "https://www.thecapitalhub.in/post_details/$postID");
+  TextEditingController urlController = TextEditingController();
+  if(postID != ""){
+    urlController.text = "https://www.thecapitalhub.in/post_details/$postID";
+  }
+  else{
+    urlController.text = shareLink;
+  }
   return await showDialog(
       context: context,
       builder: (context) => AlertDialog(

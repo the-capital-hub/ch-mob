@@ -19,6 +19,7 @@ class AppColors {
   static const Color oliveGreen = Color(0xff294136);
   static const Color brown = Color(0Xff65350F);
   static const Color darkGreen = Color(0xff40AE7C);
+  static Color green700 = Colors.green.shade700;
 
 
   

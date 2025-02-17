@@ -243,7 +243,7 @@ class LoginController extends GetxController {
     };
     var response = await ApiBase.postRequest(
         body: body, extendedURL: ApiUrl.verifyOtpForSignup, withToken: false);
-    // log.log(response.body);
+    log.log(response.body);
     var data = json.decode(response.body);
     if (data["status"] == true) {
       Get.back();
@@ -267,22 +267,6 @@ class LoginController extends GetxController {
         ),
       );
 
-      print(
-          "PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCcc${GetStoreData.getStore.read('id')}");
-      print(
-          "PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCCCC${GetStoreData.getStore.read('name')}");
-      print(
-          "PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCCCc${GetStoreData.getStore.read('email')}");
-      print(
-          "PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCC${GetStoreData.getStore.read('profile_image')}");
-      print(
-          "PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${GetStoreData.getStore.read('phone')}");
-      print(
-          "PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${GetStoreData.getStore.read('access_token')}");
-      print(
-          "PPPPPPPPPPPPPPPPPPCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC${GetStoreData.getStore.read('isInvestor')}");
-
-      // log.log(GetStoreData.getStore.read('access_token'));
 
       if (GetStoreData.getStore.read('isInvestor') == false &&
           selectedRoleIndex == 0) {
@@ -448,11 +432,10 @@ class LoginController extends GetxController {
     var data = json.decode(response.body);
     if (data["status"] == true) {
       suggestions = List.from(data["suggestions"]);
-      print(suggestions);
-      return true;
+     return true;
     } else {
       suggestions = List.from(data["suggestions"]);
-      print(suggestions);
+
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
     }
@@ -470,7 +453,7 @@ class LoginController extends GetxController {
     log.log(body.toString());
     var response = await ApiBase.postRequest(
         body: body, extendedURL: ApiUrl.saveRequiredData, withToken: true);
-    var data = json.decode(response.body);
+   var data = json.decode(response.body);
     if (data["status"] == true) {
       GetStoreData.storeUserData(
           id: data['data']['_id'],
@@ -491,7 +474,7 @@ class LoginController extends GetxController {
             isInvestor: GetStoreData.getStore.read('isInvestor')),
       );
 
-      if (GetStoreData.getStore.read('isInvestor') == false &&
+   if (GetStoreData.getStore.read('isInvestor') == false &&
           selectedRoleIndex == 0) {
         Get.offAll(const LandingScreen());
       } else if (GetStoreData.getStore.read('isInvestor') == true &&

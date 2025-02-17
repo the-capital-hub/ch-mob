@@ -855,7 +855,7 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                             sharePostPopup(
                                 context,
                                 communityHomeController
-                                    .communityPostList[index].postId!);
+                                    .communityPostList[index].postId!,"");
                           },
                           child: Icon(
                             Icons.mobile_screen_share_rounded,
