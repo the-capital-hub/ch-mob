@@ -1,4 +1,4 @@
-import 'package:capitalhub_crm/controller/communityController/communityHomeController/community_home_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityHomeController/community_home_controller.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityPostModel/community_post_model.dart';
 // import 'package:capitalhub_crm/model/01-StartupModel/profileModel/profile_post_model.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';

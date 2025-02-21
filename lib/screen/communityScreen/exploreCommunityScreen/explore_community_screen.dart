@@ -45,8 +45,8 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
           ),
           body: Obx(() => allCommunities.isLoading.value
                 ? Helper.pageLoading()
-                // : createdCommunity.createdCommunityDetails.isEmpty
-                //       ? Center(child: TextWidget(text: "No Community Available", textSize: 16))
+                : allCommunities.allCommunitiesDetails.isEmpty
+                      ? Center(child: TextWidget(text: "No Community Available", textSize: 16))
                       :
           
           
@@ -70,30 +70,31 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                                                                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                                                         
                                                                         crossAxisCount: 2, // Number of columns
-                                                                        crossAxisSpacing: 8.0, // Space between columns
-                                                                        mainAxisSpacing: 8.0, // Space between rows
+                                                                        crossAxisSpacing: 7, // Space between columns
+                                                                        mainAxisSpacing: 7, // Space between rows
                                                                         childAspectRatio: 0.9, // Adjust the aspect ratio to fit the cards
                                                                       ),
                                                                       itemBuilder: (context, index) {
                                                                         return Card(
+                                                                          margin: EdgeInsets.zero,
                                                                           color: AppColors.blackCard,
                                                                           
                                                                           shape: RoundedRectangleBorder(
                                                                             borderRadius: BorderRadius.circular(10),
                                                                           ),
                                                                           child: Padding(
-                                                                            padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 6),
+                                                                            padding: const EdgeInsets.only(top: 16,right: 7),
                                                                             child: Column(
                                                                               children: [
                                                                                 CircleAvatar(
                                                                                                               foregroundImage: NetworkImage(allCommunities.allCommunitiesDetails[index].image.toString()),
                                                                                                             
                                                                                                             ),
-                                                                                                             
-                                                                                                            TextWidget(text: allCommunities.allCommunitiesDetails[index].name, textSize: 20,fontWeight: FontWeight.w500,),
-                                                                                                            SizedBox(height: 10,),
+                                                                                                             SizedBox(height: 6,),
+                                                                                                            TextWidget(text: allCommunities.allCommunitiesDetails[index].name, textSize: 13,fontWeight: FontWeight.w500,),
+                                                                                                            SizedBox(height: 8,),
                                                                                                             TextWidget(text: allCommunities.allCommunitiesDetails[index].size, textSize: 13,color: AppColors.primary,),
-                                                                                                            SizedBox(height: 10,),
+                                                                                                            SizedBox(height: 8,),
                                                                                                             Row(
                                                                                                               mainAxisAlignment: MainAxisAlignment.center,
                                                                                                           children: [TextWidget(text: "${allCommunities.allCommunitiesDetails[index].members.length.toString()} Members", textSize: 9), SizedBox(width: 8,),Align(
@@ -103,7 +104,7 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                                                                                                           ),SizedBox(width: 8,),TextWidget(text: allCommunities.allCommunitiesDetails[index].createdAtTimeAgo, textSize: 9),],
                                                                                                           
                                                                                                         ),
-                                                                                                        SizedBox(height: 5,),
+                                                                                                        SizedBox(height: 8,),
                                                                                                          Row(
                                                                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                                            children: [
@@ -114,7 +115,10 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                                                                                                                   child: TextWidget(text: allCommunities.allCommunitiesDetails[index].isAbleToJoinTag, textSize: 11),
                                                                                                                 ),),
                                                                                                                 
-                                                                                                                allCommunities.allCommunitiesDetails[index].subscription == "free"?TextWidget(text: "Free to join", textSize: 11):TextWidget(text: "Rs ${allCommunities.allCommunitiesDetails[index].amount} Subscription", textSize: 11)
+                                                                                                                allCommunities.allCommunitiesDetails[index].subscription == "free"?
+                                                                                                                TextWidget(text: "Free to join", textSize: 11):TextWidget(text: "Rs ${allCommunities.allCommunitiesDetails[index].amount}\nSubscription", textSize: 11)
+                                                                                                                
+                                                                                                                
                                                                                                            ],
                                                                                                          )
                                                                               ],

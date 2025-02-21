@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:capitalhub_crm/controller/createPostController/create_post_controller.dart';
 import 'package:capitalhub_crm/controller/oneLinkController/one_link_controller.dart';
 import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
@@ -26,7 +27,7 @@ class OneLinkScreeen extends StatefulWidget {
 class _OneLinkScreeenState extends State<OneLinkScreeen> {
   // TextEditingController fullNameController = TextEditingController();
   // TextEditingController companyNameController = TextEditingController();
-
+  CreatePostController createPostController = Get.put(CreatePostController());
   OneLinkController oneLinkController = Get.put(OneLinkController());
   PageController _pageController = PageController();
   int _currentIndex = 0;
@@ -137,10 +138,12 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                                             color: AppColors.white),
                                         InkWell(
                                           onTap: () {
-                                            Get.to(CreatePostScreen())!
+                                            createPostController.isPublicPost=false;
+                                            Get.to(CreatePostScreen(isPublicPost: false,))!
                                                 .whenComplete(() {
                                               oneLinkController
                                                   .getCompanyProfilePost();
+                                                  createPostController.isPublicPost = true;
                                             });
                                           },
                                           child: const TextWidget(

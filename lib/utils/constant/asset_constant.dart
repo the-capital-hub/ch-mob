@@ -66,4 +66,5 @@ class PngAssetPath {
   static const String fbIcon = 'assets/img/Facebook.png';
   static const String linkedinIcon = 'assets/img/Linkedin.png';
   static const String whatsappIcon = 'assets/img/Whatsapp.png';
+  static const String instagramColorIcon = 'assets/img/instagram.png';
 }

@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:capitalhub_crm/controller/communityController/communityHomeController/community_home_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityHomeController/community_home_controller.dart';
 import 'package:capitalhub_crm/controller/createPostController/create_post_controller.dart';
 import 'package:capitalhub_crm/controller/homeController/home_controller.dart';
 
@@ -453,10 +453,12 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CircleAvatar(
-                          backgroundColor: communityHomeController
+                          backgroundColor: 
+                          communityHomeController
                                   .communityPostList[index].userIsSubscribed!
                               ? AppColors.golden
-                              : AppColors.transparent,
+                              : 
+                              AppColors.transparent,
                           radius: 22,
                           child: CircleAvatar(
                             radius: 20,

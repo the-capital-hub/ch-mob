@@ -27,7 +27,8 @@ import 'polladd_dilogue.dart';
 
 class CreatePostScreen extends StatefulWidget {
   String? postid;
-  CreatePostScreen({this.postid, super.key});
+  bool? isPublicPost;
+  CreatePostScreen({this.postid, super.key, this.isPublicPost});
 
   @override
   State<CreatePostScreen> createState() => _CreatePostScreenState();
@@ -36,16 +37,22 @@ class CreatePostScreen extends StatefulWidget {
 class _CreatePostScreenState extends State<CreatePostScreen> {
   CreatePostController createPostController = Get.put(CreatePostController());
   var isLoading = false.obs;
+  
   @override
   void initState() {
+    super.initState();
     if (widget.postid != null) {
       isLoading.value = true;
+      
       createPostController.getPostDetail(widget.postid!).then((value) {
         isLoading.value = false;
+        log("Hi");
+        createPostController.isPublicPost = widget.isPublicPost!;
         setState(() {});
       });
+      
     }
-    super.initState();
+    
   }
 
   @override
