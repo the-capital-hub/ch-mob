@@ -57,7 +57,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
   }
 
   void _showOverlay() {
-    _removeOverlay(); 
+    _removeOverlay();
     _overlayEntry = _createOverlayEntry();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -168,10 +168,32 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                     size: 25,
                                   ),
                                 ),
-                              )
+                              ),
+                              if (companyController.companyData.isOwnCompany!)
+                                InkWell(
+                                onTap: () {
+                                  Get.to(AddCompanyScreen())!.whenComplete(() {
+                                    setState(() {});
+                                  });
+                                },
+                                child: Container(
+                                  height: 48,
+                                  margin: const EdgeInsets.only(top: 24,left: 6),
+                                  width: 48,
+                                  decoration: BoxDecoration(
+                                      color: AppColors.primary,
+                                      borderRadius: BorderRadius.circular(6)),
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: AppColors.whiteCard,
+                                    size: 25,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
+                        
                         companyController.isCompanyFound.value == false
                             ? const Expanded(
                                 child: Center(
