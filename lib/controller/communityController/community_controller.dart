@@ -9,6 +9,7 @@ import 'package:capitalhub_crm/utils/apiService/api_url.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 String createdCommunityId = "";
 class CommunityController extends GetxController {
@@ -67,7 +68,7 @@ class CommunityController extends GetxController {
     isLoading.value = true; // Set loading state to true
     createdCommunityDetails.clear();
     log(createdCommunityId);
-    var response = await ApiBase.getRequest(extendedURL: ApiUrl.getCommunityById+createdCommunityId);
+    var response = await ApiBase.getRequest(extendedURL: ApiUrl.getCommunityById+"676fac57e86b189878cdfb9a");
     log(response.body);
     
     var data = json.decode(response.body);
@@ -175,4 +176,6 @@ Helper.loader(context);
     }
   }
 
+
+  
 }

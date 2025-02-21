@@ -115,7 +115,7 @@ class CommunityPost {
       userImage: json["userImage"],
       userDesignation: json["userDesignation"],
       userCompany: json["userCompany"],
-      userIsSubscribed: json["userIsSubscribed"],
+      userIsSubscribed: json["userIsSubscribed"]??false,
       resharedPostData: json["resharedPostData"] != null
           ? ResharedCommunityPostData.fromJson(json["resharedPostData"])
           : null);

@@ -38,7 +38,7 @@ class AllCommunities {
     String name;
     String size;
     String subscription;
-    int? amount;
+    String amount;
     String adminId;
     bool isOpen;
     List<Member> members;
@@ -111,7 +111,7 @@ class AllCommunities {
         "image": image,
         "name": name,
         "size": size,
-        "subscription": subscription,
+        "subscription": subscriptionValues.reverse[subscription],
         "amount": amount,
         "adminId": adminId,
         "isOpen": isOpen,
@@ -127,20 +127,20 @@ class AllCommunities {
         "removed_members": List<dynamic>.from(removedMembers.map((x) => x.toJson())),
         "whatsapp_group_link": whatsappGroupLink,
         "banner_image": bannerImage,
-        "isAbleToJoinTag": isAbleToJoinTag,
+        "isAbleToJoinTag": isAbleToJoinTagValues.reverse[isAbleToJoinTag],
         "createdAtTimeAgo": createdAtTimeAgo,
     };
 }
 
-// enum IsAbleToJoinTag {
-//     ANYONE_CAN_JOIN,
-//     CLOSED
-// }
+enum IsAbleToJoinTag {
+    ANYONE_CAN_JOIN,
+    CLOSED
+}
 
-// final isAbleToJoinTagValues = EnumValues({
-//     "Anyone can join": IsAbleToJoinTag.ANYONE_CAN_JOIN,
-//     "Closed": IsAbleToJoinTag.CLOSED
-// });
+final isAbleToJoinTagValues = EnumValues({
+    "Anyone can join": IsAbleToJoinTag.ANYONE_CAN_JOIN,
+    "Closed": IsAbleToJoinTag.CLOSED
+});
 
 class Member {
     String member;
@@ -212,14 +212,14 @@ class Product {
 
 class RemovedMember {
     String member;
-    String reason;
+    String? reason;
     DateTime removedAt;
     String removedBy;
     String id;
 
     RemovedMember({
         required this.member,
-        required this.reason,
+        this.reason,
         required this.removedAt,
         required this.removedBy,
         required this.id,
@@ -243,13 +243,11 @@ class RemovedMember {
 }
 
 enum Subscription {
-    FREE,
-    PAID
+    FREE
 }
 
 final subscriptionValues = EnumValues({
-    "free": Subscription.FREE,
-    "paid": Subscription.PAID
+    "free": Subscription.FREE
 });
 
 class EnumValues<T> {

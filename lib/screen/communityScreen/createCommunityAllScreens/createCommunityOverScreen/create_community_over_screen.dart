@@ -1,5 +1,5 @@
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingScreen/community_landing_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
@@ -7,6 +7,7 @@ import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
+import 'package:capitalhub_crm/widget/dilogue/share_dilogue.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       createdCommunity.getCommunityById().then((v) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-         
+        urlController.text = createdCommunity.createdCommunityDetails[0].shareLink;
         });
       });
     });
@@ -66,8 +67,8 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
         ),
         body:Obx(() => createdCommunity.isLoading.value
                 ? Helper.pageLoading()
-                // : createdCommunity.createdCommunityDetails.isEmpty
-                //       ? Center(child: TextWidget(text: "No Community Available", textSize: 16))
+                : createdCommunity.createdCommunityDetails.isEmpty
+                      ? Center(child: TextWidget(text: "No Community Available", textSize: 16))
                       :Padding(
           padding: EdgeInsets.all(12),
           child: Column(
@@ -78,8 +79,8 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
                   sizedTextfield,
                   sizedTextfield,
                CircleAvatar(
-                radius: 50,
-                backgroundImage: NetworkImage(
+                radius: 60,
+                foregroundImage: NetworkImage(
                   createdCommunity.createdCommunityDetails[0].image,
                 ),
               ),
@@ -87,26 +88,36 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
               TextWidget(text: createdCommunity.createdCommunityDetails[0].name, textSize: 20,),
              sizedTextfield,
               createdCommunity.createdCommunityDetails[0].subscription == "free"?
-              TextWidget(text: "Any one can join for free", textSize: 13):  TextWidget(text: "Subscription Amount : ${createdCommunity.createdCommunityDetails[0].amount.toString()}", textSize: 13),
+              TextWidget(text: "Any one can join for free", textSize: 13):  TextWidget(text: "Subscription Amount : \u{20B9} ${createdCommunity.createdCommunityDetails[0].amount.toString()}", textSize: 13),
               sizedTextfield,
               Divider(
                 thickness: 1,
                 color: AppColors.white54,
               ),
-              // SizedBox(height: 5,),
+              SizedBox(height: 12,),
           
               
               
              
               
               
-              // sizedTextfield,
-              // Flexible(
-              //   child: MyCustomTextField.textField(
-              //       lableText: "Community Page URL",
-              //       hintText: "Capitalhub/Community",
-              //       controller: urlController),
-              // )
+              
+              Expanded(
+                child: MyCustomTextField.textField(
+                    lableText: "Community Page URL",
+                    hintText: "Capitalhub/Community",
+                    controller: urlController,
+                    suffixIcon: IconButton(icon: Icon(
+                        Icons.mobile_screen_share_rounded,
+                        color: AppColors.whiteCard,
+                        size: 22,
+                      ),onPressed: (){
+                        sharePostPopup(context,"",urlController.text);
+                      },)
+                    ),
+              ),
+              
+              
             ],
           ),
         ),

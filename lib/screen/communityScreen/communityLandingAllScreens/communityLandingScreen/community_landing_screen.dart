@@ -1,8 +1,10 @@
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityEventsScreen/community_events_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityHomeScreen/community_home_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPeopleScreen/community_people_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityProductsScreen/community_products_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/create_community_over_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/my_community_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityOverScreen/create_community_over_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/myCommunityScreen/my_community_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communitySettingsScreen/community_settings_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/homeScreen/home_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
@@ -29,17 +31,19 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
      PngAssetPath.categoryIcon,
      PngAssetPath.meetingIcon,
      PngAssetPath.teamIcon,
-    
-    PngAssetPath.userIcon,
+
+
+    PngAssetPath.exploreIcon
+    // PngAssetPath.userIcon,
   ];
-  List title = ["Home", "Products", "Events", "People", "Profile"];
+  List title = ["Home", "Products", "Events", "People", "Settings"];
   List screen = [
     CommunityHomeScreen(),
     CommunityProductsScreen(),
     
-    MyCommunityScreen(),
+    CommunityEventsScreen(),
     CommunityPeopleScreen(),
-    MyCommunityScreen(),
+    SettingsScreen(),
   ];
   @override
   Widget build(BuildContext context) {

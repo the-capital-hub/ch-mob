@@ -3,12 +3,13 @@ import 'dart:developer';
 
 
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
-import 'package:capitalhub_crm/screen/communityScreen/create_community_over_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityOverScreen/create_community_over_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
+import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/imagePickerWidget/image_picker_widget.dart';
@@ -81,14 +82,16 @@ class _CreateCommunityStartScreenState
                 //     ),
                 //   ),
                 base64 != ""
-                          ? CircleAvatar(
-                              radius: 60,
-                              backgroundImage: MemoryImage(
-                                  base64Decode(base64)),
-                            )
-                          : const CircleAvatar(
-                              radius: 60,
-                              foregroundImage: AssetImage(PngAssetPath.communityImg),),
+                        ? CircleAvatar(
+                            radius: 60,
+                            backgroundImage: MemoryImage(
+                                base64Decode(base64)),
+                          )
+                        : const CircleAvatar(
+                            radius: 60,
+                            child: Icon(Icons.add_photo_alternate_outlined,
+                                size: 40)),
+                  
                                   SizedBox(height: 12,),
                   InkWell(
                     splashColor: AppColors.transparent,
@@ -307,7 +310,10 @@ class _CreateCommunityStartScreenState
           padding: const EdgeInsets.only(left: 12,right:12,bottom: 12,),
           child: AppButton.primaryButton(
               onButtonPressed: () async{
-                
+                if(base64==""){
+                  HelperSnackBar.snackBar("Error", "Upload an Image for the Community.");
+                }
+                else{
                 Helper.loader(context);
               
                bool isCreated =  await CommunityController().createCommunity(nameController.text, optionsControllers[indexValue].text, subscriptionAmountController.text.isEmpty
@@ -317,6 +323,7 @@ class _CreateCommunityStartScreenState
               Get.to(() =>  const CreateCommunityOverScreen());
               
              }
+              }
             ,
               title: "Create Community"),
         ),

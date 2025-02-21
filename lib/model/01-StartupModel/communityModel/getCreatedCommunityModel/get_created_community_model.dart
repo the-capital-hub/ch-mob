@@ -29,12 +29,16 @@ class CreatedCommunity {
     String name;
     String subscription;
     dynamic amount;
+    String shareLink;
+    // String whatsappGroupLink;
 
     CreatedCommunity({
         required this.image,
         required this.name,
         required this.subscription,
         required this.amount,
+        required this.shareLink
+        // required this.whatsappGroupLink,
     });
 
     factory CreatedCommunity.fromJson(Map<String, dynamic> json) => CreatedCommunity(
@@ -42,6 +46,8 @@ class CreatedCommunity {
         name: json["name"],
         subscription: json["subscription"],
         amount: json["amount"],
+        shareLink: json["shareLink"]
+        // whatsappGroupLink: json["whatsapp_group_link"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -49,5 +55,8 @@ class CreatedCommunity {
         "name": name,
         "subscription": subscription,
         "amount": amount,
+        "shareLink":shareLink
+        // "whatsapp_group_link" : whatsappGroupLink
     };
 }
+

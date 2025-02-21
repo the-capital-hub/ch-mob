@@ -30,6 +30,9 @@ class CommunityHomeController extends GetxController {
             CommunityPostModel.fromJson(data);
         communityPostList.addAll(communityPostModel.data!);
       }
+      else{
+        HelperSnackBar.snackBar("Info", data["message"]);
+      }
     } catch (e) {
       log("getHome Feed $e");
     } finally {
@@ -175,6 +178,9 @@ class CommunityHomeController extends GetxController {
         SavedCommunityCollectionModel savedCommunityCollectionModel =
             SavedCommunityCollectionModel.fromJson(data);
         communityCollectionList.addAll(savedCommunityCollectionModel.data!);
+      }
+      else{
+        HelperSnackBar.snackBar("Info", data["message"]);
       }
     } catch (e) {
       log("getcollection $e");

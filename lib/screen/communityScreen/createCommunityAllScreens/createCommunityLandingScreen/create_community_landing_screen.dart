@@ -1,4 +1,4 @@
-import 'package:capitalhub_crm/screen/communityScreen/create_community_start_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityStartScreen/create_community_start_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
@@ -8,14 +8,14 @@ import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CreateCommunityScreen extends StatefulWidget {
-  const CreateCommunityScreen({super.key});
+class CreateCommunityLandingScreen extends StatefulWidget {
+  const CreateCommunityLandingScreen({super.key});
 
   @override
-  State<CreateCommunityScreen> createState() => _CreateCommunityScreenState();
+  State<CreateCommunityLandingScreen> createState() => _CreateCommunityScreenState();
 }
 
-class _CreateCommunityScreenState extends State<CreateCommunityScreen> {
+class _CreateCommunityScreenState extends State<CreateCommunityLandingScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
