@@ -10,8 +10,6 @@ import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:get/get.dart';
 
 class CommunityProductsAndMembersController extends GetxController{
-   CommunityController createdCommunity = Get.put(CommunityController());
-   
   var isLoading = false.obs;
   RxList<CommunityProductsAndMembers> communityProductsAndMembersList = <CommunityProductsAndMembers>[].obs;
   RxList<Product> communityProductsList = <Product>[].obs;
@@ -22,7 +20,7 @@ class CommunityProductsAndMembersController extends GetxController{
     communityProductsList.clear();
     communityMembersList.clear();
     
-    var response = await ApiBase.getRequest(extendedURL: ApiUrl.getCommunityProductsAndMembers+"6786270472a060fa8463953f");
+    var response = await ApiBase.getRequest(extendedURL: ApiUrl.getCommunityProductsAndMembers+createdCommunityId);
     log(response.body);
     
     var data = json.decode(response.body);
@@ -54,7 +52,7 @@ Helper.loader(context);
       body: {},
       
       withToken: true,
-      extendedURL: ApiUrl.buyProduct+"6786270472a060fa8463953f"+"/"+productId,
+      extendedURL: ApiUrl.buyProduct+createdCommunityId+"/"+productId,
     );
     
     

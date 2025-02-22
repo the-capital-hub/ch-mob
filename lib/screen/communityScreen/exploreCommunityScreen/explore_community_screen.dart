@@ -91,7 +91,7 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                                                                                                             
                                                                                                             ),
                                                                                                              SizedBox(height: 6,),
-                                                                                                            TextWidget(text: allCommunities.allCommunitiesDetails[index].name, textSize: 13,fontWeight: FontWeight.w500,),
+                                                                                                            TextWidget(text: allCommunities.allCommunitiesDetails[index].community, textSize: 13,fontWeight: FontWeight.w500,),
                                                                                                             SizedBox(height: 8,),
                                                                                                             TextWidget(text: allCommunities.allCommunitiesDetails[index].size, textSize: 13,color: AppColors.primary,),
                                                                                                             SizedBox(height: 8,),
@@ -115,8 +115,8 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                                                                                                                   child: TextWidget(text: allCommunities.allCommunitiesDetails[index].isAbleToJoinTag, textSize: 11),
                                                                                                                 ),),
                                                                                                                 
-                                                                                                                allCommunities.allCommunitiesDetails[index].subscription == "free"?
-                                                                                                                TextWidget(text: "Free to join", textSize: 11):TextWidget(text: "Rs ${allCommunities.allCommunitiesDetails[index].amount}\nSubscription", textSize: 11)
+                                                                                                                
+                                                                                                               TextWidget(text: allCommunities.allCommunitiesDetails[index].amount, textSize: 11)
                                                                                                                 
                                                                                                                 
                                                                                                            ],

@@ -123,6 +123,7 @@ class Member {
   String? designation;
   String? company;
   String? location;
+  String joinedDate;
 
   Member({
     required this.firstName,
@@ -131,6 +132,7 @@ class Member {
     this.designation,
     this.company,
     this.location,
+    required this.joinedDate
   });
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
@@ -140,6 +142,7 @@ class Member {
         designation: json["designation"],
         company: json["company"],
         location: json["location"],
+        joinedDate: json["joined_date"]
       );
 
   Map<String, dynamic> toJson() => {
@@ -149,5 +152,6 @@ class Member {
         "designation": designation,
         "company": company,
         "location": location,
+        "joined_date": joinedDate
       };
 }

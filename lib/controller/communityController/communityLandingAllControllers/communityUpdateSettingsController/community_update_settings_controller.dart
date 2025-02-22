@@ -13,7 +13,7 @@ class CommunityUpdateSettingsController extends GetxController{
 Future deleteCommunity() async {
   
     var response = await ApiBase.deleteRequest(
-      extendedURL: ApiUrl.deleteCommunity + "67a59ee206ff660a9febe5f5",
+      extendedURL: ApiUrl.deleteCommunity + createdCommunityId,
     );
     log(response.body);
     var data = json.decode(response.body);
@@ -73,7 +73,7 @@ Future updateCommunity(base64) async {
       },
       
       withToken: true,
-      extendedURL: ApiUrl.updateCommunity+"67a59ee206ff660a9febe5f5",
+      extendedURL: ApiUrl.updateCommunity+createdCommunityId,
     );
     //working
     

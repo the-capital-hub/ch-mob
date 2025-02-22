@@ -186,7 +186,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                   //   );
                   //   Get.to(() => const EventsScreen(), preventDuplicates: false);
                   // },
-                  title: communityProducts.communityProductsList[widget.index].isFree?"Buy For Free":"Proceed to Payment"),
+                  title: "Proceed to Payment"),
             ),
             
             

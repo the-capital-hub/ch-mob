@@ -260,6 +260,7 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                         child: Padding(
                                           padding: const EdgeInsets.all(12.0),
                                           child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               Icon(
                                                 Icons.post_add,
@@ -324,50 +325,48 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                 // ),
                                 //         }
                                 //                   ),
-                                SizedBox(width: 8),
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      _popupMenuKey.currentState
-                                          ?.showButtonMenu();
-                                    },
-                                    child: Card(
-                                      color: AppColors.primary,
-                                      child: Row(
-                                        children: [
-                                          PopupMenuButton<String>(
-                                              key: _popupMenuKey,
-                                              icon: Icon(
-                                                Icons.filter_list,
-                                                size: 25,
-                                              ),
-                                              iconColor: AppColors.white,
-                                              color: AppColors.blackCard,
-                                              offset: Offset(100, 55),
-                                              onSelected: (value) {},
-                                              itemBuilder: (context) => [
-                                                    const PopupMenuItem(
-                                                      child: TextWidget(
-                                                          text: "All Posts",
-                                                          textSize: 14),
-                                                    ),
-                                                    PopupMenuItem(
-                                                      child: TextWidget(
-                                                          text: "Admin Posts",
-                                                          textSize: 14),
-                                                    ),
-                                                    const PopupMenuItem(
-                                                      child: TextWidget(
-                                                          text: "Member Posts",
-                                                          textSize: 14),
-                                                    ),
-                                                  ]),
-                                          TextWidget(
-                                            text: "Filter Post",
-                                            textSize: 16,
-                                          ),
-                                        ],
-                                      ),
+                                SizedBox(width: 4),
+                                InkWell(
+                                  onTap: () {
+                                    _popupMenuKey.currentState
+                                        ?.showButtonMenu();
+                                  },
+                                  child: Card(
+                                    color: AppColors.primary,
+                                    child: Row(
+                                      children: [
+                                        PopupMenuButton<String>(
+                                            key: _popupMenuKey,
+                                            icon: Icon(
+                                              Icons.filter_list,
+                                              size: 25,
+                                            ),
+                                            iconColor: AppColors.white,
+                                            color: AppColors.blackCard,
+                                            offset: Offset(100, 55),
+                                            onSelected: (value) {},
+                                            itemBuilder: (context) => [
+                                                  const PopupMenuItem(
+                                                    child: TextWidget(
+                                                        text: "All Posts",
+                                                        textSize: 14),
+                                                  ),
+                                                  PopupMenuItem(
+                                                    child: TextWidget(
+                                                        text: "Admin Posts",
+                                                        textSize: 14),
+                                                  ),
+                                                  const PopupMenuItem(
+                                                    child: TextWidget(
+                                                        text: "Member Posts",
+                                                        textSize: 14),
+                                                  ),
+                                                ]),
+                                        // TextWidget(
+                                        //   text: "Filter Post",
+                                        //   textSize: 16,
+                                        // ),
+                                      ],
                                     ),
                                   ),
                                 )

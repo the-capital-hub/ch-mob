@@ -93,22 +93,17 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
             Positioned(
               top: 0,
               right: 0,
-              child: InkWell(
-                onTap: (){
-                  Get.to(() =>  PurchaseScreen(index: index));
-                },
-                child: Card(
-                
-                              shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                              color: AppColors.primary,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
-                                child: TextWidget(text: communityProducts.communityProductsList[index].isFree?"Free":"\u{20B9}${communityProducts.communityProductsList[index].amount}/-", textSize: 16)
-                              ),
+              child: Card(
+              
+                            shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                            color: AppColors.primary,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+                              child: TextWidget(text: communityProducts.communityProductsList[index].isFree?"Free":"\u{20B9}${communityProducts.communityProductsList[index].amount}/-", textSize: 16)
                             ),
-              ),
+                          ),
             ),
                       ]
                     ),
@@ -169,6 +164,11 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                        padding: const EdgeInsets.symmetric(horizontal: 50),
                        child: AppButton.primaryButton(
                            onButtonPressed: () {
+                            if(
+                              communityProducts.communityProductsList[index].isFree
+                            ){
+
+                            
                               showDialog(
                        context: context,
                        builder: (BuildContext context) {
@@ -202,9 +202,13 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                          );
                        },
                      );
+                            }
+                            else{
+                              Get.to(() =>  PurchaseScreen(index: index));
+                            }
                                    
                                    
-                           }, title: "Access Resource"),
+                           }, title: communityProducts.communityProductsList[index].isFree?"Access Resource":"Buy \u{20B9}${communityProducts.communityProductsList[index].amount} "),
                      ),
                     
                  
