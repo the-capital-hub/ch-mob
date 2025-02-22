@@ -128,7 +128,7 @@ class CompanyInvController extends GetxController {
   Future createCompany() async {
     var body = {
       if (base64 != "") "logo": base64,
-      "company": companyNameController.text,
+      "companyName": companyNameController.text,
       "tagline": companyTaglineController.text,
       "location": companyLocationController.text,
       "startedAtDate": establishedDateController.text,
