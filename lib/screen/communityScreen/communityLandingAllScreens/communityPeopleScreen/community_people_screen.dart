@@ -111,7 +111,7 @@ List<String> communityNames = [
                                                                             TextWidget(text: communityMembers.communityMembersList[index].designation.toString(), textSize: 13,color: AppColors.primary,),
                                                                             TextWidget(text: communityMembers.communityMembersList[index].company.toString(), textSize: 16),
                                                                             TextWidget(text: communityMembers.communityMembersList[index].location.toString(), textSize: 16),
-                                                                            // TextWidget(text: "Member for less than a month", textSize: 16),
+                                                                            TextWidget(text: communityMembers.communityMembersList[index].joinedDate, textSize: 16),
                                                                             
                                                                           ],
                                                                           
@@ -155,7 +155,7 @@ List<String> communityNames = [
                                                             );
                                                                     
                                                             
-                                                          }, separatorBuilder: (context, index) =>SizedBox(height: 12,), itemCount: 10),
+                                                          }, separatorBuilder: (context, index) =>SizedBox(height: 12,), itemCount: communityMembers.communityMembersList.length),
                                                         )
           
                                                         

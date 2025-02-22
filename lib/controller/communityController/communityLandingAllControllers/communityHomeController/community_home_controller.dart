@@ -57,7 +57,7 @@ class CommunityHomeController extends GetxController {
     log(wbody.toString());
     log(response.body);
     var data = json.decode(response.body);
-    if (data["status"] == 200) {
+    if (data["status"] == true) {
       HelperSnackBar.snackBar("Success", data["message"]);
 
       return true;

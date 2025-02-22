@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityEventsModel/community_events_model.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
@@ -15,7 +16,7 @@ class CommunityEventsController extends GetxController{
   try {
     isLoading.value = true; // Set loading state to true
     communityEventsList.clear();
-    var response = await ApiBase.getRequest(extendedURL: ApiUrl.getWebinarsByCommunityId+"6786270472a060fa8463953f");
+    var response = await ApiBase.getRequest(extendedURL: ApiUrl.getWebinarsByCommunityId+createdCommunityId);
     log(response.body);
     
     var data = json.decode(response.body);

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CommunityAddNewProductController extends GetxController{
+  
   TextEditingController productNameController = TextEditingController();
   TextEditingController productDescriptionController = TextEditingController();
   TextEditingController productAmountController = TextEditingController();
@@ -49,7 +50,7 @@ class CommunityAddNewProductController extends GetxController{
       },
       
       withToken: true,
-      extendedURL: ApiUrl.addProductToCommunity+"67a59ee206ff660a9febe5f5",
+      extendedURL: ApiUrl.addProductToCommunity+createdCommunityId,
     );
     //working
     

@@ -11,7 +11,7 @@ import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-String createdCommunityId = "";
+String createdCommunityId = "676fac57e86b189878cdfb9a";
 class CommunityController extends GetxController {
   
   var isLoading = false.obs;
@@ -68,7 +68,7 @@ class CommunityController extends GetxController {
     isLoading.value = true; // Set loading state to true
     createdCommunityDetails.clear();
     log(createdCommunityId);
-    var response = await ApiBase.getRequest(extendedURL: ApiUrl.getCommunityById+"676fac57e86b189878cdfb9a");
+    var response = await ApiBase.getRequest(extendedURL: ApiUrl.getCommunityById+createdCommunityId);
     log(response.body);
     
     var data = json.decode(response.body);

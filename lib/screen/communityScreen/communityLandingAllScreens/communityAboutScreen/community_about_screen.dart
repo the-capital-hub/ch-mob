@@ -5,14 +5,14 @@ import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 
-class CommunityAboutScreen extends StatefulWidget {
-  const CommunityAboutScreen({super.key});
+class CommunityAbout extends StatefulWidget {
+  const CommunityAbout({super.key});
 
   @override
-  State<CommunityAboutScreen> createState() => _CommunityAboutScreenState();
+  State<CommunityAbout> createState() => _CommunityAboutScreenState();
 }
 
-class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
+class _CommunityAboutScreenState extends State<CommunityAbout> {
   @override
   Widget build(BuildContext context) {
     return Container(

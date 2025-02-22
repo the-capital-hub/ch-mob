@@ -92,7 +92,7 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
                                 
                                 ),
                                 SizedBox(width: 10,),
-                                TextWidget(text: myCommunities.myCommunitiesDetails[index].name.toString(), textSize: 16,fontWeight: FontWeight.w500,),
+                                TextWidget(text: myCommunities.myCommunitiesDetails[index].community.toString(), textSize: 15,fontWeight: FontWeight.w500,),
                                 SizedBox(width: 3,),
                                 Card(
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -112,21 +112,26 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
                     
                           ],
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IconButton(icon: Icon(
-                            Icons.mobile_screen_share_rounded,
-                            color: AppColors.whiteCard,
-                            // size: 22,
-                          ),onPressed: (){
-                            sharePostPopup(context,"",myCommunities.myCommunitiesDetails[index].shareLink.toString());
-                          },),
-                            IconButton(icon: Icon(Icons.logout),color: AppColors.primary,onPressed: (){
-                              myCommunities.leaveCommunity(context,myCommunities.myCommunitiesDetails[index].id);
+                        Flexible(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                
+                              Icons.mobile_screen_share_rounded,
+                              color: AppColors.whiteCard,
+                              // size: 22,
+                            ),onPressed: (){
+                              sharePostPopup(context,"",myCommunities.myCommunitiesDetails[index].shareLink.toString());
                             },),
-                            
-                          ],
+                              IconButton(padding: EdgeInsets.zero,icon: Icon(Icons.logout),color: AppColors.primary,onPressed: (){
+                                myCommunities.leaveCommunity(context,myCommunities.myCommunitiesDetails[index].id);
+                              },),
+                              
+                            ],
+                          ),
                         )
                       ],
                       
