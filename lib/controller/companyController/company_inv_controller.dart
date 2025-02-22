@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
 import '../../model/01-StartupModel/companyModel/company_model.dart';
 import '../../model/01-StartupModel/companyModel/company_search_moel.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:get/get.dart';
-
 import '../../utils/getStore/get_store.dart';
-import '../../utils/helper/helper.dart';
 import '../../utils/helper/helper_sncksbar.dart';
 
-class CompanyController extends GetxController {
+class CompanyInvController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isLoadingList = false.obs;
   List<CompanyList> companyList = [];
@@ -23,8 +19,8 @@ class CompanyController extends GetxController {
     try {
       companyList.clear();
       isLoadingList.value = true;
-      var response =
-          await ApiBase.getRequest(extendedURL: ApiUrl.searchCompany + query);
+      var response = await ApiBase.getRequest(
+          extendedURL: ApiUrl.searchCompanyInv + query);
       log(response.body);
       var data = jsonDecode(response.body);
       if (data['status'] == true) {
@@ -46,10 +42,10 @@ class CompanyController extends GetxController {
   Future addCompanyToUser(context, id) async {
     var body = {
       "userId": "${GetStoreData.getStore.read('id')}",
-      "startUpId": id
+      "investorId": id
     };
     var response = await ApiBase.pachRequest(
-        body: body, extendedURL: ApiUrl.addCompanyUser, withToken: true);
+        body: body, extendedURL: ApiUrl.addCompanyUserInv, withToken: true);
     log(response.body);
 
     var data = json.decode(response.body);
@@ -68,7 +64,7 @@ class CompanyController extends GetxController {
     try {
       isLoading.value = true;
       var response = await ApiBase.getRequest(
-          extendedURL: ApiUrl.getCompanyDetail +
+          extendedURL: ApiUrl.getCompanyDetailInv +
               GetStoreData.getStore.read('id').toString());
       log(response.body);
       var data = jsonDecode(response.body);
@@ -88,10 +84,10 @@ class CompanyController extends GetxController {
   }
 
   Future deleteCompany(context, id) async {
-    var body = {"startUpId": id};
+    var body = {"investorId": id};
     var response = await ApiBase.putRequest(
       body: body,
-      extendedURL: ApiUrl.deleteCompany,
+      extendedURL: ApiUrl.deleteCompanyInv,
     );
     log(response.body);
 
@@ -118,10 +114,6 @@ class CompanyController extends GetxController {
   TextEditingController visionController = TextEditingController();
   TextEditingController missionController = TextEditingController();
   TextEditingController keyFocusController = TextEditingController();
-  TextEditingController tamController = TextEditingController();
-  TextEditingController samController = TextEditingController();
-  TextEditingController somController = TextEditingController();
-  TextEditingController lastFundingDateController = TextEditingController();
 
   String? selectedInvestmentStage;
   String? selectedProductStage;
@@ -131,15 +123,6 @@ class CompanyController extends GetxController {
   TextEditingController twitterLinkController = TextEditingController();
   TextEditingController instagramLinkController = TextEditingController();
   TextEditingController companyDescriptionController = TextEditingController();
-  TextEditingController totalInvestmentController = TextEditingController();
-  TextEditingController noOfInvestorController = TextEditingController();
-  TextEditingController valuationController = TextEditingController();
-  TextEditingController fundAskController = TextEditingController();
-  TextEditingController currentValuationController = TextEditingController();
-  TextEditingController fundRaisedController = TextEditingController();
-  TextEditingController lastYearRevenueController = TextEditingController();
-  TextEditingController targetController = TextEditingController();
-
   List<CoreTeamModel> coreTeamList = [];
 
   Future createCompany() async {
@@ -154,10 +137,6 @@ class CompanyController extends GetxController {
       "vision": visionController.text,
       "mission": missionController.text,
       "keyFocus": keyFocusController.text,
-      "TAM": tamController.text,
-      "SAM": samController.text,
-      "SOM": somController.text,
-      "lastFunding": lastFundingDateController.text,
       "productStage": selectedProductStage,
       "stage": selectedInvestmentStage,
       "socialLinks": {
@@ -168,23 +147,13 @@ class CompanyController extends GetxController {
       },
       "description": companyDescriptionController.text,
       "team": coreTeamList,
-      "colorCard": {
-        "last_round_investment": valuationController.text,
-        "total_investment": totalInvestmentController.text,
-        "no_of_investers": noOfInvestorController.text,
-        "fund_ask": fundAskController.text,
-        "valuation": currentValuationController.text,
-        "raised_funds": fundRaisedController.text,
-        "last_year_revenue": lastYearRevenueController.text,
-        "target": targetController.text
-      }
     };
     var response = await ApiBase.postRequest(
       body: body,
       withToken: true,
-      extendedURL: ApiUrl.createCompany,
+      extendedURL: ApiUrl.createCompanyInv,
     );
-    log(response.body);
+    log(json.encode(body).toString());
 
     var data = json.decode(response.body);
     if (data["status"]) {
@@ -219,10 +188,6 @@ class CompanyController extends GetxController {
     missionController.text = companyData.mission!;
     keyFocusController.text =
         companyData.keyFocus.toString().replaceAll("[", "").replaceAll("]", "");
-    tamController.text = companyData.tam!;
-    samController.text = companyData.sam!;
-    somController.text = companyData.som!;
-    lastFundingDateController.text = companyData.lastFunding!;
     selectedInvestmentStage = companyData.stage!;
     selectedProductStage = null;
     linkedInLinkController.text = companyData.socialLinks!
@@ -241,14 +206,6 @@ class CompanyController extends GetxController {
         )
         .link!;
     companyDescriptionController.text = companyData.description!;
-    totalInvestmentController.text = companyData.totalInvestment!;
-    noOfInvestorController.text = companyData.noOfInvesters!;
-    valuationController.text = companyData.valuation!;
-    fundAskController.text = companyData.fundAsk!;
-    currentValuationController.text = companyData.valuation!;
-    fundRaisedController.text = companyData.raisedFunds!;
-    lastYearRevenueController.text = companyData.lastYearRevenue!;
-    targetController.text = companyData.target!;
     coreTeamList = (companyData.team ?? [])
         .map((team) => CoreTeamModel.fromTeam(team))
         .toList();
@@ -270,7 +227,6 @@ class CoreTeamModel {
     };
   }
 
-  // ✅ Add this method to convert a Team model to CoreTeamModel
   factory CoreTeamModel.fromTeam(Team team) {
     return CoreTeamModel(
       image: TextEditingController(text: team.image),

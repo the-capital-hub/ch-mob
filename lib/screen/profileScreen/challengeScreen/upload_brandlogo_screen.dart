@@ -11,9 +11,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 import '../../../utils/constant/app_var.dart';
+import '../../../utils/getStore/get_store.dart';
 import '../../../widget/buttons/button.dart';
 import '../../../widget/textwidget/text_widget.dart';
-
 
 class UploadBrandLogoScreen extends StatefulWidget {
   const UploadBrandLogoScreen({super.key});
@@ -25,78 +25,76 @@ class UploadBrandLogoScreen extends StatefulWidget {
 class _UploadBrandLogoScreenState extends State<UploadBrandLogoScreen> {
   @override
   Widget build(BuildContext context) {
-    return 
-    Container(
-      decoration:  bgDec,
-      child:
-    Scaffold(
-
-      backgroundColor: AppColors.transparent,
-      appBar: HelperAppBar.appbarHelper(title: ""),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const TextWidget(
-              text: "Add a profile picture",
-              textSize: 22,
-              fontWeight: FontWeight.w500,
-            ),
-            sizedTextfield,
-            const TextWidget(
-              text:
-                  "Add a profile picture so your investors and founder’s know it’s you. Everyone will be  able  to see  your picture.",
-              textSize: 14,
-              maxLine: 3,
-            ),
-            sizedTextfield,
-            sizedTextfield,
-            Center(
-              child: base64Image != null
-                  ? CircleAvatar(
-                      radius: 80,
-                      backgroundImage: MemoryImage(base64Decode(base64Image!)),
-                    )
-                  : CircleAvatar(
-                      radius: 80,
-                      child: Icon(
-                        CupertinoIcons.person_alt_circle,
-                        size: 160,
-                        color: AppColors.black38,
-                      ),
-                    ),
-            ),
-            const Spacer(),
-            if (base64Image == null)
-              AppButton.primaryButton(
-                  onButtonPressed: () {
-                    uploadBottomSheet();
-                  },
-                  title: "Add picture"),
-            if (base64Image != null)
-              Column(
-                children: [
+    return Container(
+        decoration: bgDec,
+        child: Scaffold(
+          backgroundColor: AppColors.transparent,
+          appBar: HelperAppBar.appbarHelper(title: ""),
+          body: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const TextWidget(
+                  text: "Add a profile picture",
+                  textSize: 22,
+                  fontWeight: FontWeight.w500,
+                ),
+                sizedTextfield,
+                const TextWidget(
+                  text:
+                      "Add a profile picture so your investors and founder’s know it’s you. Everyone will be  able  to see  your picture.",
+                  textSize: 14,
+                  maxLine: 3,
+                ),
+                sizedTextfield,
+                sizedTextfield,
+                Center(
+                  child: base64Image != null
+                      ? CircleAvatar(
+                          radius: 80,
+                          backgroundImage:
+                              MemoryImage(base64Decode(base64Image!)),
+                        )
+                      : CircleAvatar(
+                          radius: 80,
+                          child: Icon(
+                            CupertinoIcons.person_alt_circle,
+                            size: 160,
+                            color: AppColors.black38,
+                          ),
+                        ),
+                ),
+                const Spacer(),
+                if (base64Image == null)
                   AppButton.primaryButton(
-                      onButtonPressed: () {
-                        Get.back();
-                        Get.back();
-                        Get.back();
-                        Get.back();
-                      },
-                      title: "Done"),
-                  sizedTextfield,
-                  AppButton.outlineButton(
                       onButtonPressed: () {
                         uploadBottomSheet();
                       },
-                      title: "Change Picture"),
-                ],
-              )
-          ],
-        ),
-      ),
-    ));
+                      title: "Add picture"),
+                if (base64Image != null)
+                  Column(
+                    children: [
+                      AppButton.primaryButton(
+                          onButtonPressed: () {
+                            Get.back();
+                            Get.back();
+                            Get.back();
+                            Get.back();
+                          },
+                          title: "Done"),
+                      sizedTextfield,
+                      AppButton.outlineButton(
+                          onButtonPressed: () {
+                            uploadBottomSheet();
+                          },
+                          title: "Change Picture"),
+                    ],
+                  )
+              ],
+            ),
+          ),
+        ));
   }
 
   uploadBottomSheet() {
@@ -109,7 +107,7 @@ class _UploadBrandLogoScreenState extends State<UploadBrandLogoScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               sizedTextfield,
-               Icon(
+              Icon(
                 Icons.close,
                 size: 25,
                 color: AppColors.white,
@@ -201,18 +199,18 @@ class _UploadBrandLogoScreenState extends State<UploadBrandLogoScreen> {
       sourcePath: img,
       aspectRatioPresets: [
         CropAspectRatioPreset.square,
-        CropAspectRatioPreset.ratio3x2,
-        CropAspectRatioPreset.original,
-        CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9
       ],
       uiSettings: [
         AndroidUiSettings(
             toolbarTitle: 'Crop your image',
-            toolbarColor: AppColors.primary,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false),
+            toolbarColor: GetStoreData.getStore.read('isInvestor')
+                ? AppColors.primaryInvestor
+                : AppColors.primary,
+            toolbarWidgetColor: GetStoreData.getStore.read('isInvestor')
+                ? AppColors.black
+                : AppColors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true),
       ],
     );
     return croppedFile!.path;

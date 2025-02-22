@@ -35,6 +35,7 @@ class CompanyModel {
 
 class CompanyData {
   String? id;
+  String? founderId;
   String? logo;
   String? name;
   String? tagline;
@@ -65,6 +66,7 @@ class CompanyData {
 
   CompanyData({
     this.id,
+    this.founderId,
     this.logo,
     this.name,
     this.tagline,
@@ -96,6 +98,7 @@ class CompanyData {
 
   factory CompanyData.fromJson(Map<String, dynamic> json) => CompanyData(
         id: json["startUpId"],
+        founderId: json['founderId'],
         logo: json["logo"],
         name: json["name"],
         tagline: json["tagline"],

@@ -18,6 +18,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../utils/constant/app_var.dart';
+import '../../utils/getStore/get_store.dart';
 import '../../utils/helper/helper.dart';
 import '../../widget/datePicker/datePicker.dart';
 import '../../widget/text_field/text_field.dart';
@@ -495,20 +496,20 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   imgCropper(img) async {
     croppedFile = await ImageCropper().cropImage(
       sourcePath: img,
-      aspectRatioPresets: [
+     aspectRatioPresets: [
         CropAspectRatioPreset.square,
-        CropAspectRatioPreset.ratio3x2,
-        CropAspectRatioPreset.original,
-        CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9
       ],
       uiSettings: [
         AndroidUiSettings(
             toolbarTitle: 'Crop your image',
-            toolbarColor: AppColors.primary,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false),
+            toolbarColor: GetStoreData.getStore.read('isInvestor')
+                ? AppColors.primaryInvestor
+                : AppColors.primary,
+            toolbarWidgetColor: GetStoreData.getStore.read('isInvestor')
+                ? AppColors.black
+                : AppColors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true),
       ],
     );
     return croppedFile!.path;

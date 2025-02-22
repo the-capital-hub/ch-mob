@@ -6,6 +6,7 @@ import 'package:capitalhub_crm/controller/homeController/home_controller.dart';
 import 'package:capitalhub_crm/controller/newsController/news_controller.dart';
 import 'package:capitalhub_crm/controller/notificationController/notification_controller.dart';
 import 'package:capitalhub_crm/controller/profileController/profile_controller.dart';
+import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/homeScreen/widget/fullscreen_image_view.dart';
@@ -159,7 +160,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         decoration: bgDec,
         child: Scaffold(
           backgroundColor: AppColors.transparent,
-          drawer: const DrawerWidget(),
+          drawer: GetStoreData.getStore.read('isInvestor')
+              ? const DrawerWidgetInvestor()
+              : const DrawerWidget(),
           appBar: AppBar(
             backgroundColor: AppColors.black,
             iconTheme: IconThemeData(color: AppColors.white),
@@ -681,7 +684,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         InkWell(
                           onTap: () {
                             sharePostPopup(context,
-                                homeController.postList[index].postId!,"");
+                                homeController.postList[index].postId!, "");
                           },
                           child: Icon(
                             Icons.mobile_screen_share_rounded,

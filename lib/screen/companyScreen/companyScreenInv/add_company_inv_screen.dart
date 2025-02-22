@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:capitalhub_crm/controller/companyController/company_controller.dart';
 import 'package:capitalhub_crm/controller/exploreController/explore_filter_data.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
@@ -13,31 +12,32 @@ import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../widget/imagePickerWidget/image_picker_widget.dart';
-import '../../widget/textwidget/text_widget.dart';
+import '../../../controller/companyController/company_inv_controller.dart';
+import '../../../widget/imagePickerWidget/image_picker_widget.dart';
+import '../../../widget/textwidget/text_widget.dart';
 
-class AddCompanyScreen extends StatefulWidget {
+class AddCompanyInvScreen extends StatefulWidget {
   bool isEdit = false;
-  AddCompanyScreen({super.key, required this.isEdit});
+  AddCompanyInvScreen({super.key, required this.isEdit});
 
   @override
-  State<AddCompanyScreen> createState() => _AddCompanyScreenState();
+  State<AddCompanyInvScreen> createState() => _AddCompanyInvScreenState();
 }
 
-class _AddCompanyScreenState extends State<AddCompanyScreen> {
-  CompanyController companyController = Get.find();
+class _AddCompanyInvScreenState extends State<AddCompanyInvScreen> {
+  CompanyInvController companyInvController = Get.find();
   @override
   void initState() {
     if (widget.isEdit == false) {
-      if (companyController.coreTeamList.isEmpty) {
-        companyController.coreTeamList.add(CoreTeamModel(
+      if (companyInvController.coreTeamList.isEmpty) {
+        companyInvController.coreTeamList.add(CoreTeamModel(
             image: TextEditingController(text: ""),
             name: TextEditingController(text: ""),
             designaiton: TextEditingController(text: "")));
         setState(() {});
       }
     } else {
-      companyController.fillData();
+      companyInvController.fillData();
     }
     super.initState();
   }
@@ -62,17 +62,17 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                     uploadBottomSheet();
                   },
                   child: Center(
-                    child: widget.isEdit && companyController.base64 == ""
+                    child: widget.isEdit && companyInvController.base64 == ""
                         ? CircleAvatar(
                             radius: 60,
                             backgroundImage:
-                                NetworkImage(companyController.image!),
+                                NetworkImage(companyInvController.image!),
                           )
-                        : companyController.base64 != ""
+                        : companyInvController.base64 != ""
                             ? CircleAvatar(
                                 radius: 60,
                                 backgroundImage: MemoryImage(
-                                    base64Decode(companyController.base64)),
+                                    base64Decode(companyInvController.base64)),
                               )
                             : const CircleAvatar(
                                 radius: 60,
@@ -84,17 +84,17 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                 MyCustomTextField.textField(
                     hintText: "Enter Company Name",
                     lableText: "Company Name",
-                    controller: companyController.companyNameController),
+                    controller: companyInvController.companyNameController),
                 sizedTextfield,
                 MyCustomTextField.textField(
                     hintText: "Enter Company Tagline",
                     lableText: "Company Tagline",
-                    controller: companyController.companyTaglineController),
+                    controller: companyInvController.companyTaglineController),
                 sizedTextfield,
                 MyCustomTextField.textField(
                     hintText: "Enter Location",
                     lableText: "Location",
-                    controller: companyController.companyLocationController),
+                    controller: companyInvController.companyLocationController),
                 sizedTextfield,
                 MyCustomTextField.textField(
                     hintText: "Enter Established Date",
@@ -105,19 +105,19 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                           await selectDate(context, DateTime.now());
 
                       if (selectedDate != null) {
-                        companyController.establishedDateController.text =
+                        companyInvController.establishedDateController.text =
                             Helper.formatDatePost(selectedDate.toString());
                         setState(() {});
                       }
                     },
-                    controller: companyController.establishedDateController),
+                    controller: companyInvController.establishedDateController),
                 sizedTextfield,
                 DropDownWidget(
-                    status: companyController.selectedSector ?? "Sector",
+                    status: companyInvController.selectedSector ?? "Sector",
                     lable: "Sector",
                     statusList: ExploreFliterData.sectorList,
                     onChanged: (val) {
-                      companyController.selectedSector = val!;
+                      companyInvController.selectedSector = val!;
                       setState(() {});
                     }),
                 sizedTextfield,
@@ -125,75 +125,40 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                     hintText: "Enter No. of Employees",
                     lableText: "No. of Employees",
                     textInputType: TextInputType.number,
-                    controller: companyController.numOfEmpController),
+                    controller: companyInvController.numOfEmpController),
                 sizedTextfield,
                 MyCustomTextField.textField(
                     hintText: "Enter Vision",
                     lableText: "Vision",
-                    controller: companyController.visionController),
+                    controller: companyInvController.visionController),
                 sizedTextfield,
                 MyCustomTextField.textField(
                     hintText: "Enter Mission",
                     lableText: "Mission",
-                    controller: companyController.missionController),
+                    controller: companyInvController.missionController),
                 sizedTextfield,
                 MyCustomTextField.textField(
                     hintText: "Enter Key Focus",
                     lableText: "Key Focus",
-                    controller: companyController.keyFocusController),
-                sizedTextfield,
-                MyCustomTextField.textField(
-                    lableText: "TAM",
-                    hintText: "Enter TAM",
-                    textInputType: TextInputType.number,
-                    controller: companyController.tamController),
-                sizedTextfield,
-                MyCustomTextField.textField(
-                    lableText: "SAM",
-                    hintText: "Enter SAM",
-                    textInputType: TextInputType.number,
-                    controller: companyController.samController),
-                sizedTextfield,
-                MyCustomTextField.textField(
-                    lableText: "SOM",
-                    hintText: "Enter SOM",
-                    textInputType: TextInputType.number,
-                    controller: companyController.somController),
-                sizedTextfield,
-                MyCustomTextField.textField(
-                    hintText: "Enter Last funding",
-                    lableText: "Last funding",
-                    onChange: (val) {},
-                    readonly: true,
-                    onTap: () async {
-                      final selectedDate =
-                          await selectDate(context, DateTime.now());
-
-                      if (selectedDate != null) {
-                        companyController.lastFundingDateController.text =
-                            Helper.formatDatePost(selectedDate.toString());
-                        setState(() {});
-                      }
-                    },
-                    controller: companyController.lastFundingDateController),
+                    controller: companyInvController.keyFocusController),
                 sizedTextfield,
                 DropDownWidget(
-                    status: companyController.selectedInvestmentStage ??
+                    status: companyInvController.selectedInvestmentStage ??
                         "Investment Stage",
                     lable: "Investment Stage",
                     statusList: ExploreFliterData.investmentStageOptions,
                     onChanged: (val) {
-                      companyController.selectedInvestmentStage = val!;
+                      companyInvController.selectedInvestmentStage = val!;
                       setState(() {});
                     }),
                 sizedTextfield,
                 DropDownWidget(
-                    status: companyController.selectedProductStage ??
+                    status: companyInvController.selectedProductStage ??
                         "Product Stage",
                     lable: "Product Stage",
                     statusList: ExploreFliterData.startupStageOptions,
                     onChanged: (val) {
-                      companyController.selectedProductStage = val!;
+                      companyInvController.selectedProductStage = val!;
                       setState(() {});
                     }),
                 sizedTextfield,
@@ -205,22 +170,22 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                 MyCustomTextField.textField(
                     lableText: "Website Link",
                     hintText: "Enter Website Link",
-                    controller: companyController.websiteUrlController),
+                    controller: companyInvController.websiteUrlController),
                 sizedTextfield,
                 MyCustomTextField.textField(
                     lableText: "Linkedin",
                     hintText: "Enter Linkedin Link",
-                    controller: companyController.linkedInLinkController),
+                    controller: companyInvController.linkedInLinkController),
                 sizedTextfield,
                 MyCustomTextField.textField(
                     lableText: "Twitter",
                     hintText: "Enter Twitter Link",
-                    controller: companyController.twitterLinkController),
+                    controller: companyInvController.twitterLinkController),
                 sizedTextfield,
                 MyCustomTextField.textField(
                     lableText: "Instagram",
                     hintText: "Enter Instagram Link",
-                    controller: companyController.instagramLinkController),
+                    controller: companyInvController.instagramLinkController),
                 sizedTextfield,
                 const TextWidget(
                     text: "Company Description",
@@ -231,7 +196,8 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                     lableText: "Company Description",
                     hintText: "Enter Company Description",
                     maxLine: 6,
-                    controller: companyController.companyDescriptionController),
+                    controller:
+                        companyInvController.companyDescriptionController),
                 sizedTextfield,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -242,7 +208,7 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                         fontWeight: FontWeight.w500),
                     InkWell(
                       onTap: () {
-                        companyController.coreTeamList.add(CoreTeamModel(
+                        companyInvController.coreTeamList.add(CoreTeamModel(
                             image: TextEditingController(text: ""),
                             name: TextEditingController(text: ""),
                             designaiton: TextEditingController(text: "")));
@@ -252,7 +218,7 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                         text: "Add New +",
                         textSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.primary,
+                        color: AppColors.primaryInvestor,
                       ),
                     )
                   ],
@@ -260,12 +226,12 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                 const SizedBox(height: 8),
                 SizedBox(
                     height: 230,
-                    child: companyController.coreTeamList.isEmpty
+                    child: companyInvController.coreTeamList.isEmpty
                         ? const Center(
                             child: TextWidget(
                                 text: "No Members Added", textSize: 14))
                         : ListView.separated(
-                            itemCount: companyController.coreTeamList.length,
+                            itemCount: companyInvController.coreTeamList.length,
                             separatorBuilder:
                                 (BuildContext context, int index) {
                               return const SizedBox(width: 8);
@@ -293,7 +259,7 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                                         ),
                                         InkWell(
                                           onTap: () {
-                                            companyController.coreTeamList
+                                            companyInvController.coreTeamList
                                                 .removeAt(index);
                                             setState(() {});
                                           },
@@ -308,19 +274,19 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                                     MyCustomTextField.textField(
                                         // lableText: "Image",
                                         hintText: "Enter Image Url",
-                                        controller: companyController
+                                        controller: companyInvController
                                             .coreTeamList[index].image!),
                                     sizedTextfield,
                                     MyCustomTextField.textField(
                                         // lableText: "Name",
                                         hintText: "Enter Name",
-                                        controller: companyController
+                                        controller: companyInvController
                                             .coreTeamList[index].name!),
                                     sizedTextfield,
                                     MyCustomTextField.textField(
                                         // lableText: "Designation",
                                         hintText: "Enter Designation",
-                                        controller: companyController
+                                        controller: companyInvController
                                             .coreTeamList[index].designaiton!),
                                     sizedTextfield,
                                   ],
@@ -329,74 +295,11 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                             },
                           )),
                 sizedTextfield,
-                const TextWidget(
-                    text: "Previous Funding Round",
-                    textSize: 16,
-                    fontWeight: FontWeight.w500),
-                const SizedBox(height: 8),
-                MyCustomTextField.textField(
-                    lableText: "Total Investment",
-                    textInputType: TextInputType.number,
-                    hintText: "Enter Total Investment",
-                    controller: companyController.totalInvestmentController),
-                sizedTextfield,
-                MyCustomTextField.textField(
-                    lableText: "No.of Investers",
-                    hintText: "Enter No.of Investers",
-                    textInputType: TextInputType.number,
-                    controller: companyController.noOfInvestorController),
-                sizedTextfield,
-                MyCustomTextField.textField(
-                    lableText: "Valuation",
-                    hintText: "Enter Valuation",
-                    textInputType: TextInputType.number,
-                    controller: companyController.valuationController),
-                sizedTextfield,
-                const TextWidget(
-                    text: "Current Funding Round",
-                    textSize: 16,
-                    fontWeight: FontWeight.w500),
-                const SizedBox(height: 8),
-                MyCustomTextField.textField(
-                    lableText: "Fund Ask",
-                    textInputType: TextInputType.number,
-                    hintText: "Enter Fund Ask",
-                    controller: companyController.fundAskController),
-                sizedTextfield,
-                MyCustomTextField.textField(
-                    lableText: "Valuation",
-                    textInputType: TextInputType.number,
-                    hintText: "Enter Valuation",
-                    controller: companyController.currentValuationController),
-                sizedTextfield,
-                MyCustomTextField.textField(
-                    lableText: "Funds Raised",
-                    textInputType: TextInputType.number,
-                    hintText: "Enter Funds Raised",
-                    controller: companyController.fundRaisedController),
-                sizedTextfield,
-                const TextWidget(
-                    text: "Revenue Statistics",
-                    textSize: 16,
-                    fontWeight: FontWeight.w500),
-                const SizedBox(height: 8),
-                MyCustomTextField.textField(
-                    lableText: "Last Year Revenue",
-                    textInputType: TextInputType.number,
-                    hintText: "Enter Last Year Revenue",
-                    controller: companyController.lastYearRevenueController),
-                sizedTextfield,
-                MyCustomTextField.textField(
-                    lableText: "Target",
-                    textInputType: TextInputType.number,
-                    hintText: "Enter Target Revenue",
-                    controller: companyController.targetController),
-                sizedTextfield,
                 sizedTextfield,
                 AppButton.primaryButton(
                     onButtonPressed: () {
                       Helper.loader(context);
-                      companyController.createCompany().then((val) {
+                      companyInvController.createCompany().then((val) {
                         setState(() {});
                       });
                     },
@@ -440,7 +343,7 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                   ImagePickerWidget imagePickerWidget = ImagePickerWidget();
                   imagePickerWidget.getImage(false).then((value) {
                     Get.back();
-                    companyController.base64 = value;
+                    companyInvController.base64 = value;
                     setState(() {});
                   });
                 },

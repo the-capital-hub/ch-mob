@@ -1,37 +1,37 @@
 import 'dart:async';
 
-import 'package:capitalhub_crm/controller/companyController/company_controller.dart';
+import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/companyScreen/add_company_screen.dart';
+import 'package:capitalhub_crm/screen/companyScreen/companyScreenInv/add_company_inv_screen.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../controller/companyController/company_inv_controller.dart';
+import '../../../utils/appcolors/app_colors.dart';
+import '../../../utils/constant/app_var.dart';
+import '../../../utils/constant/asset_constant.dart';
+import '../../../utils/helper/helper.dart';
+import '../../../widget/appbar/appbar.dart';
+import '../../../widget/textwidget/text_widget.dart';
+import '../../drawerScreen/drawer_screen.dart';
 
-import '../../model/01-StartupModel/companyModel/company_search_moel.dart';
-import '../../utils/appcolors/app_colors.dart';
-import '../../utils/constant/app_var.dart';
-import '../../utils/constant/asset_constant.dart';
-import '../../utils/helper/helper.dart';
-import '../../widget/appbar/appbar.dart';
-import '../../widget/textwidget/text_widget.dart';
-import '../drawerScreen/drawer_screen.dart';
-
-class CompanyScreen extends StatefulWidget {
-  const CompanyScreen({super.key});
+class CompanyInvScreen extends StatefulWidget {
+  const CompanyInvScreen({super.key});
 
   @override
-  State<CompanyScreen> createState() => _CompanyScreenState();
+  State<CompanyInvScreen> createState() => _CompanyInvScreenState();
 }
 
-class _CompanyScreenState extends State<CompanyScreen> {
-  CompanyController companyController = Get.put(CompanyController());
+class _CompanyInvScreenState extends State<CompanyInvScreen> {
+  CompanyInvController companyInvController = Get.put(CompanyInvController());
   TextEditingController searchController = TextEditingController();
   Timer? _debounce;
   OverlayEntry? _overlayEntry;
   final LayerLink _layerLink = LayerLink();
   @override
   void initState() {
-    companyController.getCompanyDetail();
+    companyInvController.getCompanyDetail();
     super.initState();
   }
 
@@ -47,8 +47,8 @@ class _CompanyScreenState extends State<CompanyScreen> {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 300), () async {
       if (query.isNotEmpty) {
-        await companyController.getCompanyList(query);
-        // setState(() {});
+        await companyInvController.getCompanyList(query);
+        setState(() {});
         _showOverlay();
       } else {
         _removeOverlay();
@@ -84,12 +84,12 @@ class _CompanyScreenState extends State<CompanyScreen> {
             borderRadius: BorderRadius.circular(10),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 200),
-              child: companyController.isLoadingList.value
+              child: companyInvController.isLoadingList.value
                   ? Helper.loader(context)
                   : ListView.separated(
                       padding: EdgeInsets.zero,
                       shrinkWrap: true,
-                      itemCount: companyController.companyList.length,
+                      itemCount: companyInvController.companyList.length,
                       separatorBuilder: (context, index) {
                         return const Divider(height: 0);
                       },
@@ -97,13 +97,13 @@ class _CompanyScreenState extends State<CompanyScreen> {
                         return ListTile(
                           visualDensity: VisualDensity.compact,
                           title: TextWidget(
-                              text:
-                                  companyController.companyList[index].company!,
+                              text: companyInvController
+                                  .companyList[index].company!,
                               textSize: 14),
                           onTap: () {
                             searchController.clear();
-                            companyController.addCompanyToUser(context,
-                                companyController.companyList[index].id);
+                            companyInvController.addCompanyToUser(context,
+                                companyInvController.companyList[index].id);
 
                             _removeOverlay();
                           },
@@ -123,11 +123,11 @@ class _CompanyScreenState extends State<CompanyScreen> {
       decoration: bgDec,
       child: Scaffold(
           backgroundColor: AppColors.transparent,
-          drawer: const DrawerWidget(),
+          drawer: const DrawerWidgetInvestor(),
           appBar: HelperAppBar.appbarHelper(
               title: "Company", hideBack: true, autoAction: true),
           body: Obx(
-            () => companyController.isLoading.value
+            () => companyInvController.isLoading.value
                 ? Helper.pageLoading()
                 : Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -151,7 +151,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
                               const SizedBox(width: 8),
                               InkWell(
                                 onTap: () {
-                                  Get.to(AddCompanyScreen(
+                                  Get.to(AddCompanyInvScreen(
                                     isEdit: false,
                                   ))!
                                       .whenComplete(() {
@@ -163,19 +163,20 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                   margin: const EdgeInsets.only(top: 24),
                                   width: 48,
                                   decoration: BoxDecoration(
-                                      color: AppColors.primary,
+                                      color: AppColors.primaryInvestor,
                                       borderRadius: BorderRadius.circular(6)),
                                   child: Icon(
                                     Icons.add,
-                                    color: AppColors.whiteCard,
+                                    color: AppColors.black,
                                     size: 25,
                                   ),
                                 ),
                               ),
-                              if (companyController.companyData.isOwnCompany!)
+                              if (companyInvController
+                                  .companyData.isOwnCompany??false)
                                 InkWell(
                                   onTap: () {
-                                    Get.to(AddCompanyScreen(
+                                    Get.to(AddCompanyInvScreen(
                                       isEdit: true,
                                     ))!
                                         .whenComplete(() {
@@ -188,11 +189,11 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                         const EdgeInsets.only(top: 24, left: 6),
                                     width: 48,
                                     decoration: BoxDecoration(
-                                        color: AppColors.primary,
+                                        color: AppColors.primaryInvestor,
                                         borderRadius: BorderRadius.circular(6)),
                                     child: Icon(
                                       Icons.edit,
-                                      color: AppColors.whiteCard,
+                                      color: AppColors.black,
                                       size: 20,
                                     ),
                                   ),
@@ -200,7 +201,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
                             ],
                           ),
                         ),
-                        companyController.isCompanyFound.value == false
+                        companyInvController.isCompanyFound.value == false
                             ? const Expanded(
                                 child: Center(
                                   child: TextWidget(
@@ -232,7 +233,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                                       image: DecorationImage(
                                                           fit: BoxFit.cover,
                                                           image: NetworkImage(
-                                                              companyController
+                                                              companyInvController
                                                                   .companyData
                                                                   .logo!))),
                                                 ),
@@ -253,7 +254,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                                         children: [
                                                           TextWidget(
                                                             text:
-                                                                "${companyController.companyData.name!}",
+                                                                "${companyInvController.companyData.name!}",
                                                             textSize: 15,
                                                             fontWeight:
                                                                 FontWeight.w500,
@@ -265,13 +266,13 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                                       const SizedBox(height: 4),
                                                       TextWidget(
                                                         text:
-                                                            "${companyController.companyData.tagline}",
+                                                            "${companyInvController.companyData.tagline}",
                                                         textSize: 12,
                                                       ),
                                                       const SizedBox(height: 4),
                                                       TextWidget(
                                                         text:
-                                                            "${companyController.companyData.location} , Founded in ${companyController.companyData.foundingDate} , Last Funding in ${companyController.companyData.lastFunding}",
+                                                            "${companyInvController.companyData.location} , Founded in ${companyInvController.companyData.foundingDate} , Last Funding in ${companyInvController.companyData.lastFunding}",
                                                         textSize: 10,
                                                         maxLine: 2,
                                                         fontWeight:
@@ -308,9 +309,9 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      TextWidget(
+                                                    TextWidget(
                                                           text:
-                                                              "About the company : ${companyController.companyData.description}",
+                                                              "About the company : ${companyInvController.companyData.description}",
                                                           textSize: 14,
                                                           maxLine: 10,
                                                           fontWeight:
@@ -318,14 +319,14 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                                       const SizedBox(height: 4),
                                                       TextWidget(
                                                           text:
-                                                              "No of Employees : ${companyController.companyData.numberOfEmployees}",
+                                                              "No of Employees : ${companyInvController.companyData.numberOfEmployees}",
                                                           textSize: 14,
                                                           fontWeight:
                                                               FontWeight.w500),
                                                       const SizedBox(height: 4),
                                                       TextWidget(
                                                           text:
-                                                              "Vision :${companyController.companyData.vision} ",
+                                                              "Vision :${companyInvController.companyData.vision} ",
                                                           textSize: 14,
                                                           maxLine: 10,
                                                           fontWeight:
@@ -333,7 +334,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                                       const SizedBox(height: 4),
                                                       TextWidget(
                                                           text:
-                                                              "Mission : ${companyController.companyData.mission}",
+                                                              "Mission : ${companyInvController.companyData.mission}",
                                                           textSize: 14,
                                                           maxLine: 10,
                                                           fontWeight:
@@ -343,130 +344,6 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          const Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 10, right: 10, bottom: 6),
-                                            child: TextWidget(
-                                                text: "Market Size",
-                                                textSize: 16,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 6),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                sqaureCard(
-                                                    img: PngAssetPath.tamIcon,
-                                                    subTitle:
-                                                        "${companyController.companyData.tam}",
-                                                    title: "TAM"),
-                                                sqaureCard(
-                                                    img: PngAssetPath.samIcon,
-                                                    subTitle:
-                                                        "${companyController.companyData.sam}",
-                                                    title: "SAM"),
-                                                sqaureCard(
-                                                    img: PngAssetPath.somIcon,
-                                                    subTitle:
-                                                        "${companyController.companyData.som}",
-                                                    title: "SOM"),
-                                              ],
-                                            ),
-                                          ),
-                                          const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 6),
-                                            child: TextWidget(
-                                                text: "Current Funding",
-                                                textSize: 16,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              sqaureCard(
-                                                  img: PngAssetPath
-                                                      .fundingAskIcon,
-                                                  subTitle:
-                                                      "${companyController.companyData.fundAsk}",
-                                                  title: "Fund Ask"),
-                                              sqaureCard(
-                                                  img: PngAssetPath
-                                                      .valuationIcon,
-                                                  subTitle:
-                                                      "${companyController.companyData.valuation}",
-                                                  title: "Valuation"),
-                                              sqaureCard(
-                                                  img: PngAssetPath
-                                                      .fundingRaisedIcon,
-                                                  subTitle:
-                                                      "${companyController.companyData.raisedFunds}",
-                                                  title: "Funds raised"),
-                                            ],
-                                          ),
-                                          const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 6),
-                                            child: TextWidget(
-                                                text: "Previous funding",
-                                                textSize: 16,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              sqaureCard(
-                                                  img: PngAssetPath
-                                                      .fundingAskIcon,
-                                                  subTitle:
-                                                      "${companyController.companyData.valuation}",
-                                                  title: "Valuation"),
-                                              sqaureCard(
-                                                  img: PngAssetPath
-                                                      .valuationIcon,
-                                                  subTitle:
-                                                      "${companyController.companyData.totalInvestment}",
-                                                  title: "Total Investment"),
-                                              sqaureCard(
-                                                  img: PngAssetPath
-                                                      .fundingRaisedIcon,
-                                                  subTitle:
-                                                      "${companyController.companyData.noOfInvesters}",
-                                                  title: "No. of Investors"),
-                                            ],
-                                          ),
-                                          const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 6),
-                                            child: TextWidget(
-                                                text: "Revenue Statistics",
-                                                textSize: 16,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              sqaureCard(
-                                                  img: PngAssetPath
-                                                      .fundingAskIcon,
-                                                  subTitle:
-                                                      "${companyController.companyData.lastYearRevenue}",
-                                                  title:
-                                                      "Last year revenue (FY 23)"),
-                                              sqaureCard(
-                                                  img: PngAssetPath
-                                                      .valuationIcon,
-                                                  subTitle:
-                                                      "${companyController.companyData.target}",
-                                                  title: "Target (FY 24)"),
-                                            ],
                                           ),
                                           const Padding(
                                             padding: EdgeInsets.symmetric(
@@ -479,7 +356,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                           SizedBox(
                                             height: 42,
                                             child: ListView.separated(
-                                              itemCount: companyController
+                                              itemCount: companyInvController
                                                   .companyData
                                                   .socialLinks!
                                                   .length,
@@ -497,7 +374,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                                 return InkWell(
                                                   onTap: () {
                                                     Helper.launchUrl(
-                                                        companyController
+                                                        companyInvController
                                                             .companyData
                                                             .socialLinks![ind]
                                                             .link!);
@@ -519,14 +396,14 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                                       child: Row(
                                                         children: [
                                                           Image.network(
-                                                            "${companyController.companyData.socialLinks![ind].logo}",
+                                                            "${companyInvController.companyData.socialLinks![ind].logo}",
                                                             height: 25,
                                                           ),
                                                           const SizedBox(
                                                               width: 8),
                                                           TextWidget(
                                                               text:
-                                                                  "${companyController.companyData.socialLinks![ind].name}",
+                                                                  "${companyInvController.companyData.socialLinks![ind].name}",
                                                               textSize: 12)
                                                         ],
                                                       ),
@@ -547,7 +424,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                           SizedBox(
                                             height: 118,
                                             child: ListView.separated(
-                                              itemCount: companyController
+                                              itemCount: companyInvController
                                                   .companyData.team!.length,
                                               shrinkWrap: true,
                                               separatorBuilder:
@@ -582,7 +459,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                                                 radius: 20,
                                                                 backgroundImage:
                                                                     NetworkImage(
-                                                                        '${companyController.companyData.team![index].image}'),
+                                                                        '${companyInvController.companyData.team![index].image}'),
                                                               ),
                                                               const SizedBox(
                                                                   width: 8),
@@ -593,7 +470,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                                                 children: [
                                                                   TextWidget(
                                                                       text:
-                                                                          "${companyController.companyData.team![index].name}",
+                                                                          "${companyInvController.companyData.team![index].name}",
                                                                       textSize:
                                                                           14),
                                                                 ],
@@ -615,7 +492,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                                                   height: 4),
                                                               TextWidget(
                                                                   text:
-                                                                      "${companyController.companyData.team![index].designation}",
+                                                                      "${companyInvController.companyData.team![index].designation}",
                                                                   textSize: 13),
                                                             ],
                                                           ),
@@ -642,8 +519,10 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                               spacing: 4.0,
                                               runSpacing: 4.0,
                                               children: List.generate(
-                                                  companyController.companyData
-                                                      .keyFocus!.length, (ind) {
+                                                  companyInvController
+                                                      .companyData
+                                                      .keyFocus!
+                                                      .length, (ind) {
                                                 return Card(
                                                   shape: RoundedRectangleBorder(
                                                       borderRadius:
@@ -659,7 +538,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                                         vertical: 4),
                                                     child: TextWidget(
                                                         text:
-                                                            "${companyController.companyData.keyFocus![ind]}",
+                                                            "${companyInvController.companyData.keyFocus![ind]}",
                                                         textSize: 14),
                                                   ),
                                                 );
@@ -667,14 +546,14 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                             ),
                                           ),
                                           sizedTextfield,
-                                          if (companyController
+                                          if (companyInvController
                                               .companyData.isOwnCompany!)
                                             AppButton.primaryButton(
                                                 onButtonPressed: () {
-                                                  companyController
+                                                  companyInvController
                                                       .deleteCompany(
                                                           context,
-                                                          companyController
+                                                          companyInvController
                                                               .companyData.id);
                                                 },
                                                 title: "Delete Company")

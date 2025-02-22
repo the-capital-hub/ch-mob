@@ -1,4 +1,4 @@
-import 'package:capitalhub_crm/utils/getStore/get_store.dart';
+
 
 class ApiUrl {
   /// base url
@@ -10,13 +10,13 @@ class ApiUrl {
   static const String signupUrl = "users/userSignupByOtp";
   static const String verifyOTPUrl = "users/verify_otp";
   static const String verifyOtpForSignup = "users/verifyOtpForSignup";
-  static const String checkUsernameAvailability = "users/checkUsernameAvailability";
+  static const String checkUsernameAvailability =
+      "users/checkUsernameAvailability";
   static const String saveRequiredData = "users/saveRequiredData";
   static const String resendOTPUrl = "users/resend_otp";
   static const String getUserByNameUrl = "users/getuserbyusername";
   static const String updateFounderUrl = "users/updateFounder";
   static const String googleLogin = "users/googleLogin";
-
 
 //startup
   static const String getPublicPostUrl = "api/posts/getPublicPosts?page=";
@@ -31,15 +31,14 @@ class ApiUrl {
   static const String savePostUrl = "api/posts/savePost/";
   static const String unSavePostUrl = "api/posts/unsavePost/";
   static const String pollVote = "api/posts/vote";
-  static const String getStartupCornerNews = "news/inshort-news?lang=en&category=startup&offset=";
+  static const String getStartupCornerNews =
+      "news/inshort-news?lang=en&category=startup&offset=";
   static const String getNewsByDateUrl = "news/getNewsByDate";
   static const String getTodaysNewsUrl = "news/getTodaysNews";
-
 
   static const String exploreUrl = "users/explore?";
   static const String exploreFilterUrl = "users/exploreFilters?type=";
   static const String vcsUrl = "vc/getVcById";
-
 
   static String getNotification = "notificaton/getNotification/";
   static String getNotificationCount = "notificaton/getNotificationCount";
@@ -84,15 +83,12 @@ class ApiUrl {
   static const String addPost = "api/posts/newPost";
   static const String getPostDetail = "api/posts/get_post_by_id";
 
-
   static const String oneLinkDetailsGet = "startup/onelinkDetails";
   static const String onelinkIntroMsgPost = "startup/introMessage";
   static const String onelinkCreateSecKey = "users/createSecretkey";
   static const String getCompPostCompany = "users/getProfilePosts/company";
   static const String deleteCompPostCompany =
       "api/posts/removeCompanyUpdatePost/";
-
-
 
   static const String chatMemberList = "chat/getUserChats";
   static const String chatTogglePin = "chat/togglePin/";
@@ -104,7 +100,8 @@ class ApiUrl {
   static const String clearChat = "message/clearChat/";
   static const String blockUser = "users/toggleUserBlock";
 
-  static const String groupChatMemberList = "community/getAllCommunitiesByUserId";
+  static const String groupChatMemberList =
+      "community/getAllCommunitiesByUserId";
   static const String createGroup = "community/createCommunity";
 
   static String getPublicProfileUrl = "users/getFounderProfilePageData/";
@@ -115,9 +112,10 @@ class ApiUrl {
   static const String createEvent = "meetings/createEvent";
   static const String getEvents = 'meetings/getEvents';
   static const String disableEvent = "meetings/disableEvent/";
-  static const String getALLScheduledMeetings = 'meetings/getALLScheduledMeetings/';
+  static const String getALLScheduledMeetings =
+      'meetings/getALLScheduledMeetings/';
   static String cancelScheduledMeeting = "meetings/cancelScheduledMeeting/";
-  static String getWebinars= "webinars/getWebinars";
+  static String getWebinars = "webinars/getWebinars";
   static String createWebinar = "webinars/createWebinar";
   static String disableWebinar = "webinars/disableWebinar/";
   static String getPriorityDMForUser = "priorityDM/getPriority-DMForUser";
@@ -126,30 +124,41 @@ class ApiUrl {
   static const String createCommunity = "Communities/createCommunity";
   static const String getCommunityById = "Communities/getCommunityById/";
   static const String getAllCommunities = "Communities/getAllCommunities";
-  static const String getMyCommunities = "Communities/getAllCommunitiesByUserId";
+  static const String getMyCommunities =
+      "Communities/getAllCommunitiesByUserId";
   static const String leaveCommunity = "Communities/leaveCommunity/";
   static const String deleteCommunity = "Communities/deleteCommunity/";
   static const String updateCommunity = "Communities/updateCommunity/";
-  static const String addProductToCommunity = "Communities/addProductToCommunity/";
-  static const String getCommunityProductsAndMembers = "Communities/getCommunityProductsAndMembers/";
+  static const String addProductToCommunity =
+      "Communities/addProductToCommunity/";
+  static const String getCommunityProductsAndMembers =
+      "Communities/getCommunityProductsAndMembers/";
   static const String buyProduct = "Communities/buyProduct/";
-  static const String getWebinarsByCommunityId = "webinars/getWebinarsByCommunityId/";
+  static const String getWebinarsByCommunityId =
+      "webinars/getWebinarsByCommunityId/";
   static const String sendJoinRequest = "Communities/sendJoinRequest";
   static const String getCommunityPosts = "api/posts/getCommunityPosts?page=";
-  static const String likeUnlikeCommunityPost = "api/posts/likeUnlikeCommunityPost/";
+  static const String likeUnlikeCommunityPost =
+      "api/posts/likeUnlikeCommunityPost/";
   static const String commentCommunityPost = "api/posts/commentCommunityPost/";
-  static const String deleteCommentCommunityPost = "api/posts/deleteCommentCommunityPost/";
-  static const String toggleLikeCommentCommunityPost = "api/posts/toggleLikeCommentCommunityPost/";
+  static const String deleteCommentCommunityPost =
+      "api/posts/deleteCommentCommunityPost/";
+  static const String toggleLikeCommentCommunityPost =
+      "api/posts/toggleLikeCommentCommunityPost/";
   static const String reportPost = "users/report";
   static const String deleteCommunityPost = "api/posts/deleteCommunityPost/";
-  static const String getSavedCommunityPostCollections = "api/posts/getSavedCommunityPostCollections/";
+  static const String getSavedCommunityPostCollections =
+      "api/posts/getSavedCommunityPostCollections/";
   static const String saveCommunityPost = "api/posts/saveCommunityPost/";
   static const String unsaveCommunityPost = "api/posts/unsaveCommunityPost";
   static const String voteCommunityPost = "api/posts/voteCommunityPost";
-  
 
 
 
-  
 
+  static const String searchCompanyInv = "investor/searchInvestors/";
+  static const String addCompanyUserInv = "users/addUserAsInvestor";
+  static String getCompanyDetailInv = "investor/getInvestorById/";
+  static const String deleteCompanyInv = "investor/delete_startup";
+  static const String createCompanyInv = "investor/createInvestor";
 }

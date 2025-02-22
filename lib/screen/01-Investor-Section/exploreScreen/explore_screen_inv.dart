@@ -525,7 +525,8 @@ class _ExploreScreenInvestorState extends State<ExploreScreenInvestor> {
                                         child: AppButton.primaryButton(
                                             onButtonPressed: () {},
                                             bgColor: AppColors.primaryInvestor,
-                                            textColor: Colors.black,borderRadius: 12,
+                                            textColor: Colors.black,
+                                            borderRadius: 12,
                                             height: 40,
                                             title: "Invest now")),
                                     const SizedBox(width: 8),
@@ -533,7 +534,8 @@ class _ExploreScreenInvestorState extends State<ExploreScreenInvestor> {
                                         child: AppButton.outlineButton(
                                             onButtonPressed: () {},
                                             borderColor:
-                                                AppColors.primaryInvestor,borderRadius: 12,
+                                                AppColors.primaryInvestor,
+                                            borderRadius: 12,
                                             height: 40,
                                             title: "Connect")),
                                   ],

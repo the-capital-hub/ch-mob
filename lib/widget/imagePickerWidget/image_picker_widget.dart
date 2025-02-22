@@ -3,12 +3,13 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ImagePickerWidget {
+import '../../utils/getStore/get_store.dart';
 
-  
+class ImagePickerWidget {
   final picker = ImagePicker();
   File? _image;
   String? cropImage;
@@ -48,18 +49,18 @@ class ImagePickerWidget {
       sourcePath: img,
       aspectRatioPresets: [
         CropAspectRatioPreset.square,
-        CropAspectRatioPreset.ratio3x2,
-        CropAspectRatioPreset.original,
-        CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9
       ],
       uiSettings: [
         AndroidUiSettings(
             toolbarTitle: 'Crop your image',
-            toolbarColor: AppColors.primary,
-            toolbarWidgetColor: AppColors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false),
+            toolbarColor: GetStoreData.getStore.read('isInvestor')
+                ? AppColors.primaryInvestor
+                : AppColors.primary,
+            toolbarWidgetColor: GetStoreData.getStore.read('isInvestor')
+                ? AppColors.black
+                : AppColors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true),
       ],
     );
     return croppedFile!.path;
