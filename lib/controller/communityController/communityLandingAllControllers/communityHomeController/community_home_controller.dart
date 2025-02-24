@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityPostModel/community_post_model.dart';
+import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityPostModel/community_post_model.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/savedCommunityCollectionModel/saved_community_collection_model.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
@@ -22,7 +23,7 @@ class CommunityHomeController extends GetxController {
         isLoading.value = isLoadOn;
       }
       var response = await ApiBase.getRequest(
-          extendedURL: ApiUrl.getCommunityPosts + page.toString());
+          extendedURL: ApiUrl.getCommunityPosts+createdCommunityId+"?page="+page.toString());
       log(response.body);
       var data = jsonDecode(response.body);
       if (data['status'] == true) {
@@ -175,8 +176,8 @@ class CommunityHomeController extends GetxController {
       log(response.body);
       var data = jsonDecode(response.body);
       if (data['status'] == true) {
-        SavedCommunityCollectionModel savedCommunityCollectionModel =
-            SavedCommunityCollectionModel.fromJson(data);
+        GetSavedCommunityCollectionModel savedCommunityCollectionModel =
+            GetSavedCommunityCollectionModel.fromJson(data);
         communityCollectionList.addAll(savedCommunityCollectionModel.data!);
       }
       else{

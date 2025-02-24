@@ -308,6 +308,7 @@ class AllCommunities {
     String isAbleToJoinTag;
     String createdAtTimeAgo;
     String amount;
+    bool isOpen;
 
     AllCommunities({
         required this.id,
@@ -321,6 +322,7 @@ class AllCommunities {
         required this.isAbleToJoinTag,
         required this.createdAtTimeAgo,
         required this.amount,
+        required this.isOpen
     });
 
     factory AllCommunities.fromJson(Map<String, dynamic> json) => AllCommunities(
@@ -335,6 +337,7 @@ class AllCommunities {
         isAbleToJoinTag: json["isAbleToJoinTag"],
         createdAtTimeAgo: json["createdAtTimeAgo"],
         amount: json["amount"],
+        isOpen : json["isOpen"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -349,6 +352,7 @@ class AllCommunities {
         "isAbleToJoinTag": isAbleToJoinTagValues.reverse[isAbleToJoinTag],
         "createdAtTimeAgo": createdAtTimeAgo,
         "amount": amountValues.reverse[amount],
+        "isOpen": isOpen
     };
 }
 

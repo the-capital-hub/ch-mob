@@ -134,7 +134,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   ];
   List communitySubPages = [
     CommunityAboutScreen(),
-    CommunityPeopleScreen(),
+    MyCommunityScreen(),
     ExploreCommunityScreen(),
     
     

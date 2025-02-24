@@ -1,3 +1,4 @@
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityAboutController/community_about_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityEventsController/community_events_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityProductsAndMembersController/community_products_and_members_controller.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPurchaseScreen/community_purchase_screen.dart';
@@ -28,6 +29,7 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
   GlobalKey<PopupMenuButtonState<String>> _popupMenuKey = GlobalKey();
   CommunityProductsAndMembersController communityProducts = Get.put(CommunityProductsAndMembersController());
   CommunityEventsController communityEvents = Get.put(CommunityEventsController());
+  CommunityAboutController aboutCommunity = Get.put(CommunityAboutController());
   
    @override
 void initState() {
@@ -35,6 +37,7 @@ void initState() {
     Future.wait([
       communityProducts.getCommunityProductsandMembers(),
       communityEvents.getCommunityEvents(),
+      aboutCommunity.getAboutCommunity()
     ]).then((values) {
       // Perform any additional logic after both calls are completed
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -58,7 +61,15 @@ final List<Color> containerColors = [
           
             backgroundColor: AppColors.transparent,
             
-            body: SingleChildScrollView(
+            body: 
+            Obx(() =>
+            aboutCommunity.isLoading.value
+                ? Helper.pageLoading()
+                : 
+                aboutCommunity.aboutCommunityList.isEmpty
+                      ? Center(child: TextWidget(text: "No About Community Available", textSize: 16))
+                      :
+            SingleChildScrollView(
               child: Column(
                 children: [
                   Column(
@@ -92,21 +103,27 @@ final List<Color> containerColors = [
                               SizedBox(height: 30,),
                               CircleAvatar(
                               radius: 60,
-                                                //   foregroundImage: NetworkImage(
-                                                //     // createdCommunity.createdCommunityDetails[0].image,
-                                                //  "" ),
+                                                  foregroundImage: NetworkImage(
+                                                   aboutCommunity.aboutCommunityList[0].community.image
+                                                  ),
                                                 ),
                                                 SizedBox(height: 16,),
-                                                TextWidget(text: "Welcome to the", textSize: 20,fontWeight: FontWeight.w500,),
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    TextWidget(text: "Welcome to the ", textSize: 20,fontWeight: FontWeight.w500,),
+                                                    TextWidget(text: aboutCommunity.aboutCommunityList[0].community.name, textSize: 20,fontWeight: FontWeight.w500,color: AppColors.primary,),
+                                                  ],
+                                                ),
                                                 SizedBox(height: 16,),
                                        Padding(
                                          padding: const EdgeInsets.symmetric(horizontal: 30),
                                          child: Container(
                                                                        height: 150,
                                                                        decoration: BoxDecoration(
-                                                                           image: const DecorationImage(
+                                                                           image:  DecorationImage(
                                                                                image: NetworkImage(
-                                          "https://i0.wp.com/mymotionguy.com/wp-content/uploads/2024/03/port-img02-1.jpg?fit=630,400&ssl=1",
+                                          aboutCommunity.aboutCommunityList[0].community.image,
                                                                                ),
                                                                                fit: BoxFit.fill),
                                                                            borderRadius: BorderRadius.circular(10)),
@@ -129,7 +146,7 @@ final List<Color> containerColors = [
                             
                             TextWidget(text: "About Community", textSize: 20,color: AppColors.primary,fontWeight: FontWeight.w500,),
                             SizedBox(height: 12,),
-                            TextWidget(text: "The Creative Collective is a vibrant online community dedicated to artists, writers, musicians, and other creative individuals who seek to collaborate, share knowledge, and inspire each other. It’s a space where creativity thrives, and members are encouraged to support one another in their artistic endeavors. Whether you're a seasoned professional or just beginning your creative journey, The Creative Collective offers a platform for individuals to share their work, exchange feedback, and discover new ways to grow.", textSize: 14,maxLine: 13,),
+                            TextWidget(text: aboutCommunity.aboutCommunityList[0].community.about,textSize: 14,maxLine: 13,),
                             SizedBox(height: 12,),
                             Column(
                               children: [
@@ -138,22 +155,23 @@ final List<Color> containerColors = [
                                 SizedBox(height: 12,),
                             CircleAvatar(
                                       radius: 40,
-                                      backgroundImage: NetworkImage(
-                                          '${GetStoreData.getStore.read('profile_image')}'),
+                                      backgroundImage: NetworkImage(aboutCommunity.aboutCommunityList[0].admin.profilePicture
+                                          ),
                                     ),
                           SizedBox(height: 12,),
-                          TextWidget(text: "${GetStoreData.getStore.read('name')}", textSize: 16, fontWeight: FontWeight.w500,),
+                          TextWidget(text: "${aboutCommunity.aboutCommunityList[0].admin.firstName} ${aboutCommunity.aboutCommunityList[0].admin.lastName}", textSize: 16, fontWeight: FontWeight.w500,),
                           SizedBox(height: 12,),
-                          TextWidget(text: "Role", textSize: 16),
+                          TextWidget(text: aboutCommunity.aboutCommunityList[0].admin.designation, textSize: 16),
                           SizedBox(height: 12,),
-                          TextWidget(text: "The Creative Collective is a vibrant online community dedicated to artists, writers, musicians, and other creative individuals who seek to collaborate, share knowledge, and inspire each other. It’s a space where creativity thrives, and members are encouraged to support one another in their artistic endeavors. Whether you're a seasoned professional or just beginning your creative journey, The Creative Collective offers a platform for individuals to share their work, exchange feedback, and discover new ways to grow.", textSize: 14, maxLine: 9,align: TextAlign.center,),
+                          TextWidget(text: aboutCommunity.aboutCommunityList[0].admin.bio, textSize: 14, maxLine: 9,align: TextAlign.center,),
 
                               ],
                             ),
                             SizedBox(height: 12,),
                           TextWidget(text: "Terms and Conditions", textSize: 20,color: AppColors.primary,fontWeight: FontWeight.w500,),
                           SizedBox(height: 12,),
-                          TextWidget(text: "No dealing restricted", textSize: 13),
+                          for (int i = 0; i < aboutCommunity.aboutCommunityList[0].community.termsAndConditions.length; i++)
+                          TextWidget(text: "•   ${aboutCommunity.aboutCommunityList[0].community.termsAndConditions[i]}", textSize: 14),
                           SizedBox(height: 12,),
                           TextWidget(text: "Recent Posts From Admin", textSize: 20,color: AppColors.primary,fontWeight: FontWeight.w500,),
                           SizedBox(height: 12,),
@@ -635,18 +653,25 @@ final List<Color> containerColors = [
                                    
                         
                           
+                        SizedBox(height: 12,),
                         
                         
                         
-                        
-                        
+                        AppButton.primaryButton(
+  onButtonPressed: () {
+    // Get.to(() => const CommunityCreateNewWebinarScreen());
+  },
+  title: "Signup to access events"
+)
                                      ],
                                    ),
+                                   
                    ),
                 ]
               )
             ),
         ),
+        )
       )
     );
   }

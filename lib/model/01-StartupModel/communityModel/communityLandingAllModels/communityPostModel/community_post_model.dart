@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityPostModel/reshare_community_model.dart';
+import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityPostModel/reshare_community_model.dart';
 
 CommunityPostModel publicPostModelFromJson(String str) =>
     CommunityPostModel.fromJson(json.decode(str));

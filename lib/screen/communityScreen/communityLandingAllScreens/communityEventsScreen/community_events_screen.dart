@@ -1,5 +1,6 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityEventsController/community_events_controller.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityDrawerScreen/community_drawer_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityCreateNewWebinarScreen/community_create_new_webinar_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
@@ -452,7 +453,7 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> with Sing
             communityEvents.isLoading.value
                 ? Helper.pageLoading()
                 : 
-                communityEvents.communityEventsList.isEmpty
+                communityEvents.communityEventsList[0].webinars.isEmpty
                       ? Center(child: TextWidget(text: "No Community Events Available", textSize: 16))
                       :
                  ListView.builder(
@@ -625,6 +626,23 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> with Sing
                       );
                     },
                   ))),
+                  bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(12),
+          // child: AppButton.primaryButton(
+          //     onButtonPressed: () {
+          //       // Get.to(() => const CreateNewWebinarScreen());
+          //       print('Current route: ${Get.toString()}'); 
+          //       Get.toNamed('/createNewWebinar');
+                
+          //     },
+          //     title: "+ Create Webinars"),
+          child: AppButton.primaryButton(
+  onButtonPressed: () {
+    Get.to(() => const CommunityCreateNewWebinarScreen());
+  },
+  title: "+ Create New Community Webinar"
+)
+        ),
     )
     );
   }

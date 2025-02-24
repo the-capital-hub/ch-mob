@@ -172,7 +172,10 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
             body: Obx(
               () => isLoading.value
                   ? Helper.pageLoading()
-                  : Padding(
+                 : 
+                
+                  
+                  Padding(
                       padding: EdgeInsets.only(left: 8, right: 8, top: 8),
                       child: RefreshIndicator(
                           onRefresh: () async {
@@ -392,6 +395,11 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                               child: Stack(
                                   alignment: Alignment.bottomCenter,
                                   children: [
+                                    if (communityHomeController.communityPostList.isEmpty)
+      const Center(
+        child: TextWidget(text: "No Posts in this Community", textSize: 16)
+      )
+    else
                                     ListView.separated(
                                       controller: scrollController,
                                       itemCount: communityHomeController
