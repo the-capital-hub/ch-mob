@@ -1,4 +1,6 @@
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAboutScreen/communities_about_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
@@ -75,55 +77,75 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                                                                         childAspectRatio: 0.9, // Adjust the aspect ratio to fit the cards
                                                                       ),
                                                                       itemBuilder: (context, index) {
-                                                                        return Card(
-                                                                          margin: EdgeInsets.zero,
-                                                                          color: AppColors.blackCard,
-                                                                          
-                                                                          shape: RoundedRectangleBorder(
-                                                                            borderRadius: BorderRadius.circular(10),
-                                                                          ),
-                                                                          child: Padding(
-                                                                            padding: const EdgeInsets.only(top: 16,right: 7),
-                                                                            child: Column(
-                                                                              children: [
-                                                                                CircleAvatar(
-                                                                                                              foregroundImage: NetworkImage(allCommunities.allCommunitiesDetails[index].image.toString()),
-                                                                                                            
-                                                                                                            ),
-                                                                                                             SizedBox(height: 6,),
-                                                                                                            TextWidget(text: allCommunities.allCommunitiesDetails[index].community, textSize: 13,fontWeight: FontWeight.w500,),
-                                                                                                            SizedBox(height: 8,),
-                                                                                                            TextWidget(text: allCommunities.allCommunitiesDetails[index].size, textSize: 13,color: AppColors.primary,),
-                                                                                                            SizedBox(height: 8,),
-                                                                                                            Row(
-                                                                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                                                                          children: [TextWidget(text: "${allCommunities.allCommunitiesDetails[index].members.length.toString()} Members", textSize: 9), SizedBox(width: 8,),Align(
-                                                                                                            alignment: Alignment.centerLeft,
-                                                                                                            child: Container(height: 3,width: 3,
-                                                                                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: AppColors.white)),
-                                                                                                          ),SizedBox(width: 8,),TextWidget(text: allCommunities.allCommunitiesDetails[index].createdAtTimeAgo, textSize: 9),],
-                                                                                                          
-                                                                                                        ),
-                                                                                                        SizedBox(height: 8,),
-                                                                                                         Row(
-                                                                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                                           children: [
-                                                                                                             Card(
-                                                                                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),color: AppColors.grey700,
-                                                                                                                  child: Padding(
-                                                                                                                  padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 6),
-                                                                                                                  child: TextWidget(text: allCommunities.allCommunitiesDetails[index].isAbleToJoinTag, textSize: 11),
-                                                                                                                ),),
-                                                                                                                
-                                                                                                                
-                                                                                                               TextWidget(text: allCommunities.allCommunitiesDetails[index].amount, textSize: 11)
-                                                                                                                
-                                                                                                                
-                                                                                                           ],
-                                                                                                         )
-                                                                              ],
+                                                                        return InkWell(
+                                                                          onTap: (){
+                                                                             createdCommunityId = allCommunities.allCommunitiesDetails[index].id;
+                   Get.to(() => const CommunityLandingScreen());
+                                                                          },
+                                                                          child: Card(
+                                                                            margin: EdgeInsets.zero,
+                                                                            color: AppColors.blackCard,
+                                                                            
+                                                                            shape: RoundedRectangleBorder(
+                                                                              borderRadius: BorderRadius.circular(10),
                                                                             ),
-                                                                          )
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.only(top: 4,right: 7),
+                                                                              child: Column(
+                                                                                children: [
+                                                                                  CircleAvatar(
+                                                                                                                foregroundImage: NetworkImage(allCommunities.allCommunitiesDetails[index].image.toString()),
+                                                                                                              
+                                                                                                              ),
+                                                                                                               SizedBox(height: 6,),
+                                                                                                              TextWidget(text: allCommunities.allCommunitiesDetails[index].community, textSize: 13,fontWeight: FontWeight.w500,),
+                                                                                                              SizedBox(height: 4),
+                                                                                                              TextWidget(text: allCommunities.allCommunitiesDetails[index].size, textSize: 13,color: AppColors.primary,),
+                                                                                                              SizedBox(height: 6,),
+                                                                                                              Row(
+                                                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                                            children: [TextWidget(text: "${allCommunities.allCommunitiesDetails[index].members.length.toString()} Members", textSize: 9), SizedBox(width: 8,),Align(
+                                                                                                              alignment: Alignment.centerLeft,
+                                                                                                              child: Container(height: 3,width: 3,
+                                                                                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: AppColors.white)),
+                                                                                                            ),SizedBox(width: 8,),TextWidget(text: allCommunities.allCommunitiesDetails[index].createdAtTimeAgo, textSize: 9),],
+                                                                                                            
+                                                                                                          ),
+                                                                                                          SizedBox(height: 6,),
+                                                                                                           Row(
+                                                                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                                             children: [
+                                                                                                               Card(
+                                                                                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),color: AppColors.grey700,
+                                                                                                                    child: Padding(
+                                                                                                                    padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 6),
+                                                                                                                    child: TextWidget(text: allCommunities.allCommunitiesDetails[index].isAbleToJoinTag, textSize: 11),
+                                                                                                                  ),),
+                                                                                                                  
+                                                                                                                  
+                                                                                                                 TextWidget(text: allCommunities.allCommunitiesDetails[index].amount, textSize: 11)
+                                                                                                                  
+                                                                                                                  
+                                                                                                             ],
+                                                                                                           ),
+                                                                                                           if(!allCommunities.allCommunitiesDetails[index].isCommunityMember&&allCommunities.allCommunitiesDetails[index].isOpen)
+                                                                                                           InkWell(
+                                                                                                            onTap: (){
+                                                                                                              createdCommunityId = allCommunities.allCommunitiesDetails[index].id;
+                   Get.to(() => const CommunityAboutScreen());
+                                                                                                            },
+                                                                                                             child: Card(
+                                                                                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),color: AppColors.primary,
+                                                                                                                      child: Padding(
+                                                                                                                      padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 6),
+                                                                                                                      child: TextWidget(text: "Join Now", textSize: 11, ),
+                                                                                                                    ),),
+                                                                                                           ),
+
+                                                                                ],
+                                                                              ),
+                                                                            )
+                                                                          ),
                                                                         );
                                                                       },
                                                                     ),

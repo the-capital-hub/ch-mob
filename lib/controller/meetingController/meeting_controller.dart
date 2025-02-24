@@ -253,10 +253,13 @@ Future disableWebinar(id) async {
   // Convert to string in the required format
   return outputFormat.format(finalDateTime);
 }
+
+String communityWebinarId = "";
   Future createWebinar()
        async {
         DateTime? date = DateTime.tryParse(dateController.text);
-        String? dateIso = date!.toIso8601String() + "Z";
+        // String? dateIso = date!.toIso8601String() + "Z";
+        String? dateIso = (date?.toIso8601String() ?? "") + "Z";
         String startTime = convertToIsoFormat(startTimeController.text,date);
         String endTime = convertToIsoFormat(endTimeController.text,date);
 
@@ -272,6 +275,7 @@ var webdata = {
         "duration": int.tryParse(durationMinutesController.text),
         "discount": int.tryParse(priceDiscountController.text),
         "price": int.tryParse(priceController.text),
+        "communityId": communityWebinarId
         
       };
 
@@ -289,6 +293,7 @@ var webdata = {
         "duration": int.tryParse(durationMinutesController.text),
         "discount": int.tryParse(priceDiscountController.text),
         "price": int.tryParse(priceController.text),
+        "communityId": communityWebinarId
         
       },
       withToken: true,
