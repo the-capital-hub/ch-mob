@@ -123,31 +123,32 @@ List<String> communityNames = [
                                                                       ],
                                                                       
                                                                     ),
-                                                                    SizedBox(height: 8),
-                                                                    Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.end,
-                                                                      children: [
-                                                                        InkWell(
-                                                                              onTap: () {
-                                                                                // Helper.launchUrl(
-                                                                                //     "https://wa.me/?text=${whatsappMsgController.text}%20${Uri.encodeFull(urlController.text)}");
-                                                                              },
-                                                                              child:
-                                                                                  Image.asset(PngAssetPath.whatsappIcon, height: 50),
-                                                                            ),
-                                                                            SizedBox(width:8),
-                                                                            InkWell(
-                                                                              onTap: () {
-                                                                                // Helper.launchUrl(
-                                                                                //     "https://wa.me/?text=${whatsappMsgController.text}%20${Uri.encodeFull(urlController.text)}");
-                                                                              },
-                                                                              child:
-                                                                                  Image.asset(PngAssetPath.instagramColorIcon, height: 40),
-                                                                            )
+                                                                    // SizedBox(height: 8),
+                                                                    // Row(
+                                                                    //   mainAxisAlignment: MainAxisAlignment.end,
+                                                                    //   children: [
+                                                                    //     InkWell(
+                                                                    //           onTap: () {
+                                                                    //             // Helper.launchUrl(
+                                                                    //             //     "https://wa.me/?text=${whatsappMsgController.text}%20${Uri.encodeFull(urlController.text)}");
+                                                                    //           },
+                                                                    //           child:
+                                                                    //               Image.asset(PngAssetPath.whatsappIcon, height: 50),
+                                                                    //         ),
+                                                                    //         SizedBox(width:8),
+                                                                    //         InkWell(
+                                                                    //           onTap: () {
+                                                                    //             // Helper.launchUrl(
+                                                                    //             //     "https://wa.me/?text=${whatsappMsgController.text}%20${Uri.encodeFull(urlController.text)}");
+                                                                    //           },
+                                                                    //           child:
+                                                                    //               Image.asset(PngAssetPath.instagramColorIcon, height: 40),
+                                                                    //         )
                                                                         
                                                                 
-                                                                      ],
-                                                                    )
+                                                                    //   ],
+                                                                    // )
+                                                                    SizedBox(height: 16,),
                                                                   ],
                                                                 ),
                                                               ),

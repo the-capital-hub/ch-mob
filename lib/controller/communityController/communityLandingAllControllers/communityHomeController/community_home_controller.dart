@@ -26,14 +26,28 @@ class CommunityHomeController extends GetxController {
           extendedURL: ApiUrl.getCommunityPosts+createdCommunityId+"?page="+page.toString());
       log(response.body);
       var data = jsonDecode(response.body);
+      // if (data['status'] == true) {
+      //   CommunityPostModel communityPostModel =
+      //       CommunityPostModel.fromJson(data);
+      //   communityPostList.assignAll([communityPostModel.data]);
+      // }
+      // else {
+      //   HelperSnackBar.snackBar("Info", data["message"]);
+      // }
       if (data['status'] == true) {
-        CommunityPostModel communityPostModel =
-            CommunityPostModel.fromJson(data);
-        communityPostList.addAll(communityPostModel.data!);
-      }
-      else{
-        HelperSnackBar.snackBar("Info", data["message"]);
-      }
+  // Check if the 'posts' list is not empty
+  if (data['data']['posts'] != null && data['data']['posts'].isNotEmpty) {
+    // Parse the response and create the model
+    CommunityPostModel communityPostModel = CommunityPostModel.fromJson(data);
+    
+    // Assign the data to your communityPostList
+    communityPostList.assignAll([communityPostModel.data]);
+  } else {
+    // If posts are empty, handle accordingly (maybe show a message or set default data)
+    print("No posts available.");
+    HelperSnackBar.snackBar("Info", "No New Posts Yet");
+  }
+}
     } catch (e) {
       log("getHome Feed $e");
     } finally {

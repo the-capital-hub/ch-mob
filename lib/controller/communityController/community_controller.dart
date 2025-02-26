@@ -15,6 +15,7 @@ String createdCommunityId = "676fac57e86b189878cdfb9a";
 class CommunityController extends GetxController {
   
   var isLoading = false.obs;
+  var noData = false.obs;
  
   Future createCommunity(name, size, subscriptionAmount, subscription, base64) async {
 
@@ -82,6 +83,9 @@ class CommunityController extends GetxController {
       // print(eventsList.toString());
       log("Created Community Details: $createdCommunityDetails");
     } 
+    else if(data["status"]==false){
+      noData.value = true;
+    }
   } catch (e) {
     log(" $e");
     // HelperSnackBar.snackBar("Error", "An error occurred while fetching events");
@@ -175,7 +179,33 @@ Helper.loader(context);
       return false;
     }
   }
+ Future joinCommunity() async {
 
-
-  
+    var bodie = {
+        "memberIds": ["${GetStoreData.getStore.read('id')}"],
+        
+      };
+      
+      log(bodie.toString());
+    var response = await ApiBase.postRequest(
+      body: {
+        "memberIds": ["${GetStoreData.getStore.read('id')}"],
+        
+      },
+      
+      withToken: true,
+      extendedURL: ApiUrl.joinCommunity+createdCommunityId,
+    );
+    log(response.body);
+    var data = json.decode(response.body);
+    if (data["status"]) {
+      Get.back();
+      HelperSnackBar.snackBar("Success", data["message"]);
+      return true;
+    } else {
+      Get.back();
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
+  }  
 }

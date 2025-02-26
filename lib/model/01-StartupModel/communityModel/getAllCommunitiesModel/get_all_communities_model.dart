@@ -328,7 +328,7 @@ class AllCommunities {
     factory AllCommunities.fromJson(Map<String, dynamic> json) => AllCommunities(
         id: json["_id"],
         community: json["community"],
-        image: json["image"],
+        image: json["image"]??"",
         size: json["size"],
         shareLink: json["shareLink"],
         members: json["members"],

@@ -128,6 +128,7 @@ class ApiUrl {
       "Communities/getAllCommunitiesByUserId";
   static const String leaveCommunity = "Communities/leaveCommunity/";
   static const String deleteCommunity = "Communities/deleteCommunity/";
+  static const String joinCommunity = "Communities/addMembersToCommunity/";
   static const String updateCommunity = "Communities/updateCommunity/";
   static const String addProductToCommunity =
       "Communities/addProductToCommunity/";

@@ -130,9 +130,10 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                                                                                                            ),
                                                                                                            if(!allCommunities.allCommunitiesDetails[index].isCommunityMember&&allCommunities.allCommunitiesDetails[index].isOpen)
                                                                                                            InkWell(
-                                                                                                            onTap: (){
+                                                                                                            onTap: ()async{
+                                                                                                              await allCommunities.joinCommunity();
                                                                                                               createdCommunityId = allCommunities.allCommunitiesDetails[index].id;
-                   Get.to(() => const CommunityAboutScreen());
+                   Get.to(() => const CommunityLandingScreen());
                                                                                                             },
                                                                                                              child: Card(
                                                                                                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),color: AppColors.primary,
