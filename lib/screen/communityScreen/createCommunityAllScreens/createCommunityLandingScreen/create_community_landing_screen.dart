@@ -2,6 +2,7 @@ import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
@@ -37,9 +38,7 @@ class _CreateCommunityScreenState extends State<CreateCommunityLandingScreen> {
                     height: 200,
                     decoration: BoxDecoration(
                         image: const DecorationImage(
-                            image: NetworkImage(
-                              "https://i0.wp.com/mymotionguy.com/wp-content/uploads/2024/03/port-img02-1.jpg?fit=630,400&ssl=1",
-                            ),
+                            image: AssetImage(PngAssetPath.communityImg),
                             fit: BoxFit.fill),
                         borderRadius: BorderRadius.circular(20)),
                   ),

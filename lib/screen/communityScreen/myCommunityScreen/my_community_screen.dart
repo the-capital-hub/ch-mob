@@ -1,4 +1,5 @@
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityLandingScreen/create_community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
@@ -75,68 +76,74 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
                   EdgeInsets.zero, // Remove extra padding from ListView
               itemCount: myCommunities.myCommunitiesDetails.length,
               itemBuilder: (context, index) {
-                return Card(
-                  color: AppColors.blackCard,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10,top: 12,bottom: 12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                CircleAvatar(
-                                  foregroundImage: NetworkImage(myCommunities.myCommunitiesDetails[index].image.toString()),
-                                
-                                ),
-                                SizedBox(width: 10,),
-                                TextWidget(text: myCommunities.myCommunitiesDetails[index].community.toString(), textSize: 15,fontWeight: FontWeight.w500,),
-                                SizedBox(width: 3,),
-                                Card(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                  child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 6),
-                                  child: TextWidget(text: myCommunities.myCommunitiesDetails[index].role.toString(), textSize: 11),
-                                ),color: AppColors.green700)
-                              ],
-                            ),
-                            SizedBox(height: 12,),
-                            TextWidget(text: myCommunities.myCommunitiesDetails[index].size.toString(), textSize: 13,color: AppColors.primary,),
-                            SizedBox(height: 12,),
-                            Row(
-                              children: [TextWidget(text: "${myCommunities.myCommunitiesDetails[index].members!.length.toString()} Members", textSize: 14), SizedBox(width: 8,),Container(height: 5,width: 5,
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: AppColors.white)),SizedBox(width: 8,),TextWidget(text: myCommunities.myCommunitiesDetails[index].createdAtTimeAgo.toString(), textSize: 14),],
-                            )
-                    
-                          ],
-                        ),
-                        Flexible(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                return InkWell(
+                  onTap: (){
+                   createdCommunityId = myCommunities.myCommunitiesDetails[index].id;
+                   Get.to(() => const CommunityLandingScreen());
+                  },
+                  child: Card(
+                    color: AppColors.blackCard,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10,top: 12,bottom: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                icon: Icon(
-                                
-                              Icons.mobile_screen_share_rounded,
-                              color: AppColors.whiteCard,
-                              // size: 22,
-                            ),onPressed: (){
-                              sharePostPopup(context,"",myCommunities.myCommunitiesDetails[index].shareLink.toString());
-                            },),
-                              IconButton(padding: EdgeInsets.zero,icon: Icon(Icons.logout),color: AppColors.primary,onPressed: (){
-                                myCommunities.leaveCommunity(context,myCommunities.myCommunitiesDetails[index].id);
-                              },),
-                              
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    foregroundImage: NetworkImage(myCommunities.myCommunitiesDetails[index].image.toString()),
+                                  
+                                  ),
+                                  SizedBox(width: 10,),
+                                  TextWidget(text: myCommunities.myCommunitiesDetails[index].community.toString(), textSize: 15,fontWeight: FontWeight.w500,),
+                                  SizedBox(width: 3,),
+                                  Card(
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                    child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 6),
+                                    child: TextWidget(text: myCommunities.myCommunitiesDetails[index].role.toString(), textSize: 11),
+                                  ),color: AppColors.green700)
+                                ],
+                              ),
+                              SizedBox(height: 12,),
+                              TextWidget(text: myCommunities.myCommunitiesDetails[index].size.toString(), textSize: 13,color: AppColors.primary,),
+                              SizedBox(height: 12,),
+                              Row(
+                                children: [TextWidget(text: "${myCommunities.myCommunitiesDetails[index].members!.length.toString()} Members", textSize: 14), SizedBox(width: 8,),Container(height: 5,width: 5,
+                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: AppColors.white)),SizedBox(width: 8,),TextWidget(text: myCommunities.myCommunitiesDetails[index].createdAtTimeAgo.toString(), textSize: 14),],
+                              )
+                      
                             ],
                           ),
-                        )
-                      ],
-                      
-                    ),
-                  ));
+                          Flexible(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  icon: Icon(
+                                  
+                                Icons.mobile_screen_share_rounded,
+                                color: AppColors.whiteCard,
+                                // size: 22,
+                              ),onPressed: (){
+                                sharePostPopup(context,"",myCommunities.myCommunitiesDetails[index].shareLink.toString());
+                              },),
+                                IconButton(padding: EdgeInsets.zero,icon: Icon(Icons.logout),color: AppColors.primary,onPressed: (){
+                                  myCommunities.leaveCommunity(context,myCommunities.myCommunitiesDetails[index].id);
+                                },),
+                                
+                              ],
+                            ),
+                          )
+                        ],
+                        
+                      ),
+                    )),
+                );
               },
             ),
           )

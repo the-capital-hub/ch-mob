@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityAboutController/community_about_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityUpdateSettingsController/community_update_settings_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/getCreatedCommunityModel/get_created_community_model.dart';
@@ -26,23 +27,114 @@ class UpdateSettingsScreen extends StatefulWidget {
 }
 
 class _UpdateSettingsScreenState extends State<UpdateSettingsScreen> {
-  CommunityController createdCommunity = Get.put(CommunityController());
+  // CommunityController allCommunities = Get.put(CommunityController());
+  // CommunityController createdCommunity = Get.put(CommunityController());
   CommunityUpdateSettingsController updateSettings = Get.put(CommunityUpdateSettingsController());
+  CommunityAboutController aboutCommunity = Get.put(CommunityAboutController());
   String base64 = "";
+  List<TextEditingController> controllers = [TextEditingController()];
   
-  
-   @override
-  void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      createdCommunity.getCommunityById().then((v) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-        urlController.text = createdCommunity.createdCommunityDetails[0].shareLink;
+  //  @override
+  // void initState() {
+  //   SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+  //     createdCommunity.getCommunityById().then((v) {
+  //       WidgetsBinding.instance.addPostFrameCallback((_) {
+  //       urlController.text = createdCommunity.createdCommunityDetails[0].community.shareLink.toString();
+  //       updateSettings.communityNameController.text = createdCommunity.createdCommunityDetails[0].community.name;
+  //       updateSettings.aboutCommunityController.text = createdCommunity.createdCommunityDetails[0].community.about;
+  //       updateSettings.whatsappGroupLinkController.text = createdCommunity.createdCommunityDetails[0].community.whatsappGroupLink;
+  //       updateSettings.isOpen = createdCommunity.createdCommunityDetails[0].community.isOpen;
+  //       updateSettings.termsAndConditions = createdCommunity.createdCommunityDetails[0].community.termsAndConditions;
+  //       // Ensure controllers are initialized with the terms and conditions list
+  //         initializeControllers();
+  //       });
+  //     });
+  //   });
+  //   super.initState();
+  // }
+  @override
+void initState() {
+  SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+    Future.wait([
+      // communityProducts.getCommunityProductsandMembers(),
+      // createdCommunity.getCommunityById(),
+      aboutCommunity.getAboutCommunity()
+    ]).then((values) {
+      // Perform any additional logic after both calls are completed
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // Your post-frame callback logic goes here
+        urlController.text = aboutCommunity.aboutCommunityList[0].community.shareLink;
+        updateSettings.communityNameController.text = aboutCommunity.aboutCommunityList[0].community.name;
+        updateSettings.aboutCommunityController.text = aboutCommunity.aboutCommunityList[0].community.about;
+       
+        updateSettings.subscriptionAmountController.text = aboutCommunity.aboutCommunityList[0].community.amount.toString();
+        updateSettings.whatsappGroupLinkController.text = aboutCommunity.aboutCommunityList[0].community.whatsappGroupLink;
+        updateSettings.isOpen = aboutCommunity.aboutCommunityList[0].community.isOpen;
+        updateSettings.termsAndConditions = aboutCommunity.aboutCommunityList[0].community.termsAndConditions;
+        // Ensure controllers are initialized with the terms and conditions list
+        setState(() {
+           updateSettings.communitySize = aboutCommunity.aboutCommunityList[0].community.communitySize;
+        updateSettings.subscriptionType = aboutCommunity.aboutCommunityList[0].community.subscription;
         });
+          initializeControllers();
       });
     });
-    super.initState();
-  }
+  });
+  super.initState();
+}
   TextEditingController urlController = TextEditingController();
+  // Initialize controllers based on the termsAndConditions list
+  void initializeControllers() {
+    setState(() {
+      controllers = [];
+      for (int i = 0; i < updateSettings.termsAndConditions.length; i++) {
+        TextEditingController controller = TextEditingController(text: updateSettings.termsAndConditions[i]);
+        // Add a listener to update termsAndConditions when the text is changed
+        controller.addListener(() {
+          updateSettings.termsAndConditions[i] = controller.text; // Update the corresponding term
+        });
+        controllers.add(controller);
+      }
+    });
+  }
+
+
+  // Add a new empty text field
+  void addNewTextField() {
+    setState(() {
+      // Add a new controller
+      controllers.add(TextEditingController());
+      updateSettings.termsAndConditions.add(""); // Add empty string to terms list
+
+      // Add listener to the newly created controller to sync with the termsAndConditions list
+      controllers.last.addListener(() {
+        int index = controllers.length - 1;
+        updateSettings.termsAndConditions[index] = controllers[index].text; // Sync new term
+      });
+    });
+  }
+
+  // Remove a text field
+  void removeTextField(int index) {
+    if (controllers.length > 0) {
+      setState(() {
+        controllers[index].dispose();
+        controllers.removeAt(index);
+        updateSettings.termsAndConditions.removeAt(index); // Remove corresponding term
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    // Dispose all controllers when the widget is disposed
+    for (var controller in controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -57,12 +149,12 @@ class _UpdateSettingsScreenState extends State<UpdateSettingsScreen> {
           ),
           body:
           Obx(()=>
-        createdCommunity.isLoading.value
+        aboutCommunity.isLoading.value
                 ? Helper.pageLoading()
-                : 
-                // communityProducts.communityProductsList.isEmpty
-                //       ? Center(child: TextWidget(text: "No Products Available", textSize: 16))
-                //       :
+                : aboutCommunity.aboutCommunityList.isEmpty
+                
+                      ? Center(child: TextWidget(text: "Cannot Update Community Settings", textSize: 16))
+                      :
           Padding(padding: EdgeInsets.all(12),
           child: SingleChildScrollView(
             child: Column(
@@ -78,7 +170,7 @@ class _UpdateSettingsScreenState extends State<UpdateSettingsScreen> {
                         :  CircleAvatar(
                             radius: 60,
                             foregroundImage: NetworkImage(
-                  createdCommunity.createdCommunityDetails[0].image,
+                  aboutCommunity.aboutCommunityList[0].community.image
                 ),),
                                 SizedBox(height: 12,),
                   
@@ -123,14 +215,14 @@ class _UpdateSettingsScreenState extends State<UpdateSettingsScreen> {
                       DropDownWidget(
                       status: updateSettings.subscriptionType,
                       lable: "Subscription Type",
-                      statusList: const ["Free", "Paid"],
+                      statusList: const ["free", "paid"],
                       onChanged: (val) {
                         setState(() {
                           updateSettings.subscriptionType = val.toString();
                         });
                       }),
                       SizedBox(height: 16,),
-                      if (updateSettings.subscriptionType=="Paid")
+                      if (updateSettings.subscriptionType=="paid")
                   
                   MyCustomTextField.textField(
                     textInputType: TextInputType.number,
@@ -162,12 +254,36 @@ class _UpdateSettingsScreenState extends State<UpdateSettingsScreen> {
                      MyCustomTextField.textField(hintText: "Enter Community description", controller:updateSettings.aboutCommunityController, lableText: "About Community",maxLine: 5),
                      SizedBox(height: 16,),
                      MyCustomTextField.textField(hintText: "Enter whatsapp group link", controller: updateSettings.whatsappGroupLinkController, lableText: "Whatsapp Group Link"),
-                     SizedBox(height: 16,),
-                     Align(child: TextWidget(text: "Terms and conditions", textSize: 13),alignment: Alignment.centerLeft,),
-                     SizedBox(height: 16,),
+                    //  SizedBox(height: 16,),
+                    //  Align(child: TextWidget(text: "Terms and conditions", textSize: 13),alignment: Alignment.centerLeft,),
+                     ListView.separated(
+        separatorBuilder: (context, index) => SizedBox(height: 12),
+        shrinkWrap: true,
+        padding: EdgeInsets.zero,
+        itemCount: controllers.length,
+        itemBuilder: (context, index) {
+          return MyCustomTextField.textField(
+            hintText: "Enter Terms and conditions",
+            controller: controllers[index], // Bind the controller to each text field
+            lableText: "Terms and conditions",
+            suffixIcon: IconButton(
+              icon: Icon(Icons.delete),
+              color: AppColors.primary,
+              onPressed: () => removeTextField(index),
+            ),
+          );
+        },
+      ),
+                
+            
+            SizedBox(height: 16,),
+
+              
                      AppButton.primaryButton(
                       bgColor: AppColors.green700,
-                         onButtonPressed: () {},
+                         onButtonPressed: () {
+addNewTextField();
+                         },
                          
                          title: "Add Term"),
                          SizedBox(height: 16,),
@@ -195,11 +311,11 @@ class _UpdateSettingsScreenState extends State<UpdateSettingsScreen> {
                               CircleAvatar(
                 radius: 25,
                 foregroundImage: NetworkImage(
-                  createdCommunity.createdCommunityDetails[0].image,
+                  aboutCommunity.aboutCommunityList[0].community.image,
                 ),
                               ),
                               SizedBox(height: 12,),
-                               TextWidget(text: createdCommunity.createdCommunityDetails[0].name, textSize: 20,fontWeight: FontWeight.w500,),
+                               TextWidget(text: aboutCommunity.aboutCommunityList[0].community.name, textSize: 20,fontWeight: FontWeight.w500,),
                              ],
                            ),
                            content: Padding(
