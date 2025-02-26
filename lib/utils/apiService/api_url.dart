@@ -159,6 +159,6 @@ class ApiUrl {
   static const String searchCompanyInv = "investor/searchInvestors/";
   static const String addCompanyUserInv = "users/addUserAsInvestor";
   static String getCompanyDetailInv = "investor/getInvestorById/";
-  static const String deleteCompanyInv = "investor/delete_startup";
+  static const String deleteCompanyInv = "investor/deleteInvestor";
   static const String createCompanyInv = "investor/createInvestor";
 }

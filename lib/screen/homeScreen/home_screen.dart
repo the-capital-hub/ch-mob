@@ -349,13 +349,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     Image.asset(PngAssetPath.verifyImg,
                                         height: 14),
                                   const SizedBox(width: 4),
-                                  TextWidget(
-                                    text:
-                                        "${homeController.postList[index].createdAt}",
-                                    textSize: 10,
-                                    color: AppColors.white54,
+                                  Expanded(
+                                    child: TextWidget(
+                                      text:
+                                          "${homeController.postList[index].createdAt}",
+                                      textSize: 10,
+                                      color: AppColors.white54,
+                                    ),
                                   ),
-                                  const Spacer(),
+                                  const SizedBox(width: 4),
                                   InkWell(
                                     onTap: () {
                                       if (homeController.postList[index]

@@ -16,7 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-import '../../widget/text_field/text_field.dart';
+import '../../utils/getStore/get_store.dart';
+import '../01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -50,7 +51,9 @@ class _ExploreScreenState extends State<ExploreScreen>
         decoration: bgDec,
         child: Scaffold(
             backgroundColor: AppColors.transparent,
-            drawer: const DrawerWidget(),
+            drawer: GetStoreData.getStore.read('isInvestor')
+                ? const DrawerWidgetInvestor()
+                : const DrawerWidget(),
             appBar: HelperAppBar.appbarHelper(
                 title: "Explore", hideBack: true, autoAction: true),
             body: Obx(
@@ -587,15 +590,17 @@ class _ExploreScreenState extends State<ExploreScreen>
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 60),
-                        child: AppButton.outlineButton(
-                            onButtonPressed: () {},
-                            borderColor: AppColors.primary,
-                            borderRadius: 12,
-                            height: 40,
-                            title: "Connect With The Founder"),
-                      ),
+                      
+                           Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 60),
+                              child: AppButton.outlineButton(
+                                  onButtonPressed: () {},
+                                  borderColor: AppColors.primary,
+                                  borderRadius: 12,
+                                  height: 40,
+                                  title: "Connect With The Founder"),
+                            ),
                       sizedTextfield,
                     ],
                   ));

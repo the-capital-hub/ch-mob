@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:capitalhub_crm/screen/companyScreen/companyScreenInv/company_inv_screen.dart';
 import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';
+import 'package:capitalhub_crm/screen/exploreScreen/explore_screen.dart';
 import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:capitalhub_crm/screen/logoutScreen/logout_Screen.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
@@ -28,16 +29,19 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
   List<String> items = [
     "Home",
     "Company",
+    "Explore",
     "Log Out",
   ];
   List icons = [
     PngAssetPath.homeIcon,
     PngAssetPath.financeIcon,
+    PngAssetPath.exploreIcon,
     PngAssetPath.logoutIcon,
   ];
   List page = [
     const LandingScreen(),
     const CompanyInvScreen(),
+    const ExploreScreen(),
     const LogoutScreen(),
   ];
   @override

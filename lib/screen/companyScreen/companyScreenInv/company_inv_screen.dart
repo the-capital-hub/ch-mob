@@ -48,7 +48,7 @@ class _CompanyInvScreenState extends State<CompanyInvScreen> {
     _debounce = Timer(const Duration(milliseconds: 300), () async {
       if (query.isNotEmpty) {
         await companyInvController.getCompanyList(query);
-        setState(() {});
+
         _showOverlay();
       } else {
         _removeOverlay();
@@ -173,7 +173,8 @@ class _CompanyInvScreenState extends State<CompanyInvScreen> {
                                 ),
                               ),
                               if (companyInvController
-                                  .companyData.isOwnCompany??false)
+                                      .companyData.isOwnCompany ??
+                                  false)
                                 InkWell(
                                   onTap: () {
                                     Get.to(AddCompanyInvScreen(
@@ -309,7 +310,7 @@ class _CompanyInvScreenState extends State<CompanyInvScreen> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                    TextWidget(
+                                                      TextWidget(
                                                           text:
                                                               "About the company : ${companyInvController.companyData.description}",
                                                           textSize: 14,
@@ -554,7 +555,8 @@ class _CompanyInvScreenState extends State<CompanyInvScreen> {
                                                       .deleteCompany(
                                                           context,
                                                           companyInvController
-                                                              .companyData.id);
+                                                              .companyData
+                                                              .founderId);
                                                 },
                                                 title: "Delete Company")
                                         ],

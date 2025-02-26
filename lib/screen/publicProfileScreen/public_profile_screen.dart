@@ -56,7 +56,7 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                       radius: 30,
                                       backgroundImage: NetworkImage(
                                           publicProfileController.publicData
-                                              .userProfile!.profilePicture),
+                                              .userProfile!.profilePicture!),
                                     ),
                                     const SizedBox(width: 12),
                                     Column(
@@ -72,7 +72,7 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                             text: publicProfileController
                                                 .publicData
                                                 .userProfile!
-                                                .designation,
+                                                .designation!,
                                             textSize: 14),
                                       ],
                                     ),
@@ -82,7 +82,7 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                         Helper.launchUrl(publicProfileController
                                             .publicData
                                             .userProfile!
-                                            .linkedinUrl);
+                                            .linkedinUrl!);
                                       },
                                       child: Image.asset(
                                           PngAssetPath.linkedinIcon,
@@ -105,7 +105,7 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                             text: publicProfileController
                                                 .publicData
                                                 .userProfile!
-                                                .companyName,
+                                                .companyName!,
                                             textSize: 15)),
                                   ],
                                 ),
@@ -120,7 +120,7 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                             text: publicProfileController
                                                 .publicData
                                                 .userProfile!
-                                                .designation,
+                                                .designation!,
                                             textSize: 15)),
                                   ],
                                 ),
@@ -139,7 +139,7 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                           itemCount: publicProfileController
                                               .publicData
                                               .userProfile!
-                                              .experience
+                                              .experience!
                                               .length,
                                           scrollDirection: Axis.horizontal,
                                           separatorBuilder: (context, index) =>
@@ -161,7 +161,7 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                                             publicProfileController
                                                                 .publicData
                                                                 .userProfile!
-                                                                .experience[
+                                                                .experience![
                                                                     index]
                                                                 .companyLogo),
                                                       ),
@@ -175,7 +175,7 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                                               text: publicProfileController
                                                                   .publicData
                                                                   .userProfile!
-                                                                  .experience[
+                                                                  .experience![
                                                                       index]
                                                                   .companyName,
                                                               textSize: 14),
@@ -183,7 +183,7 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                                               text: publicProfileController
                                                                   .publicData
                                                                   .userProfile!
-                                                                  .experience[
+                                                                  .experience![
                                                                       index]
                                                                   .location,
                                                               textSize: 12),
@@ -194,7 +194,7 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                                   const SizedBox(height: 2),
                                                   TextWidget(
                                                       text:
-                                                          "${publicProfileController.publicData.userProfile!.experience[index].startYear} - ${publicProfileController.publicData.userProfile!.experience[index].endYear}",
+                                                          "${publicProfileController.publicData.userProfile!.experience![index].startYear} - ${publicProfileController.publicData.userProfile!.experience![index].endYear}",
                                                       textSize: 14),
                                                   const SizedBox(height: 2),
                                                   TextWidget(
@@ -202,7 +202,8 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                                           publicProfileController
                                                               .publicData
                                                               .userProfile!
-                                                              .experience[index]
+                                                              .experience![
+                                                                  index]
                                                               .role,
                                                       textSize: 14),
                                                   const SizedBox(height: 2),
@@ -211,7 +212,8 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                                           publicProfileController
                                                               .publicData
                                                               .userProfile!
-                                                              .experience[index]
+                                                              .experience![
+                                                                  index]
                                                               .description,
                                                       textSize: 14),
                                                 ],
@@ -248,17 +250,17 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                               text: publicProfileController
                                                       .publicData
                                                       .userEmail!
-                                                      .isAccessible
+                                                      .isAccessible!
                                                   ? publicProfileController
                                                       .publicData
                                                       .userEmail!
-                                                      .email
+                                                      .email!
                                                   : "xxxxx@xxx.com",
                                               maxLine: 3,
                                               textSize: 14)),
                                       const SizedBox(width: 8),
                                       if (!publicProfileController
-                                          .publicData.userEmail!.isAccessible)
+                                          .publicData.userEmail!.isAccessible!)
                                         InkWell(
                                           onTap: () {
                                             publicProfileController
@@ -296,150 +298,180 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                     const SizedBox(height: 8),
                                     TextWidget(
                                         text: publicProfileController
-                                            .publicData.userProfile!.bio,
+                                            .publicData.userProfile!.bio!,
                                         maxLine: 100,
                                         textSize: 12)
                                   ])),
                           sizedTextfield,
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
+                          if (publicProfileController
+                                  .publicData.companyData!.companyName !=
+                              null)
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
                                 color: AppColors.white12,
                                 borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: AppColors.white38)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    const SizedBox(width: 8),
-                                    Container(
-                                      height: 60,
-                                      width: 60,
-                                      decoration: BoxDecoration(
+                                border: Border.all(color: AppColors.white38),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const SizedBox(width: 8),
+                                      Container(
+                                        height: 60,
+                                        width: 60,
+                                        decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(6),
                                           image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                  publicProfileController
-                                                      .publicData
-                                                      .companyData!
-                                                      .logo))),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        TextWidget(
-                                          text: publicProfileController
-                                              .publicData
-                                              .companyData!
-                                              .companyName,
-                                          textSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        const SizedBox(height: 4),
-                                        TextWidget(
-                                          text:
-                                              "${publicProfileController.publicData.companyData!.location} Founded in ${publicProfileController.publicData.companyData!.startedAtDate}",
-                                          textSize: 11,
-                                        ),
-                                        TextWidget(
-                                          text:
-                                              "Last funding ${publicProfileController.publicData.companyData!.lastFunding} Sector ${publicProfileController.publicData.companyData!.sector}",
-                                          textSize: 11,
-                                        ),
-                                        TextWidget(
-                                          text:
-                                              "Stage ${publicProfileController.publicData.companyData!.stage}",
-                                          textSize: 11,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                // if (profileController
-                                //     .profileData.companyData!.description!.isNotEmpty)
-                                Card(
-                                  color: AppColors.white12,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: TextWidget(
-                                        text: publicProfileController.publicData
-                                            .companyData!.description,
-                                        maxLine: 12,
-                                        textSize: 13),
-                                  ),
-                                ),
-                                sizedTextfield,
-                                SizedBox(
-                                  height: 42,
-                                  child: ListView.separated(
-                                    itemCount: publicProfileController
-                                        .publicData
-                                        .companyData!
-                                        .socialLinks
-                                        .length,
-                                    shrinkWrap: true,
-                                    separatorBuilder: (context, ind) {
-                                      return const SizedBox(width: 3);
-                                    },
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 6),
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder:
-                                        (BuildContext context, int ind) {
-                                      return InkWell(
-                                        onTap: () {
-                                          Helper.launchUrl(
-                                              publicProfileController
-                                                  .publicData
-                                                  .companyData!
-                                                  .socialLinks[ind]
-                                                  .link);
-                                        },
-                                        child: Card(
-                                          color: AppColors.white12,
-                                          surfaceTintColor: AppColors.white12,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(100)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 12.0),
-                                            child: Row(
-                                              children: [
-                                                Image.network(
-                                                  publicProfileController
-                                                      .publicData
-                                                      .companyData!
-                                                      .socialLinks[ind]
-                                                      .logo,
-                                                  height: 25,
-                                                ),
-                                                const SizedBox(width: 8),
-                                                TextWidget(
-                                                    text:
-                                                        publicProfileController
-                                                            .publicData
-                                                            .companyData!
-                                                            .socialLinks[ind]
-                                                            .name,
-                                                    textSize: 12)
-                                              ],
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(
+                                              publicProfileController.publicData
+                                                  .companyData!.logo!,
                                             ),
                                           ),
                                         ),
-                                      );
-                                    },
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          TextWidget(
+                                            text: publicProfileController
+                                                    .publicData
+                                                    .companyData
+                                                    ?.companyName ??
+                                                "N/A", // Default text
+                                            textSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          const SizedBox(height: 4),
+                                          TextWidget(
+                                            text:
+                                                "${publicProfileController.publicData.companyData?.location ?? "Unknown"} Founded in ${publicProfileController.publicData.companyData?.startedAtDate ?? "N/A"}",
+                                            textSize: 11,
+                                          ),
+                                          TextWidget(
+                                            text:
+                                                "Last funding ${publicProfileController.publicData.companyData?.lastFunding ?? "N/A"} Sector ${publicProfileController.publicData.companyData?.sector ?? "N/A"}",
+                                            textSize: 11,
+                                          ),
+                                          TextWidget(
+                                            text:
+                                                "Stage ${publicProfileController.publicData.companyData?.stage ?? "N/A"}",
+                                            textSize: 11,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
+                                  const SizedBox(height: 8),
+
+                                  /// Ensure `description` is not null before displaying it
+                                  if ((publicProfileController.publicData
+                                              .companyData?.description ??
+                                          "")
+                                      .isNotEmpty)
+                                    Card(
+                                      color: AppColors.white12,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: TextWidget(
+                                          text: publicProfileController
+                                                  .publicData
+                                                  .companyData
+                                                  ?.description ??
+                                              "No description available",
+                                          maxLine: 12,
+                                          textSize: 13,
+                                        ),
+                                      ),
+                                    ),
+
+                                  const SizedBox(height: 8),
+
+                                  /// Social links - Check if `socialLinks` exists and is not empty before rendering
+                                  if ((publicProfileController.publicData
+                                              .companyData?.socialLinks ??
+                                          [])
+                                      .isNotEmpty)
+                                    SizedBox(
+                                      height: 42,
+                                      child: ListView.separated(
+                                        itemCount: publicProfileController
+                                                .publicData
+                                                .companyData
+                                                ?.socialLinks
+                                                ?.length ??
+                                            0,
+                                        shrinkWrap: true,
+                                        separatorBuilder: (context, ind) =>
+                                            const SizedBox(width: 3),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 6),
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder:
+                                            (BuildContext context, int ind) {
+                                          final socialLink =
+                                              publicProfileController
+                                                  .publicData
+                                                  .companyData
+                                                  ?.socialLinks?[ind];
+                                          return InkWell(
+                                            onTap: () {
+                                              if (socialLink?.link != null) {
+                                                Helper.launchUrl(
+                                                    socialLink!.link!);
+                                              }
+                                            },
+                                            child: Card(
+                                              color: AppColors.white12,
+                                              surfaceTintColor:
+                                                  AppColors.white12,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100)),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 12.0),
+                                                child: Row(
+                                                  children: [
+                                                    Image.network(
+                                                      socialLink?.logo ??
+                                                          "https://via.placeholder.com/25",
+                                                      height: 25,
+                                                      errorBuilder: (context,
+                                                              error,
+                                                              stackTrace) =>
+                                                          Icon(
+                                                              Icons
+                                                                  .broken_image,
+                                                              size: 25,
+                                                              color:
+                                                                  Colors.grey),
+                                                    ),
+                                                    const SizedBox(width: 8),
+                                                    TextWidget(
+                                                      text: socialLink?.name ??
+                                                          "Unknown",
+                                                      textSize: 12,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            )
                         ],
                       ),
                     ),

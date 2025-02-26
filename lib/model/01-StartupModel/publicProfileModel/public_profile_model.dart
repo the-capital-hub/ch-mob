@@ -60,28 +60,28 @@ class PublicData {
 }
 
 class CompanyData {
-  String companyName;
-  String location;
-  String logo;
-  String description;
-  String sector;
-  String startedAtDate;
-  List<SocialLink> socialLinks;
-  String stage;
-  String age;
-  String lastFunding;
+  String? companyName;
+  String? location;
+  String? logo;
+  String? description;
+  String? sector;
+  String? startedAtDate;
+  List<SocialLink>? socialLinks;
+  String? stage;
+  String? age;
+  String? lastFunding;
 
   CompanyData({
-    required this.companyName,
-    required this.location,
-    required this.logo,
-    required this.description,
-    required this.sector,
-    required this.startedAtDate,
-    required this.socialLinks,
-    required this.stage,
-    required this.age,
-    required this.lastFunding,
+    this.companyName,
+    this.location,
+    this.logo,
+    this.description,
+    this.sector,
+    this.startedAtDate,
+    this.socialLinks,
+    this.stage,
+    this.age,
+    this.lastFunding,
   });
 
   factory CompanyData.fromJson(Map<String, dynamic> json) => CompanyData(
@@ -91,8 +91,10 @@ class CompanyData {
         description: json["description"],
         sector: json["sector"],
         startedAtDate: json["startedAtDate"],
-        socialLinks: List<SocialLink>.from(
-            json["socialLinks"].map((x) => SocialLink.fromJson(x))),
+        socialLinks: json["socialLinks"] != null
+            ? List<SocialLink>.from(
+                json["socialLinks"].map((x) => SocialLink.fromJson(x)))
+            : [],
         stage: json["stage"],
         age: json["age"],
         lastFunding: json["lastFunding"],
@@ -105,7 +107,7 @@ class CompanyData {
         "description": description,
         "sector": sector,
         "startedAtDate": startedAtDate,
-        "socialLinks": List<dynamic>.from(socialLinks.map((x) => x.toJson())),
+        "socialLinks": List<dynamic>.from(socialLinks!.map((x) => x.toJson())),
         "stage": stage,
         "age": age,
         "lastFunding": lastFunding,
@@ -113,14 +115,14 @@ class CompanyData {
 }
 
 class SocialLink {
-  String name;
-  String link;
-  String logo;
+  String? name;
+  String? link;
+  String? logo;
 
   SocialLink({
-    required this.name,
-    required this.link,
-    required this.logo,
+    this.name,
+    this.link,
+    this.logo,
   });
 
   factory SocialLink.fromJson(Map<String, dynamic> json) => SocialLink(
@@ -137,12 +139,12 @@ class SocialLink {
 }
 
 class UserEmail {
-  String email;
-  bool isAccessible;
+  String? email;
+  bool? isAccessible;
 
   UserEmail({
-    required this.email,
-    required this.isAccessible,
+    this.email,
+    this.isAccessible,
   });
 
   factory UserEmail.fromJson(Map<String, dynamic> json) => UserEmail(
@@ -157,30 +159,30 @@ class UserEmail {
 }
 
 class UserProfile {
-  String profilePicture;
-  String linkedinUrl;
-  String firstName;
-  String lastName;
-  String designation;
-  String companyName;
-  String location;
-  String bio;
-  List<Education> education;
-  List<Experience> experience;
-  bool isSubscribed;
+  String? profilePicture;
+  String? linkedinUrl;
+  String? firstName;
+  String? lastName;
+  String? designation;
+  String? companyName;
+  String? location;
+  String? bio;
+  List<Education>? education;
+  List<Experience>? experience;
+  bool? isSubscribed;
 
   UserProfile({
-    required this.profilePicture,
-    required this.linkedinUrl,
-    required this.firstName,
-    required this.lastName,
-    required this.designation,
-    required this.companyName,
-    required this.location,
-    required this.bio,
-    required this.education,
-    required this.experience,
-    required this.isSubscribed,
+    this.profilePicture,
+    this.linkedinUrl,
+    this.firstName,
+    this.lastName,
+    this.designation,
+    this.companyName,
+    this.location,
+    this.bio,
+    this.education,
+    this.experience,
+    this.isSubscribed,
   });
 
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
@@ -237,8 +239,8 @@ class Experience {
         location: json["companyLocation"],
         role: json["companyRole"],
         description: json["companyDescription"],
-        startYear: json["companyStartDate"],
-        endYear: json["companyEndDate"],
+        startYear: json["companyStartDate"].toString(),
+        endYear: json["companyEndDate"].toString(),
       );
 }
 

@@ -10,6 +10,8 @@ import 'package:get/get.dart';
 import '../../utils/getStore/get_store.dart';
 import '../../utils/helper/helper_sncksbar.dart';
 
+// all model are commanly used in investor and startup
+//in case of changes in response make it carefully
 class CompanyInvController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isLoadingList = false.obs;
@@ -154,7 +156,7 @@ class CompanyInvController extends GetxController {
       extendedURL: ApiUrl.createCompanyInv,
     );
     log(json.encode(body).toString());
-
+    log(response.body.toString());
     var data = json.decode(response.body);
     if (data["status"]) {
       isCompanyFound.value = true;
@@ -180,10 +182,7 @@ class CompanyInvController extends GetxController {
     selectedSector = companyData.sector;
     numOfEmpController.text = companyData.numberOfEmployees!;
     websiteUrlController.text = companyData.socialLinks!
-        .firstWhere(
-          (val) => val.name == "website",
-        )
-        .link!;
+        .firstWhere((val) => val.name == "website").link!;
     visionController.text = companyData.vision!;
     missionController.text = companyData.mission!;
     keyFocusController.text =
