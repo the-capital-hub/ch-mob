@@ -11,6 +11,9 @@ class CommunityAboutController extends GetxController{
   var isLoading = false.obs;
   RxList<AboutCommunity> aboutCommunityList = <AboutCommunity>[].obs;
   RxList<Community> aboutCommunityDetailsList = <Community>[].obs;
+  RxList<Post> aboutCommunityPostsList = <Post>[].obs;
+  RxList<Product> aboutCommunityProductsList = <Product>[].obs;
+  RxList<Event> aboutCommunityEventsList = <Event>[].obs;
   Future<void> getAboutCommunity() async {
   try {
     isLoading.value = true; // Set loading state to true
@@ -28,7 +31,9 @@ class CommunityAboutController extends GetxController{
       aboutCommunityList.assignAll([communityAboutModel.data]); // Adding events to the list
       // print(eventsList.toString());
       aboutCommunityDetailsList.assignAll([communityAboutModel.data.community]);
-      
+      aboutCommunityPostsList.assignAll(communityAboutModel.data.posts);
+      aboutCommunityProductsList.assignAll(communityAboutModel.data.products);
+      aboutCommunityEventsList.assignAll(communityAboutModel.data.events);
       
     } 
   } catch (e) {

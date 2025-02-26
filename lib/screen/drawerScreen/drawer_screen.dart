@@ -133,7 +133,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     const PriorityDMScreen()
   ];
   List communitySubPages = [
-    CommunityAboutScreen(),
+    CreateCommunityLandingScreen(),
     MyCommunityScreen(),
     ExploreCommunityScreen(),
     

@@ -36,6 +36,7 @@ Future deleteCommunity() async {
   String communitySize = "Less than 10K";
   String subscriptionType = "Free";
   bool isOpen = false;
+  List <String> termsAndConditions = [];
 
 Future updateCommunity(base64) async {
 
@@ -52,6 +53,7 @@ Future updateCommunity(base64) async {
         "whatsapp_group_link": whatsappGroupLinkController.text,
         "adminId": "${GetStoreData.getStore.read('id')}",
          "image": "data:image/png;base64,$base64",
+         "terms_and_conditions":termsAndConditions
 
       };
       
@@ -69,6 +71,7 @@ Future updateCommunity(base64) async {
         "image": base64,
         "whatsapp_group_link": whatsappGroupLinkController.text,
         // "adminId": "${GetStoreData.getStore.read('id')}",
+        "terms_and_conditions": termsAndConditions
         
       },
       

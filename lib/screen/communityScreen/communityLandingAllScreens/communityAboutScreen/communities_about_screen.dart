@@ -35,8 +35,8 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
 void initState() {
   SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
     Future.wait([
-      communityProducts.getCommunityProductsandMembers(),
-      communityEvents.getCommunityEvents(),
+      // communityProducts.getCommunityProductsandMembers(),
+      // communityEvents.getCommunityEvents(),
       aboutCommunity.getAboutCommunity()
     ]).then((values) {
       // Perform any additional logic after both calls are completed
@@ -169,13 +169,33 @@ final List<Color> containerColors = [
                             ),
                             SizedBox(height: 12,),
                           TextWidget(text: "Terms and Conditions", textSize: 20,color: AppColors.primary,fontWeight: FontWeight.w500,),
+                          aboutCommunity.aboutCommunityList[0].community.termsAndConditions.isEmpty
+                        ? SizedBox(height:100,child:TextWidget(text: "No Community Terms and Conditions Available", textSize: 16))
+                        :
                           SizedBox(height: 12,),
                           for (int i = 0; i < aboutCommunity.aboutCommunityList[0].community.termsAndConditions.length; i++)
                           TextWidget(text: "•   ${aboutCommunity.aboutCommunityList[0].community.termsAndConditions[i]}", textSize: 14),
                           SizedBox(height: 12,),
                           TextWidget(text: "Recent Posts From Admin", textSize: 20,color: AppColors.primary,fontWeight: FontWeight.w500,),
                           SizedBox(height: 12,),
-                          Card(
+                          aboutCommunity.aboutCommunityPostsList.isEmpty
+                        ? SizedBox(height:100,child:TextWidget(text: "No Community Posts Available", textSize: 16))
+                        :
+                          SizedBox(
+                          height: 300,
+                          
+                          child: ListView.separated(
+                            separatorBuilder: (context, index) {
+                          return const SizedBox(
+                            height: 12,
+                          );},
+                            
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            itemCount: aboutCommunity.aboutCommunityPostsList.length,
+                            itemBuilder: (context, index) {
+                                   return 
+                                  Card(
                             margin: EdgeInsets.zero,
                                     color: AppColors.blackCard,
                                     child: Padding(
@@ -186,79 +206,79 @@ final List<Color> containerColors = [
                               children: [
                                 CircleAvatar(
                                   foregroundImage: NetworkImage(
-                                        "https://i0.wp.com/mymotionguy.com/wp-content/uploads/2024/03/port-img02-1.jpg?fit=630,400&ssl=1",
+                                        aboutCommunity.aboutCommunityPostsList[index].image.toString(),
                                       ),
                                 ),
                                 SizedBox(width: 8,),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    TextWidget(text: "Capital Hub", textSize: 16),
-                                    TextWidget(text: "1 Day ago", textSize: 14)
+                                    TextWidget(text: "${aboutCommunity.aboutCommunityPostsList[index].user.firstName} ${aboutCommunity.aboutCommunityPostsList[index].user.lastName}", textSize: 16),
+                                    TextWidget(text: aboutCommunity.aboutCommunityPostsList[index].createdAt.toString(), textSize: 14)
                                   ],
                                 ),
                                 SizedBox(width: 8,),
-                                Card(
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                    child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 6),
-                                    child: TextWidget(text:"Member", textSize: 11),
-                                  ),color: AppColors.primary),
+                                // Card(
+                                //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                //     child: Padding(
+                                //     padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 6),
+                                //     child: TextWidget(text:aboutCommunity.aboutCommunityPostsList[index].user.designation, textSize: 11),
+                                //   ),color: AppColors.primary),
                                   SizedBox(width: 50),
-                                  InkWell(
-                                    onTap: () {
-                                      _popupMenuKey.currentState
-                                          ?.showButtonMenu();
-                                    },
-                                    child: Row(
-                                      children: [
-                                        PopupMenuButton<String>(
-                                            key: _popupMenuKey,
-                                            icon: Icon(
-                                              Icons.more_vert,
-                                              size: 25,
-                                            ),
-                                            iconColor: AppColors.white,
-                                            color: AppColors.blackCard,
-                                            offset: Offset(100, 55),
-                                            onSelected: (value) {},
-                                            itemBuilder: (context) => [
-                                                  const PopupMenuItem(
-                                                    child: TextWidget(
-                                                        text: "All Posts",
-                                                        textSize: 14),
-                                                  ),
-                                                  PopupMenuItem(
-                                                    child: TextWidget(
-                                                        text: "Admin Posts",
-                                                        textSize: 14),
-                                                  ),
-                                                  const PopupMenuItem(
-                                                    child: TextWidget(
-                                                        text: "Member Posts",
-                                                        textSize: 14),
-                                                  ),
-                                                ]),
-                                        // TextWidget(
-                                        //   text: "Filter Post",
-                                        //   textSize: 16,
-                                        // ),
-                                      ],
-                                    ),
-                                  )
+                                  // InkWell(
+                                  //   onTap: () {
+                                  //     _popupMenuKey.currentState
+                                  //         ?.showButtonMenu();
+                                  //   },
+                                  //   child: Row(
+                                  //     children: [
+                                  //       PopupMenuButton<String>(
+                                  //           key: _popupMenuKey,
+                                  //           icon: Icon(
+                                  //             Icons.more_vert,
+                                  //             size: 25,
+                                  //           ),
+                                  //           iconColor: AppColors.white,
+                                  //           color: AppColors.blackCard,
+                                  //           offset: Offset(100, 55),
+                                  //           onSelected: (value) {},
+                                  //           itemBuilder: (context) => [
+                                  //                 const PopupMenuItem(
+                                  //                   child: TextWidget(
+                                  //                       text: "All Posts",
+                                  //                       textSize: 14),
+                                  //                 ),
+                                  //                 PopupMenuItem(
+                                  //                   child: TextWidget(
+                                  //                       text: "Admin Posts",
+                                  //                       textSize: 14),
+                                  //                 ),
+                                  //                 const PopupMenuItem(
+                                  //                   child: TextWidget(
+                                  //                       text: "Member Posts",
+                                  //                       textSize: 14),
+                                  //                 ),
+                                  //               ]),
+                                  //       // TextWidget(
+                                  //       //   text: "Filter Post",
+                                  //       //   textSize: 16,
+                                  //       // ),
+                                  //     ],
+                                  //   ),
+                                  // )
                               ],
                             ),
                             Divider(
                               color: AppColors.white38,
                             ),
-                            TextWidget(text: "Clean energy expansion requires strategic investments and careful stewardship.....", textSize: 14,maxLine: 2,),
+                            TextWidget(text: aboutCommunity.aboutCommunityPostsList[index].description, textSize: 14,maxLine: 2,),
                             SizedBox(height: 12,),
                             Container(
                               height: 200,
                               decoration: BoxDecoration(
-                                  image: const DecorationImage(
+                                  image:  DecorationImage(
                                       image: NetworkImage(
-                                        "https://i0.wp.com/mymotionguy.com/wp-content/uploads/2024/03/port-img02-1.jpg?fit=630,400&ssl=1",
+                                        aboutCommunity.aboutCommunityPostsList[index].image.toString(),
                                       ),
                                       fit: BoxFit.fill),
                                   borderRadius: BorderRadius.circular(15)),
@@ -269,21 +289,22 @@ final List<Color> containerColors = [
                           ],
                                       ),
                                     ),
+                          );
+                            },
                           ),
+                        ),
+                          
                           SizedBox(height: 12,),
                           TextWidget(text: "Community Products", textSize: 20,color: AppColors.primary,fontWeight: FontWeight.w500,),
                           SizedBox(height: 12,),
-                          Obx(()=>
-                        communityProducts.isLoading.value
-                                     ? SizedBox.shrink()
-                                     // Helper.pageLoading()
-                                     : 
-                                     communityProducts.communityProductsList.isEmpty
-                        ? SizedBox(height:100,child:TextWidget(text: "No Products Available", textSize: 16))
+                          
+                       
+                                     aboutCommunity.aboutCommunityProductsList.isEmpty
+                        ? SizedBox(height:100,child:TextWidget(text: "No Community Products Available", textSize: 16))
                         :
                         
                         SizedBox(
-                          
+                          height: 300,
                           
                           child: ListView.separated(
                             separatorBuilder: (context, index) {
@@ -293,7 +314,7 @@ final List<Color> containerColors = [
                             
                             padding: EdgeInsets.zero,
                             shrinkWrap: true,
-                            itemCount: communityProducts.communityProductsList.length,
+                            itemCount: aboutCommunity.aboutCommunityProductsList.length,
                             itemBuilder: (context, index) {
                                    return Card(
                                     margin: EdgeInsets.zero,
@@ -317,7 +338,7 @@ final List<Color> containerColors = [
                             decoration: BoxDecoration(
                                 image:  DecorationImage(
                                     image: NetworkImage(
-                                      communityProducts.communityProductsList[index].image,
+                                      aboutCommunity.aboutCommunityProductsList[index].image,
                                     ),
                                     fit: BoxFit.fill),
                                 borderRadius: BorderRadius.circular(15)),
@@ -333,7 +354,7 @@ final List<Color> containerColors = [
                                 color: AppColors.primary,
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
-                                  child: TextWidget(text: communityProducts.communityProductsList[index].isFree?"Free":"\u{20B9}${communityProducts.communityProductsList[index].amount}/-", textSize: 16)
+                                  child: TextWidget(text: aboutCommunity.aboutCommunityProductsList[index].isFree?"Free":"\u{20B9}${aboutCommunity.aboutCommunityProductsList[index].amount}/-", textSize: 16)
                                 ),
                               ),
                                    ),
@@ -362,7 +383,7 @@ final List<Color> containerColors = [
                             padding: const EdgeInsets.only(left: 12,right: 16),
                             child: TextWidget(
                                 text:
-                                    communityProducts.communityProductsList[index].name,
+                                    aboutCommunity.aboutCommunityProductsList[index].name,
                                 textSize: 18,
                                 maxLine: 2,
                                 fontWeight: FontWeight.w500,
@@ -373,7 +394,7 @@ final List<Color> containerColors = [
                               padding: const EdgeInsets.only(left: 12,right: 16),
                               child: TextWidget(
                                 text:
-                                    communityProducts.communityProductsList[index].description,
+                                    aboutCommunity.aboutCommunityProductsList[index].description,
                                 textSize: 14,
                                 maxLine: 3,
                                 
@@ -403,7 +424,7 @@ final List<Color> containerColors = [
                            child: AppButton.primaryButton(
                                onButtonPressed: () {
                                 if(
-                                  communityProducts.communityProductsList[index].isFree
+                                  aboutCommunity.aboutCommunityProductsList[index].isFree
                                 ){
                           
                                 
@@ -417,9 +438,9 @@ final List<Color> containerColors = [
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                  children: [
-                                   for (var i = 0; i < communityProducts.communityProductsList[index].urls.length; i++)
+                                   for (var i = 0; i < aboutCommunity.aboutCommunityProductsList[index].urls.length; i++)
                                      TextWidget(
-                                       text: communityProducts.communityProductsList[index].urls[i],
+                                       text: aboutCommunity.aboutCommunityProductsList[index].urls[i],
                                        textSize: 16,
                                        color: AppColors.primary,
                                      ),
@@ -446,7 +467,7 @@ final List<Color> containerColors = [
                                 }
                                        
                                        
-                               }, title: communityProducts.communityProductsList[index].isFree?"Access Resource":"Buy \u{20B9}${communityProducts.communityProductsList[index].amount} "),
+                               }, title: aboutCommunity.aboutCommunityProductsList[index].isFree?"Access Resource":"Buy \u{20B9}${aboutCommunity.aboutCommunityProductsList[index].amount} "),
                          ),
                          
                         
@@ -458,21 +479,18 @@ final List<Color> containerColors = [
                             },
                           ),
                         ),
-                      ),
+                      
                       SizedBox(height: 12,),
                       TextWidget(text: "Upcoming Events", textSize: 20,color: AppColors.primary,fontWeight: FontWeight.w500,),
                       SizedBox(height: 12,),
-                      Obx(() => 
-                      communityEvents.isLoading.value
-                          ? SizedBox.shrink()
-                          // Helper.pageLoading()
-                          : 
-                          communityEvents.communityEventsList.isEmpty
+                      
+                      
+                          aboutCommunity.aboutCommunityEventsList.isEmpty
                                      ? 
                                      SizedBox(height:100,child: TextWidget(text: "No Community Events Available", textSize: 16))
                                      :
                            SizedBox(
-                            // height: 500,
+                            height: 300,
                             // width: 400,
                              child: ListView.separated(
                               separatorBuilder: (context, index) {
@@ -480,7 +498,7 @@ final List<Color> containerColors = [
                             height: 12,
                           );},
                                      // padding: const EdgeInsets.all(12.0),
-                                     itemCount: communityEvents.communityEventsList[0].webinars.length,
+                                     itemCount: aboutCommunity.aboutCommunityEventsList.length,
                                      shrinkWrap: true,
                                      itemBuilder: (context, index) {
                                        
@@ -497,9 +515,9 @@ final List<Color> containerColors = [
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            TextWidget(text: communityEvents.communityEventsList[0].webinars[index].title, textSize: 25),
-                            communityEvents.communityEventsList[0].webinars[index].isActive?const SizedBox():
-                            TextWidget(text: "This meeting is cancelled.", textSize: 16,color: AppColors.grey,),
+                            TextWidget(text: aboutCommunity.aboutCommunityEventsList[index].title, textSize: 25),
+                            // communityEvents.communityEventsList[0].webinars[index].isActive?const SizedBox():
+                            // TextWidget(text: "This meeting is cancelled.", textSize: 16,color: AppColors.grey,),
                             const SizedBox(height: 8),
                             Card(
                               color: AppColors.white38,
@@ -527,7 +545,7 @@ final List<Color> containerColors = [
                                           CrossAxisAlignment.start,
                                       children: [
                                         TextWidget(
-                                            text: "${communityEvents.communityEventsList[0].webinars[index].duration}",
+                                            text: "${aboutCommunity.aboutCommunityEventsList[index].duration}",
                                             textSize: 15),
                                         const TextWidget(
                                             text: "Video Meeting",
@@ -549,7 +567,7 @@ final List<Color> containerColors = [
                                            MainAxisAlignment.center,
                                        children: [
                                          TextWidget(
-                                             text: "Rs ${communityEvents.communityEventsList[0].webinars[index].price} +",
+                                             text: "Rs ${aboutCommunity.aboutCommunityEventsList[index].price} +",
                                              textSize: 12),
                                          const SizedBox(width: 5),
                                          Icon(Icons.arrow_forward,
@@ -565,104 +583,104 @@ final List<Color> containerColors = [
                               ),
                             ),
                             sizedTextfield, // You might want to customize this part
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: ElevatedButton.icon(
-                                    onPressed: communityEvents.communityEventsList[0].webinars[index].isActive 
-                         ?  () async {
+                    //         Row(
+                    //           children: [
+                    //             Expanded(
+                    //               child: ElevatedButton.icon(
+                    //                 onPressed: communityEvents.communityEventsList[0].webinars[index].isActive 
+                    //      ?  () async {
                              
-                                   // Copy the text to the clipboard
-                                   await Clipboard.setData(ClipboardData(text: communityEvents.communityEventsList[0].webinars[index].webinarLink));
+                    //                // Copy the text to the clipboard
+                    //                await Clipboard.setData(ClipboardData(text: communityEvents.communityEventsList[0].webinars[index].webinarLink));
                      
-                                   // Optionally, show a snackbar or a confirmation that the text was copied
-                                   HelperSnackBar.snackBar("Success", "Link copied to clipboard!" );
-                                   // ScaffoldMessenger.of(context).showSnackBar(
-                                   //   SnackBar(content: Text("Link copied to clipboard!")),
-                                   // );
-                         }:null,
-                                    icon: Icon(Icons.file_copy_outlined,
-                                        color: AppColors.white, size: 14),
-                                    label: const TextWidget(
-                                        text: "Copy Link", textSize: 14),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors.blue,
-                                      disabledBackgroundColor: AppColors.grey,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: AppButton.primaryButton(
-                                    height: 40,
-                                      onButtonPressed: communityEvents.communityEventsList[0].webinars[index].isActive
-                         ? () {
+                    //                // Optionally, show a snackbar or a confirmation that the text was copied
+                    //                HelperSnackBar.snackBar("Success", "Link copied to clipboard!" );
+                    //                // ScaffoldMessenger.of(context).showSnackBar(
+                    //                //   SnackBar(content: Text("Link copied to clipboard!")),
+                    //                // );
+                    //      }:null,
+                    //                 icon: Icon(Icons.file_copy_outlined,
+                    //                     color: AppColors.white, size: 14),
+                    //                 label: const TextWidget(
+                    //                     text: "Copy Link", textSize: 14),
+                    //                 style: ElevatedButton.styleFrom(
+                    //                   backgroundColor: AppColors.blue,
+                    //                   disabledBackgroundColor: AppColors.grey,
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //             const SizedBox(width: 8),
+                    //             Expanded(
+                    //               child: AppButton.primaryButton(
+                    //                 height: 40,
+                    //                   onButtonPressed: communityEvents.communityEventsList[0].webinars[index].isActive
+                    //      ? () {
                                         
-                                        showDialog(
-                     context: context,
-                     builder: (BuildContext context) {
-                       return AlertDialog(
-                         backgroundColor: AppColors.blackCard,
-                         title:  TextWidget(text: 'Are you sure you want to cancel this event?', textSize: 16,maxLine: 2,),
-                         content: TextWidget(text: 'No. of People who have booked this event : ${communityEvents.communityEventsList[0].webinars[index].joinedUsers.length}', textSize: 16,maxLine: 2,),
-                         actions: [
-                           // "Cancel Event" button
-                           AppButton.primaryButton(
-                             title: 'Cancel Event',
-                             onButtonPressed: () {
+                    //                     showDialog(
+                    //  context: context,
+                    //  builder: (BuildContext context) {
+                    //    return AlertDialog(
+                    //      backgroundColor: AppColors.blackCard,
+                    //      title:  TextWidget(text: 'Are you sure you want to cancel this event?', textSize: 16,maxLine: 2,),
+                    //      content: TextWidget(text: 'No. of People who have booked this event : ${communityEvents.communityEventsList[0].webinars[index].joinedUsers.length}', textSize: 16,maxLine: 2,),
+                    //      actions: [
+                    //        // "Cancel Event" button
+                    //        AppButton.primaryButton(
+                    //          title: 'Cancel Event',
+                    //          onButtonPressed: () {
                                
-                               // Call the delete event function
-                               communityEvents.disableWebinar(communityEvents.communityEventsList[0].webinars[index].id);
-                               // Close the dialog after confirming
-                              communityEvents.getCommunityEvents();
-                              //  Get.to(() => const EventsScreen(), preventDuplicates: false);
-                             },
+                    //            // Call the delete event function
+                    //            communityEvents.disableWebinar(communityEvents.communityEventsList[0].webinars[index].id);
+                    //            // Close the dialog after confirming
+                    //           communityEvents.getCommunityEvents();
+                    //           //  Get.to(() => const EventsScreen(), preventDuplicates: false);
+                    //          },
                              
-                           ),
-                           sizedTextfield,
-                           // "Back" button to close the dialog
-                           AppButton.outlineButton(
-                             borderColor: AppColors.primary,
-                             title: 'Back',
-                             onButtonPressed: () {
-                               // Close the dialog without performing any action
-                               Navigator.of(context).pop();
-                             },
+                    //        ),
+                    //        sizedTextfield,
+                    //        // "Back" button to close the dialog
+                    //        AppButton.outlineButton(
+                    //          borderColor: AppColors.primary,
+                    //          title: 'Back',
+                    //          onButtonPressed: () {
+                    //            // Close the dialog without performing any action
+                    //            Navigator.of(context).pop();
+                    //          },
                              
-                           ),
-                         ],
-                       );
-                     },
-                                      );
-                                    }: null,
+                    //        ),
+                    //      ],
+                    //    );
+                    //  },
+                    //                   );
+                    //                 }: null,
                                             
                                       
-                                      title: "Cancel Event",fontSize: 14,
-                                      bgColor:communityEvents.communityEventsList[0].webinars[index].isActive? AppColors.redColor:AppColors.grey
-                                      ),
-                                ),
-                              ],
-                            ),
+                    //                   title: "Cancel Event",fontSize: 14,
+                    //                   bgColor:communityEvents.communityEventsList[0].webinars[index].isActive? AppColors.redColor:AppColors.grey
+                    //                   ),
+                    //             ),
+                    //           ],
+                    //         ),
                           ],
                         ),
                       ),
                                        );
                                      },
                                    ),
-                           )),
+                           ),
                                    
                         
                           
-                        SizedBox(height: 12,),
+//                         SizedBox(height: 12,),
                         
                         
                         
-                        AppButton.primaryButton(
-  onButtonPressed: () {
-    // Get.to(() => const CommunityCreateNewWebinarScreen());
-  },
-  title: "Signup to access events"
-)
+//                         AppButton.primaryButton(
+//   onButtonPressed: () {
+//     // Get.to(() => const CommunityCreateNewWebinarScreen());
+//   },
+//   title: "Signup to access events"
+// )
                                      ],
                                    ),
                                    
