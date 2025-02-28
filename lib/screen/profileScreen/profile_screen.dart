@@ -6,8 +6,11 @@ import 'package:capitalhub_crm/model/01-StartupModel/profileModel/profile_model.
 import 'package:capitalhub_crm/screen/Auth-Process/userDetailsScreen/bio_screen.dart';
 import 'package:capitalhub_crm/screen/companyScreen/add_company_screen.dart';
 import 'package:capitalhub_crm/screen/companyScreen/company_screen.dart';
+import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';
+import 'package:capitalhub_crm/screen/documentationScreen/documentation_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/manageAccountScreen/manage_account_Screen.dart';
+import 'package:capitalhub_crm/screen/oneLinkScreen/one_link_screen.dart';
 import 'package:capitalhub_crm/screen/profileScreen/challengeScreen/challenges_category_screen.dart';
 import 'package:capitalhub_crm/screen/profileScreen/experience_screen.dart';
 import 'package:capitalhub_crm/screen/profileScreen/personal_info_screen.dart';
@@ -1263,7 +1266,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ),
                             ),
                             SizedBox(
-                              height: 220,
+                              height: 230,
                               child: ListView(
                                   scrollDirection: Axis.horizontal,
                                   children: [
@@ -1271,30 +1274,69 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         profileController.profileData.user!
                                             .milestoneProfile!,
                                         "User profile",
-                                        () {}),
+                                        () {
+                                          Get.to(() =>  const ProfileScreen());
+                                        }),
                                     mileStoneWidget(
                                         profileController.profileData.user!
                                             .milestoneCompany!,
                                         "Company profile",
-                                        () {}),
+                                        () {
+                                          Get.to(() =>  const CompanyScreen());
+                                        }),
                                     mileStoneWidget(
                                         profileController.profileData.user!
                                             .milestoneOnelink!,
                                         "One link",
-                                        () {}),
+                                        () {
+                                           Get.to(() =>  const OneLinkScreeen());
+                                        }),
                                     mileStoneWidget(
                                         profileController.profileData.user!
                                             .milestoneDocuments!,
                                         "Document upload",
-                                        () {}),
+                                        () {
+                                           Get.to(() =>  const DocumentationScreen());
+                                        }),
                                     mileStoneWidget(
                                         profileController
                                             .profileData.user!.milestonePosts!,
                                         "Create first post",
-                                        () {}),
+                                        () {
+                                          Get.to(() => CreatePostScreen());
+                                        }),
                                   ]),
                             ),
                             const SizedBox(height: 8),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 4),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                children: [
+                                  TextWidget(
+                                      text: "Top Voice ",
+                                      textSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                      Icon(Icons.shield,color: AppColors.white,)
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 8,),
+                            TextWidget(text: profileController.profileData.user!
+                                            .topVoice.description.toString(), textSize: 14),
+                            const Divider(),
+                            const SizedBox(height: 8,),
+                            LinearProgressIndicator(
+  value: profileController.profileData.user!
+                                            .topVoice.postsCount, // 50% progress
+  backgroundColor: AppColors.grey700, // background color of the progress bar
+  valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary), // color of the progress bar
+  borderRadius: BorderRadius.circular(20),
+  minHeight: 5,
+  semanticsLabel: "Post",
+),
+const SizedBox(height: 12),
                             // Padding(
                             //   padding:
                             //       const EdgeInsets.symmetric(horizontal: 4),
@@ -1661,7 +1703,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               ),
               TextWidget(
                   text: "${milestone.description}",
-                  maxLine: 2,
+                  maxLine: 4,
                   align: TextAlign.center,
                   textSize: 12),
               AppButton.primaryButton(

@@ -63,12 +63,7 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> with Sing
        decoration: bgDec,
       child: Scaffold(
         backgroundColor: AppColors.transparent,
-        drawer: const CommunityDrawerWidget(),
-        appBar: HelperAppBar.appbarHelper(
-          title: "Events",
-          hideBack: true,
-          autoAction: true,
-        ),
+        
     //     body:Padding(
     //       padding: const EdgeInsets.only(left: 12,right: 12,bottom: 12),
     //       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

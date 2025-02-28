@@ -15,6 +15,7 @@ import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 
 class CommunityAboutScreen extends StatefulWidget {
@@ -146,7 +147,11 @@ final List<Color> containerColors = [
                             
                             TextWidget(text: "About Community", textSize: 20,color: AppColors.primary,fontWeight: FontWeight.w500,),
                             SizedBox(height: 12,),
-                            TextWidget(text: aboutCommunity.aboutCommunityList[0].community.about,textSize: 14,maxLine: 13,),
+                            HtmlWidget(
+                              aboutCommunity.aboutCommunityList[0].community.about,
+                              textStyle: TextStyle(fontSize: 14, color: AppColors.white,),
+                            ),
+                            // TextWidget(text: aboutCommunity.aboutCommunityList[0].community.about,textSize: 14,maxLine: 13,),
                             SizedBox(height: 12,),
                             Column(
                               children: [
@@ -163,6 +168,7 @@ final List<Color> containerColors = [
                           SizedBox(height: 12,),
                           TextWidget(text: aboutCommunity.aboutCommunityList[0].admin.designation, textSize: 16),
                           SizedBox(height: 12,),
+                          
                           TextWidget(text: aboutCommunity.aboutCommunityList[0].admin.bio, textSize: 14, maxLine: 9,align: TextAlign.center,),
 
                               ],
@@ -271,7 +277,11 @@ final List<Color> containerColors = [
                             Divider(
                               color: AppColors.white38,
                             ),
-                            TextWidget(text: aboutCommunity.aboutCommunityPostsList[index].description, textSize: 14,maxLine: 2,),
+                            HtmlWidget(
+                              aboutCommunity.aboutCommunityPostsList[index].description,
+                              textStyle: TextStyle(fontSize: 14, color: AppColors.white,),
+                            ),
+                            // TextWidget(text: aboutCommunity.aboutCommunityPostsList[index].description, textSize: 14,maxLine: 2,),
                             SizedBox(height: 12,),
                             Container(
                               height: 200,
@@ -381,7 +391,9 @@ final List<Color> containerColors = [
                         
                           Padding(
                             padding: const EdgeInsets.only(left: 12,right: 16),
-                            child: TextWidget(
+                            child: 
+                            
+                            TextWidget(
                                 text:
                                     aboutCommunity.aboutCommunityProductsList[index].name,
                                 textSize: 18,
@@ -392,13 +404,18 @@ final List<Color> containerColors = [
                             SizedBox(height: 8,),
                             Padding(
                               padding: const EdgeInsets.only(left: 12,right: 16),
-                              child: TextWidget(
-                                text:
-                                    aboutCommunity.aboutCommunityProductsList[index].description,
-                                textSize: 14,
-                                maxLine: 3,
+                              child: 
+                              HtmlWidget(
+                              aboutCommunity.aboutCommunityProductsList[index].description,
+                              textStyle: TextStyle(fontSize: 14, color: AppColors.white,),
+                            ),
+                              // TextWidget(
+                              //   text:
+                              //       aboutCommunity.aboutCommunityProductsList[index].description,
+                              //   textSize: 14,
+                              //   maxLine: 3,
                                 
-                              ),
+                              // ),
                             ),
                             
                         

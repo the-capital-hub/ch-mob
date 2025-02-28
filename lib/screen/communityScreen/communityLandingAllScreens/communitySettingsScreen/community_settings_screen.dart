@@ -29,7 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       height: Get.height,
       decoration: bgDec,
         child: Scaffold(
-          drawer: const CommunityDrawerWidget(),
+          // drawer: const CommunityDrawerWidget(),
           backgroundColor: AppColors.transparent,
           appBar: HelperAppBar.appbarHelper(
             title: "Settings",
@@ -71,7 +71,7 @@ children: [
   ListTile(title: TextWidget(text: "Change Password", textSize: 16),trailing: IconButton(onPressed: (){Get.to(() =>  const ManageAccountScreen());}, icon: Icon(Icons.chevron_right,color: AppColors.white,)),visualDensity: VisualDensity.compact,),
   
   ListTile(title: TextWidget(text: "Community Settings", textSize: 16),trailing: IconButton(onPressed: (){
-    Get.to(() =>  const UpdateSettingsScreen());
+    // Get.to(() =>  const UpdateSettingsScreen());
   }, icon: Icon(Icons.chevron_right,color: AppColors.white,))),
   
   Divider(),

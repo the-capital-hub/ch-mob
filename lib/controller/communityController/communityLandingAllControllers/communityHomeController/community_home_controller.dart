@@ -26,30 +26,30 @@ class CommunityHomeController extends GetxController {
           extendedURL: ApiUrl.getCommunityPosts+createdCommunityId+"?page="+page.toString());
       log(response.body);
       var data = jsonDecode(response.body);
-      // if (data['status'] == true) {
-      //   CommunityPostModel communityPostModel =
-      //       CommunityPostModel.fromJson(data);
-      //   communityPostList.assignAll([communityPostModel.data]);
-      // }
-      // else {
-      //   HelperSnackBar.snackBar("Info", data["message"]);
-      // }
       if (data['status'] == true) {
-  // Check if the 'posts' list is not empty
-  if (data['data']['posts'] != null && data['data']['posts'].isNotEmpty) {
-    // Parse the response and create the model
-    CommunityPostModel communityPostModel = CommunityPostModel.fromJson(data);
+        CommunityPostModel communityPostModel =
+            CommunityPostModel.fromJson(data);
+        communityPostList.addAll([communityPostModel.data!]);
+      }
+      else {
+        HelperSnackBar.snackBar("Info", data["message"]);
+      }
+//       if (data['status'] == true) {
+//   // Check if the 'posts' list is not empty
+//   if (data['data']['postData'] != null && data['data']['postData'].isNotEmpty) {
+//     // Parse the response and create the model
+//     CommunityPostModel communityPostModel = CommunityPostModel.fromJson(data);
     
-    // Assign the data to your communityPostList
-    communityPostList.assignAll([communityPostModel.data]);
-  } else {
-    // If posts are empty, handle accordingly (maybe show a message or set default data)
-    print("No posts available.");
-    HelperSnackBar.snackBar("Info", "No New Posts Yet");
-  }
-}
+//     // Assign the data to your communityPostList
+//     communityPostList.assignAll([communityPostModel.data]);
+//   } else {
+//     // If posts are empty, handle accordingly (maybe show a message or set default data)
+//     print("No posts available.");
+//     HelperSnackBar.snackBar("Info", "No New Posts Yet");
+//   }
+// }
     } catch (e) {
-      log("getHome Feed $e");
+      log("getCommunityPosts $e");
     } finally {
       isLoading.value = false;
     }
@@ -187,7 +187,7 @@ class CommunityHomeController extends GetxController {
       var response = await ApiBase.getRequest(
           extendedURL: ApiUrl.getSavedCommunityPostCollections +
               GetStoreData.getStore.read('id').toString());
-      log(response.body);
+      // log(response.body);
       var data = jsonDecode(response.body);
       if (data['status'] == true) {
         GetSavedCommunityCollectionModel savedCommunityCollectionModel =

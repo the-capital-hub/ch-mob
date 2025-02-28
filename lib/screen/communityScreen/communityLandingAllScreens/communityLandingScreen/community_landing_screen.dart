@@ -1,7 +1,10 @@
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityAboutController/community_about_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityEventsScreen/community_events_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityHomeScreen/community_home_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPeopleScreen/community_people_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityProductsScreen/community_products_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityUpdateSettingsScreen/community_update_settings_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityOverScreen/create_community_over_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/myCommunityScreen/my_community_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communitySettingsScreen/community_settings_screen.dart';
@@ -10,12 +13,16 @@ import 'package:capitalhub_crm/screen/homeScreen/home_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
+import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:get/get.dart';
 
 class CommunityLandingScreen extends StatefulWidget {
+  
   const CommunityLandingScreen({super.key});
 
   @override
@@ -23,9 +30,10 @@ class CommunityLandingScreen extends StatefulWidget {
 }
 
 class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
-  
-  
+  CommunityAboutController aboutCommunity = Get.put(CommunityAboutController());
   int selectIndex = 0;
+
+  
   List icons = [
    PngAssetPath.homeIcon,
      PngAssetPath.categoryIcon,
@@ -40,16 +48,48 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
   List screen = [
     CommunityHomeScreen(),
     CommunityProductsScreen(),
-    
     CommunityEventsScreen(),
     CommunityPeopleScreen(),
-    SettingsScreen(),
+    CommunityUpdateSettingsScreen()
   ];
+   @override
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      aboutCommunity.getAboutCommunity().then((v) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+        
+        });
+      });
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: bgDec,
       child:Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.black,
+          leading: 
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: CircleAvatar(
+              radius: 20,
+              foregroundImage: NetworkImage(communityLogo),
+            ),
+          ),
+      
+          title: 
+          // aboutCommunity.aboutCommunityList.isEmpty
+          //       ? CircularProgressIndicator():
+          TextWidget(
+            text: communityName,
+            // aboutCommunity.aboutCommunityList[0].community.name, 
+            textSize: 16),
+          actions: [
+            IconButton(onPressed: (){Get.to(() =>  const HomeScreen());}, icon:  Icon(Icons.swap_horizontal_circle_sharp,color: AppColors.white,size: 30,))
+          ],
+        ),
       backgroundColor: AppColors.black,
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: Container(

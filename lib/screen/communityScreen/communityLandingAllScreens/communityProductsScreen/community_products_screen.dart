@@ -12,6 +12,7 @@ import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 
 class CommunityProductsScreen extends StatefulWidget {
@@ -41,12 +42,7 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
       decoration:bgDec,
       child: Scaffold(
         backgroundColor: AppColors.transparent,
-        drawer: const CommunityDrawerWidget(),
-        appBar: HelperAppBar.appbarHelper(
-          title: "Products",
-          hideBack: true,
-          autoAction: true,
-        ),
+        
         body:Obx(()=>
         communityProducts.isLoading.value
                 ? Helper.pageLoading()
@@ -134,13 +130,17 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                           fontWeight: FontWeight.w500,
                         ),
                         SizedBox(height: 8,),
-                        TextWidget(
-                          text:
+                         HtmlWidget(
                               communityProducts.communityProductsList[index].description,
-                          textSize: 14,
-                          maxLine: 3,
+                              textStyle: TextStyle(fontSize: 14, color: AppColors.white,),
+                            ),
+                        // TextWidget(
+                        //   text:
+                        //       communityProducts.communityProductsList[index].description,
+                        //   textSize: 14,
+                        //   maxLine: 3,
                           
-                        ),
+                        // ),
                         SizedBox(height: 12,),
                     
                   
@@ -167,6 +167,7 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                             if(
                               communityProducts.communityProductsList[index].isFree
                             ){
+                             communityProducts.buyProduct(context,communityProducts.communityProductsList[index].id);
 
                             
                               showDialog(

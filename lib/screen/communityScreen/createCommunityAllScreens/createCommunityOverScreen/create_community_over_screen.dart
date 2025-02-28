@@ -150,7 +150,10 @@ void initState() {
           ),
           child: AppButton.primaryButton(
               onButtonPressed: () {
-                Get.to(() =>  CommunityLandingScreen());
+                
+                communityLogo = aboutCommunity.aboutCommunityList[0].community.image;
+                communityName = aboutCommunity.aboutCommunityList[0].community.name;
+                Get.to(() =>  const CommunityLandingScreen());
               },
               title: "Continue"),
         ),
