@@ -172,9 +172,9 @@ class _CompanyInvScreenState extends State<CompanyInvScreen> {
                                   ),
                                 ),
                               ),
-                              if (companyInvController
-                                      .companyData.isOwnCompany ??
-                                  false)
+                              if (companyInvController.isCompanyFound.value &&
+                                  companyInvController
+                                      .companyData.isOwnCompany!)
                                 InkWell(
                                   onTap: () {
                                     Get.to(AddCompanyInvScreen(
@@ -552,11 +552,7 @@ class _CompanyInvScreenState extends State<CompanyInvScreen> {
                                             AppButton.primaryButton(
                                                 onButtonPressed: () {
                                                   companyInvController
-                                                      .deleteCompany(
-                                                          context,
-                                                          companyInvController
-                                                              .companyData
-                                                              .founderId);
+                                                      .deleteCompany(context);
                                                 },
                                                 title: "Delete Company")
                                         ],

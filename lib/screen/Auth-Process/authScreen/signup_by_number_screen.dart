@@ -137,9 +137,17 @@ class _SignupByNumberScreenState extends State<SignupByNumberScreen> {
                             onTap: _pickImageFromGallery,
                             child: CircleAvatar(
                               radius: 15,
-                              backgroundColor: AppColors.primary,
+                              backgroundColor:
+                                  loginMobileController.selectedRoleIndex == 0
+                                      ? AppColors.primary
+                                      : AppColors.primaryInvestor,
                               child: Icon(Icons.edit,
-                                  size: 18, color: AppColors.white),
+                                  size: 18,
+                                  color:
+                                      loginMobileController.selectedRoleIndex ==
+                                              0
+                                          ? AppColors.white
+                                          : AppColors.black),
                             ),
                           ),
                         ),
@@ -181,8 +189,13 @@ class _SignupByNumberScreenState extends State<SignupByNumberScreen> {
                         // Get.to(SignupOtpPage());
                         loginMobileController.signupApi(context);
                         loginMobileController.base64 = _base64Image;
-                        
                       },
+                      bgColor: loginMobileController.selectedRoleIndex == 0
+                          ? AppColors.primary
+                          : AppColors.primaryInvestor,
+                      textColor: loginMobileController.selectedRoleIndex == 0
+                          ? AppColors.white
+                          : AppColors.black,
                       title: "Create Account")
                 ],
               ),

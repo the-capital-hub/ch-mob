@@ -22,7 +22,7 @@ class AppButton {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadius ?? 100),
         color: bgColor ??
-            (GetStoreData.getStore.read('isInvestor')??false
+            (GetStoreData.getStore.read('isInvestor') ?? false
                 ? AppColors.primaryInvestor
                 : AppColors.primary),
       ),
@@ -32,7 +32,7 @@ class AppButton {
           minimumSize: const Size.fromHeight(4),
           shape: StadiumBorder(),
           backgroundColor: bgColor ??
-              (GetStoreData.getStore.read('isInvestor')??false
+              (GetStoreData.getStore.read('isInvestor') ?? false
                   ? AppColors.primaryInvestor
                   : AppColors.primary),
         ),
@@ -40,10 +40,13 @@ class AppButton {
         child: TextWidget(
           text: title,
           textSize: fontSize ?? 14,
+          maxLine: 2,
           fontWeight: FontWeight.w500,
-          color: textColor ?? (GetStoreData.getStore.read('isInvestor')??false
-              ? AppColors.black
-              : AppColors.white),
+          align: TextAlign.center,
+          color: textColor ??
+              (GetStoreData.getStore.read('isInvestor') ?? false
+                  ? AppColors.black
+                  : AppColors.white),
         ),
       ),
     );

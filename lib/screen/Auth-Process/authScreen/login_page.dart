@@ -81,7 +81,10 @@ class _LoginPageState extends State<LoginPage>
                     child: TabBar(
                       controller: _tabController,
                       tabAlignment: TabAlignment.fill,
-                      indicatorColor: AppColors.primary,
+                      indicatorColor:
+                          loginMobileController.selectedRoleIndex == 0
+                              ? AppColors.primary
+                              : AppColors.primaryInvestor,
                       // indicator: const BoxDecoration(),
                       dividerHeight: 0, // No indicator
                       tabs: [
@@ -170,18 +173,25 @@ class _LoginPageState extends State<LoginPage>
                           Get.to(() => const SignupByNumberScreen());
                           // Get.to(() => const SignupScreen());
                         },
-                        child: const TextWidget(
-                          text: "Sign Up",
-                          textSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.primary,
-                        ),
+                        child:  TextWidget(
+                            text: "Sign Up",
+                            textSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: loginMobileController.selectedRoleIndex == 0
+                                ? AppColors.primary
+                                : AppColors.primaryInvestor),
                       )
                     ],
                   ),
                   const SizedBox(height: 16),
                   AppButton.primaryButton(
                     title: 'Continue',
+                    bgColor: loginMobileController.selectedRoleIndex == 0
+                        ? AppColors.primary
+                        : AppColors.primaryInvestor,
+                    textColor: loginMobileController.selectedRoleIndex == 0
+                        ? AppColors.white
+                        : AppColors.black,
                     onButtonPressed: () {
                       if (_tabController.index == 0) {
                         if (loginMobileController
@@ -210,26 +220,27 @@ class _LoginPageState extends State<LoginPage>
                   ),
                   const SizedBox(height: 16),
                   AppButton.outlineButton(
-                      borderColor: AppColors.primary,
+                      borderColor: loginMobileController.selectedRoleIndex == 0
+                          ? AppColors.primary
+                          : AppColors.primaryInvestor,
                       title: "Login With Google",
                       onButtonPressed: () async {
                         final user = await GoogleSignInService.signIn();
                         if (user != null) {
                           final GoogleSignInAuthentication auth =
                               await user.authentication;
-                              
-                              
 
                           loginMobileController.googleLogin(
                               context, user, auth);
-                               var body = {
-      "credential": {
-        "displayName": user.displayName,
-        "email": user.email,
-        "id": user.id,
-        "photoURL": user.photoUrl
-      },};
-log(body.toString());
+                          var body = {
+                            "credential": {
+                              "displayName": user.displayName,
+                              "email": user.email,
+                              "id": user.id,
+                              "photoURL": user.photoUrl
+                            },
+                          };
+                          log(body.toString());
                         } else {
                           log("Login failed");
                         }

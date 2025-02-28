@@ -4,6 +4,7 @@ import 'package:capitalhub_crm/controller/exploreController/explore_controller.d
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/exploreScreen/filter_explore_screen.dart';
 import 'package:capitalhub_crm/screen/exploreScreen/vc_profile.dart';
+import 'package:capitalhub_crm/screen/publicProfileScreen/public_profile_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
@@ -77,16 +78,16 @@ class _ExploreScreenState extends State<ExploreScreen>
                             controller: exploreController.tabController,
                             dividerHeight: 0,
                             indicator: BoxDecoration(
-                              color: AppColors
-                                  .primary, // Background color for selected tab
+                              color: GetStoreData.getStore.read('isInvestor')
+                                  ? AppColors.primaryInvestor
+                                  : AppColors.primary,
                               borderRadius:
                                   BorderRadius.circular(5), // Rounded corners
                             ),
-                            labelPadding: EdgeInsets.symmetric(horizontal: 4),
+                            labelPadding:
+                                const EdgeInsets.symmetric(horizontal: 4),
                             indicatorPadding: const EdgeInsets.symmetric(
-                                horizontal: 2.0,
-                                vertical:
-                                    5.0), // Adjust the horizontal padding to make the box wider
+                                horizontal: 2.0, vertical: 5.0),
                             indicatorSize: TabBarIndicatorSize.tab,
                             onTap: (val) {
                               exploreController.cleaarFilter();
@@ -110,14 +111,17 @@ class _ExploreScreenState extends State<ExploreScreen>
                               Tab(text: "Investors"),
                               Tab(text: "VCs"),
                             ],
-                            labelColor:
-                                Colors.white, // Text color for selected tab
+                            labelColor: GetStoreData.getStore.read('isInvestor')
+                                ? AppColors.black
+                                : AppColors
+                                    .white, // Text color for selected tab
                             unselectedLabelColor:
                                 Colors.white, // Text color for unselected tab
                             unselectedLabelStyle:
                                 const TextStyle(fontWeight: FontWeight.normal),
-                            labelStyle:
-                                const TextStyle(fontWeight: FontWeight.bold),
+                            labelStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -590,17 +594,98 @@ class _ExploreScreenState extends State<ExploreScreen>
                         ),
                       ),
                       const SizedBox(height: 10),
-                      
-                           Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 60),
-                              child: AppButton.outlineButton(
-                                  onButtonPressed: () {},
-                                  borderColor: AppColors.primary,
-                                  borderRadius: 12,
-                                  height: 40,
-                                  title: "Connect With The Founder"),
-                            ),
+                      if (GetStoreData.getStore.read('isInvestor'))
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 12, right: 12, bottom: 12),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: AppButton.primaryButton(
+                                      borderRadius: 12,
+                                      height: 40,
+                                      onButtonPressed: () {
+                                        if (exploreController
+                                                .isButtonLoading.value ==
+                                            false) {
+                                          exploreController
+                                              .intrestedUnintrestedPost(
+                                                  id: exploreController
+                                                      .startupExploreList[index]
+                                                      .id!,
+                                                  status: exploreController
+                                                      .startupExploreList[index]
+                                                      .myInterest!)
+                                              .then((val) {
+                                            if (val) {
+                                              if (exploreController
+                                                      .startupExploreList[index]
+                                                      .myInterest ==
+                                                  "Interested") {
+                                                exploreController
+                                                    .startupExploreList[index]
+                                                    .myInterest = "Uninterest";
+                                              } else {
+                                                exploreController
+                                                    .startupExploreList[index]
+                                                    .myInterest = "Interested";
+                                              }
+                                              setState(() {});
+                                            }
+                                          });
+                                        }
+                                      },
+                                      title: exploreController
+                                          .startupExploreList[index]
+                                          .myInterest!)),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                  child: AppButton.primaryButton(
+                                      borderRadius: 12,
+                                      height: 40,
+                                      onButtonPressed: () {
+                                        if (exploreController
+                                                .startupExploreList[index]
+                                                .oneLinkRequestStatus ==
+                                            "Request for OneLink") {
+                                          exploreController
+                                              .onelinkSent(
+                                                  id: exploreController
+                                                      .startupExploreList[index]
+                                                      .id!)
+                                              .then((val) {
+                                            if (val) {
+                                              exploreController
+                                                      .startupExploreList[index]
+                                                      .oneLinkRequestStatus =
+                                                  "pending";
+                                            }
+                                          });
+                                        }
+                                      },
+                                      title: exploreController
+                                          .startupExploreList[index]
+                                          .oneLinkRequestStatus!
+                                          .capitalizeFirst!))
+                            ],
+                          ),
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 60),
+                        child: AppButton.outlineButton(
+                            onButtonPressed: () {
+                              Get.to(() => PublicProfileScreen(
+                                  id: exploreController
+                                      .startupExploreList[index].founderId!));
+                            },
+                            borderColor:
+                                GetStoreData.getStore.read('isInvestor')
+                                    ? AppColors.primaryInvestor
+                                    : AppColors.primary,
+                            borderRadius: 12,
+                            height: 40,
+                            title: "Connect With The Founder"),
+                      ),
                       sizedTextfield,
                     ],
                   ));
@@ -930,10 +1015,13 @@ class _ExploreScreenState extends State<ExploreScreen>
                         padding: const EdgeInsets.symmetric(horizontal: 60),
                         child: AppButton.outlineButton(
                             onButtonPressed: () {},
-                            borderColor: AppColors.primary,
+                            borderColor:
+                                GetStoreData.getStore.read('isInvestor')
+                                    ? AppColors.primaryInvestor
+                                    : AppColors.primary,
                             borderRadius: 12,
                             height: 40,
-                            title: "Connect With The Founder"),
+                            title: "Connect with the Founder"),
                       ),
                       sizedTextfield,
                     ],
@@ -1170,10 +1258,13 @@ class _ExploreScreenState extends State<ExploreScreen>
                         padding: const EdgeInsets.symmetric(horizontal: 60),
                         child: AppButton.outlineButton(
                             onButtonPressed: () {},
-                            borderColor: AppColors.primary,
+                            borderColor:
+                                GetStoreData.getStore.read('isInvestor')
+                                    ? AppColors.primaryInvestor
+                                    : AppColors.primary,
                             borderRadius: 12,
                             height: 40,
-                            title: "Connect"),
+                            title: "Connect with the Investor"),
                       ),
                       sizedTextfield,
                     ],

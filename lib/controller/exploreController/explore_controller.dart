@@ -133,4 +133,52 @@ class ExploreController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  var isButtonLoading = false.obs;
+  Future intrestedUnintrestedPost(
+      {required String id, required String status}) async {
+    try {
+      isButtonLoading.value = true;
+      var body = {"companyId": id, "status": status};
+      var response = await ApiBase.pachRequest(
+          body: body, extendedURL: ApiUrl.toggleIntrestInvUrl, withToken: true);
+      log(response.body);
+      var data = json.decode(response.body);
+      if (data["status"] == true) {
+        HelperSnackBar.snackBar("Success", data["message"]);
+        return true;
+      } else {
+        HelperSnackBar.snackBar("Error", data["message"]);
+        return false;
+      }
+    } catch (e) {
+      log("message $e");
+    } finally {
+      isButtonLoading.value = false;
+    }
+  }
+
+  Future onelinkSent({required String id}) async {
+    try {
+      isButtonLoading.value = true;
+      var body = {
+        "startUpId": id,
+      };
+      var response = await ApiBase.postRequest(
+          body: body, extendedURL: ApiUrl.onelinkSentUrl, withToken: true);
+      log(response.body);
+      var data = json.decode(response.body);
+      if (data["status"] == true) {
+        HelperSnackBar.snackBar("Success", data["message"]);
+        return true;
+      } else {
+        HelperSnackBar.snackBar("Error", data["message"]);
+        return false;
+      }
+    } catch (e) {
+      log("message $e");
+    } finally {
+      isButtonLoading.value = false;
+    }
+  }
 }

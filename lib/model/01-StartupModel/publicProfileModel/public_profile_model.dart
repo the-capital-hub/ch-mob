@@ -11,27 +11,27 @@ String publicProfileModelToJson(PublicProfileModel data) =>
     json.encode(data.toJson());
 
 class PublicProfileModel {
-  bool status;
-  String message;
-  PublicData data;
+  bool? success;
+  PublicData? data;
+  String? message;
 
   PublicProfileModel({
-    required this.status,
-    required this.message,
-    required this.data,
+    this.success,
+    this.data,
+    this.message,
   });
 
   factory PublicProfileModel.fromJson(Map<String, dynamic> json) =>
       PublicProfileModel(
-        status: json["status"],
-        message: json["message"],
+        success: json["success"],
         data: PublicData.fromJson(json["data"]),
+        message: json["message"],
       );
 
   Map<String, dynamic> toJson() => {
-        "status": status,
+        "success": success,
+        "data": data!.toJson(),
         "message": message,
-        "data": data.toJson(),
       };
 }
 
@@ -39,23 +39,83 @@ class PublicData {
   UserProfile? userProfile;
   CompanyData? companyData;
   UserEmail? userEmail;
+  List<Post>? post;
+  List<Event>? events;
+  List<Community>? communities;
+  PriorityDm? priorityDm;
 
   PublicData({
     this.userProfile,
     this.companyData,
     this.userEmail,
+    this.post,
+    this.events,
+    this.communities,
+    this.priorityDm,
   });
 
   factory PublicData.fromJson(Map<String, dynamic> json) => PublicData(
         userProfile: UserProfile.fromJson(json["userProfile"]),
         companyData: CompanyData.fromJson(json["companyData"]),
         userEmail: UserEmail.fromJson(json["userEmail"]),
+        post: List<Post>.from(json["posts"].map((x) => Post.fromJson(x))),
+        events: List<Event>.from(json["events"].map((x) => Event.fromJson(x))),
+        communities: List<Community>.from(
+            json["communities"].map((x) => Community.fromJson(x))),
+        priorityDm: PriorityDm.fromJson(json["priorityDM"]),
       );
 
   Map<String, dynamic> toJson() => {
         "userProfile": userProfile!.toJson(),
         "companyData": companyData!.toJson(),
         "userEmail": userEmail!.toJson(),
+        "post": List<dynamic>.from(post!.map((x) => x.toJson())),
+        "events": List<dynamic>.from(events!.map((x) => x.toJson())),
+        "communities": List<dynamic>.from(communities!.map((x) => x.toJson())),
+        "priorityDM": priorityDm!.toJson(),
+      };
+}
+
+class Community {
+  String? id;
+  String? community;
+  String? amount;
+  String? image;
+  String? size;
+  String? createdAtTimeAgo;
+  String? shareLink;
+  String? members;
+
+  Community({
+    this.id,
+    this.community,
+    this.amount,
+    this.image,
+    this.size,
+    this.createdAtTimeAgo,
+    this.shareLink,
+    this.members,
+  });
+
+  factory Community.fromJson(Map<String, dynamic> json) => Community(
+        id: json["_id"],
+        community: json["community"],
+        amount: json['amount'],
+        image: json["image"],
+        size: json["size"],
+        createdAtTimeAgo: json["createdAt"],
+        shareLink: json["shareLink"],
+        members: json["members"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "community": community,
+        "image": image,
+        "size": size,
+        "createdAtTimeAgo": createdAtTimeAgo,
+        "shareLink": shareLink,
+        "members": members,
       };
 }
 
@@ -91,10 +151,8 @@ class CompanyData {
         description: json["description"],
         sector: json["sector"],
         startedAtDate: json["startedAtDate"],
-        socialLinks: json["socialLinks"] != null
-            ? List<SocialLink>.from(
-                json["socialLinks"].map((x) => SocialLink.fromJson(x)))
-            : [],
+        socialLinks: List<SocialLink>.from(
+            json["socialLinks"].map((x) => SocialLink.fromJson(x))),
         stage: json["stage"],
         age: json["age"],
         lastFunding: json["lastFunding"],
@@ -138,6 +196,177 @@ class SocialLink {
       };
 }
 
+class Event {
+  String? id;
+  bool? isActive;
+  String? title;
+  String? duration;
+  String? price;
+  String? discount;
+  String? url;
+  String? bookings;
+  String? eventType;
+  String? description;
+
+  Event({
+    this.id,
+    this.isActive,
+    this.title,
+    this.duration,
+    this.price,
+    this.discount,
+    this.url,
+    this.bookings,
+    this.eventType,
+    this.description,
+  });
+
+  factory Event.fromJson(Map<String, dynamic> json) => Event(
+      id: json["_id"],
+      isActive: json["isActive"],
+      title: json["title"],
+      duration: json["duration"],
+      price: json["price"],
+      discount: json["discountedPrice"],
+      url: json["url"],
+      bookings: json["bookings"],
+      eventType: json["eventType"],
+      description: json['description']);
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "isActive": isActive,
+        "title": title,
+        "duration": duration,
+        "price": price,
+        "discount": discount,
+        "url": url,
+        "bookings": bookings,
+        "eventType": eventType,
+      };
+}
+
+class Post {
+  String? userProfilePicture;
+  String? userDesignation;
+  String? userFirstName;
+  String? userLastName;
+  String? userLocation;
+  String? postId;
+  String? description;
+  List<String>? images;
+  String? age;
+  List<PollOption>? pollOptions;
+  List<String>? myVotes;
+  int? totalVotes;
+
+  Post({
+    this.userProfilePicture,
+    this.userDesignation,
+    this.userFirstName,
+    this.userLastName,
+    this.userLocation,
+    this.postId,
+    this.description,
+    this.images,
+    this.age,
+    this.pollOptions,
+    this.myVotes,
+    this.totalVotes,
+  });
+
+  factory Post.fromJson(Map<String, dynamic> json) => Post(
+        userProfilePicture: json["userProfilePicture"],
+        userDesignation: json["userDesignation"],
+        userFirstName: json["userFirstName"],
+        userLastName: json["userLastName"],
+        userLocation: json["userLocation"],
+        postId: json["postId"],
+        description: json["description"],
+        images: List<String>.from(json["images"].map((x) => x)),
+        age: json["age"],
+        pollOptions: List<PollOption>.from(
+            json["pollOptions"].map((x) => PollOption.fromJson(x))),
+        myVotes: List<String>.from(json["myVotes"].map((x) => x)),
+        totalVotes: json["totalVotes"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "userProfilePicture": userProfilePicture,
+        "userDesignation": userDesignation,
+        "userFirstName": userFirstName,
+        "userLastName": userLastName,
+        "userLocation": userLocation,
+        "postId": postId,
+        "description": description,
+        "images": List<dynamic>.from(images!.map((x) => x)),
+        "age": age,
+        "pollOptions": List<dynamic>.from(pollOptions!.map((x) => x.toJson())),
+        "myVotes": List<dynamic>.from(myVotes!.map((x) => x)),
+        "totalVotes": totalVotes,
+      };
+}
+
+class PollOption {
+  String? id;
+  String? option;
+  int? numberOfVotes;
+  bool? hasVoted;
+
+  PollOption({
+    this.id,
+    this.option,
+    this.numberOfVotes,
+    this.hasVoted,
+  });
+
+  factory PollOption.fromJson(Map<String, dynamic> json) => PollOption(
+        id: json["_id"],
+        option: json["option"],
+        numberOfVotes: json["numberOfVotes"],
+        hasVoted: json["hasVoted"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "option": option,
+        "numberOfVotes": numberOfVotes,
+        "hasVoted": hasVoted,
+      };
+}
+
+class PriorityDm {
+  String? amount;
+  String? title;
+  String? rating;
+  String? tag;
+  String? description;
+
+  PriorityDm({
+    this.amount,
+    this.title,
+    this.rating,
+    this.tag,
+    this.description,
+  });
+
+  factory PriorityDm.fromJson(Map<String, dynamic> json) => PriorityDm(
+        amount: json["amount"].toString(),
+        title: json["title"],
+        rating: json["rating"],
+        tag: json["tag"],
+        description: json["description"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "amount": amount,
+        "title": title,
+        "rating": rating,
+        "tag": tag,
+        "description": description,
+      };
+}
+
 class UserEmail {
   String? email;
   bool? isAccessible;
@@ -160,6 +389,9 @@ class UserEmail {
 
 class UserProfile {
   String? profilePicture;
+  String? totalExperience;
+  String? companyLogo;
+  String? connections;
   String? linkedinUrl;
   String? firstName;
   String? lastName;
@@ -173,6 +405,9 @@ class UserProfile {
 
   UserProfile({
     this.profilePicture,
+    this.totalExperience,
+    this.companyLogo,
+    this.connections,
     this.linkedinUrl,
     this.firstName,
     this.lastName,
@@ -187,6 +422,9 @@ class UserProfile {
 
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
         profilePicture: json["profilePicture"],
+        totalExperience: json["totalExperience"],
+        connections: json["connections"],
+        companyLogo: json["companyLogo"],
         linkedinUrl: json["linkedinUrl"],
         firstName: json["firstName"],
         lastName: json["lastName"],
@@ -203,70 +441,91 @@ class UserProfile {
 
   Map<String, dynamic> toJson() => {
         "profilePicture": profilePicture,
+        "linkedinUrl": linkedinUrl,
         "firstName": firstName,
         "lastName": lastName,
         "designation": designation,
         "companyName": companyName,
         "location": location,
         "bio": bio,
-        "education": education,
+        "education": List<dynamic>.from(education!.map((x) => x.toJson())),
+        "experience": List<dynamic>.from(experience!.map((x) => x.toJson())),
         "isSubscribed": isSubscribed,
       };
 }
 
+class Education {
+  String? educationLogo;
+  String? educationSchool;
+  String? educationLocation;
+  String? educationCourse;
+  String? educationPassoutDate;
+  String? educationDescription;
+
+  Education({
+    this.educationLogo,
+    this.educationSchool,
+    this.educationLocation,
+    this.educationCourse,
+    this.educationPassoutDate,
+    this.educationDescription,
+  });
+
+  factory Education.fromJson(Map<String, dynamic> json) => Education(
+        educationLogo: json["educationLogo"],
+        educationSchool: json["educationSchool"],
+        educationLocation: json["educationLocation"],
+        educationCourse: json["educationCourse"],
+        educationPassoutDate: json["educationPassoutDate"].toString(),
+        educationDescription: json["educationDescription"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "educationLogo": educationLogo,
+        "educationSchool": educationSchool,
+        "educationLocation": educationLocation,
+        "educationCourse": educationCourse,
+        "educationPassoutDate": educationPassoutDate,
+        "educationDescription": educationDescription,
+      };
+}
+
 class Experience {
-  String companyLogo;
-  String companyName;
-  String location;
-  String role;
-  String description;
-  String startYear;
-  String endYear;
+  String? companyLogo;
+  String? companyName;
+  String? companyLocation;
+  String? companyRole;
+  String? companyDescription;
+  String? companyStartDate;
+  String? companyEndDate;
 
   Experience({
-    required this.companyLogo,
-    required this.companyName,
-    required this.location,
-    required this.role,
-    required this.description,
-    required this.startYear,
-    required this.endYear,
+    this.companyLogo,
+    this.companyName,
+    this.companyLocation,
+    this.companyRole,
+    this.companyDescription,
+    this.companyStartDate,
+    this.companyEndDate,
   });
 
   factory Experience.fromJson(Map<String, dynamic> json) => Experience(
         companyLogo: json["companyLogo"],
         companyName: json["companyName"],
-        location: json["companyLocation"],
-        role: json["companyRole"],
-        description: json["companyDescription"],
-        startYear: json["companyStartDate"].toString(),
-        endYear: json["companyEndDate"].toString(),
+        companyLocation: json["companyLocation"],
+        companyRole: json["companyRole"],
+        companyDescription: json["companyDescription"],
+        companyStartDate: json["companyStartDate"].toString(),
+        companyEndDate: json["companyEndDate"].toString(),
       );
-}
 
-class Education {
-  String educationLogo;
-  String educationSchoolName;
-  String educationLocation;
-  String educationCourse;
-  String educationPassYear;
-  String educationDescription;
-
-  Education({
-    required this.educationLogo,
-    required this.educationSchoolName,
-    required this.educationLocation,
-    required this.educationCourse,
-    required this.educationDescription,
-    required this.educationPassYear,
-  });
-
-  factory Education.fromJson(Map<String, dynamic> json) => Education(
-        educationLogo: json["educationLogo"],
-        educationSchoolName: json["educationSchool"],
-        educationLocation: json["educationLocation"],
-        educationCourse: json["educationCourse"],
-        educationPassYear: json["educationPassoutDate"],
-        educationDescription: json["educationDescription"],
-      );
+  Map<String, dynamic> toJson() => {
+        "companyLogo": companyLogo,
+        "companyName": companyName,
+        "companyLocation": companyLocation,
+        "companyRole": companyRole,
+        "companyDescription": companyDescription,
+        "companyStartDate": companyStartDate,
+        "companyEndDate": companyEndDate,
+      };
 }

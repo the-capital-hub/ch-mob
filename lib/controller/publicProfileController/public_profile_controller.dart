@@ -16,13 +16,13 @@ class PublicProfileController extends GetxController {
     try {
       isLoading.value = true;
       var response = await ApiBase.getRequest(
-          extendedURL: ApiUrl.getPublicProfileUrl + id);
+          extendedURL: ApiUrl.getPublicProfileUrl + "66b72c97b441138f6e19b781");
       log(response.body);
       var data = jsonDecode(response.body);
       if (data['status'] == true) {
         PublicProfileModel publicProfileModel =
             PublicProfileModel.fromJson(data);
-        publicData = publicProfileModel.data;
+        publicData = publicProfileModel.data!;
       }
     } catch (e) {
       log("getPublicProfile $e");

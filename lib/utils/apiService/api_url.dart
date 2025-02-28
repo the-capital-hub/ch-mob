@@ -38,6 +38,8 @@ class ApiUrl {
 
   static const String exploreUrl = "users/explore?";
   static const String exploreFilterUrl = "users/exploreFilters?type=";
+  static const String toggleIntrestInvUrl = "investor/toggleInterestInInvestor";
+  static const String onelinkSentUrl = "startup/sendOneLinkRequest";
   static const String vcsUrl = "vc/getVcById";
 
   static String getNotification = "notificaton/getNotification/";

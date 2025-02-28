@@ -7,6 +7,7 @@ class AppColors {
   static const Color purple = Color(0XFF612AA5);
   static const Color linkedInBlue = Color(0XFF0A66C2);
   static const Color transparent = Colors.transparent;
+  static Color cream = Color(0XFFFFE5E6);
   static Color grey3Color = Colors.grey.shade300;
   static Color grey = Colors.grey;
   static Color grey700 = Colors.grey.shade700;

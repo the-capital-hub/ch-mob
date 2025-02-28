@@ -85,10 +85,8 @@ class CompanyInvController extends GetxController {
     }
   }
 
-  Future deleteCompany(context, id) async {
-    var body = {"investorId": id};
-    var response = await ApiBase.putRequest(
-      body: body,
+  Future deleteCompany(context) async {
+    var response = await ApiBase.deleteRequest(
       extendedURL: ApiUrl.deleteCompanyInv,
     );
     log(response.body);
@@ -182,28 +180,26 @@ class CompanyInvController extends GetxController {
     selectedSector = companyData.sector;
     numOfEmpController.text = companyData.numberOfEmployees!;
     websiteUrlController.text = companyData.socialLinks!
-        .firstWhere((val) => val.name == "website").link!;
+        .firstWhere((val) => val.name == "website")
+        .link!;
     visionController.text = companyData.vision!;
     missionController.text = companyData.mission!;
     keyFocusController.text =
         companyData.keyFocus.toString().replaceAll("[", "").replaceAll("]", "");
     selectedInvestmentStage = companyData.stage!;
     selectedProductStage = null;
-    linkedInLinkController.text = companyData.socialLinks!
-        .firstWhere(
-          (val) => val.name == "linkedin",
-        )
-        .link!;
-    twitterLinkController.text = companyData.socialLinks!
-        .firstWhere(
-          (val) => val.name == "twitter",
-        )
-        .link!;
-    instagramLinkController.text = companyData.socialLinks!
-        .firstWhere(
-          (val) => val.name == "instagram",
-        )
-        .link!;
+    linkedInLinkController.text = companyData.socialLinks
+            ?.firstWhereOrNull((val) => val.name == "linkedin")
+            ?.link ??
+        "";
+    twitterLinkController.text = companyData.socialLinks
+            ?.firstWhereOrNull((val) => val.name == "twitter")
+            ?.link ??
+        "";
+    instagramLinkController.text = companyData.socialLinks
+            ?.firstWhereOrNull((val) => val.name == "instagram")
+            ?.link ??
+        "";
     companyDescriptionController.text = companyData.description!;
     coreTeamList = (companyData.team ?? [])
         .map((team) => CoreTeamModel.fromTeam(team))

@@ -38,6 +38,9 @@ class ExploreStartupModel {
 
 class StartupExplore {
   String? id;
+  String? myInterest;
+  String? oneLinkRequestStatus;
+  String? founderId;
   String? fundAsk;
   String? valuation;
   String? raisedFunds;
@@ -60,6 +63,9 @@ class StartupExplore {
   StartupExplore({
     this.id,
     this.fundAsk,
+    this.myInterest,
+    this.founderId,
+    this.oneLinkRequestStatus,
     this.valuation,
     this.raisedFunds,
     this.socialLinks,
@@ -81,6 +87,9 @@ class StartupExplore {
 
   factory StartupExplore.fromJson(Map<String, dynamic> json) => StartupExplore(
         id: json["_id"],
+        myInterest: json["myInterest"],
+        oneLinkRequestStatus: json["oneLinkRequestStatus"],
+        founderId: json["founderId"],
         fundAsk: json["fund_ask"],
         valuation: json["valuation"],
         raisedFunds: json["raised_funds"],
