@@ -5,6 +5,7 @@ import 'package:capitalhub_crm/controller/communityController/communityLandingAl
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/getCreatedCommunityModel/get_created_community_model.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityDrawerScreen/community_drawer_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAboutScreen/communities_about_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
@@ -19,14 +20,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 
-class UpdateSettingsScreen extends StatefulWidget {
-  const UpdateSettingsScreen({super.key});
+class CommunityUpdateSettingsScreen extends StatefulWidget {
+  const CommunityUpdateSettingsScreen({super.key});
 
   @override
-  State<UpdateSettingsScreen> createState() => _UpdateSettingsScreenState();
+  State<CommunityUpdateSettingsScreen> createState() => _UpdateSettingsScreenState();
 }
 
-class _UpdateSettingsScreenState extends State<UpdateSettingsScreen> {
+class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
   // CommunityController allCommunities = Get.put(CommunityController());
   // CommunityController createdCommunity = Get.put(CommunityController());
   CommunityUpdateSettingsController updateSettings = Get.put(CommunityUpdateSettingsController());
@@ -140,13 +141,9 @@ void initState() {
     return Container(
       decoration: bgDec,
         child: Scaffold(
-          drawer: const CommunityDrawerWidget(),
+          // drawer: const CommunityDrawerWidget(),
           backgroundColor: AppColors.transparent,
-          appBar: HelperAppBar.appbarHelper(
-            title: "Update Settings Screen",
-            hideBack: false,
-            autoAction: true,
-          ),
+          
           body:
           Obx(()=>
         aboutCommunity.isLoading.value
@@ -348,7 +345,17 @@ addNewTextField();
             ),
           ),
           )
-        )
+        ),
+              floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          
+           Get.to(() =>  const CommunityAboutScreen());
+          
+        },
+        child: Icon(Icons.info,size: 30,color: AppColors.white,),  // You can use any icon, "info" is the typical one for info buttons
+        backgroundColor: AppColors.primary,
+      ),
+    
         )
     );
   }
@@ -425,4 +432,5 @@ addNewTextField();
         ),
         backgroundColor: AppColors.blackCard);
   }
+  
 }

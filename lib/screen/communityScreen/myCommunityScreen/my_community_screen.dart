@@ -5,6 +5,7 @@ import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
@@ -79,7 +80,9 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
                 return InkWell(
                   onTap: (){
                    createdCommunityId = myCommunities.myCommunitiesDetails[index].id;
-                   Get.to(() => const CommunityLandingScreen());
+                   communityLogo = myCommunities.myCommunitiesDetails[index].image;
+                   communityName = myCommunities.myCommunitiesDetails[index].community;
+                   Get.to(() =>  const CommunityLandingScreen());
                   },
                   child: Card(
                     color: AppColors.blackCard,
@@ -94,11 +97,11 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
                               Row(
                                 children: [
                                   CircleAvatar(
-                                    foregroundImage: NetworkImage(myCommunities.myCommunitiesDetails[index].image.toString()),
+                                    foregroundImage: NetworkImage(myCommunities.myCommunitiesDetails[index].image),
                                   
                                   ),
                                   SizedBox(width: 10,),
-                                  TextWidget(text: myCommunities.myCommunitiesDetails[index].community.toString(), textSize: 15,fontWeight: FontWeight.w500,),
+                                  TextWidget(text: myCommunities.myCommunitiesDetails[index].community, textSize: 15,fontWeight: FontWeight.w500,),
                                   SizedBox(width: 3,),
                                   Card(
                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -109,7 +112,7 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
                                 ],
                               ),
                               SizedBox(height: 12,),
-                              TextWidget(text: myCommunities.myCommunitiesDetails[index].size.toString(), textSize: 13,color: AppColors.primary,),
+                              TextWidget(text: myCommunities.myCommunitiesDetails[index].size.toString(), textSize: 13,color:  GetStoreData.getStore.read('isInvestor')? AppColors.primaryInvestor:AppColors.primary,),
                               SizedBox(height: 12,),
                               Row(
                                 children: [TextWidget(text: "${myCommunities.myCommunitiesDetails[index].members!.length.toString()} Members", textSize: 14), SizedBox(width: 8,),Container(height: 5,width: 5,
@@ -132,7 +135,7 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
                               ),onPressed: (){
                                 sharePostPopup(context,"",myCommunities.myCommunitiesDetails[index].shareLink.toString());
                               },),
-                                IconButton(padding: EdgeInsets.zero,icon: Icon(Icons.logout),color: AppColors.primary,onPressed: (){
+                                IconButton(padding: EdgeInsets.zero,icon: Icon(Icons.logout),color:  GetStoreData.getStore.read('isInvestor')? AppColors.primaryInvestor:AppColors.primary,onPressed: (){
                                   myCommunities.leaveCommunity(context,myCommunities.myCommunitiesDetails[index].id);
                                 },),
                                 

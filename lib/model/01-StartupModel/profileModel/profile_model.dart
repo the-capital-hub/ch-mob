@@ -423,6 +423,7 @@ class User {
   Milestone milestoneDocuments;
   Milestone milestonePosts;
   CompanyData companyData;
+  TopVoice topVoice;
 
   User({
     required this.profilePicture,
@@ -445,6 +446,7 @@ class User {
     required this.milestoneDocuments,
     required this.milestonePosts,
     required this.companyData,
+    required this.topVoice
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -471,6 +473,7 @@ class User {
         milestoneDocuments: Milestone.fromJson(json["milestone_documents"]),
         milestonePosts: Milestone.fromJson(json["milestone_posts"]),
         companyData: CompanyData.fromJson(json["companyData"]),
+        topVoice: TopVoice.fromJson(json["topVoice"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -495,6 +498,7 @@ class User {
         "milestone_documents": milestoneDocuments.toJson(),
         "milestone_posts": milestonePosts.toJson(),
         "companyData": companyData.toJson(),
+        "topVoice": topVoice.toJson(),
       };
 }
 
@@ -665,5 +669,25 @@ class RecentConnection {
         "lastName": lastName,
         "profilePicture": profilePicture,
         "designation": designation,
-      };
+      };     
+}
+class TopVoice{
+  String? description;
+  double? postsCount;
+
+  TopVoice({
+    this.description,
+    this.postsCount,
+  });
+
+  factory TopVoice.fromJson(Map<String, dynamic> json) =>
+      TopVoice(
+        description: json["description"],
+        postsCount: json["postsCount"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "description": description,
+        "postsCount": postsCount,
+      };     
 }

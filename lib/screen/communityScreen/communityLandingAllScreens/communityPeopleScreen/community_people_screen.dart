@@ -53,13 +53,9 @@ List<String> communityNames = [
     return Container(
       decoration: bgDec,
         child: Scaffold(
-          drawer: const CommunityDrawerWidget(),
+          
           backgroundColor: AppColors.transparent,
-          appBar: HelperAppBar.appbarHelper(
-            title: "People",
-            hideBack: true,
-            autoAction: true,
-          ),
+          
           body: 
           Obx(()=>
         communityMembers.isLoading.value

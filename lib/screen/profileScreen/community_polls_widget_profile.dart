@@ -70,7 +70,7 @@ class _PollWidgetProfileState extends State<CommunityPollWidgetProfile> {
                         duration: const Duration(
                             milliseconds:
                                 300), // Smooth animation when progress bar updates
-                        width: getPercentage(pollOptions[i].numberOfVotes) *
+                        width: getPercentage(pollOptions[i].numberOfVotes!) *
                             (MediaQuery.of(context).size.width - 150) /
                             100, // Flexible width
                         decoration: BoxDecoration(

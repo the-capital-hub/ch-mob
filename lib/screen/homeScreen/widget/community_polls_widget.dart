@@ -51,13 +51,15 @@ class _PollWidgetState extends State<CommunityPollWidget> {
         // Unvote
         myVotes.remove(pollId);
         pollOptions[index].hasVoted = false;
-        pollOptions[index].numberOfVotes--;
+        // pollOptions[index].numberOfVotes--;
+        pollOptions[index].numberOfVotes = pollOptions[index].numberOfVotes! - 1;
         totalVotes--;
       } else {
         // Vote
         myVotes.add(pollId);
         pollOptions[index].hasVoted = true;
-        pollOptions[index].numberOfVotes++;
+        // pollOptions[index].numberOfVotes++;
+        pollOptions[index].numberOfVotes = pollOptions[index].numberOfVotes! + 1;
         totalVotes++; // Increase total votes on vote
       }
     });
@@ -96,7 +98,7 @@ class _PollWidgetState extends State<CommunityPollWidget> {
                           duration: const Duration(
                               milliseconds:
                                   300), // Smooth animation when progress bar updates
-                          width: getPercentage(pollOptions[i].numberOfVotes) *
+                          width: getPercentage(pollOptions[i].numberOfVotes!) *
                               (MediaQuery.of(context).size.width - 48) /
                               100, // Flexible width
                           decoration: BoxDecoration(

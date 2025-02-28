@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/getAllCommunitiesModel/get_all_communities_model.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/getCreatedCommunityModel/get_created_community_model.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/myCommunitiesModel/my_communities_model.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
@@ -12,6 +13,8 @@ import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 String createdCommunityId = "676fac57e86b189878cdfb9a";
+String communityLogo = "";
+String communityName = "";
 class CommunityController extends GetxController {
   
   var isLoading = false.obs;
@@ -181,12 +184,9 @@ Helper.loader(context);
   }
  Future joinCommunity() async {
 
-    var bodie = {
-        "memberIds": ["${GetStoreData.getStore.read('id')}"],
-        
-      };
+   
       
-      log(bodie.toString());
+      
     var response = await ApiBase.postRequest(
       body: {
         "memberIds": ["${GetStoreData.getStore.read('id')}"],
@@ -201,6 +201,7 @@ Helper.loader(context);
     if (data["status"]) {
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
+      Get.to(() => const CommunityLandingScreen());
       return true;
     } else {
       Get.back();

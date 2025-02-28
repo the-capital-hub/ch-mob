@@ -266,6 +266,140 @@
 //
 //     final getAllCommunitiesModel = getAllCommunitiesModelFromJson(jsonString);
 
+// import 'dart:convert';
+
+// GetAllCommunitiesModel getAllCommunitiesModelFromJson(String str) => GetAllCommunitiesModel.fromJson(json.decode(str));
+
+// String getAllCommunitiesModelToJson(GetAllCommunitiesModel data) => json.encode(data.toJson());
+
+// class GetAllCommunitiesModel {
+//     bool status;
+//     String message;
+//     List<AllCommunities> data;
+
+//     GetAllCommunitiesModel({
+//         required this.status,
+//         required this.message,
+//         required this.data,
+//     });
+
+//     factory GetAllCommunitiesModel.fromJson(Map<String, dynamic> json) => GetAllCommunitiesModel(
+//         status: json["status"],
+//         message: json["message"],
+//         data: List<AllCommunities>.from(json["data"].map((x) => AllCommunities.fromJson(x))),
+//     );
+
+//     Map<String, dynamic> toJson() => {
+//         "status": status,
+//         "message": message,
+//         "data": List<dynamic>.from(data.map((x) => x.toJson())),
+//     };
+// }
+
+// class AllCommunities {
+//     String id;
+//     String community;
+//     String?  image;
+//     String size;
+//     String shareLink;
+//     String members;
+//     bool isCommunityMember;
+//     Role role;
+//     String isAbleToJoinTag;
+//     String createdAtTimeAgo;
+//     String amount;
+//     bool isOpen;
+
+//     AllCommunities({
+//         required this.id,
+//         required this.community,
+//         this.image,
+//         required this.size,
+//         required this.shareLink,
+//         required this.members,
+//         required this.isCommunityMember,
+//         required this.role,
+//         required this.isAbleToJoinTag,
+//         required this.createdAtTimeAgo,
+//         required this.amount,
+//         required this.isOpen
+//     });
+
+//     factory AllCommunities.fromJson(Map<String, dynamic> json) => AllCommunities(
+//         id: json["_id"],
+//         community: json["community"],
+//         image: json["image"],
+//         size: json["size"],
+//         shareLink: json["shareLink"],
+//         members: json["members"],
+//         isCommunityMember: json["isCommunityMember"],
+//         role: roleValues.map[json["role"]]!,
+//         isAbleToJoinTag: json["isAbleToJoinTag"],
+//         createdAtTimeAgo: json["createdAtTimeAgo"],
+//         amount: json["amount"],
+//         isOpen : json["isOpen"]
+//     );
+
+//     Map<String, dynamic> toJson() => {
+//         "_id": id,
+//         "community": community,
+//         "image": image,
+//         "size": size,
+//         "shareLink": shareLink,
+//         "members": members,
+//         "isCommunityMember": isCommunityMember,
+//         "role": roleValues.reverse[role],
+//         "isAbleToJoinTag": isAbleToJoinTagValues.reverse[isAbleToJoinTag],
+//         "createdAtTimeAgo": createdAtTimeAgo,
+//         "amount": amountValues.reverse[amount],
+//         "isOpen": isOpen
+//     };
+// }
+
+// enum Amount {
+//     FREE_TO_JOIN,
+//     RS_700_SUBSCRIPTION
+// }
+
+// final amountValues = EnumValues({
+//     "Free to join": Amount.FREE_TO_JOIN,
+//     "Rs 700 Subscription": Amount.RS_700_SUBSCRIPTION
+// });
+
+// enum IsAbleToJoinTag {
+//     ANYONE_CAN_JOIN,
+//     CLOSED
+// }
+
+// final isAbleToJoinTagValues = EnumValues({
+//     "Anyone can join": IsAbleToJoinTag.ANYONE_CAN_JOIN,
+//     "Closed": IsAbleToJoinTag.CLOSED
+// });
+
+// enum Role {
+//     NONE
+// }
+
+// final roleValues = EnumValues({
+//     "None": Role.NONE
+// });
+
+// class EnumValues<T> {
+//     Map<String, T> map;
+//     late Map<T, String> reverseMap;
+
+//     EnumValues(this.map);
+
+//     Map<T, String> get reverse {
+//             reverseMap = map.map((k, v) => MapEntry(v, k));
+//             return reverseMap;
+//     }
+// }
+
+// To parse this JSON data, do
+//
+//     final getAllCommunitiesModel = getAllCommunitiesModelFromJson(jsonString);
+
 import 'dart:convert';
 
 GetAllCommunitiesModel getAllCommunitiesModelFromJson(String str) => GetAllCommunitiesModel.fromJson(json.decode(str));
@@ -299,45 +433,45 @@ class GetAllCommunitiesModel {
 class AllCommunities {
     String id;
     String community;
-    String? image;
+    String image;
     String size;
     String shareLink;
     String members;
     bool isCommunityMember;
     Role role;
     String isAbleToJoinTag;
+    bool isOpen;
     String createdAtTimeAgo;
     String amount;
-    bool isOpen;
 
     AllCommunities({
         required this.id,
         required this.community,
-        this.image,
+        required this.image,
         required this.size,
         required this.shareLink,
         required this.members,
         required this.isCommunityMember,
         required this.role,
         required this.isAbleToJoinTag,
+        required this.isOpen,
         required this.createdAtTimeAgo,
         required this.amount,
-        required this.isOpen
     });
 
     factory AllCommunities.fromJson(Map<String, dynamic> json) => AllCommunities(
         id: json["_id"],
         community: json["community"],
-        image: json["image"]??"",
+        image: json["image"],
         size: json["size"],
         shareLink: json["shareLink"],
         members: json["members"],
         isCommunityMember: json["isCommunityMember"],
         role: roleValues.map[json["role"]]!,
         isAbleToJoinTag: json["isAbleToJoinTag"],
+        isOpen: json["isOpen"],
         createdAtTimeAgo: json["createdAtTimeAgo"],
         amount: json["amount"],
-        isOpen : json["isOpen"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -350,9 +484,9 @@ class AllCommunities {
         "isCommunityMember": isCommunityMember,
         "role": roleValues.reverse[role],
         "isAbleToJoinTag": isAbleToJoinTagValues.reverse[isAbleToJoinTag],
+        "isOpen": isOpen,
         "createdAtTimeAgo": createdAtTimeAgo,
         "amount": amountValues.reverse[amount],
-        "isOpen": isOpen
     };
 }
 
@@ -377,10 +511,12 @@ final isAbleToJoinTagValues = EnumValues({
 });
 
 enum Role {
+    ADMIN,
     NONE
 }
 
 final roleValues = EnumValues({
+    "Admin": Role.ADMIN,
     "None": Role.NONE
 });
 

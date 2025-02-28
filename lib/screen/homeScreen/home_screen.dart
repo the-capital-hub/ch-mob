@@ -9,6 +9,7 @@ import 'package:capitalhub_crm/controller/profileController/profile_controller.d
 import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
+import 'package:capitalhub_crm/screen/homeScreen/widget/communities_corner_widget.dart';
 import 'package:capitalhub_crm/screen/homeScreen/widget/fullscreen_image_view.dart';
 import 'package:capitalhub_crm/screen/homeScreen/widget/polls_widget.dart';
 import 'package:capitalhub_crm/screen/homeScreen/widget/startup_corner_widget.dart';
@@ -268,6 +269,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   // If there are no more feed posts or news, return an empty widget
                                   return const SizedBox
                                       .shrink(); // No more items to display
+                                      
                                 },
                               ),
                             ),
@@ -985,6 +987,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   startupCorner() {
     return AutoScrollListView();
+  }
+
+  communitiesCorner(){
+    return CommunitiesCornerWidget();
   }
 
   int calculateTotalItems(int feedLength, int newsLength) {

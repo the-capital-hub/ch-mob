@@ -1,5 +1,9 @@
 import 'dart:ui';
 
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityHomeScreen/community_home_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityLandingScreen/create_community_landing_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/exploreCommunityScreen/explore_community_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/myCommunityScreen/my_community_screen.dart';
 import 'package:capitalhub_crm/screen/companyScreen/companyScreenInv/company_inv_screen.dart';
 import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';
 import 'package:capitalhub_crm/screen/exploreScreen/explore_screen.dart';
@@ -30,20 +34,35 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     "Home",
     "Company",
     "Explore",
+    "Community",
     "Log Out",
+  ];
+  List<String> communitySubItems = [
+    "Create a Community",
+    "My Community",
+    "Explore Community"
   ];
   List icons = [
     PngAssetPath.homeIcon,
     PngAssetPath.financeIcon,
     PngAssetPath.exploreIcon,
+    PngAssetPath.communityIcon,
     PngAssetPath.logoutIcon,
   ];
   List page = [
     const LandingScreen(),
     const CompanyInvScreen(),
     const ExploreScreen(),
+    const CommunityHomeScreen(),
     const LogoutScreen(),
   ];
+  List communitySubPages = [
+    const CreateCommunityLandingScreen(),
+    const MyCommunityScreen(),
+    const ExploreCommunityScreen(), 
+  ];
+  bool isExpanded = false;
+  List<bool> isExpandedList = List.generate(5, (index) => false);
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -121,6 +140,9 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
                         },
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
+                          if (index == 3) {
+                          return _buildExpansionTile(index);
+                        } else {
                           return InkWell(
                             onTap: () {
                               Get.to(page[index]);
@@ -156,6 +178,7 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
                               ),
                             ),
                           );
+                        }
                         }),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -206,6 +229,66 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
             ),
           ],
         ),
+      ),
+    );
+  }
+  Widget _buildExpansionTile(int index) {
+    return Theme(
+      data: ThemeData(
+        dividerColor: Colors.transparent,
+      ),
+      child: ExpansionTile(
+        visualDensity: VisualDensity.compact,
+        dense: true,
+        tilePadding: const EdgeInsets.only(left: 20),
+        collapsedIconColor: AppColors.white,
+        iconColor: AppColors.primaryInvestor,
+        onExpansionChanged: (bool expanded) {
+          setState(() {
+            isExpandedList[index] = expanded; // Update specific index expansion state
+          });
+        },
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Image.asset(
+              icons[index],
+              color: isExpandedList[index] ? AppColors.primaryInvestor : AppColors.white,
+              height: 22,
+            ),
+            const SizedBox(width: 12),
+            TextWidget(
+              text: items[index],
+              textSize: 16,
+              fontWeight: FontWeight.w500,
+              maxLine: 1,
+              align: TextAlign.center,
+              color: isExpandedList[index] ? AppColors.primaryInvestor : AppColors.white,
+            ),
+          ],
+        ),
+        children: 
+             communitySubItems.map((communitySubItemsTitle) {
+                int communitySubItemsIndex = communitySubItems.indexOf(communitySubItemsTitle);
+                return SizedBox(
+                  height: 30,
+                  child: ListTile(
+                    dense: true,
+                    visualDensity: VisualDensity.compact,
+                    contentPadding: const EdgeInsets.only(left: 55, top: 0, bottom: 0),
+                    title: TextWidget(
+                      text: communitySubItemsTitle,
+                      textSize: 16,
+                      fontWeight: FontWeight.w500,
+                      maxLine: 1,
+                      color: AppColors.white,
+                    ),
+                    onTap: () {
+                      Get.to(communitySubPages[communitySubItemsIndex]);
+                    },
+                  ),
+                );
+              }).toList(),
       ),
     );
   }
