@@ -36,6 +36,7 @@ import 'package:capitalhub_crm/screen/meetingsScreen/webinars_screen.dart';
 import 'package:capitalhub_crm/screen/newsScreen/news_screen.dart';
 import 'package:capitalhub_crm/screen/oneLinkScreen/one_link_screen.dart';
 import 'package:capitalhub_crm/screen/profileScreen/profile_screen.dart';
+import 'package:capitalhub_crm/screen/resourceScreen/resource_screen.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
@@ -72,6 +73,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     "Explore",
     "News",
     "One link",
+    "Resources",
     "Company",
     "Team",
     "Analytics",
@@ -100,6 +102,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     PngAssetPath.exploreIcon,
     PngAssetPath.newsIcon,
     PngAssetPath.onelinkIcon,
+    PngAssetPath.resourceIcon,
     PngAssetPath.financeIcon,
     PngAssetPath.teamIcon,
     PngAssetPath.customerIcon,
@@ -116,6 +119,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     const ExploreScreen(),
     const NewsScreen(),
     const OneLinkScreeen(),
+    const ResourceScreen(),
     const CompanyScreen(),
     const ConnectionScreen(),
     const AnalyticsScreen(),
@@ -141,6 +145,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   List<bool> isExpandedList = List.generate(13, (index) => false);
   @override
   Widget build(BuildContext context) {
+
     return Drawer(
       backgroundColor: AppColors.black,
       child: SafeArea(

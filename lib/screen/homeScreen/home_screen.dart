@@ -29,6 +29,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import '../../controller/resourceController/resource_controller.dart';
 import '../../utils/constant/app_var.dart';
 import '../../utils/constant/asset_constant.dart';
 import '../Auth-Process/authScreen/signup_info_page.dart';
@@ -37,6 +38,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../notificationScreen/notification_screen.dart';
 import '../profileScreen/polls_widget_profile.dart';
+import '../resourceScreen/resource_template.dart';
 import 'widget/video_player.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -157,6 +159,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int tapindex = -1;
   @override
   Widget build(BuildContext context) {
+    final ResourceController resourceController= Get.put(ResourceController());
     return Container(
         decoration: bgDec,
         child: Scaffold(
@@ -231,12 +234,42 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 controller: scrollController,
                                 itemCount: calculateTotalItems(
                                     homeController.postList.length,
-                                    newsController.newsList.length),
+                                    newsController.newsList.length)+1,
                                 separatorBuilder: (context, index) {
                                   return const SizedBox(height: 8);
                                 },
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
+                                  if(index==0) {
+                                    return InkWell(
+                                      onTap: ()=>Get.to(()=>const ResourceTemplate()),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.grey,
+                                                width: 1.5
+                                            ),
+                                            borderRadius: BorderRadius.circular(10)
+                                        ),
+                                        child: Row(
+                                          spacing: 10,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(PngAssetPath.foxImg,height: 40,width: 40,),
+                                            const Text('Join Hustlers Club Now',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  index=index-1;
                                   int feedIndex = index -
                                       (index ~/
                                           4); // Account for the startup section and news posts
