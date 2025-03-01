@@ -4,6 +4,7 @@ import 'package:capitalhub_crm/controller/createPostController/create_post_contr
 import 'package:capitalhub_crm/controller/oneLinkController/one_link_controller.dart';
 import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
+import 'package:capitalhub_crm/screen/oneLinkScreen/widget/investment_thesis.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
@@ -16,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 
+import '../../utils/getStore/get_store.dart';
 import '../profileScreen/polls_widget_profile.dart';
 
 class OneLinkScreeen extends StatefulWidget {
@@ -385,6 +387,22 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
       
       }),
       sizedTextfield,
+                            if(GetStoreData.getStore.read('isInvestor'))
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextWidget(
+                                    text: "Investment Thesis",
+                                    textSize: 15,
+                                    color: AppColors.white,
+                                  ),
+                                  const SizedBox(height: 10,),
+                                  ...List.generate(20, (index){
+                                    return const InvestmentThesis(title: 'What is the importance of Management?',);
+                                  })
+                                ],
+                              ),
+
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: AppButton.primaryButton(
