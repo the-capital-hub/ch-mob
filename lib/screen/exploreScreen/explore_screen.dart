@@ -610,12 +610,9 @@ class _ExploreScreenState extends State<ExploreScreen>
                                             false) {
                                           exploreController
                                               .intrestedUnintrestedPost(
-                                                  id: exploreController
-                                                      .startupExploreList[index]
-                                                      .id!,
-                                                  status: exploreController
-                                                      .startupExploreList[index]
-                                                      .myInterest!)
+                                            id: exploreController
+                                                .startupExploreList[index].id!,
+                                          )
                                               .then((val) {
                                             if (val) {
                                               if (exploreController
@@ -993,10 +990,13 @@ class _ExploreScreenState extends State<ExploreScreen>
                                       horizontal: 12.0),
                                   child: Row(
                                     children: [
-                                      Image.network(exploreController
-                                          .founderExploreList[index]
-                                          .socialLinks![ind]
-                                          .logo!),
+                                      Image.network(
+                                        exploreController
+                                            .founderExploreList[index]
+                                            .socialLinks![ind]
+                                            .logo!,
+                                        height: 25,
+                                      ),
                                       const SizedBox(width: 8),
                                       TextWidget(
                                           text:
@@ -1014,7 +1014,11 @@ class _ExploreScreenState extends State<ExploreScreen>
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 60),
                         child: AppButton.outlineButton(
-                            onButtonPressed: () {},
+                            onButtonPressed: () {
+                              Get.to(() => PublicProfileScreen(
+                                  id: exploreController
+                                      .founderExploreList[index].founderId!));
+                            },
                             borderColor:
                                 GetStoreData.getStore.read('isInvestor')
                                     ? AppColors.primaryInvestor
@@ -1196,7 +1200,7 @@ class _ExploreScreenState extends State<ExploreScreen>
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Image.network(
-                                        'https://thecapitalhub.s3.ap-south-1.amazonaws.com/linkedin.png',
+                                        'https://ch-social-link-logo.s3.ap-south-1.amazonaws.com/linkedin.png',
                                         height: 25,
                                       ),
                                       const SizedBox(width: 6),
@@ -1237,9 +1241,10 @@ class _ExploreScreenState extends State<ExploreScreen>
                                   children: [
                                     Image.network(
                                         exploreController
-                                            .investorExploreList[index]
-                                            .startupsInvested![ind]
-                                            .logo!,
+                                                .investorExploreList[index]
+                                                .startupsInvested![ind]
+                                                .logo ??
+                                            "",
                                         height: 12),
                                     const SizedBox(width: 6),
                                     TextWidget(
@@ -1257,7 +1262,11 @@ class _ExploreScreenState extends State<ExploreScreen>
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 60),
                         child: AppButton.outlineButton(
-                            onButtonPressed: () {},
+                            onButtonPressed: () {
+                              Get.to(() => PublicProfileScreen(
+                                  id: exploreController
+                                      .investorExploreList[index].investorId!));
+                            },
                             borderColor:
                                 GetStoreData.getStore.read('isInvestor')
                                     ? AppColors.primaryInvestor
@@ -1289,89 +1298,89 @@ class _ExploreScreenState extends State<ExploreScreen>
             },
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              return Card(
-                  color: AppColors.blackCard,
-                  surfaceTintColor: AppColors.blackCard,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Container(
-                              height: 55,
-                              width: 55,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(exploreController
-                                              .vcExploreList[index].logo ??
-                                          ""))),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      TextWidget(
-                                        text:
-                                            "${exploreController.vcExploreList[index].name}",
-                                        textSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      // Icon(Icons.bookmark_border_outlined,
-                                      //     color: AppColors.white, size: 20)
-                                    ],
-                                  ),
-                                  const SizedBox(height: 4),
-                                  TextWidget(
-                                    text:
-                                        "${exploreController.vcExploreList[index].location} ${exploreController.vcExploreList[index].age} years",
-                                    textSize: 12,
-                                  ),
-                                ],
+              return InkWell(
+                onTap: () {
+                  Get.to(() => VCsProfileScreen(
+                        vcId: exploreController.vcExploreList[index].id!,
+                      ));
+                },
+                child: Card(
+                    color: AppColors.blackCard,
+                    surfaceTintColor: AppColors.blackCard,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 55,
+                                width: 55,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(exploreController
+                                                .vcExploreList[index].logo ??
+                                            ""))),
                               ),
-                            )
-                          ],
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        TextWidget(
+                                          text:
+                                              "${exploreController.vcExploreList[index].name}",
+                                          textSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        // Icon(Icons.bookmark_border_outlined,
+                                        //     color: AppColors.white, size: 20)
+                                      ],
+                                    ),
+                                    const SizedBox(height: 4),
+                                    TextWidget(
+                                      text:
+                                          "${exploreController.vcExploreList[index].location} ${exploreController.vcExploreList[index].age} years",
+                                      textSize: 12,
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 4),
-                      Divider(
-                        thickness: 0.5,
-                        color: AppColors.white38,
-                        height: 0,
-                      ),
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                        child: TextWidget(
-                            text: "Stage Focus",
-                            textSize: 16,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Wrap(
-                          spacing: 4.0,
-                          runSpacing: 4.0,
-                          children: List.generate(
-                              exploreController.vcExploreList[index].stageFocus!
-                                  .length, (ind) {
-                            return InkWell(
-                              onTap: () {
-                                Get.to(() => VCsProfileScreen(
-                                      vcId: exploreController
-                                          .vcExploreList[index].id!,
-                                    ));
-                              },
-                              child: Card(
+                        SizedBox(height: 4),
+                        Divider(
+                          thickness: 0.5,
+                          color: AppColors.white38,
+                          height: 0,
+                        ),
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          child: TextWidget(
+                              text: "Stage Focus",
+                              textSize: 16,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Wrap(
+                            spacing: 4.0,
+                            runSpacing: 4.0,
+                            children: List.generate(
+                                exploreController.vcExploreList[index]
+                                    .stageFocus!.length, (ind) {
+                              return Card(
                                 color: AppColors.purple,
                                 // surfaceTintColor: AppColors.purple,
                                 shape: RoundedRectangleBorder(
@@ -1386,36 +1395,33 @@ class _ExploreScreenState extends State<ExploreScreen>
                                       textSize: 15,
                                       color: AppColors.white,
                                     )),
-                              ),
-                            );
-                          }),
+                              );
+                            }),
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 12),
-                      Divider(
-                        thickness: 0.5,
-                        color: AppColors.white38,
-                        height: 0,
-                      ),
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                        child: TextWidget(
-                            text: "Sector Focus",
-                            textSize: 16,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Wrap(
-                          spacing: 4.0,
-                          runSpacing: 4.0,
-                          children: List.generate(
-                              exploreController.vcExploreList[index]
-                                  .sectorFocus!.length, (ind) {
-                            return InkWell(
-                              onTap: () {},
-                              child: Card(
+                        SizedBox(height: 12),
+                        Divider(
+                          thickness: 0.5,
+                          color: AppColors.white38,
+                          height: 0,
+                        ),
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          child: TextWidget(
+                              text: "Sector Focus",
+                              textSize: 16,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Wrap(
+                            spacing: 4.0,
+                            runSpacing: 4.0,
+                            children: List.generate(
+                                exploreController.vcExploreList[index]
+                                    .sectorFocus!.length, (ind) {
+                              return Card(
                                 color: AppColors.purple,
                                 // surfaceTintColor: AppColors.purple,
                                 shape: RoundedRectangleBorder(
@@ -1430,35 +1436,35 @@ class _ExploreScreenState extends State<ExploreScreen>
                                       textSize: 15,
                                       color: AppColors.white,
                                     )),
-                              ),
-                            );
-                          }),
+                              );
+                            }),
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 12),
-                      Divider(
-                        thickness: 0.5,
-                        color: AppColors.white38,
-                        height: 0,
-                      ),
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                        child: TextWidget(
-                            text: "Ticket Size",
-                            textSize: 16,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
+                        SizedBox(height: 12),
+                        Divider(
+                          thickness: 0.5,
+                          color: AppColors.white38,
+                          height: 0,
+                        ),
+                        const Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                           child: TextWidget(
-                              text:
-                                  "${exploreController.vcExploreList[index].ticketSize}",
-                              textSize: 20,
-                              fontWeight: FontWeight.w600)),
-                      sizedTextfield,
-                    ],
-                  ));
+                              text: "Ticket Size",
+                              textSize: 16,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            child: TextWidget(
+                                text:
+                                    "${exploreController.vcExploreList[index].ticketSize}",
+                                textSize: 20,
+                                fontWeight: FontWeight.w600)),
+                        sizedTextfield,
+                      ],
+                    )),
+              );
             },
           );
   }

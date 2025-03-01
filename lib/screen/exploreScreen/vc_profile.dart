@@ -79,7 +79,7 @@ class _VCsProfileScreenState extends State<VCsProfileScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Image.network(
-                                    'https://thecapitalhub.s3.ap-south-1.amazonaws.com/linkedin.png',
+                                    'https://ch-social-link-logo.s3.ap-south-1.amazonaws.com/linkedin.png',
                                     height: 30,
                                   ),
                                   const SizedBox(width: 6),

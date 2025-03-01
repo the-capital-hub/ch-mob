@@ -38,11 +38,12 @@ class ExploreFounderModel {
 
 class FounderExplore {
   String? name;
+  String? founderId;
   String? profilePicture;
   String? designation;
   String? company;
   String? location;
-  int? startedAtDate;
+  String? startedAtDate;
   String? lastFunding;
   String? bio;
   String? education;
@@ -56,6 +57,7 @@ class FounderExplore {
 
   FounderExplore({
     this.name,
+    this.founderId,
     this.profilePicture,
     this.designation,
     this.company,
@@ -69,17 +71,19 @@ class FounderExplore {
     this.companySector,
     this.description,
     this.socialLinks,
-    this.email,
+    // this.email,
     this.companyLogo,
   });
 
   factory FounderExplore.fromJson(Map<String, dynamic> json) => FounderExplore(
+    
         name: json["name"],
+        founderId: json["founderId"],
         profilePicture: json["profilePicture"],
         designation: json["designation"],
         company: json["company"],
         location: json["location"],
-        startedAtDate: json["startedAtDate"],
+        startedAtDate: json["startedAtDate"].toString(),
         lastFunding: json["lastFunding"],
         bio: json["bio"],
         education: json["education"],
@@ -89,7 +93,7 @@ class FounderExplore {
         description: json["description"],
         socialLinks: List<SocialLink>.from(
             json["socialLinks"].map((x) => SocialLink.fromJson(x))),
-        email: json["email"],
+        // email: json["email"],
         companyLogo: json["companyLogo"],
       );
 

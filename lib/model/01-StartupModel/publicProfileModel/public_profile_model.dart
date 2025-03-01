@@ -389,6 +389,7 @@ class UserEmail {
 
 class UserProfile {
   String? profilePicture;
+  String? connectionStatus;
   String? totalExperience;
   String? companyLogo;
   String? connections;
@@ -406,6 +407,7 @@ class UserProfile {
   UserProfile({
     this.profilePicture,
     this.totalExperience,
+    this.connectionStatus,
     this.companyLogo,
     this.connections,
     this.linkedinUrl,
@@ -422,6 +424,7 @@ class UserProfile {
 
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
         profilePicture: json["profilePicture"],
+        connectionStatus: json["connectionStatus"],
         totalExperience: json["totalExperience"],
         connections: json["connections"],
         companyLogo: json["companyLogo"],

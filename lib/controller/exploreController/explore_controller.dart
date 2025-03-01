@@ -135,11 +135,12 @@ class ExploreController extends GetxController {
   }
 
   var isButtonLoading = false.obs;
-  Future intrestedUnintrestedPost(
-      {required String id, required String status}) async {
+  Future intrestedUnintrestedPost({required String id}) async {
     try {
       isButtonLoading.value = true;
-      var body = {"companyId": id, "status": status};
+      var body = {
+        "companyId": id,
+      };
       var response = await ApiBase.pachRequest(
           body: body, extendedURL: ApiUrl.toggleIntrestInvUrl, withToken: true);
       log(response.body);
