@@ -3,6 +3,7 @@ import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/events_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dropdownWidget/drop_down_widget.dart';
@@ -141,7 +142,7 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
             const SizedBox(width: 12),
             Expanded(
               child: AppButton.outlineButton(
-                  borderColor: AppColors.primary,
+                  borderColor: GetStoreData.getStore.read('isInvestor')? AppColors.primaryInvestor:AppColors.primary,
                   onButtonPressed: () {
                     titleController.clear();
                     descriptionController.clear();

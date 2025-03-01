@@ -142,9 +142,14 @@ final List<Color> containerColors = [
                      child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                                       
-                                       
-                            
+                                       SizedBox(height: 12,),
+                                                    AppButton.primaryButton(
+  onButtonPressed: () {
+    // Get.to(() => const CommunityCreateNewWebinarScreen());
+  },
+  title: "Join Community"
+),           
+                            SizedBox(height: 12,),
                             TextWidget(text: "About Community", textSize: 20,color: AppColors.primary,fontWeight: FontWeight.w500,),
                             SizedBox(height: 12,),
                             HtmlWidget(
