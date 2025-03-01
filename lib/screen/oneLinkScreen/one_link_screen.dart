@@ -387,6 +387,7 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
       
       }),
       sizedTextfield,
+                            //Pending because of an getx error
                             if(GetStoreData.getStore.read('isInvestor'))
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
