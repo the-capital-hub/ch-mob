@@ -9,6 +9,11 @@ import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';
 import 'package:capitalhub_crm/screen/exploreScreen/explore_screen.dart';
 import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:capitalhub_crm/screen/logoutScreen/logout_Screen.dart';
+import 'package:capitalhub_crm/screen/meetingsScreen/availability_screen.dart';
+import 'package:capitalhub_crm/screen/meetingsScreen/events_screen.dart';
+import 'package:capitalhub_crm/screen/meetingsScreen/plans_screen.dart';
+import 'package:capitalhub_crm/screen/meetingsScreen/priority_dm_screen.dart';
+import 'package:capitalhub_crm/screen/meetingsScreen/webinars_screen.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
@@ -35,6 +40,7 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     "Company",
     "Explore",
     "Community",
+    "Meetings",
     "Log Out",
   ];
   List<String> communitySubItems = [
@@ -42,11 +48,19 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     "My Community",
     "Explore Community"
   ];
+  List<String> meetingsSubItems = [
+    "Events",
+    "Plans",
+    "Availability",
+    "Webinars",
+    "Priority DMS"
+  ];
   List icons = [
     PngAssetPath.homeIcon,
     PngAssetPath.financeIcon,
     PngAssetPath.exploreIcon,
     PngAssetPath.communityIcon,
+    PngAssetPath.meetingIcon,
     PngAssetPath.logoutIcon,
   ];
   List page = [
@@ -54,15 +68,23 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     const CompanyInvScreen(),
     const ExploreScreen(),
     const CommunityHomeScreen(),
+    const EventsScreen(),
     const LogoutScreen(),
   ];
   List communitySubPages = [
     const CreateCommunityLandingScreen(),
     const MyCommunityScreen(),
-    const ExploreCommunityScreen(), 
+    const ExploreCommunityScreen(),
+  ];
+  List meetingsSubPages = [
+    const EventsScreen(),
+    const PlansScreen(),
+    const AvailabilityScreen(),
+    const WebinarsScreen(),
+    const PriorityDMScreen()
   ];
   bool isExpanded = false;
-  List<bool> isExpandedList = List.generate(5, (index) => false);
+  List<bool> isExpandedList = List.generate(6, (index) => false);
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -140,45 +162,45 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
                         },
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
-                          if (index == 3) {
-                          return _buildExpansionTile(index);
-                        } else {
-                          return InkWell(
-                            onTap: () {
-                              Get.to(page[index]);
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(right: 10),
-                              decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(100),
-                                      bottomRight: Radius.circular(100))),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    bottom: 10, top: 10, left: 20),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Image.asset(
-                                      icons[index],
-                                      color: AppColors.white,
-                                      height: 22,
-                                    ),
-                                    const SizedBox(
-                                      width: 12,
-                                    ),
-                                    TextWidget(
-                                        text: items[index],
-                                        textSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        maxLine: 1,
-                                        align: TextAlign.center),
-                                  ],
+                          if (index == 3 || index == 4) {
+                            return _buildExpansionTile(index);
+                          } else {
+                            return InkWell(
+                              onTap: () {
+                                Get.to(page[index]);
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(100),
+                                        bottomRight: Radius.circular(100))),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 10, top: 10, left: 20),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Image.asset(
+                                        icons[index],
+                                        color: AppColors.white,
+                                        height: 22,
+                                      ),
+                                      const SizedBox(
+                                        width: 12,
+                                      ),
+                                      TextWidget(
+                                          text: items[index],
+                                          textSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          maxLine: 1,
+                                          align: TextAlign.center),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }
+                            );
+                          }
                         }),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -232,6 +254,7 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
       ),
     );
   }
+
   Widget _buildExpansionTile(int index) {
     return Theme(
       data: ThemeData(
@@ -245,7 +268,8 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
         iconColor: AppColors.primaryInvestor,
         onExpansionChanged: (bool expanded) {
           setState(() {
-            isExpandedList[index] = expanded; // Update specific index expansion state
+            isExpandedList[index] =
+                expanded; // Update specific index expansion state
           });
         },
         title: Row(
@@ -253,7 +277,9 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
           children: [
             Image.asset(
               icons[index],
-              color: isExpandedList[index] ? AppColors.primaryInvestor : AppColors.white,
+              color: isExpandedList[index]
+                  ? AppColors.primaryInvestor
+                  : AppColors.white,
               height: 22,
             ),
             const SizedBox(width: 12),
@@ -263,19 +289,23 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
               fontWeight: FontWeight.w500,
               maxLine: 1,
               align: TextAlign.center,
-              color: isExpandedList[index] ? AppColors.primaryInvestor : AppColors.white,
+              color: isExpandedList[index]
+                  ? AppColors.primaryInvestor
+                  : AppColors.white,
             ),
           ],
         ),
-        children: 
-             communitySubItems.map((communitySubItemsTitle) {
-                int communitySubItemsIndex = communitySubItems.indexOf(communitySubItemsTitle);
+        children: index == 3
+            ? communitySubItems.map((communitySubItemsTitle) {
+                int communitySubItemsIndex =
+                    communitySubItems.indexOf(communitySubItemsTitle);
                 return SizedBox(
                   height: 30,
                   child: ListTile(
                     dense: true,
                     visualDensity: VisualDensity.compact,
-                    contentPadding: const EdgeInsets.only(left: 55, top: 0, bottom: 0),
+                    contentPadding:
+                        const EdgeInsets.only(left: 55, top: 0, bottom: 0),
                     title: TextWidget(
                       text: communitySubItemsTitle,
                       textSize: 16,
@@ -285,6 +315,29 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
                     ),
                     onTap: () {
                       Get.to(communitySubPages[communitySubItemsIndex]);
+                    },
+                  ),
+                );
+              }).toList()
+            : meetingsSubItems.map((meetingsSubItemsTitle) {
+                int meetingsSubItemsIndex =
+                    meetingsSubItems.indexOf(meetingsSubItemsTitle);
+                return SizedBox(
+                  height: 30,
+                  child: ListTile(
+                    dense: true,
+                    visualDensity: VisualDensity.compact,
+                    contentPadding:
+                        const EdgeInsets.only(left: 55, top: 0, bottom: 0),
+                    title: TextWidget(
+                      text: meetingsSubItemsTitle,
+                      textSize: 16,
+                      fontWeight: FontWeight.w500,
+                      maxLine: 1,
+                      color: AppColors.white,
+                    ),
+                    onTap: () {
+                      Get.to(meetingsSubPages[meetingsSubItemsIndex]);
                     },
                   ),
                 );

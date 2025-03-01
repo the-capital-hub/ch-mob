@@ -1,4 +1,5 @@
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:flutter/material.dart';
 
 Future<DateTime?> selectTime(BuildContext context, bool isMinutes) async {
@@ -19,15 +20,15 @@ Future<DateTime?> selectTime(BuildContext context, bool isMinutes) async {
               buttonColor: AppColors.blackCard,
             ),
             timePickerTheme: TimePickerThemeData(
-              dayPeriodColor: AppColors.primary,
-              dayPeriodTextColor: AppColors.white,
+              dayPeriodColor: GetStoreData.getStore.read('isInvestor')? AppColors.primaryInvestor:AppColors.primary,
+              dayPeriodTextColor: GetStoreData.getStore.read('isInvestor')? AppColors.black:AppColors.white,
               dialHandColor: AppColors.blackCard,
               dialTextColor: AppColors.white,
               backgroundColor: AppColors.blackCard,
-              hourMinuteTextColor: AppColors.white,
+              hourMinuteTextColor: GetStoreData.getStore.read('isInvestor')? AppColors.black:AppColors.white,
               hourMinuteColor: MaterialStateColor.resolveWith((states) =>
                   states.contains(MaterialState.selected)
-                      ? AppColors.primary
+                      ? GetStoreData.getStore.read('isInvestor')? AppColors.primaryInvestor:AppColors.primary
                       : AppColors.white.withOpacity(0.1)),
             ),
             textButtonTheme: TextButtonThemeData(

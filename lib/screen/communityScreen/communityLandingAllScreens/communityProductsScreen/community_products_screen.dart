@@ -165,7 +165,7 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                        child: AppButton.primaryButton(
                            onButtonPressed: () {
                             if(
-                              communityProducts.communityProductsList[index].isFree
+                              communityProducts.communityProductsList[index].isFree && !communityProducts.communityProductsList[index].isProductPurchased
                             ){
                              communityProducts.buyProduct(context,communityProducts.communityProductsList[index].id);
 
