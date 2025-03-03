@@ -42,6 +42,7 @@ class OneLinkData {
   String? introductoryMessage;
   String? secretOneLinkKey;
   List<String>? previousIntroductoryMessage;
+  
 
   OneLinkData({
     this.startUpId,

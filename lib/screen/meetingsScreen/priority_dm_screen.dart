@@ -3,6 +3,7 @@ import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
@@ -71,7 +72,9 @@ class _PriorityDMScreenState extends State<PriorityDMScreen>
                     Tab(text: "Unanswered"),
                     Tab(text: "Answered")
                   ],
-                  labelColor: AppColors.primary,
+                  labelColor: GetStoreData.getStore.read('isInvestor') 
+                ? AppColors.primaryInvestor 
+                : AppColors.primary,
                   unselectedLabelColor: AppColors.white,
                   unselectedLabelStyle: const TextStyle(
                       fontWeight: FontWeight.normal, fontSize: 16),
@@ -154,7 +157,7 @@ class _PriorityDMScreenState extends State<PriorityDMScreen>
                                           maxLine: 3,
                                           color: userController
                                                   .userList[index].isAnswered
-                                              ? AppColors.primary
+                                              ? GetStoreData.getStore.read('isInvestor')? AppColors.primaryInvestor:AppColors.primary
                                               : AppColors.white54,
                                         ),
                                       ],

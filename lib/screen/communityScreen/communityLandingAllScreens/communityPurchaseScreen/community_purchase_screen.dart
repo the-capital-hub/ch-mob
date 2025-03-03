@@ -170,6 +170,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
             Expanded(
               child: AppButton.primaryButton(
                   onButtonPressed: () {
+                    if(!communityProducts.communityProductsList[widget.index].isProductPurchased)
                     communityProducts.buyProduct(context,communityProducts.communityProductsList[widget.index].id);
 
 

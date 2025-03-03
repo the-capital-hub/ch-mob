@@ -159,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int tapindex = -1;
   @override
   Widget build(BuildContext context) {
-    final ResourceController resourceController= Get.put(ResourceController());
+    final ResourceController resourceController = Get.put(ResourceController());
     return Container(
         decoration: bgDec,
         child: Scaffold(
@@ -236,41 +236,44 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     homeController.postList.length,
                                     newsController.newsList.length)+
                                     (!GetStoreData.getStore.read('isInvestor')?1:0),
+
                                 separatorBuilder: (context, index) {
                                   return const SizedBox(height: 8);
                                 },
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
                                   if(index==0 && !GetStoreData.getStore.read('isInvestor')) {
+
                                     return InkWell(
-                                      onTap: ()=>Get.to(()=>const ResourceTemplate()),
+                                      onTap: () => Get.to(
+                                          () => const ResourceTemplate()),
                                       child: Container(
                                         padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
                                             border: Border.all(
-                                                color: Colors.grey,
-                                                width: 1.5
-                                            ),
-                                            borderRadius: BorderRadius.circular(10)
-                                        ),
+                                                color: Colors.grey, width: 1.5),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
                                         child: Row(
-                                          spacing: 10,
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
-                                            Image.asset(PngAssetPath.foxImg,height: 40,width: 40,),
-                                            const Text('Join Hustlers Club Now',
+                                            Image.asset(PngAssetPath.foxImg,
+                                                height: 40, width: 40),
+                                            const SizedBox(width: 10),
+                                            const Text(
+                                              'Join Hustlers Club Now',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 20,
-                                                  fontWeight: FontWeight.bold
-                                              ),
+                                                  fontWeight: FontWeight.bold),
                                             )
                                           ],
                                         ),
                                       ),
                                     );
                                   }
-                                  index=index-1;
+                                  index = index - 1;
                                   int feedIndex = index -
                                       (index ~/
                                           4); // Account for the startup section and news posts
@@ -303,7 +306,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   // If there are no more feed posts or news, return an empty widget
                                   return const SizedBox
                                       .shrink(); // No more items to display
-                                      
                                 },
                               ),
                             ),
@@ -1020,11 +1022,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   startupCorner() {
-    return AutoScrollListView();
-  }
-
-  communitiesCorner(){
-    return CommunitiesCornerWidget();
+    return Column(
+      children: [AutoScrollListView(), CommunitiesCornerWidget()],
+    );
   }
 
   int calculateTotalItems(int feedLength, int newsLength) {

@@ -3,6 +3,7 @@ import 'package:capitalhub_crm/model/01-StartupModel/meetingModel/get_availabili
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
@@ -443,7 +444,8 @@ void initState() {
                                           children: [
                                             Checkbox(
                                               value: isChecked[index],
-                                              activeColor: AppColors.primary,
+                                              checkColor: GetStoreData.getStore.read('isInvestor')? AppColors.black:AppColors.white,
+                                              activeColor: GetStoreData.getStore.read('isInvestor')? AppColors.primaryInvestor:AppColors.primary,
                                               onChanged: (bool? value) {
                                                 setState(() {
                                                   isChecked[index] = value!;

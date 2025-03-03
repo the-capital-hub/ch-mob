@@ -3,6 +3,7 @@ import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
@@ -213,7 +214,7 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
             Expanded(
               child: AppButton.outlineButton(
                   width: 150,
-                  borderColor: AppColors.primary,
+                  borderColor: GetStoreData.getStore.read('isInvestor')? AppColors.primaryInvestor:AppColors.primary,
                   onButtonPressed: () {
                     webinarController.titleController.clear();
                     webinarController.descriptionController.clear();

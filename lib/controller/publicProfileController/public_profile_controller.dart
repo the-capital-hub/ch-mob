@@ -16,7 +16,7 @@ class PublicProfileController extends GetxController {
     try {
       isLoading.value = true;
       var response = await ApiBase.getRequest(
-          extendedURL: ApiUrl.getPublicProfileUrl + "66b72c97b441138f6e19b781");
+          extendedURL: ApiUrl.getPublicProfileUrl + id);
       log(response.body);
       var data = jsonDecode(response.body);
       if (data['status'] == true) {
@@ -48,6 +48,23 @@ class PublicProfileController extends GetxController {
       return true;
     } else {
       Get.back();
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
+  }
+
+  Future<bool> connectionRequest({
+    required String userId,
+  }) async {
+    var body = {};
+    var response = await ApiBase.postRequest(
+        body: body, extendedURL: ApiUrl.sendReq + userId, withToken: true);
+    log(response.body);
+    var data = json.decode(response.body);
+    if (data["status"] == true) {
+      HelperSnackBar.snackBar("Success", data["message"]);
+      return true;
+    } else {
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
     }

@@ -57,6 +57,7 @@ class Product {
   List<PurchasedBy> purchasedBy;
   List<String> urls;
   String id;
+  bool isProductPurchased;
 
   Product({
     required this.name,
@@ -67,6 +68,7 @@ class Product {
     required this.purchasedBy,
     required this.urls,
     required this.id,
+    required this.isProductPurchased,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
@@ -78,6 +80,7 @@ class Product {
         purchasedBy: List<PurchasedBy>.from(json["purchased_by"].map((x) => PurchasedBy.fromJson(x))),
         urls: List<String>.from(json["URLS"].map((x) => x)),
         id: json["_id"],
+        isProductPurchased: json["isProductPurchased"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -89,6 +92,7 @@ class Product {
         "purchased_by": List<dynamic>.from(purchasedBy.map((x) => x.toJson())),
         "URLS": List<dynamic>.from(urls.map((x) => x)),
         "_id": id,
+        "isProductPurchased": isProductPurchased,
       };
 }
 

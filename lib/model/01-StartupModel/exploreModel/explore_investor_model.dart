@@ -34,6 +34,7 @@ class ExploreInvestorModel {
 
 class InvestorExplore {
     String? name;
+    String? investorId;
     String? location;
     String? designation;
     String? profilePicture;
@@ -48,6 +49,7 @@ class InvestorExplore {
 
     InvestorExplore({
         this.name,
+        this.investorId,
         this.location,
         this.designation,
         this.profilePicture,
@@ -63,6 +65,7 @@ class InvestorExplore {
 
     factory InvestorExplore.fromJson(Map<String, dynamic> json) => InvestorExplore(
         name: json["name"],
+        investorId: json["investorId"],
         location: json["location"],
         designation: json["designation"],
         profilePicture: json["profilePicture"],
