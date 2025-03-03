@@ -106,15 +106,10 @@ class ResourceTemplate extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Image.asset(
-                                    resourceController.menuTemplateIcons[index],
-                                    height: 30,
-                                    width: 30,
-                                  ),
-                                const SizedBox(height: 10),
-                                  TextWidget(
-                                    text: resourceController
-                                        .menuTemplatesName[index],
+                                  Image.asset(resourceController.menuTemplateIcons[index],height: 30,width: 30,),
+                                  const SizedBox(height: 10,),
+                                  TextWidget(text: resourceController.menuTemplatesName[index],
+
                                     textSize: 20,
                                     fontWeight: FontWeight.bold,
                                     maxLine: 2,

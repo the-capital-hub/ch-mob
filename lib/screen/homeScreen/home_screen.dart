@@ -233,15 +233,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               child: ListView.separated(
                                 controller: scrollController,
                                 itemCount: calculateTotalItems(
-                                        homeController.postList.length,
-                                        newsController.newsList.length) +
-                                    1,
+                                    homeController.postList.length,
+                                    newsController.newsList.length)+
+                                    (!GetStoreData.getStore.read('isInvestor')?1:0),
+
                                 separatorBuilder: (context, index) {
                                   return const SizedBox(height: 8);
                                 },
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
-                                  if (index == 0) {
+                                  if(index==0 && !GetStoreData.getStore.read('isInvestor')) {
+
                                     return InkWell(
                                       onTap: () => Get.to(
                                           () => const ResourceTemplate()),
