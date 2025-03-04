@@ -14,6 +14,7 @@ import 'package:capitalhub_crm/screen/meetingsScreen/events_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/plans_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/priority_dm_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/webinars_screen.dart';
+import 'package:capitalhub_crm/screen/myStartupsScreen/my_startup_screen.dart';
 import 'package:capitalhub_crm/screen/oneLinkScreen/one_link_screen.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
@@ -43,6 +44,7 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     "Explore",
     "Live deals",
     "One Link",
+    "My Startups",
     "Community",
     "Meetings",
     "Log Out",
@@ -63,8 +65,9 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     PngAssetPath.homeIcon,
     PngAssetPath.financeIcon,
     PngAssetPath.exploreIcon,
-    PngAssetPath.exploreIcon,
+    PngAssetPath.liveDealIcon,
     PngAssetPath.onelinkIcon,
+    PngAssetPath.mystartupIcon,
     PngAssetPath.communityIcon,
     PngAssetPath.meetingIcon,
     PngAssetPath.logoutIcon,
@@ -75,6 +78,7 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     const ExploreScreen(),
     const LiveDealScreen(),
     const OneLinkScreeen(),
+    const MyStartupScreen(),
     const CommunityHomeScreen(),
     const EventsScreen(),
     const LogoutScreen(),
@@ -92,7 +96,7 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     const PriorityDMScreen()
   ];
   bool isExpanded = false;
-  List<bool> isExpandedList = List.generate(7, (index) => false);
+  List<bool> isExpandedList = List.generate(8, (index) => false);
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -170,7 +174,7 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
                         },
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
-                          if (index == 5 || index == 6) {
+                          if (index == 6 || index == 7) {
                             return _buildExpansionTile(index);
                           } else {
                             return InkWell(

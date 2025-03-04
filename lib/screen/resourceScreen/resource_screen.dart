@@ -27,236 +27,260 @@ class _ResourceScreenState extends State<ResourceScreen> {
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       allResources.getAllResources().then((v) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-         
-        });
+        WidgetsBinding.instance.addPostFrameCallback((_) {});
       });
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    
-   
-
-    return 
-    
-          
-    Container(
-      decoration: bgDec,
-      child: Scaffold(
+    return Container(
+        decoration: bgDec,
+        child: Scaffold(
           backgroundColor: AppColors.transparent,
           drawer: const DrawerWidget(),
           appBar: HelperAppBar.appbarHelper(
               title: "Resources", hideBack: true, autoAction: false),
-          body: 
-          Obx(() => allResources.isLoading.value
-                ? Helper.pageLoading()
-                : allResources.allResourcesDetails.isEmpty
-                      ? Center(child: TextWidget(text: "No Resources Available", textSize: 16))
-                      :
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      if(allResources.allResourcesDetails[0].isSubscribed)
-                      Column(
+          body: Obx(() => allResources.isLoading.value
+              ? Helper.pageLoading()
+              : allResources.allResourcesDetails.isEmpty
+                  ? Center(
+                      child: TextWidget(
+                          text: "No Resources Available", textSize: 16))
+                  : SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Image.asset(
-                            PngAssetPath.foxCurveImg,
-                          ),
-                          const TextWidget(
-                            text: 'Welcome to the Hustlers Club',
-                            textSize: 22,
-                            align: TextAlign.center,
-                            fontWeight: FontWeight.bold,
-                            maxLine: 2,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const TextWidget(
-                            text:
-                                'Hustlers Club gives you all the tools and support you need to take your startup to the next level.',
-                            textSize: 16,
-                            align: TextAlign.center,
-                            maxLine: 4,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Divider(
-                            color: Colors.white12,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const TextWidget(
-                            text: 'Access Now',
-                            textSize: 25,
-                            align: TextAlign.center,
-                            fontWeight: FontWeight.bold,
-                            maxLine: 1,
-                          ),
-                          
-                        ],
-                      ),
-                      if(!allResources.allResourcesDetails[0].isSubscribed)
-                      Column(
-                        children: [
-                          TextWidget(text: "Hey ${GetStoreData.getStore.read('name')} !", textSize: 25, fontWeight: FontWeight.bold,),
- SizedBox(height: 16),
-
-                      TextWidget(
-                        text:
-                            "Access essential playbooks for your business growth, convering GTM strategy, sales, marketing, pitch deck creation, and financial modeling. Designed to guide you with expert insights and proven strategies.",
-                        textSize: 14,
-                        maxLine: 5,
-                        align: TextAlign.center,
-                      ),
-                      SizedBox(height: 16),
-                      
-                        ],
-                      ),
-                     
-                      if(!allResources.allResourcesDetails[0].isSubscribed)
-                      Card(
-                        margin: EdgeInsets.zero,
-                        color: AppColors.blackCard,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextWidget(
-                                text: "Unlock Premium Resources",
-                                textSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              TextWidget(
-                                text: "INR 1,999",
-                                textSize: 23,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              AppButton.outlineButton(
-                                  onButtonPressed: () {},
-                                  title: "Get Premium",
-                                  borderRadius: 10,
-                                  borderColor: AppColors.primary),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-    if(!allResources.allResourcesDetails[0].isSubscribed)                  
-const TextWidget(
-                            text: 'Access Now (Locked)',
-                            textSize: 25,
-                            align: TextAlign.center,
-                            fontWeight: FontWeight.bold,
-                            maxLine: 1,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: LayoutBuilder(
-                    builder:
-                        (BuildContext context, BoxConstraints constraints) {
-                      return Wrap(
-                        spacing: 15,
-                        runSpacing: 15,
-                        children: List<Widget>.generate(
-                            allResources.allResourcesDetails[0].resources.length, (index) {
-                          return InkWell(
-                            onTap: () {
-                              
-                              allResources.resourceId = allResources.allResourcesDetails[0].resources[index].resourceId;
-                              if(allResources.allResourcesDetails[0].isSubscribed)
-                              Get.to(() => const ResourceDetailsScreen());
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              height: 120,
-                              width: ((constraints.maxWidth / 2) - (15 / 2)),
-                              decoration: BoxDecoration(
-                                  color: Colors.white12,
-                                  border: Border.all(
-                                      color: Colors.purple.shade100,
-                                      width: 0.5),
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              children: [
+                                if (allResources
+                                    .allResourcesDetails[0].isSubscribed)
+                                  Column(
                                     children: [
-                                      Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                            image:  DecorationImage(
-                                image: NetworkImage(
-                                  allResources.allResourcesDetails[0].resources[index].logoUrl,
-                                ),
-                                fit: BoxFit.fill),
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                                      if(!allResources.allResourcesDetails[0].isSubscribed)
-                                      const Card(
-                                        
-                                        color: AppColors.brown,
-                                        child: Padding(
-                                          padding:  EdgeInsets.all(6.0),
-                                          child: Row(
-                                            children: [
-                                              TextWidget(text: "locked", textSize: 10),
-                                              SizedBox(width: 4,),
-                                              Icon(Icons.lock,color: Colors.white,size: 15,),
-                                            ],
-                                          ),
-                                        )),
+                                      Image.asset(
+                                        PngAssetPath.foxCurveImg,
+                                      ),
+                                      const TextWidget(
+                                        text: 'Welcome to the Hustlers Club',
+                                        textSize: 22,
+                                        align: TextAlign.center,
+                                        fontWeight: FontWeight.bold,
+                                        maxLine: 2,
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      const TextWidget(
+                                        text:
+                                            'Hustlers Club gives you all the tools and support you need to take your startup to the next level.',
+                                        textSize: 16,
+                                        align: TextAlign.center,
+                                        maxLine: 4,
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      const Divider(
+                                        color: Colors.white12,
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      const TextWidget(
+                                        text: 'Access Now',
+                                        textSize: 25,
+                                        align: TextAlign.center,
+                                        fontWeight: FontWeight.bold,
+                                        maxLine: 1,
+                                      ),
                                     ],
                                   ),
-                                  const SizedBox(height: 10),
-                                  TextWidget(
-                                    text:
-
-                                        resourceController.menuItemsName[index],
-                                    textSize: 16,
-
-                                    fontWeight: FontWeight.bold,
-                                    maxLine: 3,
+                                if (!allResources
+                                    .allResourcesDetails[0].isSubscribed)
+                                  Column(
+                                    children: [
+                                      TextWidget(
+                                        text:
+                                            "Hey ${GetStoreData.getStore.read('name')} !",
+                                        textSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      SizedBox(height: 16),
+                                      TextWidget(
+                                        text:
+                                            "Access essential playbooks for your business growth, convering GTM strategy, sales, marketing, pitch deck creation, and financial modeling. Designed to guide you with expert insights and proven strategies.",
+                                        textSize: 14,
+                                        maxLine: 5,
+                                        align: TextAlign.center,
+                                      ),
+                                      SizedBox(height: 16),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                if (!allResources
+                                    .allResourcesDetails[0].isSubscribed)
+                                  Card(
+                                    margin: EdgeInsets.zero,
+                                    color: AppColors.blackCard,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          TextWidget(
+                                            text: "Unlock Premium Resources",
+                                            textSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          TextWidget(
+                                            text: "INR 1,999",
+                                            textSize: 23,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          AppButton.outlineButton(
+                                              onButtonPressed: () {},
+                                              title: "Get Premium",
+                                              borderRadius: 10,
+                                              borderColor: AppColors.primary),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                if (!allResources
+                                    .allResourcesDetails[0].isSubscribed)
+                                  const TextWidget(
+                                    text: 'Access Now (Locked)',
+                                    textSize: 25,
+                                    align: TextAlign.center,
+                                    fontWeight: FontWeight.bold,
+                                    maxLine: 1,
+                                  ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
                             ),
-                          );
-                        }),
-                      );
-                    },
-                  ),
-                )
-              ],
-            ),
-          )),
-    )
-    );
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: LayoutBuilder(
+                              builder: (BuildContext context,
+                                  BoxConstraints constraints) {
+                                return Wrap(
+                                  spacing: 15,
+                                  runSpacing: 15,
+                                  children: List<Widget>.generate(
+                                      allResources.allResourcesDetails[0]
+                                          .resources.length, (index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        allResources.resourceId = allResources
+                                            .allResourcesDetails[0]
+                                            .resources[index]
+                                            .resourceId;
+                                        if (allResources.allResourcesDetails[0]
+                                            .isSubscribed)
+                                          Get.to(() =>
+                                              const ResourceDetailsScreen());
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(10),
+                                        height: 120,
+                                        width: ((constraints.maxWidth / 2) -
+                                            (15 / 2)),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white12,
+                                            border: Border.all(
+                                                color: Colors.purple.shade100,
+                                                width: 0.5),
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Container(
+                                                  height: 30,
+                                                  width: 30,
+                                                  decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: NetworkImage(
+                                                            allResources
+                                                                .allResourcesDetails[
+                                                                    0]
+                                                                .resources[
+                                                                    index]
+                                                                .logoUrl,
+                                                          ),
+                                                          fit: BoxFit.fill),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10)),
+                                                ),
+                                                if (!allResources
+                                                    .allResourcesDetails[0]
+                                                    .isSubscribed)
+                                                  const Card(
+                                                      color: AppColors.brown,
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.all(6.0),
+                                                        child: Row(
+                                                          children: [
+                                                            TextWidget(
+                                                                text: "locked",
+                                                                textSize: 10),
+                                                            SizedBox(
+                                                              width: 4,
+                                                            ),
+                                                            Icon(
+                                                              Icons.lock,
+                                                              color:
+                                                                  Colors.white,
+                                                              size: 15,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 10),
+                                            TextWidget(
+                                              text: allResources
+                                                  .menuItemsName[index],
+                                              textSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              maxLine: 3,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                );
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    )),
+        ));
   }
 }

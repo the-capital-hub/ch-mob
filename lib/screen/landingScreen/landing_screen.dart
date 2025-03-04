@@ -65,7 +65,7 @@ class _LandingScreenState extends State<LandingScreen> {
       backgroundColor: AppColors.black,
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
+        padding: const EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
         decoration: BoxDecoration(
           color: AppColors.blackCard,
           borderRadius: const BorderRadius.only(
@@ -90,7 +90,7 @@ class _LandingScreenState extends State<LandingScreen> {
                 setState(() {});
               },
               child: SizedBox(
-                width: 55,
+                width: 60,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,

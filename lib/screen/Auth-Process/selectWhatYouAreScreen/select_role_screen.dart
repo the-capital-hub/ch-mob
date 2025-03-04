@@ -103,7 +103,7 @@ class _SelectRoleScreenState extends State<SelectRoleScreen> {
                               SizedBox(height: 8),
                               TextWidget(
                                 text:
-                                    "Lorem ipsum dolor sit amet consectetur. Maecenas ac elementum lacus vel vitae sed nisi aliquam aliquet. Vel adipiscing placerat tellus faucibus diam mauris ipsum vitae. Justo adipiscing integer dictum tortor viverra vel.",
+                                    "Lorem ipsum dolor sit amet consectetur. Maecenas ac elementum lacus vel vitae sed nisi aliquam aliquet. Vel adipiscing placerat tellus faucibus diam mauris ipsum vitae.",
                                 textSize: 10,
                                 maxLine: 10,
                               )

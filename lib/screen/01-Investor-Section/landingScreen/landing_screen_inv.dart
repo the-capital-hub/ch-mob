@@ -10,7 +10,6 @@ import '../homeScreen/home_screen_inv.dart';
 import '../profileScreen/profile_screen_inv.dart';
 import '../syndicatesScreen/syndicates_screen_inv.dart';
 
-
 class LandingScreenInvestor extends StatefulWidget {
   const LandingScreenInvestor({
     super.key,
@@ -44,7 +43,7 @@ class _LandingScreenInvestorState extends State<LandingScreenInvestor> {
       backgroundColor: AppColors.black,
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.only(top: 8, bottom: 8, left: 20, right: 20),
+        padding: const EdgeInsets.only(top: 8, bottom: 8, left: 12, right:12),
         decoration: BoxDecoration(
           color: AppColors.blackCard,
           borderRadius: const BorderRadius.only(
@@ -69,7 +68,7 @@ class _LandingScreenInvestorState extends State<LandingScreenInvestor> {
                 setState(() {});
               },
               child: SizedBox(
-                width: 55,
+                width: 60,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
