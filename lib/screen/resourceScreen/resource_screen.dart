@@ -40,7 +40,7 @@ class ResourceScreen extends StatelessWidget {
                           ),
                           const TextWidget(
                             text: 'Welcome to the Hustlers Club',
-                            textSize: 25,
+                            textSize: 22,
                             align: TextAlign.center,
                             fontWeight: FontWeight.bold,
                             maxLine: 1,
@@ -51,9 +51,9 @@ class ResourceScreen extends StatelessWidget {
                           const TextWidget(
                             text:
                                 'Hustlers Club gives you all the tools and support you need to take your startup to the next level.',
-                            textSize: 18,
+                            textSize: 16,
                             align: TextAlign.center,
-                            maxLine: 2,
+                            maxLine: 3,
                           ),
                           const SizedBox(
                             height: 10,
@@ -76,12 +76,12 @@ class ResourceScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      TextWidget(text: "Hey Nitin!", textSize: 25, fontWeight: FontWeight.bold,),
+                      TextWidget(text: "Hey Nitin!", textSize: 22, fontWeight: FontWeight.bold,),
                       SizedBox(height: 16),
                       TextWidget(
                         text:
                             "Access essential playbooks for your business growth, convering GTM strategy, sales, marketing, pitch deck creation, and financial modeling. Designed to guide you with expert insights and proven strategies.",
-                        textSize: 16,
+                        textSize: 14,
                         maxLine: 5,
                         align: TextAlign.center,
                       ),
@@ -179,9 +179,9 @@ class ResourceScreen extends StatelessWidget {
                                   TextWidget(
                                     text:
                                         resourceController.menuItemsName[index],
-                                    textSize: 20,
+                                    textSize: 16,
                                     fontWeight: FontWeight.bold,
-                                    maxLine: 2,
+                                    maxLine: 3,
                                   ),
                                 ],
                               ),
