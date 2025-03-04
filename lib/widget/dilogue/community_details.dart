@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../utils/appcolors/app_colors.dart';
 import '../textWidget/text_widget.dart';
 
-Future<bool> showLogoutPopup(BuildContext context) async {
+Future<bool> showCommunityDetailsPopup(BuildContext context) async {
   return await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -26,7 +26,7 @@ Future<bool> showLogoutPopup(BuildContext context) async {
                       color: AppColors.redColor,
                       border: Border.all(color: AppColors.white, width: 0)),
                   child: Icon(
-                    Icons.logout,
+                    Icons.close,
                     size: 40,
                     color: AppColors.white,
                   ),
@@ -35,7 +35,7 @@ Future<bool> showLogoutPopup(BuildContext context) async {
                   height: 16,
                 ),
                 TextWidget(
-                  text: "Logout",
+                  text: "Closed Community",
                   textSize: 20,
                   color: AppColors.black,
                   maxLine: 2,
@@ -45,7 +45,7 @@ Future<bool> showLogoutPopup(BuildContext context) async {
                   height: 12,
                 ),
                 TextWidget(
-                  text: "Are You Sure Want To Logout?",
+                  text: "This community is closed for now.\nPlease come again later.",
                   textSize: 14,
                   color: AppColors.black54,
                   maxLine: 2,
@@ -63,40 +63,41 @@ Future<bool> showLogoutPopup(BuildContext context) async {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: SizedBox(
-                          height: 45,
-                          child: Center(
-                            child: TextWidget(
-                              text: "no".toUpperCase(),
-                              color: Colors.black54,
-                              textSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 45,
-                      width: 1,
-                      color: AppColors.grey3Color,
-                    ),
+                    // Expanded(
+                    //   child: InkWell(
+                    //     onTap: () {
+                    //       Get.back();
+                    //     },
+                    //     child: SizedBox(
+                    //       height: 45,
+                    //       child: Center(
+                    //         child: TextWidget(
+                    //           text: "no".toUpperCase(),
+                    //           color: Colors.black54,
+                    //           textSize: 14,
+                    //           fontWeight: FontWeight.w500,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // Container(
+                    //   height: 45,
+                    //   width: 1,
+                    //   color: AppColors.grey3Color,
+                    // ),
                     Expanded(
                       child: InkWell(
                         onTap: () {
                           // GetStoreData.getStore.erase();
                           // Get.offAll(() => LoginPage());
+                          Get.back();
                         },
                         child: SizedBox(
                             height: 45,
                             child: Center(
                               child: TextWidget(
-                                  text: "yes".toUpperCase(),
+                                  text: "back".toUpperCase(),
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500,
                                   textSize: 14),

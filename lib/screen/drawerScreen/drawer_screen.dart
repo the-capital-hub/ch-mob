@@ -48,7 +48,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../controller/profileController/profile_controller.dart';
 import '../../utils/appcolors/app_colors.dart';
 import '../../utils/getStore/get_store.dart';
-import '../../widget/dilogue/logout.dart';
+import '../../widget/dilogue/community_details.dart';
 import '../../widget/textwidget/text_widget.dart';
 import '../connectionScreen/connection_screen.dart';
 import '../documentationScreen/documentation_screen.dart';
@@ -224,7 +224,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         //   return _buildExpansionTile(index); // For index 8
                         // } else if (index == 10) {
                         //   return _buildExpansionTile(index); // For index 9
-                         if (index == 9 || index == 10) {
+                         if (index == 10 || index == 11) {
                           return _buildExpansionTile(index);
                         } else {
                           return InkWell(
@@ -508,7 +508,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           ],
         ),
-        children: index == 9
+        children: index == 10
             ? communitySubItems.map((communitySubItemsTitle) {
                 int communitySubItemsIndex = communitySubItems.indexOf(communitySubItemsTitle);
                 return SizedBox(
