@@ -1,5 +1,7 @@
 import 'package:capitalhub_crm/screen/resourceScreen/resource_screen.dart';
+import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import '../../controller/resourceController/resource_controller.dart';
 import '../../utils/appcolors/app_colors.dart';
@@ -8,20 +10,45 @@ import '../../utils/constant/asset_constant.dart';
 import '../../widget/appbar/appbar.dart';
 import '../../widget/textWidget/text_widget.dart';
 
-class ResourceTemplate extends StatelessWidget {
+class ResourceTemplate extends StatefulWidget {
   const ResourceTemplate({super.key});
 
+  @override
+  State<ResourceTemplate> createState() => _ResourceTemplateState();
+}
+
+class _ResourceTemplateState extends State<ResourceTemplate> {
+  ResourceController allResources = Get.put(ResourceController());
+  @override
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      allResources.getAllResources().then((v) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+         
+        });
+      });
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final ResourceController resourceController = Get.put(ResourceController());
 
-    return Container(
+    return 
+    
+    Container(
       decoration: bgDec,
       child: Scaffold(
           backgroundColor: AppColors.transparent,
           appBar: HelperAppBar.appbarHelper(
               title: "", hideBack: false, autoAction: false),
-          body: SingleChildScrollView(
+          body: 
+          Obx(() => allResources.isLoading.value
+                ? Helper.pageLoading()
+                : allResources.allResourcesDetails.isEmpty
+                      ? Center(child: TextWidget(text: "No Resources Available", textSize: 16))
+                      :
+          SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -92,7 +119,7 @@ class ResourceTemplate extends StatelessWidget {
                         spacing: 15,
                         runSpacing: 15,
                         children: List<Widget>.generate(
-                            resourceController.menuTemplatesName.length,
+                            allResources.allResourcesDetails[0].resources.length,
                             (index) {
                           return InkWell(
                             onTap: () => Get.to(() => const ResourceScreen()),
@@ -106,9 +133,19 @@ class ResourceTemplate extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Image.asset(resourceController.menuTemplateIcons[index],height: 30,width: 30,),
+                                  Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                            image:  DecorationImage(
+                                image: NetworkImage(
+                                  allResources.allResourcesDetails[0].resources[index].logoUrl,
+                                ),
+                                fit: BoxFit.fill),
+                            borderRadius: BorderRadius.circular(10)),
+                      ),
                                   const SizedBox(height: 10,),
-                                  TextWidget(text: resourceController.menuTemplatesName[index],
+                                  TextWidget(text: allResources.allResourcesDetails[0].resources[index].title,
 
                                     textSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -147,6 +184,7 @@ class ResourceTemplate extends StatelessWidget {
               ],
             ),
           )),
+      )
     );
   }
 }
