@@ -1,5 +1,7 @@
 import 'package:capitalhub_crm/screen/resourceScreen/resource_screen.dart';
+
 import 'package:capitalhub_crm/utils/helper/helper.dart';
+import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
@@ -58,10 +60,10 @@ class _ResourceTemplateState extends State<ResourceTemplate> {
                     children: [
                       const TextWidget(
                         text: 'Ready - to - Use Templates',
-                        textSize: 30,
+                        textSize: 24,
                         align: TextAlign.center,
                         fontWeight: FontWeight.bold,
-                        maxLine: 1,
+                        maxLine: 2,
                       ),
                       const SizedBox(
                         height: 5,
@@ -69,7 +71,7 @@ class _ResourceTemplateState extends State<ResourceTemplate> {
                       const TextWidget(
                         text:
                             'Access to events, unlock investors database and more at 1,999/-',
-                        textSize: 18,
+                        textSize: 16,
                         align: TextAlign.center,
                         maxLine: 2,
                       ),
@@ -84,7 +86,7 @@ class _ResourceTemplateState extends State<ResourceTemplate> {
                       ),
                       const TextWidget(
                         text: 'Join Hustlers Club ?',
-                        textSize: 25,
+                        textSize: 24,
                         align: TextAlign.center,
                         fontWeight: FontWeight.bold,
                         maxLine: 1,
@@ -94,7 +96,7 @@ class _ResourceTemplateState extends State<ResourceTemplate> {
                       ),
                       const TextWidget(
                         text: 'Get ready to use templates',
-                        textSize: 18,
+                        textSize: 16,
                         align: TextAlign.center,
                         maxLine: 2,
                       ),
@@ -133,6 +135,7 @@ class _ResourceTemplateState extends State<ResourceTemplate> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+
                                   Container(
                         height: 30,
                         width: 30,
@@ -147,7 +150,8 @@ class _ResourceTemplateState extends State<ResourceTemplate> {
                                   const SizedBox(height: 10,),
                                   TextWidget(text: allResources.allResourcesDetails[0].resources[index].title,
 
-                                    textSize: 20,
+                                    textSize: 18,
+
                                     fontWeight: FontWeight.bold,
                                     maxLine: 2,
                                   ),
@@ -160,27 +164,15 @@ class _ResourceTemplateState extends State<ResourceTemplate> {
                     },
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Center(
-                  child: InkWell(
-                    onTap: () => Get.to(() => const ResourceScreen()),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
-                      decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: const TextWidget(
-                        text: 'View All',
-                        textSize: 15,
-                        maxLine: 1,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: AppButton.primaryButton(
+                    onButtonPressed: () {
+                      Get.to(() => const ResourceScreen());
+                    },
+                    title: 'View all',
                   ),
-                )
+                ),
               ],
             ),
           )),

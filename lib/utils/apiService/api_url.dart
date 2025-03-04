@@ -42,6 +42,10 @@ class ApiUrl {
   static const String onelinkSentUrl = "startup/sendOneLinkRequest";
   static const String vcsUrl = "vc/getVcById";
 
+  static const String livedealsUrl = "live_deals/get_live_deals";
+  static const String toggelDealsUrl = "live_deals/toggle_investor_to_live_deal";
+
+
   static String getNotification = "notificaton/getNotification/";
   static String getNotificationCount = "notificaton/getNotificationCount";
   static const String readNotification = "notificaton/markMessageAsRead/";

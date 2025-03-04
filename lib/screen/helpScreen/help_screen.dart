@@ -65,7 +65,7 @@ class _HelpScreenState extends State<HelpScreen> {
                                   text: titleList[index],
                                   maxLine: 2,
                                   align: TextAlign.center,
-                                  textSize: 16)
+                                  textSize: 15)
                             ],
                           ),
                         ),

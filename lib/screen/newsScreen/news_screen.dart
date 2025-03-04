@@ -91,14 +91,15 @@ class _NewsScreenState extends State<NewsScreen> {
                                 TextWidget(
                                   text:
                                       '${newsController.newsList[index].title}',
-                                  textSize: 16,
+                                  textSize: 15,
+                                  maxLine: 2,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 const SizedBox(height: 8),
                                 TextWidget(
                                     text:
                                         '${newsController.newsList[index].subtitle}',
-                                    textSize: 16,
+                                    textSize: 14,
                                     maxLine: 10,
                                     color: AppColors.whiteCard),
                                 const SizedBox(height: 8),

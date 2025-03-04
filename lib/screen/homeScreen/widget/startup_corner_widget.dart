@@ -81,7 +81,7 @@ class _AutoScrollListViewState extends State<AutoScrollListView> {
   Widget build(BuildContext context) {
     return Container(
       height: 350,
-      margin: const EdgeInsets.all(8),
+      margin: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: AppColors.blackCard,
@@ -116,7 +116,10 @@ class _AutoScrollListViewState extends State<AutoScrollListView> {
                 ),
                 const SizedBox(height: 8),
                 Expanded(
-                  child: ListView.builder(
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => const SizedBox(
+                      width: 8,
+                    ),
                     controller: _scrollController,
                     scrollDirection: Axis.horizontal,
                     itemCount: homeController.startUpNewsList.length,
@@ -128,7 +131,6 @@ class _AutoScrollListViewState extends State<AutoScrollListView> {
                           shadowColor: AppColors.white38,
                           color: AppColors.blackCard,
                           surfaceTintColor: AppColors.white12,
-                          margin: const EdgeInsets.symmetric(horizontal: 8),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
@@ -150,7 +152,7 @@ class _AutoScrollListViewState extends State<AutoScrollListView> {
                                     text:
                                         "${homeController.startUpNewsList[index].content}",
                                     textSize: 11,
-                                    maxLine: 6,
+                                    maxLine: 5,
                                     color: AppColors.grey3Color),
                                 const SizedBox(height: 6),
                                 const Spacer(),
@@ -160,7 +162,7 @@ class _AutoScrollListViewState extends State<AutoScrollListView> {
                                         .startUpNewsList[index].sourceUrl!);
                                   },
                                   child: Container(
-                                    height: 159,
+                                    height: 155,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(12),
                                         image: DecorationImage(

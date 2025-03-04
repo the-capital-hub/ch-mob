@@ -39,7 +39,7 @@ class TextWidget extends StatelessWidget {
         googleFont==null||googleFont==true?
          GoogleFonts.outfit(
             textStyle: TextStyle(
-          fontSize: textSize - 1,
+          fontSize: textSize ,
           decoration: textDecoration,
           fontWeight: fontWeight ?? FontWeight.normal,
           color: color ?? AppColors.white,

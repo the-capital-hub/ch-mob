@@ -14,6 +14,7 @@ import 'package:capitalhub_crm/screen/meetingsScreen/events_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/plans_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/priority_dm_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/webinars_screen.dart';
+import 'package:capitalhub_crm/screen/oneLinkScreen/one_link_screen.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
@@ -24,6 +25,7 @@ import 'package:get/get.dart';
 import '../../../utils/appcolors/app_colors.dart';
 import '../../../utils/getStore/get_store.dart';
 import '../../../widget/textwidget/text_widget.dart';
+import '../../liveDealsScreen/live_deal_screen.dart';
 
 class DrawerWidgetInvestor extends StatefulWidget {
   const DrawerWidgetInvestor({super.key});
@@ -39,6 +41,8 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     "Home",
     "Company",
     "Explore",
+    "Live deals",
+    "One Link",
     "Community",
     "Meetings",
     "Log Out",
@@ -59,6 +63,8 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     PngAssetPath.homeIcon,
     PngAssetPath.financeIcon,
     PngAssetPath.exploreIcon,
+    PngAssetPath.exploreIcon,
+    PngAssetPath.onelinkIcon,
     PngAssetPath.communityIcon,
     PngAssetPath.meetingIcon,
     PngAssetPath.logoutIcon,
@@ -67,6 +73,8 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     const LandingScreen(),
     const CompanyInvScreen(),
     const ExploreScreen(),
+    const LiveDealScreen(),
+    const OneLinkScreeen(),
     const CommunityHomeScreen(),
     const EventsScreen(),
     const LogoutScreen(),
@@ -84,7 +92,7 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     const PriorityDMScreen()
   ];
   bool isExpanded = false;
-  List<bool> isExpandedList = List.generate(6, (index) => false);
+  List<bool> isExpandedList = List.generate(7, (index) => false);
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -162,7 +170,7 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
                         },
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
-                          if (index == 3 || index == 4) {
+                          if (index == 5 || index == 6) {
                             return _buildExpansionTile(index);
                           } else {
                             return InkWell(

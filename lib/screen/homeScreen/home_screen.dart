@@ -263,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               'Join Hustlers Club Now',
                                               style: TextStyle(
                                                   color: Colors.white,
-                                                  fontSize: 20,
+                                                  fontSize: 18,
                                                   fontWeight: FontWeight.bold),
                                             )
                                           ],
@@ -507,7 +507,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
-                        const SizedBox(height: 10),
+                        if (homeController
+                            .postList[index].pollOptions!.isNotEmpty)
+                          const SizedBox(height: 10),
                         if (homeController
                             .postList[index].pollOptions!.isNotEmpty)
                           PollWidget(
@@ -625,51 +627,52 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-                  Divider(height: 0, color: AppColors.white38, thickness: 0.5),
-                  if (homeController.postList[index].likes!.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 12,
-                            backgroundColor: AppColors.white12,
-                            child: const Icon(
-                              Icons.favorite,
-                              color: AppColors.redColor,
-                              size: 15,
-                            ),
-                          ),
-                          // const SizedBox(width: 4),
-                          // CircleAvatar(
-                          //   radius: 12,
-                          //   backgroundColor:
-                          //       AppColors.white12,
-                          //   child: Icon(
-                          //     CupertinoIcons
-                          //         .chat_bubble_text_fill,
-                          //     color: AppColors.whiteCard,
-                          //     size: 15,
-                          //   ),
-                          // ),
-                          const SizedBox(width: 8),
-                          if (homeController.postList[index].likes!.isNotEmpty)
-                            Expanded(
-                              child: TextWidget(
-                                text:
-                                    "${homeController.postList[index].likes!.first.firstName} and Many Others",
-                                textSize: 11,
-                                maxLine: 2,
-                              ),
-                            ),
-                          if (homeController.postList[index].comments!.isNotEmpty)
-                            TextWidget(
-                                text:
-                                    "${homeController.postList[index].comments!.length} Comments",
-                                textSize: 10)
-                        ],
-                      ),
-                    ),
+                  // Divider(height: 0, color: AppColors.white38, thickness: 0.5),
+                  // if (homeController.postList[index].likes!.isNotEmpty)
+                  //   Padding(
+                  //     padding: const EdgeInsets.all(10.0),
+                  //     child: Row(
+                  //       children: [
+                  //         CircleAvatar(
+                  //           radius: 12,
+                  //           backgroundColor: AppColors.white12,
+                  //           child: const Icon(
+                  //             Icons.favorite,
+                  //             color: AppColors.redColor,
+                  //             size: 15,
+                  //           ),
+                  //         ),
+                  //         // const SizedBox(width: 4),
+                  //         // CircleAvatar(
+                  //         //   radius: 12,
+                  //         //   backgroundColor:
+                  //         //       AppColors.white12,
+                  //         //   child: Icon(
+                  //         //     CupertinoIcons
+                  //         //         .chat_bubble_text_fill,
+                  //         //     color: AppColors.whiteCard,
+                  //         //     size: 15,
+                  //         //   ),
+                  //         // ),
+                  //         const SizedBox(width: 8),
+                  //         if (homeController.postList[index].likes!.isNotEmpty)
+                  //           Expanded(
+                  //             child: TextWidget(
+                  //               text:
+                  //                   "${homeController.postList[index].likes!.first.firstName} and Many Others",
+                  //               textSize: 11,
+                  //               maxLine: 2,
+                  //             ),
+                  //           ),
+                  //         if (homeController.postList[index].comments!.isNotEmpty)
+                  //           TextWidget(
+                  //               text:
+                  //                   "${homeController.postList[index].comments!.length} Comments",
+                  //               textSize: 10)
+                  //       ],
+                  //     ),
+                  //   ),
+
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: const BoxDecoration(
@@ -678,30 +681,39 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             bottomRight: Radius.circular(12)),
                         color: Color(0xff54545433)),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        InkWell(
-                          splashColor: AppColors.transparent,
-                          onTap: () {
-                            homeController.postList[index].isLiked =
-                                !homeController.postList[index].isLiked!;
-                            homeController.likeUnlike(
-                                homeController.postList[index].postId);
+                        Row(
+                          children: [
+                            InkWell(
+                              splashColor: AppColors.transparent,
+                              onTap: () {
+                                homeController.postList[index].isLiked =
+                                    !homeController.postList[index].isLiked!;
+                                homeController.likeUnlike(
+                                    homeController.postList[index].postId);
 
-                            setState(() {});
-                          },
-                          child: Icon(
-                            homeController.postList[index].isLiked!
-                                ? Icons.favorite
-                                : Icons.favorite_border_outlined,
-                            color: homeController.postList[index].isLiked!
-                                ? AppColors.redColor
-                                : AppColors.whiteCard,
-                            size: 22,
-                          ),
+                                setState(() {});
+                              },
+                              child: Icon(
+                                homeController.postList[index].isLiked!
+                                    ? Icons.favorite
+                                    : Icons.favorite_border_outlined,
+                                color: homeController.postList[index].isLiked!
+                                    ? AppColors.redColor
+                                    : AppColors.whiteCard,
+                                size: 22,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            if (homeController
+                                .postList[index].likes!.isNotEmpty)
+                              TextWidget(
+                                  text:
+                                      "${homeController.postList[index].likes!.length}",
+                                  textSize: 13),
+                          ],
                         ),
-                        const SizedBox(width: 4),
-                        const TextWidget(text: "Like", textSize: 13),
-                        const SizedBox(width: 10),
                         InkWell(
                           onTap: () {
                             commentBottomSheet(index);
@@ -714,11 +726,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 size: 21,
                               ),
                               const SizedBox(width: 4),
-                              const TextWidget(text: "Comments", textSize: 13),
+                              if (homeController
+                                  .postList[index].comments!.isNotEmpty)
+                                TextWidget(
+                                    text:
+                                        "${homeController.postList[index].comments!.length}",
+                                    textSize: 13),
                             ],
                           ),
                         ),
-                        const Spacer(),
                         InkWell(
                           onTap: () {
                             sharePostPopup(context,
@@ -730,7 +746,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             size: 22,
                           ),
                         ),
-                        const SizedBox(width: 8),
                         InkWell(
                           onTap: () {
                             Get.to(CreatePostScreen(
@@ -746,7 +761,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 8),
                         InkWell(
                           onTap: () {
                             if (homeController.postList[index].isSaved!) {

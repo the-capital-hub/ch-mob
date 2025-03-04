@@ -29,7 +29,7 @@ class ProfileController extends GetxController {
       var data = jsonDecode(response.body);
       if (data['status'] == true) {
         ProfileModel profileModel = ProfileModel.fromJson(data);
-        profileData = profileModel.data!;
+        profileData = profileModel.data;
         firstNameController.text = profileData.user!.firstName;
         lastNameController.text = profileData.user!.lastName;
         userNameController.text = profileData.user!.userName;

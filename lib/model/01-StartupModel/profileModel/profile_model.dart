@@ -425,29 +425,28 @@ class User {
   CompanyData companyData;
   TopVoice topVoice;
 
-  User({
-    required this.profilePicture,
-    required this.firstName,
-    required this.lastName,
-    required this.userName,
-    required this.designation,
-    required this.companyName,
-    required this.location,
-    required this.bio,
-    this.education,
-    this.experience,
-    required this.connectionsCount,
-    required this.followersCount,
-    required this.isSubscribed,
-    required this.recentConnections,
-    required this.milestoneProfile,
-    required this.milestoneCompany,
-    required this.milestoneOnelink,
-    required this.milestoneDocuments,
-    required this.milestonePosts,
-    required this.companyData,
-    required this.topVoice
-  });
+  User(
+      {required this.profilePicture,
+      required this.firstName,
+      required this.lastName,
+      required this.userName,
+      required this.designation,
+      required this.companyName,
+      required this.location,
+      required this.bio,
+      this.education,
+      this.experience,
+      required this.connectionsCount,
+      required this.followersCount,
+      required this.isSubscribed,
+      required this.recentConnections,
+      required this.milestoneProfile,
+      required this.milestoneCompany,
+      required this.milestoneOnelink,
+      required this.milestoneDocuments,
+      required this.milestonePosts,
+      required this.companyData,
+      required this.topVoice});
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         profilePicture: json["profilePicture"],
@@ -669,9 +668,10 @@ class RecentConnection {
         "lastName": lastName,
         "profilePicture": profilePicture,
         "designation": designation,
-      };     
+      };
 }
-class TopVoice{
+
+class TopVoice {
   String? description;
   double? postsCount;
 
@@ -680,8 +680,7 @@ class TopVoice{
     this.postsCount,
   });
 
-  factory TopVoice.fromJson(Map<String, dynamic> json) =>
-      TopVoice(
+  factory TopVoice.fromJson(Map<String, dynamic> json) => TopVoice(
         description: json["description"],
         postsCount: json["postsCount"],
       );
@@ -689,5 +688,5 @@ class TopVoice{
   Map<String, dynamic> toJson() => {
         "description": description,
         "postsCount": postsCount,
-      };     
+      };
 }

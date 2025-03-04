@@ -71,7 +71,7 @@ class _ResourceScreenState extends State<ResourceScreen> {
                           ),
                           const TextWidget(
                             text: 'Welcome to the Hustlers Club',
-                            textSize: 25,
+                            textSize: 22,
                             align: TextAlign.center,
                             fontWeight: FontWeight.bold,
                             maxLine: 2,
@@ -82,7 +82,7 @@ class _ResourceScreenState extends State<ResourceScreen> {
                           const TextWidget(
                             text:
                                 'Hustlers Club gives you all the tools and support you need to take your startup to the next level.',
-                            textSize: 18,
+                            textSize: 16,
                             align: TextAlign.center,
                             maxLine: 4,
                           ),
@@ -110,10 +110,11 @@ class _ResourceScreenState extends State<ResourceScreen> {
                         children: [
                           TextWidget(text: "Hey ${GetStoreData.getStore.read('name')} !", textSize: 25, fontWeight: FontWeight.bold,),
  SizedBox(height: 16),
+
                       TextWidget(
                         text:
                             "Access essential playbooks for your business growth, convering GTM strategy, sales, marketing, pitch deck creation, and financial modeling. Designed to guide you with expert insights and proven strategies.",
-                        textSize: 16,
+                        textSize: 14,
                         maxLine: 5,
                         align: TextAlign.center,
                       ),
@@ -236,10 +237,12 @@ const TextWidget(
                                   const SizedBox(height: 10),
                                   TextWidget(
                                     text:
-                                        allResources.allResourcesDetails[0].resources[index].title,
-                                    textSize: 20,
+
+                                        resourceController.menuItemsName[index],
+                                    textSize: 16,
+
                                     fontWeight: FontWeight.bold,
-                                    maxLine: 2,
+                                    maxLine: 3,
                                   ),
                                 ],
                               ),
