@@ -159,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int tapindex = -1;
   @override
   Widget build(BuildContext context) {
-    final ResourceController resourceController = Get.put(ResourceController());
+    // final ResourceController resourceController = Get.put(ResourceController());
     return Container(
         decoration: bgDec,
         child: Scaffold(

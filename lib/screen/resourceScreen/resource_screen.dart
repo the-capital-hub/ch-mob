@@ -1,9 +1,12 @@
 import 'package:capitalhub_crm/controller/resourceController/resource_controller.dart';
 import 'package:capitalhub_crm/screen/resourceScreen/resource_details_screen.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
+import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/textWidget/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 
 import '../../utils/appcolors/app_colors.dart';
@@ -11,21 +14,48 @@ import '../../utils/constant/app_var.dart';
 import '../../widget/appbar/appbar.dart';
 import '../drawerScreen/drawer_screen.dart';
 
-class ResourceScreen extends StatelessWidget {
+class ResourceScreen extends StatefulWidget {
   const ResourceScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final ResourceController resourceController = Get.find();
+  State<ResourceScreen> createState() => _ResourceScreenState();
+}
 
-    return Container(
+class _ResourceScreenState extends State<ResourceScreen> {
+  ResourceController allResources = Get.put(ResourceController());
+  @override
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      allResources.getAllResources().then((v) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+         
+        });
+      });
+    });
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    
+   
+
+    return 
+    
+          
+    Container(
       decoration: bgDec,
       child: Scaffold(
           backgroundColor: AppColors.transparent,
           drawer: const DrawerWidget(),
           appBar: HelperAppBar.appbarHelper(
               title: "Resources", hideBack: true, autoAction: false),
-          body: SingleChildScrollView(
+          body: 
+          Obx(() => allResources.isLoading.value
+                ? Helper.pageLoading()
+                : allResources.allResourcesDetails.isEmpty
+                      ? Center(child: TextWidget(text: "No Resources Available", textSize: 16))
+                      :
+          SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -33,6 +63,7 @@ class ResourceScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
+                      if(allResources.allResourcesDetails[0].isSubscribed)
                       Column(
                         children: [
                           Image.asset(
@@ -43,7 +74,7 @@ class ResourceScreen extends StatelessWidget {
                             textSize: 22,
                             align: TextAlign.center,
                             fontWeight: FontWeight.bold,
-                            maxLine: 1,
+                            maxLine: 2,
                           ),
                           const SizedBox(
                             height: 20,
@@ -53,7 +84,7 @@ class ResourceScreen extends StatelessWidget {
                                 'Hustlers Club gives you all the tools and support you need to take your startup to the next level.',
                             textSize: 16,
                             align: TextAlign.center,
-                            maxLine: 3,
+                            maxLine: 4,
                           ),
                           const SizedBox(
                             height: 10,
@@ -71,13 +102,15 @@ class ResourceScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             maxLine: 1,
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
+                          
                         ],
                       ),
-                      TextWidget(text: "Hey Nitin!", textSize: 22, fontWeight: FontWeight.bold,),
-                      SizedBox(height: 16),
+                      if(!allResources.allResourcesDetails[0].isSubscribed)
+                      Column(
+                        children: [
+                          TextWidget(text: "Hey ${GetStoreData.getStore.read('name')} !", textSize: 25, fontWeight: FontWeight.bold,),
+ SizedBox(height: 16),
+
                       TextWidget(
                         text:
                             "Access essential playbooks for your business growth, convering GTM strategy, sales, marketing, pitch deck creation, and financial modeling. Designed to guide you with expert insights and proven strategies.",
@@ -86,6 +119,11 @@ class ResourceScreen extends StatelessWidget {
                         align: TextAlign.center,
                       ),
                       SizedBox(height: 16),
+                      
+                        ],
+                      ),
+                     
+                      if(!allResources.allResourcesDetails[0].isSubscribed)
                       Card(
                         margin: EdgeInsets.zero,
                         color: AppColors.blackCard,
@@ -114,7 +152,7 @@ class ResourceScreen extends StatelessWidget {
                                   onButtonPressed: () {},
                                   title: "Get Premium",
                                   borderRadius: 10,
-                                  borderColor: AppColors.primary)
+                                  borderColor: AppColors.primary),
                             ],
                           ),
                         ),
@@ -122,6 +160,17 @@ class ResourceScreen extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
+    if(!allResources.allResourcesDetails[0].isSubscribed)                  
+const TextWidget(
+                            text: 'Access Now (Locked)',
+                            textSize: 25,
+                            align: TextAlign.center,
+                            fontWeight: FontWeight.bold,
+                            maxLine: 1,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
                     ],
                   ),
                 ),
@@ -134,10 +183,13 @@ class ResourceScreen extends StatelessWidget {
                         spacing: 15,
                         runSpacing: 15,
                         children: List<Widget>.generate(
-                            resourceController.menuItemsName.length, (index) {
+                            allResources.allResourcesDetails[0].resources.length, (index) {
                           return InkWell(
                             onTap: () {
-                              Get.to(() => ResourceDetailsScreen(index: index));
+                              
+                              allResources.resourceId = allResources.allResourcesDetails[0].resources[index].resourceId;
+                              if(allResources.allResourcesDetails[0].isSubscribed)
+                              Get.to(() => const ResourceDetailsScreen());
                             },
                             child: Container(
                               padding: const EdgeInsets.all(10),
@@ -155,16 +207,23 @@ class ResourceScreen extends StatelessWidget {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Image.asset(
-                                        resourceController.menuItemsIcons[index],
-                                        height: 30,
-                                        width: 30,
-                                      ),
-                                      Card(
+                                      Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                            image:  DecorationImage(
+                                image: NetworkImage(
+                                  allResources.allResourcesDetails[0].resources[index].logoUrl,
+                                ),
+                                fit: BoxFit.fill),
+                            borderRadius: BorderRadius.circular(10)),
+                      ),
+                                      if(!allResources.allResourcesDetails[0].isSubscribed)
+                                      const Card(
                                         
                                         color: AppColors.brown,
                                         child: Padding(
-                                          padding: const EdgeInsets.all(6.0),
+                                          padding:  EdgeInsets.all(6.0),
                                           child: Row(
                                             children: [
                                               TextWidget(text: "locked", textSize: 10),
@@ -178,8 +237,10 @@ class ResourceScreen extends StatelessWidget {
                                   const SizedBox(height: 10),
                                   TextWidget(
                                     text:
+
                                         resourceController.menuItemsName[index],
                                     textSize: 16,
+
                                     fontWeight: FontWeight.bold,
                                     maxLine: 3,
                                   ),
@@ -195,6 +256,7 @@ class ResourceScreen extends StatelessWidget {
               ],
             ),
           )),
+    )
     );
   }
 }

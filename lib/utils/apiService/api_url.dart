@@ -162,8 +162,8 @@ class ApiUrl {
   static const String unsaveCommunityPost = "api/posts/unsaveCommunityPost";
   static const String voteCommunityPost = "api/posts/voteCommunityPost";
 
-
-
+  static const String getAllResources = "resource/getAll";
+  static const String getResourceById = "resource/getById/";
 
   static const String searchCompanyInv = "investor/searchInvestors/";
   static const String addCompanyUserInv = "users/addUserAsInvestor";
