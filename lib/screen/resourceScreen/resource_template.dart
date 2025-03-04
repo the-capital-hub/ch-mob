@@ -25,158 +25,161 @@ class _ResourceTemplateState extends State<ResourceTemplate> {
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       allResources.getAllResources().then((v) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-         
-        });
+        WidgetsBinding.instance.addPostFrameCallback((_) {});
       });
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final ResourceController resourceController = Get.put(ResourceController());
 
-    return 
-    
-    Container(
-      decoration: bgDec,
-      child: Scaffold(
+    return Container(
+        decoration: bgDec,
+        child: Scaffold(
           backgroundColor: AppColors.transparent,
           appBar: HelperAppBar.appbarHelper(
               title: "", hideBack: false, autoAction: false),
-          body: 
-          Obx(() => allResources.isLoading.value
-                ? Helper.pageLoading()
-                : allResources.allResourcesDetails.isEmpty
-                      ? Center(child: TextWidget(text: "No Resources Available", textSize: 16))
-                      :
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      const TextWidget(
-                        text: 'Ready - to - Use Templates',
-                        textSize: 24,
-                        align: TextAlign.center,
-                        fontWeight: FontWeight.bold,
-                        maxLine: 2,
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      const TextWidget(
-                        text:
-                            'Access to events, unlock investors database and more at 1,999/-',
-                        textSize: 16,
-                        align: TextAlign.center,
-                        maxLine: 2,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Divider(
-                        color: Colors.white12,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const TextWidget(
-                        text: 'Join Hustlers Club ?',
-                        textSize: 24,
-                        align: TextAlign.center,
-                        fontWeight: FontWeight.bold,
-                        maxLine: 1,
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      const TextWidget(
-                        text: 'Get ready to use templates',
-                        textSize: 16,
-                        align: TextAlign.center,
-                        maxLine: 2,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Image.asset(
-                        PngAssetPath.foxCurveImg,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: LayoutBuilder(
-                    builder:
-                        (BuildContext context, BoxConstraints constraints) {
-                      return Wrap(
-                        spacing: 15,
-                        runSpacing: 15,
-                        children: List<Widget>.generate(
-                            allResources.allResourcesDetails[0].resources.length,
-                            (index) {
-                          return InkWell(
-                            onTap: () => Get.to(() => const ResourceScreen()),
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              height: 120,
-                              width: ((constraints.maxWidth / 2) - (15 / 2)),
-                              decoration: BoxDecoration(
-                                  color: Colors.white12,
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-
-                                  Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                            image:  DecorationImage(
-                                image: NetworkImage(
-                                  allResources.allResourcesDetails[0].resources[index].logoUrl,
+          body: Obx(() => allResources.isLoading.value
+              ? Helper.pageLoading()
+              : resourceController.allResources.resources?.isEmpty ?? true
+                  ? const Center(
+                      child: TextWidget(
+                          text: "No Resources Available", textSize: 16))
+                  : SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              children: [
+                                const TextWidget(
+                                  text: 'Ready - to - Use Templates',
+                                  textSize: 24,
+                                  align: TextAlign.center,
+                                  fontWeight: FontWeight.bold,
+                                  maxLine: 2,
                                 ),
-                                fit: BoxFit.fill),
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                                  const SizedBox(height: 10,),
-                                  TextWidget(text: allResources.allResourcesDetails[0].resources[index].title,
-
-                                    textSize: 18,
-
-                                    fontWeight: FontWeight.bold,
-                                    maxLine: 2,
-                                  ),
-                                ],
-                              ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                const TextWidget(
+                                  text:
+                                      'Access to events, unlock investors database and more at 1,999/-',
+                                  textSize: 16,
+                                  align: TextAlign.center,
+                                  maxLine: 2,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const Divider(
+                                  color: Colors.white12,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const TextWidget(
+                                  text: 'Join Hustlers Club ?',
+                                  textSize: 24,
+                                  align: TextAlign.center,
+                                  fontWeight: FontWeight.bold,
+                                  maxLine: 1,
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                const TextWidget(
+                                  text: 'Get ready to use templates',
+                                  textSize: 16,
+                                  align: TextAlign.center,
+                                  maxLine: 2,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Image.asset(
+                                  PngAssetPath.foxCurveImg,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
                             ),
-                          );
-                        }),
-                      );
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: AppButton.primaryButton(
-                    onButtonPressed: () {
-                      Get.to(() => const ResourceScreen());
-                    },
-                    title: 'View all',
-                  ),
-                ),
-              ],
-            ),
-          )),
-      )
-    );
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: LayoutBuilder(
+                              builder: (BuildContext context,
+                                  BoxConstraints constraints) {
+                                return Wrap(
+                                  spacing: 15,
+                                  runSpacing: 15,
+                                  children: List<Widget>.generate(
+                                      resourceController.allResources.resources!
+                                          .length, (index) {
+                                    return InkWell(
+                                      onTap: () =>
+                                          Get.to(() => const ResourceScreen()),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(10),
+                                        height: 120,
+                                        width: ((constraints.maxWidth / 2) -
+                                            (15 / 2)),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white12,
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height: 30,
+                                              width: 30,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                        "${resourceController.allResources.resources![index].logoUrl}",
+                                                      ),
+                                                      fit: BoxFit.fill),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            TextWidget(
+                                              text:
+                                                  "${resourceController.allResources.resources![index].title}",
+                                              textSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              maxLine: 2,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                );
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: AppButton.primaryButton(
+                              onButtonPressed: () {
+                                Get.to(() => const ResourceScreen());
+                              },
+                              title: 'View all',
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
+        ));
   }
 }

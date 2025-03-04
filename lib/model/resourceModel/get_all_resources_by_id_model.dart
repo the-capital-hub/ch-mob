@@ -9,14 +9,14 @@ GetAllResourcesByIdModel getAllResourcesByIdModelFromJson(String str) => GetAllR
 String getAllResourcesByIdModelToJson(GetAllResourcesByIdModel data) => json.encode(data.toJson());
 
 class GetAllResourcesByIdModel {
-    bool status;
-    String message;
-    ResourceById data;
+    bool? status;
+    String? message;
+    ResourceById? data;
 
     GetAllResourcesByIdModel({
-        required this.status,
-        required this.message,
-        required this.data,
+        this.status,
+        this.message,
+        this.data,
     });
 
     factory GetAllResourcesByIdModel.fromJson(Map<String, dynamic> json) => GetAllResourcesByIdModel(
@@ -28,23 +28,23 @@ class GetAllResourcesByIdModel {
     Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
-        "data": data.toJson(),
+        "data": data!.toJson(),
     };
 }
 
 class ResourceById {
-    String resourceId;
-    String title;
-    String logoUrl;
-    String description;
-    List<FileElement> files;
+    String? resourceId;
+    String? title;
+    String? logoUrl;
+    String? description;
+    List<FileElement>? files;
 
     ResourceById({
-        required this.resourceId,
-        required this.title,
-        required this.logoUrl,
-        required this.description,
-        required this.files,
+        this.resourceId,
+        this.title,
+        this.logoUrl,
+        this.description,
+        this.files,
     });
 
     factory ResourceById.fromJson(Map<String, dynamic> json) => ResourceById(
@@ -60,21 +60,21 @@ class ResourceById {
         "title": title,
         "logoUrl": logoUrl,
         "description": description,
-        "files": List<dynamic>.from(files.map((x) => x.toJson())),
+        "files": List<dynamic>.from(files!.map((x) => x.toJson())),
     };
 }
 
 class FileElement {
-    String name;
-    String url;
-    String extension;
-    String id;
+    String? name;
+    String? url;
+    String? extension;
+    String? id;
 
     FileElement({
-        required this.name,
-        required this.url,
-        required this.extension,
-        required this.id,
+        this.name,
+        this.url,
+        this.extension,
+        this.id,
     });
 
     factory FileElement.fromJson(Map<String, dynamic> json) => FileElement(
