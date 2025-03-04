@@ -50,62 +50,64 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
           backgroundColor: AppColors.transparent,
           appBar: HelperAppBar.appbarHelper(
               title: "Documentation", autoAction: true, hideBack: true),
-          body:  Column(
-                  children: [
-                    ListView.builder(
-                      itemCount: 4,
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, int index) {
-                        return AnimationConfiguration.staggeredList(
-                            position: index,
-                            delay: const Duration(milliseconds: 100),
-                            duration: const Duration(milliseconds: 375),
-                            child: SlideAnimation(
-                                horizontalOffset: 1000,
-                                verticalOffset: 50.0,
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 8),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                          color: AppColors.white38,
-                                          width: 0.5)),
-                                  child: ListTile(
-                                      onTap: () {
-                                        Get.to(() => SelectedDocumentScreen(
-                                              title: title[index],
-                                            ));
-                                      },
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              horizontal: 8, vertical: 2),
-                                      leading: Card(
-                                        color: bgcolor[index],
-                                        surfaceTintColor: bgcolor[index],
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Image.asset(
-                                            PngAssetPath.documentIcon,
-                                            height: 22,
-                                          ),
-                                        ),
-                                      ),
-                                      horizontalTitleGap: 8,
-                                      title: TextWidget(
-                                          text: title[index], textSize: 15),
-                                      trailing: AppButton.primaryButton(
-                                          onButtonPressed: () {},
-                                          title: "Upload",
-                                          width: 81,
-                                          height: 25,
-                                          bgColor: AppColors.blackCard,
-                                          fontSize: 11)),
-                                )));
-                      },
-                    ),
-                  ],
-                ),
+          body: Column(
+            children: [
+              ListView.builder(
+                itemCount: 4,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return AnimationConfiguration.staggeredList(
+                      position: index,
+                      delay: const Duration(milliseconds: 100),
+                      duration: const Duration(milliseconds: 375),
+                      child: SlideAnimation(
+                          horizontalOffset: 1000,
+                          verticalOffset: 50.0,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 8),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    color: AppColors.white38, width: 0.5)),
+                            child: ListTile(
+                                onTap: () {
+                                  Get.to(() => SelectedDocumentScreen(
+                                        title: title[index],
+                                      ));
+                                },
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 2),
+                                leading: Card(
+                                  color: bgcolor[index],
+                                  surfaceTintColor: bgcolor[index],
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.asset(
+                                      PngAssetPath.documentIcon,
+                                      height: 22,
+                                    ),
+                                  ),
+                                ),
+                                horizontalTitleGap: 8,
+                                title: TextWidget(
+                                    text: title[index], textSize: 15),
+                                trailing: AppButton.primaryButton(
+                                    onButtonPressed: () {
+                                      Get.to(() => SelectedDocumentScreen(
+                                            title: title[index],
+                                          ));
+                                    },
+                                    title: "Upload",
+                                    width: 85,
+                                    height: 25,
+                                    bgColor: AppColors.blackCard,
+                                    fontSize: 11)),
+                          )));
+                },
+              ),
+            ],
+          ),
         ));
   }
 }

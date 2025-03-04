@@ -38,14 +38,20 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildFilterButton('Last 7 days'),
-                    _buildFilterButton('Last 17 days'),
-                    _buildFilterButton('1 month'),
-                    _buildFilterButton('1 year'),
-                  ],
+                SizedBox(
+                  height: 40,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      _buildFilterButton('Last 7 days'),
+                      const SizedBox(width: 8),
+                      _buildFilterButton('Last 17 days'),
+                      const SizedBox(width: 8),
+                      _buildFilterButton('1 month'),
+                      const SizedBox(width: 8),
+                      _buildFilterButton('1 year'),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Row(
@@ -88,7 +94,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
       ),
       child: TextWidget(
         text: label,
-        textSize: 10,
+        textSize: 12,
       ),
     );
   }
@@ -96,7 +102,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
   Widget _buildAnalyticsCard(String count, String label, IconData icon) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: AppColors.white12,
           borderRadius: BorderRadius.circular(8),

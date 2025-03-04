@@ -32,7 +32,7 @@ class _CommunitiesCornerWidgetState extends State<CommunitiesCornerWidget> {
   Widget build(BuildContext context) {
     return Container(
       height: 350,
-      margin: const EdgeInsets.all(8),
+      margin: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: AppColors.blackCard,
@@ -41,65 +41,64 @@ class _CommunitiesCornerWidgetState extends State<CommunitiesCornerWidget> {
       child: homeController.isLoading.value
           ? Helper.loader(context)
           : Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(4.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const TextWidget(text: "Communities Corner", textSize: 20),
+                  const TextWidget(text: "Communities Corner", textSize: 16),
                   const SizedBox(
-                    height: 16,
+                    height: 8,
                   ),
                   Expanded(
-                    child: ListView.builder(
+                    child: ListView.separated(
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(width: 12),
                         scrollDirection: Axis.horizontal,
                         itemCount: homeController.startUpNewsList.length,
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 12),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 180,
-                                  width: 250,
-                                  decoration: BoxDecoration(
-                                    image: const DecorationImage(
-                                      image: NetworkImage(
-                                        "https://res.cloudinary.com/drjt9guif/image/upload/v1739605439/TheCapitalHub/posts/images/k3eekniyiqkswisifupe.webp",
-                                      ),
-                                      fit: BoxFit.fill,
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 180,
+                                width: 250,
+                                decoration: BoxDecoration(
+                                  image: const DecorationImage(
+                                    image: NetworkImage(
+                                      "https://res.cloudinary.com/drjt9guif/image/upload/v1739605439/TheCapitalHub/posts/images/k3eekniyiqkswisifupe.webp",
                                     ),
-                                    borderRadius: BorderRadius.circular(10),
+                                    fit: BoxFit.fill,
                                   ),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                const SizedBox(height: 12),
-                                const TextWidget(
-                                  text: "Hustler's Club",
-                                  textSize: 16,
-                                  fontWeight: FontWeight.w500,
+                              ),
+                              const SizedBox(height: 12),
+                              const TextWidget(
+                                text: "Hustler's Club",
+                                textSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              const SizedBox(height: 12),
+                              const TextWidget(
+                                  text: "Join our vibrant community!",
+                                  textSize: 14),
+                              const SizedBox(height: 12),
+                              Container(
+                                width: 250,
+                                child: const Row(
+                                  children: [
+                                    TextWidget(
+                                        text: "17 Members", textSize: 14),
+                                    Spacer(),
+                                    TextWidget(
+                                      text: "Free to Join",
+                                      textSize: 12,
+                                      color: AppColors.primary,
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(height: 12),
-                                const TextWidget(
-                                    text: "Join our vibrant community!",
-                                    textSize: 14),
-                                const SizedBox(height: 12),
-                                Container(
-                                  width: 250,
-                                  child: const Row(
-                                    children: [
-                                      TextWidget(
-                                          text: "17 Members", textSize: 14),
-                                      Spacer(),
-                                      TextWidget(
-                                        text: "Free to Join",
-                                        textSize: 14,
-                                        color: AppColors.primary,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           );
                         }),
                   ),
