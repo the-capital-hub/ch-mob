@@ -9,14 +9,14 @@ GetAllResourcesModel getAllResourcesModelFromJson(String str) => GetAllResources
 String getAllResourcesModelToJson(GetAllResourcesModel data) => json.encode(data.toJson());
 
 class GetAllResourcesModel {
-    bool status;
-    String message;
-    AllResources data;
+    bool? status;
+    String? message;
+    AllResources? data;
 
     GetAllResourcesModel({
-        required this.status,
-        required this.message,
-        required this.data,
+        this.status,
+        this.message,
+        this.data,
     });
 
     factory GetAllResourcesModel.fromJson(Map<String, dynamic> json) => GetAllResourcesModel(
@@ -28,17 +28,17 @@ class GetAllResourcesModel {
     Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
-        "data": data.toJson(),
+        "data": data!.toJson(),
     };
 }
 
 class AllResources {
-    bool isSubscribed;
-    List<Resource> resources;
+    bool? isSubscribed;
+    List<Resource>? resources;
 
     AllResources({
-        required this.isSubscribed,
-        required this.resources,
+        this.isSubscribed,
+        this.resources,
     });
 
     factory AllResources.fromJson(Map<String, dynamic> json) => AllResources(
@@ -48,19 +48,19 @@ class AllResources {
 
     Map<String, dynamic> toJson() => {
         "isSubscribed": isSubscribed,
-        "resources": List<dynamic>.from(resources.map((x) => x.toJson())),
+        "resources": List<dynamic>.from(resources!.map((x) => x.toJson())),
     };
 }
 
 class Resource {
-    String resourceId;
-    String title;
-    String logoUrl;
+    String? resourceId;
+    String? title;
+    String? logoUrl;
 
     Resource({
-        required this.resourceId,
-        required this.title,
-        required this.logoUrl,
+        this.resourceId,
+        this.title,
+        this.logoUrl,
     });
 
     factory Resource.fromJson(Map<String, dynamic> json) => Resource(

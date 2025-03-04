@@ -5,79 +5,57 @@ import 'package:capitalhub_crm/model/resourceModel/get_all_resources_by_id_model
 import 'package:capitalhub_crm/model/resourceModel/get_all_resources_model.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
-import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:get/get.dart';
 
-class ResourceController extends GetxController{
-String resourceId = "";
-var isLoading = false.obs;
+class ResourceController extends GetxController {
+  String resourceId = "";
+  var isLoading = false.obs;
 
-  final List<String> menuTemplatesName=['GTM Strategy','Sales & Marketing Plans', 'Pitch Deck','Financial Modeling'];
-
-
-  final List<String> menuTemplateIcons=[PngAssetPath.gtmStrategyImg,PngAssetPath.salesImg,
-    PngAssetPath.pickDeckImg, PngAssetPath.financialImg
-  ];
-
-  final List<String> menuItemsName=['Sales Playbook','Marketing Playbook',
-    'Go-to-Market Strategy','Pitch Deck Playbook','Financial Modeling Playbook'];
-
-  final List<String> menuItemsIcons=[PngAssetPath.salesImg,PngAssetPath.marketingImg,PngAssetPath.gtmStrategyImg,
-    PngAssetPath.pickDeckImg,PngAssetPath.financialImg
-  ];
-RxList<AllResources> allResourcesDetails = <AllResources>[].obs;
+  AllResources allResources = AllResources();
   Future<void> getAllResources() async {
-    
-  try {
-    isLoading.value = true; // Set loading state to true
-   
-    
-    var response = await ApiBase.getRequest(extendedURL: ApiUrl.getAllResources);
-    log(response.body);
-    
-    var data = json.decode(response.body);
+    try {
+      isLoading.value = true;
 
-    if (data["status"]) {
-      
-      GetAllResourcesModel allResourcesModel = GetAllResourcesModel.fromJson(data);
+      var response =
+          await ApiBase.getRequest(extendedURL: ApiUrl.getAllResources);
+      log(response.body);
 
-      
-      allResourcesDetails.assignAll([allResourcesModel.data]); // Adding events to the list
-     
-    } 
-  } catch (e) {
-    log(" $e");
-    // HelperSnackBar.snackBar("Error", "An error occurred while fetching events");
-  } finally {
-    isLoading.value = false; // Set loading state to false after request
+      var data = json.decode(response.body);
+
+      if (data["status"]) {
+        GetAllResourcesModel allResourcesModel =
+            GetAllResourcesModel.fromJson(data);
+        allResources = allResourcesModel.data!;
+      }
+    } catch (e) {
+      log("$e");
+    } finally {
+      isLoading.value = false;
+    }
   }
-}
 
-RxList<ResourceById> resourceByIdDetails = <ResourceById>[].obs;
+  ResourceById resourceById = ResourceById();
+
   Future<void> getAllResourcesById() async {
-   
-  try {
-    isLoading.value = true; // Set loading state to true
-   
-    
-    var response = await ApiBase.getRequest(extendedURL: ApiUrl.getResourceById+resourceId);
-    log(response.body);
-    
-    var data = json.decode(response.body);
+    try {
+      isLoading.value = true;
 
-    if (data["status"]) {
-      
-      GetAllResourcesByIdModel resourcesByIdModel = GetAllResourcesByIdModel.fromJson(data);
+      var response = await ApiBase.getRequest(
+          extendedURL: ApiUrl.getResourceById + resourceId);
+      log(response.body);
 
-      
-      resourceByIdDetails.assignAll([resourcesByIdModel.data]); // Adding events to the list
-     
-    } 
-  } catch (e) {
-    log(" $e");
-    // HelperSnackBar.snackBar("Error", "An error occurred while fetching events");
-  } finally {
-    isLoading.value = false; // Set loading state to false after request
+      var data = json.decode(response.body);
+
+      if (data["status"]) {
+        GetAllResourcesByIdModel resourceByIdModel =
+            GetAllResourcesByIdModel.fromJson(data);
+
+        resourceById = resourceByIdModel.data!;
+      }
+    } catch (e) {
+      log("$e");
+    } finally {
+      isLoading.value = false;
+    }
   }
-}
 }
