@@ -170,4 +170,9 @@ class ApiUrl {
   static String getCompanyDetailInv = "investor/getInvestorById/";
   static const String deleteCompanyInv = "investor/deleteInvestor";
   static const String createCompanyInv = "investor/createInvestor";
+
+  static const String getInvStartupInfo = "investor/getInvestorStartupInformation";
+  static const String addMyInvestment = "investor/getInvestorStartupInformation";
+  static const String addPastInvestment = "investor/getInvestorStartupInformation";
+
 }
