@@ -1,3 +1,4 @@
+import 'package:capitalhub_crm/controller/oneLinkController/one_link_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
@@ -6,8 +7,10 @@ import '../../../widget/textWidget/text_widget.dart';
 import '../../../widget/text_field/text_field.dart';
 
 class InvestmentThesis extends StatefulWidget {
-  final String title;
-  const InvestmentThesis({super.key, required this.title});
+  final String question;
+  final String answer;
+  final int index;
+  const InvestmentThesis({super.key, required this.question, required this.answer, required this.index});
 
   @override
   State<InvestmentThesis> createState() => _InvestmentThesisState();
@@ -15,7 +18,17 @@ class InvestmentThesis extends StatefulWidget {
 
 class _InvestmentThesisState extends State<InvestmentThesis> {
   bool _showTextField=false;
-  final TextEditingController textEditingController = TextEditingController();
+  final TextEditingController answerController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    
+    // Set the initial value of the controller
+    answerController.text = widget.answer; // Set this to the value you want
+    
+    // Alternatively, if you want to set the value dynamically, you can do:
+    // answerController.text = yourDynamicValue;
+  }
 
 
   @override
@@ -34,7 +47,7 @@ class _InvestmentThesisState extends State<InvestmentThesis> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TextWidget(text: widget.title, textSize: 15),
+              SizedBox(width:300,child: TextWidget(text: widget.question, textSize: 15,maxLine: 4)),
               Icon(_showTextField? Icons.arrow_drop_up :Icons.arrow_drop_down,color: AppColors.white,),
             ],
           ),
@@ -42,8 +55,9 @@ class _InvestmentThesisState extends State<InvestmentThesis> {
         const SizedBox(height: 10,),
         if(_showTextField)
           Container(
-            child: MyCustomTextField.textField(hintText: 'Add your answer',
-                controller: textEditingController
+            child: MyCustomTextField.textField(hintText: 'Add your answer',maxLine: 2,
+                controller: answerController,
+                
             ),
           ),
       ],
