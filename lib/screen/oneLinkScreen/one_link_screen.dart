@@ -656,11 +656,11 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
               const SizedBox(height: 12),
               AppButton.primaryButton(
                   onButtonPressed: () {
-                    if (GetStoreData.getStore.read('isInvestor')) {
-                      oneLinkController.editOneLinkDetails(context);
-                    } else {
-                      if (oneLinkController.secrateKeyController.text.length ==
-                          4) {
+                    if (oneLinkController.secrateKeyController.text.length ==
+                        4) {
+                      if (GetStoreData.getStore.read('isInvestor')) {
+                        oneLinkController.editOneLinkDetails(context);
+                      } else {
                         oneLinkController.createSecrateKey(context).then((val) {
                           setState(() {});
                         });

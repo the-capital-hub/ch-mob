@@ -47,7 +47,6 @@ class OneLinkData {
   List<String>? previousIntroductoryMessage;
   List<Thesis>? thesis;
   String? investmentPhilosophy;
-  
 
   OneLinkData({
     this.startUpId,
@@ -70,7 +69,8 @@ class OneLinkData {
         secretOneLinkKey: json["secretOneLinkKey"],
         previousIntroductoryMessage: List<String>.from(
             json["previousIntroductoryMessage"].map((x) => x)),
-        thesis: List<Thesis>.from(json["thesis"].map((x) => Thesis.fromJson(x))),
+        thesis:
+            List<Thesis>.from(json["thesis"].map((x) => Thesis.fromJson(x))),
         investmentPhilosophy: json["investmentPhilosophy"],
       );
 
@@ -83,27 +83,27 @@ class OneLinkData {
         "secretOneLinkKey": secretOneLinkKey,
         "previousIntroductoryMessage":
             List<dynamic>.from(previousIntroductoryMessage!.map((x) => x)),
-         "thesis": List<dynamic>.from(thesis!.map((x) => x.toJson())),
-         "investmentPhilosophy": investmentPhilosophy,   
+        "thesis": List<dynamic>.from(thesis!.map((x) => x.toJson())),
+        "investmentPhilosophy": investmentPhilosophy,
       };
 }
+
 class Thesis {
-    String? question;
-    TextEditingController? answer;
+  String? question;
+  TextEditingController? answer;
 
-    Thesis({
-        this.question,
-        this.answer,
-    });
+  Thesis({
+    this.question,
+    this.answer,
+  });
 
-    factory Thesis.fromJson(Map<String, dynamic> json) => Thesis(
+  factory Thesis.fromJson(Map<String, dynamic> json) => Thesis(
         question: json["question"],
-        answer: TextEditingController(text:json["answer"]),
-    );
+        answer: TextEditingController(text: json["answer"]),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "question": question,
         "answer": answer!.text,
-    };
+      };
 }
-
