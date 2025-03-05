@@ -90,6 +90,7 @@ class ApiUrl {
   static const String getPostDetail = "api/posts/get_post_by_id";
 
   static const String oneLinkDetailsGet = "startup/onelinkDetails";
+  static const String oneLinkDetailsEdit = "investor/editInvestorOneLink";
   static const String onelinkIntroMsgPost = "startup/introMessage";
   static const String onelinkCreateSecKey = "users/createSecretkey";
   static const String getCompPostCompany = "users/getProfilePosts/company";

@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 OneLinkGetModel oneLinkGetModelFromJson(String str) =>
     OneLinkGetModel.fromJson(json.decode(str));
 
@@ -37,39 +39,71 @@ class OneLinkGetModel {
 
 class OneLinkData {
   String? startUpId;
+  String? investorId;
   String? name;
   String? oneLink;
   String? introductoryMessage;
   String? secretOneLinkKey;
   List<String>? previousIntroductoryMessage;
-  
+  List<Thesis>? thesis;
+  String? investmentPhilosophy;
 
   OneLinkData({
     this.startUpId,
+    this.investorId,
     this.name,
     this.oneLink,
     this.introductoryMessage,
     this.secretOneLinkKey,
     this.previousIntroductoryMessage,
+    this.thesis,
+    this.investmentPhilosophy,
   });
 
   factory OneLinkData.fromJson(Map<String, dynamic> json) => OneLinkData(
         startUpId: json["startUpId"],
+        investorId: json["investorId"],
         name: json["name"],
         oneLink: json["oneLink"],
         introductoryMessage: json["introductoryMessage"],
         secretOneLinkKey: json["secretOneLinkKey"],
         previousIntroductoryMessage: List<String>.from(
             json["previousIntroductoryMessage"].map((x) => x)),
+        thesis:
+            List<Thesis>.from(json["thesis"].map((x) => Thesis.fromJson(x))),
+        investmentPhilosophy: json["investmentPhilosophy"],
       );
 
   Map<String, dynamic> toJson() => {
         "startUpId": startUpId,
+        "investorId": investorId,
         "name": name,
         "oneLink": oneLink,
         "introductoryMessage": introductoryMessage,
         "secretOneLinkKey": secretOneLinkKey,
         "previousIntroductoryMessage":
             List<dynamic>.from(previousIntroductoryMessage!.map((x) => x)),
+        "thesis": List<dynamic>.from(thesis!.map((x) => x.toJson())),
+        "investmentPhilosophy": investmentPhilosophy,
+      };
+}
+
+class Thesis {
+  String? question;
+  TextEditingController? answer;
+
+  Thesis({
+    this.question,
+    this.answer,
+  });
+
+  factory Thesis.fromJson(Map<String, dynamic> json) => Thesis(
+        question: json["question"],
+        answer: TextEditingController(text: json["answer"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "question": question,
+        "answer": answer!.text,
       };
 }

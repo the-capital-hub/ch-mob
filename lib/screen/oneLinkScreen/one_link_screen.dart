@@ -34,7 +34,7 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
   OneLinkController oneLinkController = Get.put(OneLinkController());
   PageController _pageController = PageController();
   int _currentIndex = 0;
-  String selectedMonth = "";
+  String selectedMonth = "Select Month";
   @override
   void initState() {
     fetchApi();
@@ -44,8 +44,7 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
   fetchApi() async {
     await Future.wait([
       oneLinkController.getOneLinkDetails(),
-      oneLinkController.getCompanyProfilePost()
-
+      oneLinkController.getCompanyProfilePost(),
     ]);
   }
 
@@ -90,20 +89,34 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                                         oneLinkController.introMsgController,
                                     suffixIcon: InkWell(
                                       onTap: () {
-                                        oneLinkController.postIntroMsg(context);
+                                        if (GetStoreData.getStore
+                                            .read('isInvestor')) {
+                                          oneLinkController
+                                              .editOneLinkDetails(context);
+                                        } else {
+                                          oneLinkController
+                                              .postIntroMsg(context);
+                                        }
                                       },
                                       child: Container(
                                           height: 92,
                                           width: 10,
-                                          decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                  topRight: Radius.circular(6),
-                                                  bottomRight:
-                                                      Radius.circular(6)),
-                                              color: AppColors.primary),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(6),
+                                                bottomRight:
+                                                    Radius.circular(6)),
+                                            color: GetStoreData.getStore
+                                                    .read('isInvestor')
+                                                ? AppColors.primaryInvestor
+                                                : AppColors.primary,
+                                          ),
                                           child: Icon(
                                             Icons.send,
-                                            color: AppColors.white,
+                                            color: GetStoreData.getStore
+                                                    .read('isInvestor')
+                                                ? AppColors.black
+                                                : AppColors.white,
                                           )),
                                     ),
                                     maxLine: 3,
@@ -114,10 +127,13 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                                     onTap: () {
                                       prevMsgDilogue();
                                     },
-                                    child: const TextWidget(
+                                    child: TextWidget(
                                       text: "Previous Messages",
                                       textSize: 13,
-                                      color: AppColors.primary,
+                                      color: GetStoreData.getStore
+                                              .read('isInvestor')
+                                          ? AppColors.primaryInvestor
+                                          : AppColors.primary,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -137,28 +153,76 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        TextWidget(
-                                            text: "Company Update",
-                                            textSize: 16,
-                                            color: AppColors.white),
+                                        if (!GetStoreData.getStore
+                                            .read('isInvestor'))
+                                          TextWidget(
+                                              text: "Company Update",
+                                              textSize: 16,
+                                              color: AppColors.white),
+                                        if (GetStoreData.getStore
+                                            .read('isInvestor'))
+                                          TextWidget(
+                                              text: "Feature Articles",
+                                              textSize: 16,
+                                              color: AppColors.white),
                                         InkWell(
                                           onTap: () {
-                                            createPostController.isPublicPost=false;
-                                            Get.to(CreatePostScreen(isPublicPost: false,))!
+                                            createPostController.isPublicPost =
+                                                false;
+                                            Get.to(CreatePostScreen(
+                                              isPublicPost: false,
+                                            ))!
                                                 .whenComplete(() {
                                               oneLinkController
                                                   .getCompanyProfilePost();
-                                                  createPostController.isPublicPost = true;
+                                              createPostController
+                                                  .isPublicPost = true;
                                             });
                                           },
-                                          child: const TextWidget(
+                                          child: TextWidget(
                                             text: "Create Post +",
-                                            color: AppColors.primary,
+                                            color: GetStoreData.getStore
+                                                    .read('isInvestor')
+                                                ? AppColors.primaryInvestor
+                                                : AppColors.primary,
                                             textSize: 13,
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                       ],
+                                    ),
+                                    sizedTextfield,
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 170),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: AppColors.white38),
+                                            borderRadius:
+                                                BorderRadius.circular(7)),
+                                        child: DropDownWidget(
+                                            status: selectedMonth,
+                                            statusList: const [
+                                              'January',
+                                              'February',
+                                              'March',
+                                              'April',
+                                              'May',
+                                              'June',
+                                              'July',
+                                              'August',
+                                              'September',
+                                              'October',
+                                              'November',
+                                              'December'
+                                            ],
+                                            onChanged: (val) {
+                                              setState(() {
+                                                selectedMonth = val.toString();
+                                              });
+                                            }),
+                                      ),
                                     ),
                                     sizedTextfield,
                                     oneLinkController.companyPosts.isEmpty
@@ -345,7 +409,11 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                                                                                         height: _currentIndex == index ? 5 : 3,
                                                                                         decoration: BoxDecoration(
                                                                                           shape: BoxShape.circle,
-                                                                                          color: _currentIndex == index ? AppColors.primary : AppColors.grey,
+                                                                                          color: _currentIndex == index
+                                                                                              ? GetStoreData.getStore.read('isInvestor')
+                                                                                                  ? AppColors.primaryInvestor
+                                                                                                  : AppColors.primary
+                                                                                              : AppColors.grey,
                                                                                         ),
                                                                                       ),
                                                                                     ),
@@ -370,40 +438,131 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                               ),
                             ),
                             sizedTextfield,
-                            DropDownWidget(status: selectedMonth, lable: "Select Month", statusList: const ["January",'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'], onChanged: (val){
-      setState(() {
-        selectedMonth=val.toString();
-      });
-      
-      }),
-      sizedTextfield,
-                            //Pending because of an getx error
-                            if(GetStoreData.getStore.read('isInvestor'))
+                            if (GetStoreData.getStore.read('isInvestor'))
+                              MyCustomTextField.textField(
+                                  suffixIcon: InkWell(
+                                    onTap: () {
+                                      oneLinkController
+                                          .editOneLinkDetails(context);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 15),
+                                      child: TextWidget(
+                                        text: "Save",
+                                        color: GetStoreData.getStore
+                                                .read('isInvestor')
+                                            ? AppColors.primaryInvestor
+                                            : AppColors.primary,
+                                        textSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  hintText: "Enter the Investment Philosophy",
+                                  controller: oneLinkController
+                                      .investmentPhilosophyController,
+                                  lableText: "Investment Philosophy"),
+                            sizedTextfield,
+                            if (GetStoreData.getStore.read('isInvestor') &&
+                                oneLinkController.thesisData.isNotEmpty)
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  TextWidget(
-                                    text: "Investment Thesis",
-                                    textSize: 15,
-                                    color: AppColors.white,
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      TextWidget(
+                                        text: "Investment Thesis",
+                                        textSize: 15,
+                                        color: AppColors.white,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          oneLinkController
+                                              .editOneLinkDetails(context);
+                                        },
+                                        child: TextWidget(
+                                          text: "Save",
+                                          color: GetStoreData.getStore
+                                                  .read('isInvestor')
+                                              ? AppColors.primaryInvestor
+                                              : AppColors.primary,
+                                          textSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(height: 10,),
-                                  ...List.generate(20, (index){
-                                    return const InvestmentThesis(title: 'What is the importance of Management?',);
-                                  })
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  // ...List.generate(oneLinkController.oneLinkData.thesis!.length, (index) {
+                                  //   return  InvestmentThesis(
+                                  //     question:
+                                  //         "${oneLinkController.oneLinkData.thesis![index].question}",
+                                  //         answer: "${oneLinkController.oneLinkData.thesis![index].answer}",
+                                  //   );
+                                  // })
+                                  SizedBox(
+                                    height: 500,
+                                    child: ListView.separated(
+                                      // shrinkWrap: true,
+                                      itemCount:
+                                          oneLinkController.thesisData.length,
+                                      itemBuilder: (context, index) {
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ExpansionTile(
+                                              visualDensity:
+                                                  VisualDensity.compact,
+                                              dense: true,
+                                              title: TextWidget(
+                                                text: oneLinkController
+                                                    .thesisData[index]
+                                                    .question!,
+                                                textSize: 15,
+                                                maxLine: 4,
+                                              ),
+                                              trailing: Icon(
+                                                Icons.arrow_drop_down,
+                                                color: AppColors.white,
+                                              ),
+                                              shape: Border.all(width: 0),
+                                              tilePadding: EdgeInsets.zero,
+                                              children: [
+                                                const SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Container(
+                                                  child: MyCustomTextField
+                                                      .textField(
+                                                    hintText: 'Add your answer',
+                                                    maxLine: 2,
+                                                    controller:
+                                                        oneLinkController
+                                                            .thesisData[index]
+                                                            .answer!,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 10),
+                                          ],
+                                        );
+                                      },
+                                      separatorBuilder: (context, index) {
+                                        return Divider(
+                                          color: AppColors.white38,
+                                          thickness: 1.0,
+                                        );
+                                      },
+                                    ),
+                                  )
                                 ],
                               ),
-
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: AppButton.primaryButton(
@@ -499,9 +658,13 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                   onButtonPressed: () {
                     if (oneLinkController.secrateKeyController.text.length ==
                         4) {
-                      oneLinkController.createSecrateKey(context).then((val) {
-                        setState(() {});
-                      });
+                      if (GetStoreData.getStore.read('isInvestor')) {
+                        oneLinkController.editOneLinkDetails(context);
+                      } else {
+                        oneLinkController.createSecrateKey(context).then((val) {
+                          setState(() {});
+                        });
+                      }
                     }
                   },
                   width: 100,
@@ -514,9 +677,11 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                 onTap: () {
                   Helper.launchUrl(oneLinkController.oneLinkData.oneLink!);
                 },
-                child: const TextWidget(
+                child: TextWidget(
                     text: "Click for OneLink",
-                    color: AppColors.primary,
+                    color: GetStoreData.getStore.read('isInvestor')
+                        ? AppColors.primaryInvestor
+                        : AppColors.primary,
                     textSize: 14),
               )
             ],
