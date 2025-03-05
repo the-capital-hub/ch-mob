@@ -34,7 +34,7 @@ class _MyStartupScreenState extends State<MyStartupScreen> {
         backgroundColor: AppColors.transparent,
         appBar: HelperAppBar.appbarHelper(
             title: "My Startups", autoAction: true, hideBack: true),
-        body: Obx(
+        body: Obx(()=>
           myStartupsController.isLoading.value
               ? Helper.pageLoading()
               : SingleChildScrollView(
@@ -155,7 +155,7 @@ class _MyStartupScreenState extends State<MyStartupScreen> {
                         const TextWidget(text: "My Interests", textSize: 15),
                         sizedTextfield,
                         SizedBox(
-                          height: 210,
+                          height: 240,
                           child: ListView.separated(
                             itemCount: myStartupsController
                                 .startupData.myInterests!.length,
@@ -189,10 +189,12 @@ class _MyStartupScreenState extends State<MyStartupScreen> {
                                                   "${myStartupsController.startupData.myInterests![index].logo}"),
                                             ),
                                             SizedBox(width: 8),
-                                            TextWidget(
-                                                text:
-                                                    "${myStartupsController.startupData.myInterests![index].name}",
-                                                textSize: 15),
+                                            Expanded(
+                                              child: TextWidget(
+                                                  text:
+                                                      "${myStartupsController.startupData.myInterests![index].name}",
+                                                  textSize: 15,maxLine: 2),
+                                            ),
                                           ],
                                         ),
                                         const SizedBox(height: 6),
@@ -284,7 +286,7 @@ class _MyStartupScreenState extends State<MyStartupScreen> {
                                         text:
                                             "${myStartupsController.startupData.pastInvestments![index].description}",
                                         textSize: 13,
-                                        maxLine: 5,
+                                        maxLine: 10,
                                       ),
                                     ],
                                   ),
