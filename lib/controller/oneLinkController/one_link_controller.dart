@@ -59,7 +59,6 @@ class OneLinkController extends GetxController {
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"]) {
-      genratedIntroMessage = data['data'].toString();
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
 
