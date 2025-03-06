@@ -2,6 +2,7 @@ import 'package:capitalhub_crm/controller/communityController/communityLandingAl
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddNewProductScreen/community_add_new_product_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityDrawerScreen/community_drawer_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddServiceScreen/community_add_service_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPurchaseScreen/community_purchase_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
@@ -226,11 +227,25 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
             right: 12,
             bottom: 12,
           ),
-          child: AppButton.primaryButton(
-              onButtonPressed: () {
-                Get.to(() =>  AddNewProductScreen());
-              },
-              title: "Add New Product"),
+          child: Row(
+            children: [
+              Expanded(
+                child: AppButton.primaryButton(
+                    onButtonPressed: () {
+                      Get.to(() =>  const AddNewProductScreen());
+                    },
+                    title: "Add New Product"),
+              ),
+              SizedBox(width: 12,),
+              Expanded(
+                child: AppButton.primaryButton(
+                    onButtonPressed: () {
+                      Get.to(() =>  const CommunityAddServiceScreen());
+                    },
+                    title: "Add New Service"),
+              ),
+            ],
+          ),
         ),
       )
     );

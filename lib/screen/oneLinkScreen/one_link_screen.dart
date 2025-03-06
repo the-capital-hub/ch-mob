@@ -72,7 +72,7 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                             sizedTextfield,
                             MyCustomTextField.textField(
                                 hintText: "Type link here",
-                                readonly: true,
+                                readonly: false,
                                 controller: oneLinkController.linkController,
                                 prefixIcon: Icon(
                                   Icons.link,

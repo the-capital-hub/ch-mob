@@ -307,7 +307,7 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
             ),
           ],
         ),
-        children: index == 3
+        children: index == 6
             ? communitySubItems.map((communitySubItemsTitle) {
                 int communitySubItemsIndex =
                     communitySubItems.indexOf(communitySubItemsTitle);

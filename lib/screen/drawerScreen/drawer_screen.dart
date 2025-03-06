@@ -5,10 +5,12 @@ import 'package:capitalhub_crm/screen/Auth-Process/authScreen/signup_info_page.d
 import 'package:capitalhub_crm/screen/chatScreen/community_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAboutScreen/communities_about_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddNewProductScreen/community_add_new_product_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddServiceScreen/community_add_service_screen.dart';
 
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityEventsScreen/community_events_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityHomeScreen/community_home_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPeopleScreen/community_people_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPriorityDMsScreen/community_priority_dms_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityProductsScreen/community_products_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityOverScreen/create_community_over_screen.dart';
@@ -139,13 +141,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   List communitySubPages = [
     const CreateCommunityLandingScreen(),
     const MyCommunityScreen(),
-    const ExploreCommunityScreen(), 
+    const ExploreCommunityScreen()
   ];
   bool isExpanded = false;
   List<bool> isExpandedList = List.generate(13, (index) => false);
   @override
   Widget build(BuildContext context) {
-
     return Drawer(
       backgroundColor: AppColors.black,
       child: SafeArea(
@@ -224,7 +225,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         //   return _buildExpansionTile(index); // For index 8
                         // } else if (index == 10) {
                         //   return _buildExpansionTile(index); // For index 9
-                         if (index == 10 || index == 11) {
+                        if (index == 10 || index == 11) {
                           return _buildExpansionTile(index);
                         } else {
                           return InkWell(
@@ -420,9 +421,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   //           ),
   //         ],
   //       ),
-  //       children: 
+  //       children:
   //       items[index]=="Community"?
-        
+
   //        communitySubItems.map((communitySubItemsTitle) {
   //         int communitySubItemsIndex =
   //             communitySubItems.indexOf(communitySubItemsTitle);
@@ -473,7 +474,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   //   );
   // }
 
-   Widget _buildExpansionTile(int index) {
+  Widget _buildExpansionTile(int index) {
     return Theme(
       data: ThemeData(
         dividerColor: Colors.transparent,
@@ -486,7 +487,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         iconColor: AppColors.primary,
         onExpansionChanged: (bool expanded) {
           setState(() {
-            isExpandedList[index] = expanded; // Update specific index expansion state
+            isExpandedList[index] =
+                expanded; // Update specific index expansion state
           });
         },
         title: Row(
@@ -494,7 +496,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           children: [
             Image.asset(
               icons[index],
-              color: isExpandedList[index] ? AppColors.primary : AppColors.white,
+              color:
+                  isExpandedList[index] ? AppColors.primary : AppColors.white,
               height: 22,
             ),
             const SizedBox(width: 12),
@@ -504,19 +507,22 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               fontWeight: FontWeight.w500,
               maxLine: 1,
               align: TextAlign.center,
-              color: isExpandedList[index] ? AppColors.primary : AppColors.white,
+              color:
+                  isExpandedList[index] ? AppColors.primary : AppColors.white,
             ),
           ],
         ),
         children: index == 10
             ? communitySubItems.map((communitySubItemsTitle) {
-                int communitySubItemsIndex = communitySubItems.indexOf(communitySubItemsTitle);
+                int communitySubItemsIndex =
+                    communitySubItems.indexOf(communitySubItemsTitle);
                 return SizedBox(
                   height: 30,
                   child: ListTile(
                     dense: true,
                     visualDensity: VisualDensity.compact,
-                    contentPadding: const EdgeInsets.only(left: 55, top: 0, bottom: 0),
+                    contentPadding:
+                        const EdgeInsets.only(left: 55, top: 0, bottom: 0),
                     title: TextWidget(
                       text: communitySubItemsTitle,
                       textSize: 16,
@@ -531,13 +537,15 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 );
               }).toList()
             : meetingsSubItems.map((meetingsSubItemsTitle) {
-                int meetingsSubItemsIndex = meetingsSubItems.indexOf(meetingsSubItemsTitle);
+                int meetingsSubItemsIndex =
+                    meetingsSubItems.indexOf(meetingsSubItemsTitle);
                 return SizedBox(
                   height: 30,
                   child: ListTile(
                     dense: true,
                     visualDensity: VisualDensity.compact,
-                    contentPadding: const EdgeInsets.only(left: 55, top: 0, bottom: 0),
+                    contentPadding:
+                        const EdgeInsets.only(left: 55, top: 0, bottom: 0),
                     title: TextWidget(
                       text: meetingsSubItemsTitle,
                       textSize: 16,

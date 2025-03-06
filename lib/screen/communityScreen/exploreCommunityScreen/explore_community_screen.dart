@@ -77,7 +77,7 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                                                                         crossAxisCount: 2, // Number of columns
                                                                         crossAxisSpacing: 7, // Space between columns
                                                                         mainAxisSpacing: 7, // Space between rows
-                                                                        childAspectRatio: 0.9, // Adjust the aspect ratio to fit the cards
+                                                                        childAspectRatio: 0.8, // Adjust the aspect ratio to fit the cards
                                                                       ),
                                                                       itemBuilder: (context, index) {
                                                                         return InkWell(
@@ -109,6 +109,7 @@ createdCommunityId = allCommunities.allCommunitiesDetails[index].id;
                                                                               padding: const EdgeInsets.only(top: 4,right: 7),
                                                                               child: Column(
                                                                                 children: [
+                                                                                  SizedBox(height: 5,),
                                                                                   CircleAvatar(
                                                                                                                 foregroundImage: NetworkImage(allCommunities.allCommunitiesDetails[index].image.toString()),
                                                                                                               

@@ -24,17 +24,19 @@ class CommunityUpdateSettingsScreen extends StatefulWidget {
   const CommunityUpdateSettingsScreen({super.key});
 
   @override
-  State<CommunityUpdateSettingsScreen> createState() => _UpdateSettingsScreenState();
+  State<CommunityUpdateSettingsScreen> createState() =>
+      _UpdateSettingsScreenState();
 }
 
 class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
   // CommunityController allCommunities = Get.put(CommunityController());
   // CommunityController createdCommunity = Get.put(CommunityController());
-  CommunityUpdateSettingsController updateSettings = Get.put(CommunityUpdateSettingsController());
+  CommunityUpdateSettingsController updateSettings =
+      Get.put(CommunityUpdateSettingsController());
   CommunityAboutController aboutCommunity = Get.put(CommunityAboutController());
   String base64 = "";
   List<TextEditingController> controllers = [TextEditingController()];
-  
+
   //  @override
   // void initState() {
   //   SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
@@ -54,63 +56,76 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
   //   super.initState();
   // }
   @override
-void initState() {
-  SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-    Future.wait([
-      // communityProducts.getCommunityProductsandMembers(),
-      // createdCommunity.getCommunityById(),
-      aboutCommunity.getAboutCommunity()
-    ]).then((values) {
-      // Perform any additional logic after both calls are completed
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        // Your post-frame callback logic goes here
-        urlController.text = aboutCommunity.aboutCommunityList[0].community.shareLink;
-        updateSettings.communityNameController.text = aboutCommunity.aboutCommunityList[0].community.name;
-        updateSettings.aboutCommunityController.text = aboutCommunity.aboutCommunityList[0].community.about;
-       
-        updateSettings.subscriptionAmountController.text = aboutCommunity.aboutCommunityList[0].community.amount.toString();
-        updateSettings.whatsappGroupLinkController.text = aboutCommunity.aboutCommunityList[0].community.whatsappGroupLink;
-        updateSettings.isOpen = aboutCommunity.aboutCommunityList[0].community.isOpen;
-        updateSettings.termsAndConditions = aboutCommunity.aboutCommunityList[0].community.termsAndConditions;
-        // Ensure controllers are initialized with the terms and conditions list
-        setState(() {
-           updateSettings.communitySize = aboutCommunity.aboutCommunityList[0].community.communitySize;
-        updateSettings.subscriptionType = aboutCommunity.aboutCommunityList[0].community.subscription;
-        });
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      Future.wait([
+        // communityProducts.getCommunityProductsandMembers(),
+        // createdCommunity.getCommunityById(),
+        aboutCommunity.getAboutCommunity()
+      ]).then((values) {
+        // Perform any additional logic after both calls are completed
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          // Your post-frame callback logic goes here
+          urlController.text =
+              aboutCommunity.aboutCommunityList[0].community.shareLink;
+          updateSettings.communityNameController.text =
+              aboutCommunity.aboutCommunityList[0].community.name;
+          updateSettings.aboutCommunityController.text =
+              aboutCommunity.aboutCommunityList[0].community.about;
+
+          updateSettings.subscriptionAmountController.text =
+              aboutCommunity.aboutCommunityList[0].community.amount.toString();
+          updateSettings.whatsappGroupLinkController.text =
+              aboutCommunity.aboutCommunityList[0].community.whatsappGroupLink;
+          updateSettings.isOpen =
+              aboutCommunity.aboutCommunityList[0].community.isOpen;
+          updateSettings.termsAndConditions =
+              aboutCommunity.aboutCommunityList[0].community.termsAndConditions;
+          // Ensure controllers are initialized with the terms and conditions list
+          setState(() {
+            updateSettings.communitySize =
+                aboutCommunity.aboutCommunityList[0].community.communitySize;
+            updateSettings.subscriptionType =
+                aboutCommunity.aboutCommunityList[0].community.subscription;
+          });
           initializeControllers();
+        });
       });
     });
-  });
-  super.initState();
-}
+    super.initState();
+  }
+
   TextEditingController urlController = TextEditingController();
   // Initialize controllers based on the termsAndConditions list
   void initializeControllers() {
     setState(() {
       controllers = [];
       for (int i = 0; i < updateSettings.termsAndConditions.length; i++) {
-        TextEditingController controller = TextEditingController(text: updateSettings.termsAndConditions[i]);
+        TextEditingController controller =
+            TextEditingController(text: updateSettings.termsAndConditions[i]);
         // Add a listener to update termsAndConditions when the text is changed
         controller.addListener(() {
-          updateSettings.termsAndConditions[i] = controller.text; // Update the corresponding term
+          updateSettings.termsAndConditions[i] =
+              controller.text; // Update the corresponding term
         });
         controllers.add(controller);
       }
     });
   }
 
-
   // Add a new empty text field
   void addNewTextField() {
     setState(() {
       // Add a new controller
       controllers.add(TextEditingController());
-      updateSettings.termsAndConditions.add(""); // Add empty string to terms list
+      updateSettings.termsAndConditions
+          .add(""); // Add empty string to terms list
 
       // Add listener to the newly created controller to sync with the termsAndConditions list
       controllers.last.addListener(() {
         int index = controllers.length - 1;
-        updateSettings.termsAndConditions[index] = controllers[index].text; // Sync new term
+        updateSettings.termsAndConditions[index] =
+            controllers[index].text; // Sync new term
       });
     });
   }
@@ -121,7 +136,8 @@ void initState() {
       setState(() {
         controllers[index].dispose();
         controllers.removeAt(index);
-        updateSettings.termsAndConditions.removeAt(index); // Remove corresponding term
+        updateSettings.termsAndConditions
+            .removeAt(index); // Remove corresponding term
       });
     }
   }
@@ -135,231 +151,288 @@ void initState() {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: bgDec,
+        decoration: bgDec,
         child: Scaffold(
           // drawer: const CommunityDrawerWidget(),
           backgroundColor: AppColors.transparent,
-          
-          body:
-          Obx(()=>
-        aboutCommunity.isLoading.value
-                ? Helper.pageLoading()
-                : aboutCommunity.aboutCommunityList.isEmpty
-                
-                      ? Center(child: TextWidget(text: "Cannot Update Community Settings", textSize: 16))
-                      :
-          Padding(padding: EdgeInsets.all(12),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                TextWidget(text: "Update Community Settings", textSize: 20,fontWeight: FontWeight.w500,),
-                SizedBox(height: 12,),
-                base64 != ""
-                        ? CircleAvatar(
-                            radius: 60,
-                            backgroundImage: MemoryImage(
-                                base64Decode(base64)),
-                          )
-                        :  CircleAvatar(
-                            radius: 60,
-                            foregroundImage: NetworkImage(
-                  aboutCommunity.aboutCommunityList[0].community.image
-                ),),
-                                SizedBox(height: 12,),
-                  
-                    InkWell(
-                      splashColor: AppColors.transparent,
-                      highlightColor: AppColors.transparent,
-                      onTap: () {
-                        uploadBottomSheet();
-                      },
-                      child: Column(
-                        children: [ 
-                                            
-                      Container(
-                                            decoration: BoxDecoration(
-                      color: 
-                           AppColors.white12,
-                      // color: Color(0xFFC8E0DA),
-                                            borderRadius: BorderRadius.circular(20)
-                      // border:
-                      //     Border.all(color: Colors.redAccent, width: 1)
-                                            ),
-                                            child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 12),
-                      child:  TextWidget(text: "Change community image", textSize: 13),
+
+          body: Obx(() => aboutCommunity.isLoading.value
+              ? Helper.pageLoading()
+              : aboutCommunity.aboutCommunityList.isEmpty
+                  ? Center(
+                      child: TextWidget(
+                          text: "Cannot Update Community Settings",
+                          textSize: 16))
+                  : Padding(
+                      padding: EdgeInsets.all(12),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            TextWidget(
+                              text: "Update Community Settings",
+                              textSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            SizedBox(
+                              height: 12,
+                            ),
+                            base64 != ""
+                                ? CircleAvatar(
+                                    radius: 60,
+                                    backgroundImage:
+                                        MemoryImage(base64Decode(base64)),
+                                  )
+                                : CircleAvatar(
+                                    radius: 60,
+                                    foregroundImage: NetworkImage(aboutCommunity
+                                        .aboutCommunityList[0].community.image),
+                                  ),
+                            SizedBox(
+                              height: 12,
+                            ),
+
+                            InkWell(
+                              splashColor: AppColors.transparent,
+                              highlightColor: AppColors.transparent,
+                              onTap: () {
+                                uploadBottomSheet();
+                              },
+                              child: Column(children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: AppColors.white12,
+                                      // color: Color(0xFFC8E0DA),
+                                      borderRadius: BorderRadius.circular(20)
+                                      // border:
+                                      //     Border.all(color: Colors.redAccent, width: 1)
+                                      ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 12),
+                                    child: TextWidget(
+                                        text: "Change community image",
+                                        textSize: 13),
+                                  ),
+                                ),
+                              ]),
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            MyCustomTextField.textField(
+                                hintText: "Enter Community Name",
+                                controller:
+                                    updateSettings.communityNameController,
+                                lableText: "Community Name"),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            DropDownWidget(
+                                status: updateSettings.communitySize,
+                                lable: "Community Size",
+                                statusList: const [
+                                  "Less than 10K",
+                                  "10K - 100K",
+                                  "100K - 500K",
+                                  "Over 500K"
+                                ],
+                                onChanged: (val) {
+                                  setState(() {
+                                    updateSettings.communitySize =
+                                        val.toString();
+                                  });
+                                }),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            DropDownWidget(
+                                status: updateSettings.subscriptionType,
+                                lable: "Subscription Type",
+                                statusList: const ["free", "paid"],
+                                onChanged: (val) {
+                                  setState(() {
+                                    updateSettings.subscriptionType =
+                                        val.toString();
+                                  });
+                                }),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            if (updateSettings.subscriptionType == "paid")
+                              MyCustomTextField.textField(
+                                  textInputType: TextInputType.number,
+                                  lableText: "Subscription Amount",
+                                  hintText: "Enter Amount",
+                                  controller: updateSettings
+                                      .subscriptionAmountController),
+                            if (updateSettings.subscriptionType == "Paid")
+                              SizedBox(
+                                height: 16,
+                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Checkbox(
+                                  value: updateSettings.isOpen,
+                                  activeColor: AppColors.primary,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      updateSettings.isOpen = value!;
+                                    });
+                                  },
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                TextWidget(
+                                    text: "Is Community Open ?", textSize: 16),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            MyCustomTextField.textField(
+                                hintText: "Enter Community description",
+                                controller:
+                                    updateSettings.aboutCommunityController,
+                                lableText: "About Community",
+                                maxLine: 5),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            MyCustomTextField.textField(
+                                hintText: "Enter whatsapp group link",
+                                controller:
+                                    updateSettings.whatsappGroupLinkController,
+                                lableText: "Whatsapp Group Link"),
+                            //  SizedBox(height: 16,),
+                            //  Align(child: TextWidget(text: "Terms and conditions", textSize: 13),alignment: Alignment.centerLeft,),
+                            ListView.separated(
+                              separatorBuilder: (context, index) =>
+                                  SizedBox(height: 12),
+                              shrinkWrap: true,
+                              padding: EdgeInsets.zero,
+                              itemCount: controllers.length,
+                              itemBuilder: (context, index) {
+                                return MyCustomTextField.textField(
+                                  hintText: "Enter Terms and conditions",
+                                  controller: controllers[
+                                      index], // Bind the controller to each text field
+                                  lableText: "Terms and conditions",
+                                  suffixIcon: IconButton(
+                                    icon: Icon(Icons.delete),
+                                    color: AppColors.primary,
+                                    onPressed: () => removeTextField(index),
+                                  ),
+                                );
+                              },
+                            ),
+
+                            SizedBox(
+                              height: 16,
+                            ),
+
+                            AppButton.primaryButton(
+                                bgColor: AppColors.green700,
+                                onButtonPressed: () {
+                                  addNewTextField();
+                                },
+                                title: "Add Term"),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            AppButton.primaryButton(
+                                bgColor: AppColors.primary,
+                                onButtonPressed: () {
+                                  Helper.loader(context);
+                                  updateSettings.updateCommunity(base64);
+                                },
+                                title: "Update Community"),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 60, vertical: 0),
+                              child: AppButton.primaryButton(
+                                  bgColor: AppColors.primary,
+                                  onButtonPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          backgroundColor: AppColors.blackCard,
+                                          title: Column(
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 25,
+                                                foregroundImage: NetworkImage(
+                                                  aboutCommunity
+                                                      .aboutCommunityList[0]
+                                                      .community
+                                                      .image,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 12,
+                                              ),
+                                              TextWidget(
+                                                text: aboutCommunity
+                                                    .aboutCommunityList[0]
+                                                    .community
+                                                    .name,
+                                                textSize: 20,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ],
+                                          ),
+                                          content: Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 25),
+                                            child: TextWidget(
+                                              text:
+                                                  'Are you sure to delete community',
+                                              textSize: 13,
                                             ),
                                           ),
-                        ]),
-                    ),
-                    SizedBox(height: 16,),
-                     MyCustomTextField.textField(hintText: "Enter Community Name", controller: updateSettings.communityNameController, lableText: "Community Name"),
-                     SizedBox(height: 16,),
-                     DropDownWidget(
-                      status: updateSettings.communitySize,
-                      lable: "Community Size",
-                      statusList: const ["Less than 10K", "10K - 100K", "100K - 500K", "Over 500K"],
-                      onChanged: (val) {
-                        setState(() {
-                          updateSettings.communitySize = val.toString();
-                        });
-                      }),
-                      SizedBox(height: 16,),
-                      DropDownWidget(
-                      status: updateSettings.subscriptionType,
-                      lable: "Subscription Type",
-                      statusList: const ["free", "paid"],
-                      onChanged: (val) {
-                        setState(() {
-                          updateSettings.subscriptionType = val.toString();
-                        });
-                      }),
-                      SizedBox(height: 16,),
-                      if (updateSettings.subscriptionType=="paid")
-                  
-                  MyCustomTextField.textField(
-                    textInputType: TextInputType.number,
-                      lableText: "Subscription Amount",
-                      hintText: "Enter Amount",
-                      controller: updateSettings.subscriptionAmountController),
-                      if (updateSettings.subscriptionType=="Paid")
-                      SizedBox(height: 16,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                        Checkbox( 
-                                                    value: updateSettings.isOpen,
-                                                    activeColor: AppColors.primary,
-                                                    onChanged: (bool? value) {
-                                                      setState(() {
-                                                        updateSettings.isOpen = value!;
-                                                      });
-                                                    },
-                                                    materialTapTargetSize:
-                                                        MaterialTapTargetSize
-                                                            .shrinkWrap,
-                                                  ),
-                                                  
-                                             
-                                                 TextWidget(text: "Is Community Open ?", textSize: 16),
-                      ],),
-                      SizedBox(height: 10),
-                     MyCustomTextField.textField(hintText: "Enter Community description", controller:updateSettings.aboutCommunityController, lableText: "About Community",maxLine: 5),
-                     SizedBox(height: 16,),
-                     MyCustomTextField.textField(hintText: "Enter whatsapp group link", controller: updateSettings.whatsappGroupLinkController, lableText: "Whatsapp Group Link"),
-                    //  SizedBox(height: 16,),
-                    //  Align(child: TextWidget(text: "Terms and conditions", textSize: 13),alignment: Alignment.centerLeft,),
-                     ListView.separated(
-        separatorBuilder: (context, index) => SizedBox(height: 12),
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        itemCount: controllers.length,
-        itemBuilder: (context, index) {
-          return MyCustomTextField.textField(
-            hintText: "Enter Terms and conditions",
-            controller: controllers[index], // Bind the controller to each text field
-            lableText: "Terms and conditions",
-            suffixIcon: IconButton(
-              icon: Icon(Icons.delete),
-              color: AppColors.primary,
-              onPressed: () => removeTextField(index),
-            ),
-          );
-        },
-      ),
-                
-            
-            SizedBox(height: 16,),
-
-              
-                     AppButton.primaryButton(
-                      bgColor: AppColors.green700,
-                         onButtonPressed: () {
-addNewTextField();
-                         },
-                         
-                         title: "Add Term"),
-                         SizedBox(height: 16,),
-              AppButton.primaryButton(
-                bgColor: AppColors.primary,
-                  onButtonPressed: () {
-                    Helper.loader(context);
-                    updateSettings.updateCommunity(base64);
-                  },
-                  
-                  title: "Update Community"),
-                  SizedBox(height: 16,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 60,vertical: 0),
-                child: AppButton.primaryButton(
-                  bgColor: AppColors.primary,
-                    onButtonPressed: () {
-                      showDialog(
-                       context: context,
-                       builder: (BuildContext context) {
-                         return AlertDialog(
-                           backgroundColor: AppColors.blackCard,
-                           title:  Column(
-                             children: [
-                              CircleAvatar(
-                radius: 25,
-                foregroundImage: NetworkImage(
-                  aboutCommunity.aboutCommunityList[0].community.image,
-                ),
-                              ),
-                              SizedBox(height: 12,),
-                               TextWidget(text: aboutCommunity.aboutCommunityList[0].community.name, textSize: 20,fontWeight: FontWeight.w500,),
-                             ],
-                           ),
-                           content: Padding(
-                             padding: const EdgeInsets.only(left: 25),
-                             child: TextWidget(text: 'Are you sure to delete community', textSize: 13,),
-                           ),
-                           actions: [
-                             AppButton.primaryButton(
-                              bgColor: AppColors.primary,
-                               title: 'Delete Community',
-                               onButtonPressed: () async{
-                                 await updateSettings.deleteCommunity();
-                                
-                                
-                               },
-                               
-                             ),
-                             
-                           ],
-                         );
-                       },
-                     );
-                      
-                    },
-                   
-                    title: "Delete Community"),
-              ),
-                  SizedBox(height: 16,),
-              ],
-            ),
+                                          actions: [
+                                            AppButton.primaryButton(
+                                              bgColor: AppColors.primary,
+                                              title: 'Delete Community',
+                                              onButtonPressed: () async {
+                                                await updateSettings
+                                                    .deleteCommunity();
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  title: "Delete Community"),
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                          ],
+                        ),
+                      ),
+                    )),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Get.to(() => const CommunityAboutScreen());
+            },
+            child: Icon(
+              Icons.info,
+              size: 30,
+              color: AppColors.white,
+            ), // You can use any icon, "info" is the typical one for info buttons
+            backgroundColor: AppColors.primary,
           ),
-          )
-        ),
-              floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          
-           Get.to(() =>  const CommunityAboutScreen());
-          
-        },
-        child: Icon(Icons.info,size: 30,color: AppColors.white,),  // You can use any icon, "info" is the typical one for info buttons
-        backgroundColor: AppColors.primary,
-      ),
-    
-        )
-    );
+        ));
   }
-   uploadBottomSheet() {
+
+  uploadBottomSheet() {
     return Get.bottomSheet(
         Container(
           height: 250,
@@ -390,12 +463,9 @@ addNewTextField();
                   ImagePickerWidget imagePickerWidget = ImagePickerWidget();
                   imagePickerWidget.getImage(false).then((value) {
                     Get.back();
-                  
-                     
+
                     base64 = value;
                     setState(() {});
-                   
-                
                   });
                 },
                 child: Container(
@@ -432,5 +502,4 @@ addNewTextField();
         ),
         backgroundColor: AppColors.blackCard);
   }
-  
 }
