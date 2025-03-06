@@ -11,7 +11,7 @@ import '../../utils/helper/helper_sncksbar.dart';
 
 class MyStartupsController extends GetxController {
   var isLoading = false.obs;
-  String base64 = "";
+  String? base64;
   TextEditingController companyNameController = TextEditingController();
   TextEditingController companyDescriptionController = TextEditingController();
   TextEditingController equityController = TextEditingController();
@@ -35,21 +35,63 @@ class MyStartupsController extends GetxController {
     }
   }
 
-  Future<bool> addMyInvestment({
-    required String userId,
-    required String connectionStatus,
+  Future<bool> addEditMyInvestment({
+    String? userId,
+    required bool isEdit,
   }) async {
     var body = {
-      "image": base64,
+      if (base64 != null) "logo": base64,
       "name": companyNameController.text,
       "description": companyDescriptionController.text,
-      "equity": equityController.text
+      "investedEquity": equityController.text
     };
-    var response = await ApiBase.postRequest(
-        body: body, extendedURL: ApiUrl.addMyInvestment, withToken: true);
+    var response = isEdit
+        ? await ApiBase.pachRequest(
+            body: body,
+            extendedURL: "${ApiUrl.addMyInvestment}/$userId",
+            withToken: true)
+        : await ApiBase.postRequest(
+            body: body, extendedURL: ApiUrl.addMyInvestment, withToken: true);
+    log(response.body);
+    Get.back(closeOverlays: true);
+    Get.back();
+    var data = json.decode(response.body);
+    if (data["status"] == true) {
+      getStartupsList();
+      HelperSnackBar.snackBar("Success", data["message"]);
+      return true;
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
+  }
+
+  Future<bool> delMyInvestment(id) async {
+    var response = await ApiBase.deleteRequest(
+      extendedURL: "${ApiUrl.addMyInvestment}/$id",
+    );
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"] == true) {
+      Get.back(closeOverlays: true);
+      Get.back();
+      getStartupsList();
+      HelperSnackBar.snackBar("Success", data["message"]);
+      return true;
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
+  }
+
+  Future<bool> delMyIntrest(id) async {
+    var response = await ApiBase.deleteRequest(
+      extendedURL: "${ApiUrl.delMyInterest}/$id",
+    );
+    log(response.body);
+    var data = json.decode(response.body);
+    if (data["status"] == true) {
+      getStartupsList();
       HelperSnackBar.snackBar("Success", data["message"]);
       return true;
     } else {
@@ -59,19 +101,27 @@ class MyStartupsController extends GetxController {
   }
 
   Future<bool> addPastInvestment({
-    required String userId,
-    required String connectionStatus,
+    String? userId,
+    required bool isEdit,
   }) async {
     var body = {
-      "image": base64,
+      if (base64 != null) "logo": base64,
       "name": companyNameController.text,
       "description": companyDescriptionController.text,
     };
-    var response = await ApiBase.postRequest(
-        body: body, extendedURL: ApiUrl.addPastInvestment, withToken: true);
+    var response = isEdit
+        ? await ApiBase.pachRequest(
+            body: body,
+            extendedURL: "${ApiUrl.addPastInvestment}/$userId",
+            withToken: true)
+        : await ApiBase.postRequest(
+            body: body, extendedURL: ApiUrl.addPastInvestment, withToken: true);
     log(response.body);
+    Get.back(closeOverlays: true);
+    Get.back();
     var data = json.decode(response.body);
     if (data["status"] == true) {
+      getStartupsList();
       HelperSnackBar.snackBar("Success", data["message"]);
       return true;
     } else {
@@ -79,4 +129,23 @@ class MyStartupsController extends GetxController {
       return false;
     }
   }
+  
+  Future<bool> delPastInvestment(id) async {
+    var response = await ApiBase.deleteRequest(
+      extendedURL: "${ApiUrl.addPastInvestment}/$id",
+    );
+    log(response.body);
+    var data = json.decode(response.body);
+    if (data["status"] == true) {
+      Get.back(closeOverlays: true);
+      Get.back();
+      getStartupsList();
+      HelperSnackBar.snackBar("Success", data["message"]);
+      return true;
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
+  }
+
 }

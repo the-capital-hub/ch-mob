@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:capitalhub_crm/controller/myStartupsController/my_startups_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,12 @@ import '../../widget/textwidget/text_widget.dart';
 class AddStartupScreen extends StatefulWidget {
   bool isMyInvestment;
   bool isEdit;
+  int? index;
   AddStartupScreen(
-      {required this.isMyInvestment, required this.isEdit, super.key});
+      {required this.isMyInvestment,
+      required this.isEdit,
+      this.index,
+      super.key});
 
   @override
   State<AddStartupScreen> createState() => _AddStartupScreenState();
@@ -27,9 +32,26 @@ class _AddStartupScreenState extends State<AddStartupScreen> {
   @override
   void initState() {
     if (!widget.isEdit) {
+      myStartupsController.base64 = null;
       myStartupsController.companyNameController.clear();
       myStartupsController.companyDescriptionController.clear();
       myStartupsController.equityController.clear();
+    } else {
+      myStartupsController.companyNameController.text = widget.isMyInvestment
+          ? myStartupsController.startupData.myInvestments![widget.index!].name!
+          : myStartupsController
+              .startupData.pastInvestments![widget.index!].name!;
+      myStartupsController.companyDescriptionController.text =
+          widget.isMyInvestment
+              ? myStartupsController
+                  .startupData.myInvestments![widget.index!].description!
+              : myStartupsController
+                  .startupData.pastInvestments![widget.index!].description!;
+      myStartupsController.equityController.text = widget.isMyInvestment
+          ? myStartupsController
+              .startupData.myInvestments![widget.index!].investedEquity!
+          : "";
+    
     }
     super.initState();
   }
@@ -41,8 +63,27 @@ class _AddStartupScreenState extends State<AddStartupScreen> {
       child: Scaffold(
         backgroundColor: AppColors.transparent,
         appBar: HelperAppBar.appbarHelper(
-          title: widget.isMyInvestment ? "My Investment" : "Past Investment",
-        ),
+            title: widget.isMyInvestment ? "My Investment" : "Past Investment",
+            action: [
+              if (widget.isEdit)
+                IconButton(
+                    onPressed: () {
+                      Helper.loader(context);
+                      if (widget.isMyInvestment) {
+                        myStartupsController.delMyInvestment(
+                            myStartupsController
+                                .startupData.myInvestments![widget.index!].id);
+                      } else {
+                        myStartupsController.delPastInvestment(
+                            myStartupsController.startupData
+                                .pastInvestments![widget.index!].investmentId);
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.delete,
+                      color: AppColors.redColor,
+                    ))
+            ]),
         body: Padding(
           padding: const EdgeInsets.all(12.0),
           child: SingleChildScrollView(
@@ -55,19 +96,20 @@ class _AddStartupScreenState extends State<AddStartupScreen> {
                     uploadBottomSheet();
                   },
                   child: Center(
-                    child:
-                        //  widget.isEdit && companyController.base64 == ""
-                        //     ? CircleAvatar(
-                        //         radius: 60,
-                        //         backgroundImage:
-                        //             NetworkImage(companyController.image!),
-                        //       )
-                        // :
-                        myStartupsController.base64 != ""
+                    child: widget.isEdit && myStartupsController.base64 == null
+                        ? CircleAvatar(
+                            radius: 60,
+                            backgroundImage: NetworkImage(widget.isMyInvestment
+                                ? myStartupsController.startupData
+                                    .myInvestments![widget.index!].logo!
+                                : myStartupsController.startupData
+                                    .pastInvestments![widget.index!].logo!),
+                          )
+                        : myStartupsController.base64 != null
                             ? CircleAvatar(
                                 radius: 60,
                                 backgroundImage: MemoryImage(
-                                    base64Decode(myStartupsController.base64)),
+                                    base64Decode(myStartupsController.base64!)),
                               )
                             : const CircleAvatar(
                                 radius: 60,
@@ -84,6 +126,7 @@ class _AddStartupScreenState extends State<AddStartupScreen> {
                 MyCustomTextField.textField(
                     hintText: "Enter Company Description",
                     lableText: "Company Description",
+                    maxLine: 3,
                     controller:
                         myStartupsController.companyDescriptionController),
                 sizedTextfield,
@@ -100,7 +143,27 @@ class _AddStartupScreenState extends State<AddStartupScreen> {
         ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(12),
-          child: AppButton.primaryButton(onButtonPressed: () {}, title: "Done"),
+          child: AppButton.primaryButton(
+              onButtonPressed: () {
+                if (widget.isMyInvestment) {
+                  Helper.loader(context);
+                  myStartupsController.addEditMyInvestment(
+                      userId: widget.isEdit
+                          ? myStartupsController
+                              .startupData.myInvestments![widget.index!].id
+                          : null,
+                      isEdit: widget.isEdit);
+                } else {
+                  Helper.loader(context);
+                  myStartupsController.addPastInvestment(
+                      userId: widget.isEdit
+                          ? myStartupsController.startupData
+                              .pastInvestments![widget.index!].investmentId
+                          : null,
+                      isEdit: widget.isEdit);
+                }
+              },
+              title: "Done"),
         ),
       ),
     );

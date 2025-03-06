@@ -152,6 +152,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     Future.delayed(const Duration(milliseconds: 1000), () {
       _animationController.reverse();
     });
+    
     setState(() {});
   }
 
@@ -705,13 +706,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 size: 22,
                               ),
                             ),
-                            const SizedBox(width: 4),
-                            if (homeController
-                                .postList[index].likes!.isNotEmpty)
-                              TextWidget(
-                                  text:
-                                      "${homeController.postList[index].likes!.length}",
-                                  textSize: 13),
+                            // const SizedBox(width: 4),
+                            // if (homeController
+                            //     .postList[index].likes!.isNotEmpty)
+                            //   TextWidget(
+                            //       text:
+                            //           "${homeController.postList[index].likes!.length}",
+                            //       textSize: 13),
                           ],
                         ),
                         InkWell(
@@ -725,13 +726,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 color: AppColors.whiteCard,
                                 size: 21,
                               ),
-                              const SizedBox(width: 4),
-                              if (homeController
-                                  .postList[index].comments!.isNotEmpty)
-                                TextWidget(
-                                    text:
-                                        "${homeController.postList[index].comments!.length}",
-                                    textSize: 13),
+                              // const SizedBox(width: 4),
+                              // if (homeController
+                              //     .postList[index].comments!.isNotEmpty)
+                              //   TextWidget(
+                              //       text:
+                              //           "${homeController.postList[index].comments!.length}",
+                              //       textSize: 13),
                             ],
                           ),
                         ),

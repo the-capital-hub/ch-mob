@@ -5,6 +5,7 @@ import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../utils/constant/asset_constant.dart';
@@ -25,7 +26,9 @@ class _LiveDealScreenState extends State<LiveDealScreen> {
   LiveDealsController liveDealsController = Get.put(LiveDealsController());
   @override
   void initState() {
-    liveDealsController.getLiveDeals();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      liveDealsController.getLiveDeals();
+    });
     super.initState();
   }
 

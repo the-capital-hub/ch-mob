@@ -5,6 +5,7 @@ import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 
 import '../../utils/appcolors/app_colors.dart';
@@ -21,7 +22,9 @@ class _MyStartupScreenState extends State<MyStartupScreen> {
   MyStartupsController myStartupsController = Get.put(MyStartupsController());
   @override
   void initState() {
-    myStartupsController.getStartupsList();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      myStartupsController.getStartupsList();
+    });
     super.initState();
   }
 
@@ -34,8 +37,8 @@ class _MyStartupScreenState extends State<MyStartupScreen> {
         backgroundColor: AppColors.transparent,
         appBar: HelperAppBar.appbarHelper(
             title: "My Startups", autoAction: true, hideBack: true),
-        body: Obx(()=>
-          myStartupsController.isLoading.value
+        body: Obx(
+          () => myStartupsController.isLoading.value
               ? Helper.pageLoading()
               : SingleChildScrollView(
                   child: Padding(
@@ -65,161 +68,200 @@ class _MyStartupScreenState extends State<MyStartupScreen> {
                         sizedTextfield,
                         SizedBox(
                           height: 210,
-                          child: ListView.separated(
-                            itemCount: myStartupsController
-                                .startupData.myInvestments!.length,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return const SizedBox(width: 12);
-                            },
-                            itemBuilder: (BuildContext context, int index) {
-                              return Stack(
-                                children: [
-                                  Container(
-                                    width: Get.width / 1.3,
-                                    padding: const EdgeInsets.all(12),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.blackCard,
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                          color: AppColors.white38, width: 0.4),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                          child: myStartupsController
+                                  .startupData.myInvestments!.isEmpty
+                              ? const Center(
+                                  child: TextWidget(
+                                      text: "No Data Found", textSize: 14))
+                              : ListView.separated(
+                                  itemCount: myStartupsController
+                                      .startupData.myInvestments!.length,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return const SizedBox(width: 12);
+                                  },
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Stack(
                                       children: [
-                                        Row(
-                                          children: [
-                                            CircleAvatar(
-                                              radius: 22,
-                                              backgroundImage: NetworkImage(
-                                                  "${myStartupsController.startupData.myInvestments![index].logo}"),
-                                            ),
-                                            SizedBox(width: 8),
-                                            TextWidget(
+                                        Container(
+                                          width: Get.width / 1.3,
+                                          padding: const EdgeInsets.all(12),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.blackCard,
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            border: Border.all(
+                                                color: AppColors.white38,
+                                                width: 0.4),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  CircleAvatar(
+                                                    radius: 22,
+                                                    backgroundImage: NetworkImage(
+                                                        "${myStartupsController.startupData.myInvestments![index].logo}"),
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Expanded(
+                                                    child: TextWidget(
+                                                      text:
+                                                          "${myStartupsController.startupData.myInvestments![index].name}",
+                                                      textSize: 15,
+                                                      maxLine: 2,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 12)
+                                                ],
+                                              ),
+                                              const SizedBox(height: 6),
+                                              TextWidget(
                                                 text:
-                                                    "${myStartupsController.startupData.myInvestments![index].name}",
-                                                textSize: 15),
-                                          ],
+                                                    "${myStartupsController.startupData.myInvestments![index].description}",
+                                                textSize: 13,
+                                                maxLine: 5,
+                                              ),
+                                              const Spacer(),
+                                              Divider(
+                                                color: AppColors.white54,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Icon(Icons.local_atm,
+                                                      color: AppColors.white),
+                                                  const SizedBox(width: 6),
+                                                  TextWidget(
+                                                      text:
+                                                          "Invested: ${myStartupsController.startupData.myInvestments![index].investedEquity}% Equity",
+                                                      textSize: 13),
+                                                ],
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                        const SizedBox(height: 6),
-                                        TextWidget(
-                                          text:
-                                              "${myStartupsController.startupData.myInvestments![index].description}",
-                                          textSize: 13,
-                                          maxLine: 5,
-                                        ),
-                                        const Spacer(),
-                                        Divider(
-                                          color: AppColors.white54,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Icon(Icons.local_atm,
-                                                color: AppColors.white),
-                                            const SizedBox(width: 6),
-                                            TextWidget(
-                                                text:
-                                                    "Invested: ${myStartupsController.startupData.myInvestments![index].investedEquity}% Equity",
-                                                textSize: 13),
-                                          ],
-                                        )
+                                        Positioned(
+                                            right: 6,
+                                            top: 6,
+                                            child: InkWell(
+                                              onTap: () {
+                                                Get.to(() => AddStartupScreen(
+                                                    isMyInvestment: true,
+                                                    index: index,
+                                                    isEdit: true));
+                                              },
+                                              child: CircleAvatar(
+                                                  backgroundColor:
+                                                      AppColors.whiteShade,
+                                                  radius: 12,
+                                                  child: Icon(Icons.edit,
+                                                      size: 16,
+                                                      color: AppColors.black)),
+                                            )),
                                       ],
-                                    ),
-                                  ),
-                                  Positioned(
-                                      right: 6,
-                                      top: 6,
-                                      child: InkWell(
-                                        onTap: () {
-                                          Get.to(() => AddStartupScreen(
-                                              isMyInvestment: true,
-                                              isEdit: true));
-                                        },
-                                        child: CircleAvatar(
-                                            backgroundColor:
-                                                AppColors.whiteShade,
-                                            radius: 12,
-                                            child: Icon(Icons.edit,
-                                                size: 16,
-                                                color: AppColors.black)),
-                                      )),
-                                ],
-                              );
-                            },
-                          ),
+                                    );
+                                  },
+                                ),
                         ),
                         sizedTextfield,
                         const TextWidget(text: "My Interests", textSize: 15),
                         sizedTextfield,
                         SizedBox(
                           height: 240,
-                          child: ListView.separated(
-                            itemCount: myStartupsController
-                                .startupData.myInterests!.length,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return const SizedBox(width: 12);
-                            },
-                            itemBuilder: (BuildContext context, int index) {
-                              return Stack(
-                                children: [
-                                  Container(
-                                    width: Get.width / 1.3,
-                                    padding: const EdgeInsets.all(12),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.blackCard,
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                          color: AppColors.white38, width: 0.4),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                          child: myStartupsController
+                                  .startupData.myInterests!.isEmpty
+                              ? const Center(
+                                  child: TextWidget(
+                                      text: "No Data Found", textSize: 14))
+                              : ListView.separated(
+                                  itemCount: myStartupsController
+                                      .startupData.myInterests!.length,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return const SizedBox(width: 12);
+                                  },
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Stack(
                                       children: [
-                                        Row(
-                                          children: [
-                                            CircleAvatar(
-                                              radius: 22,
-                                              backgroundImage: NetworkImage(
-                                                  "${myStartupsController.startupData.myInterests![index].logo}"),
-                                            ),
-                                            SizedBox(width: 8),
-                                            Expanded(
-                                              child: TextWidget(
-                                                  text:
-                                                      "${myStartupsController.startupData.myInterests![index].name}",
-                                                  textSize: 15,maxLine: 2),
-                                            ),
-                                          ],
+                                        Container(
+                                          width: Get.width / 1.3,
+                                          padding: const EdgeInsets.all(12),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.blackCard,
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            border: Border.all(
+                                                color: AppColors.white38,
+                                                width: 0.4),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  CircleAvatar(
+                                                    radius: 22,
+                                                    backgroundImage: NetworkImage(
+                                                        "${myStartupsController.startupData.myInterests![index].logo}"),
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Expanded(
+                                                    child: TextWidget(
+                                                        text:
+                                                            "${myStartupsController.startupData.myInterests![index].name}",
+                                                        textSize: 15,
+                                                        maxLine: 2),
+                                                  ),
+                                                  const SizedBox(width: 12),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 6),
+                                              TextWidget(
+                                                text:
+                                                    "${myStartupsController.startupData.myInterests![index].description}",
+                                                textSize: 13,
+                                                maxLine: 8,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        const SizedBox(height: 6),
-                                        TextWidget(
-                                          text:
-                                              "${myStartupsController.startupData.myInterests![index].description}",
-                                          textSize: 13,
-                                          maxLine: 8,
-                                        ),
+                                        Positioned(
+                                            right: 8,
+                                            top: 8,
+                                            child: InkWell(
+                                              onTap: () {
+                                                myStartupsController
+                                                    .isLoading.value = true;
+                                                myStartupsController
+                                                    .delMyIntrest(
+                                                        myStartupsController
+                                                            .startupData
+                                                            .myInterests![index]
+                                                            .companyId);
+                                              },
+                                              child: CircleAvatar(
+                                                  backgroundColor:
+                                                      AppColors.redColor,
+                                                  radius: 11,
+                                                  child: Icon(
+                                                      Icons.remove_circle,
+                                                      size: 16,
+                                                      color: AppColors
+                                                          .whiteShade)),
+                                            )),
                                       ],
-                                    ),
-                                  ),
-                                  Positioned(
-                                      right: 8,
-                                      top: 8,
-                                      child: CircleAvatar(
-                                          backgroundColor: AppColors.redColor,
-                                          radius: 11,
-                                          child: Icon(Icons.remove_circle,
-                                              size: 16,
-                                              color: AppColors.whiteShade))),
-                                ],
-                              );
-                            },
-                          ),
+                                    );
+                                  },
+                                ),
                         ),
                         sizedTextfield,
                         Row(
@@ -243,6 +285,14 @@ class _MyStartupScreenState extends State<MyStartupScreen> {
                           ],
                         ),
                         sizedTextfield,
+                        if (myStartupsController
+                            .startupData.pastInvestments!.isEmpty)
+                          const SizedBox(
+                              height: 200,
+                              child: Center(
+                                child: TextWidget(
+                                    text: "No Data Found", textSize: 14),
+                              )),
                         ListView.separated(
                           itemCount: myStartupsController
                               .startupData.pastInvestments!.length,
@@ -274,14 +324,17 @@ class _MyStartupScreenState extends State<MyStartupScreen> {
                                             backgroundImage: NetworkImage(
                                                 "${myStartupsController.startupData.pastInvestments![index].logo}"),
                                           ),
-                                          SizedBox(width: 8),
-                                          TextWidget(
-                                              text:
-                                                  "${myStartupsController.startupData.pastInvestments![index].name}",
-                                              textSize: 15),
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: TextWidget(
+                                                text:
+                                                    "${myStartupsController.startupData.pastInvestments![index].name}",
+                                                textSize: 15),
+                                          ),
+                                          const SizedBox(width: 12),
                                         ],
                                       ),
-                                      SizedBox(height: 6),
+                                      const SizedBox(height: 6),
                                       TextWidget(
                                         text:
                                             "${myStartupsController.startupData.pastInvestments![index].description}",
@@ -298,6 +351,7 @@ class _MyStartupScreenState extends State<MyStartupScreen> {
                                       onTap: () {
                                         Get.to(() => AddStartupScreen(
                                             isMyInvestment: false,
+                                            index: index,
                                             isEdit: true));
                                       },
                                       child: CircleAvatar(
