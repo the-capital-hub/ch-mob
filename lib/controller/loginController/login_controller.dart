@@ -474,11 +474,9 @@ class LoginController extends GetxController {
             isInvestor: GetStoreData.getStore.read('isInvestor')),
       );
 
-   if (GetStoreData.getStore.read('isInvestor') == false &&
-          selectedRoleIndex == 0) {
+   if (GetStoreData.getStore.read('isInvestor') == false) {
         Get.offAll(const LandingScreen());
-      } else if (GetStoreData.getStore.read('isInvestor') == true &&
-          selectedRoleIndex == 1) {
+      } else if (GetStoreData.getStore.read('isInvestor') == true) {
         Get.offAll(const LandingScreenInvestor(),
             transition: Transition.fadeIn, duration: transDuration);
       } else {

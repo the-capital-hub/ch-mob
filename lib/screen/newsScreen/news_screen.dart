@@ -1,4 +1,5 @@
 import 'package:capitalhub_crm/controller/newsController/news_controller.dart';
+import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -8,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../utils/appcolors/app_colors.dart';
 import '../../utils/constant/app_var.dart';
+import '../../utils/getStore/get_store.dart';
 import '../../widget/appbar/appbar.dart';
 import '../../widget/textwidget/text_widget.dart';
 import '../drawerScreen/drawer_screen.dart';
@@ -35,7 +37,9 @@ class _NewsScreenState extends State<NewsScreen> {
       decoration: bgDec,
       child: Scaffold(
           backgroundColor: AppColors.transparent,
-          drawer: const DrawerWidget(),
+          drawer: GetStoreData.getStore.read('isInvestor')
+              ? const DrawerWidgetInvestor()
+              : const DrawerWidget(),
           appBar: HelperAppBar.appbarHelper(
               title: "News", hideBack: true, autoAction: true),
           body: Obx(() => newsController.isLoading.value

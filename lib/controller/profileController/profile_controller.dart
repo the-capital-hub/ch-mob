@@ -128,7 +128,7 @@ class ProfileController extends GetxController {
     var data = json.decode(response.body);
     if (data['status'] == true) {
       ProfileModel profileModel = ProfileModel.fromJson(data);
-      profileData = profileModel.data!;
+      profileData = profileModel.data;
       Get.back();
       Get.back();
     } else {

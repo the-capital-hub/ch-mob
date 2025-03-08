@@ -8,11 +8,13 @@ import 'package:get/get.dart';
 class PollWidgetProfile extends StatefulWidget {
   final List<PollOptionData> pollOptions;
   final int totalVotes;
+  final double? height;
   final List<String> myVotes;
 
   PollWidgetProfile({
     required this.pollOptions,
     required this.myVotes,
+    this.height,
     required this.totalVotes,
   });
 
@@ -25,6 +27,7 @@ class _PollWidgetProfileState extends State<PollWidgetProfile> {
   late List<PollOptionData> pollOptions;
   late List<String> myVotes;
   late int totalVotes;
+  late double? height;
 
   @override
   void initState() {
@@ -32,6 +35,7 @@ class _PollWidgetProfileState extends State<PollWidgetProfile> {
     pollOptions = widget.pollOptions;
     myVotes = widget.myVotes;
     totalVotes = widget.totalVotes;
+    height = widget.height;
   }
 
   // Calculate percentage for each poll option
@@ -55,7 +59,7 @@ class _PollWidgetProfileState extends State<PollWidgetProfile> {
                     borderRadius: BorderRadius.circular(8),
                     color: Colors.grey[300],
                   ),
-                  height: 26,
+                  height: height ?? 26,
                   child: Stack(
                     children: [
                       Container(

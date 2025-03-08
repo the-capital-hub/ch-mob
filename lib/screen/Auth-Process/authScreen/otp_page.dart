@@ -119,7 +119,9 @@ class _OtpPageState extends State<OtpPage> {
                     text:
                         "Resend ${_isTimerRunning ? ": $_timerSeconds sec" : ""}",
                     textSize: 16,
-                    color: AppColors.primary,
+                    color: loginMobileController.selectedRoleIndex == 0
+                        ? AppColors.primary
+                        : AppColors.primaryInvestor,
                   ),
                 ),
                 // const Spacer(),
@@ -130,6 +132,12 @@ class _OtpPageState extends State<OtpPage> {
             padding: EdgeInsets.all(12),
             child: AppButton.primaryButton(
                 title: 'Verify',
+                bgColor: loginMobileController.selectedRoleIndex == 0
+                    ? AppColors.primary
+                    : AppColors.primaryInvestor,
+                textColor: loginMobileController.selectedRoleIndex == 0
+                    ? AppColors.white
+                    : AppColors.black,
                 onButtonPressed: () {
                   loginMobileController.verifyOtpApi(context);
                 }),

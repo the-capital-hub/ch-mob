@@ -539,7 +539,7 @@ class CompanyData {
         socialLinks: List<dynamic>.from(json["socialLinks"].map((x) => x)),
         stage: json["stage"],
         age: json["age"],
-        lastFunding: json["lastFunding"],
+        lastFunding: json["lastFunding"]??'',
       );
 
   Map<String, dynamic> toJson() => {
@@ -682,7 +682,7 @@ class TopVoice {
 
   factory TopVoice.fromJson(Map<String, dynamic> json) => TopVoice(
         description: json["description"],
-        postsCount: json["postsCount"],
+        postsCount: json["postsCount"].toDouble(),
       );
 
   Map<String, dynamic> toJson() => {

@@ -58,14 +58,16 @@ class _ProfileScreenState extends State<ProfileScreen>
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
       _tabController = TabController(length: tabs.length, vsync: this);
       await profileController.getProfile().then((val) {
-        profilePercentageValue = double.parse(profileController
-            .profileData.banner!.profileCompletionPercentage
-            .replaceAll('%', ''));
-        profileValueInDecimal = profilePercentageValue / 100;
-        companyPercentageValue = double.parse(profileController
-            .profileData.banner!.companyCompletionPercentage
-            .replaceAll('%', ''));
-        companyValueInDecimal = companyPercentageValue / 100;
+        if (profileController.profileData.banner != null) {
+          profilePercentageValue = double.parse(profileController
+              .profileData.banner!.profileCompletionPercentage
+              .replaceAll('%', ''));
+          profileValueInDecimal = profilePercentageValue / 100;
+          companyPercentageValue = double.parse(profileController
+              .profileData.banner!.companyCompletionPercentage
+              .replaceAll('%', ''));
+          companyValueInDecimal = companyPercentageValue / 100;
+        }
       });
       await profileController.getProfilePost(0);
     });
@@ -533,8 +535,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                                       index]
                                                                   .images!
                                                                   .isEmpty
-                                                              ? const SizedBox(
-                                                                  height: 145)
+                                                              ? const SizedBox()
                                                               : Column(
                                                                   children: [
                                                                       SizedBox(

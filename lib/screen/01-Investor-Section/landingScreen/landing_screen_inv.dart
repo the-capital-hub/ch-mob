@@ -1,10 +1,19 @@
 import 'package:capitalhub_crm/controller/homeController/home_controller.dart';
+import 'package:capitalhub_crm/model/01-StartupModel/communityModel/myCommunitiesModel/my_communities_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
+import '../../../controller/notificationController/notification_controller.dart';
 import '../../../utils/appcolors/app_colors.dart';
 import '../../../widget/textwidget/text_widget.dart';
+import '../../Auth-Process/authScreen/signup_info_page.dart';
+import '../../chatScreen/community_screen.dart';
+import '../../communityScreen/myCommunityScreen/my_community_screen.dart';
+import '../../createPostScreen/create_post_screen.dart';
 import '../../exploreScreen/explore_screen.dart';
 import '../../homeScreen/home_screen.dart';
+import '../../oneLinkScreen/one_link_screen.dart';
+import '../../profileScreen/profile_screen.dart';
 import '../exploreScreen/explore_screen_inv.dart';
 import '../homeScreen/home_screen_inv.dart';
 import '../profileScreen/profile_screen_inv.dart';
@@ -21,21 +30,36 @@ class LandingScreenInvestor extends StatefulWidget {
 
 class _LandingScreenInvestorState extends State<LandingScreenInvestor> {
   HomeController homeController = Get.put(HomeController());
+  NotificaitonController notificaitonController =
+      Get.put(NotificaitonController());
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      notificaitonController.getNotificationCount().then((val) {
+        {
+          if (notificaitonController.isRequiredFieldsExist == false) {
+            Get.offAll(const SignupInfoScreen());
+          }
+        }
+      });
+    });
+  }
+
   List icons = [
     Icons.home,
-    Icons.explore,
-    Icons.schedule,
+    Icons.link,
+    Icons.add_box,
     Icons.groups,
     Icons.person,
   ];
-  List title = ["Home", "Explore", "My Schedule", "Syndicates", "Profile"];
+  List title = ["Home", "One link", "Post", "Community", "Profile"];
   List screen = [
-    // const HomeScreenInvestor(),
     const HomeScreen(),
-    const ExploreScreen(),
-    const ExploreScreenInvestor(),
-    const SyndicatesScreenInvestor(),
-    const ProfileScreenInvestor()
+    const OneLinkScreeen(),
+    CreatePostScreen(),
+    const MyCommunityScreen(),
+    const ProfileScreen()
   ];
   @override
   Widget build(BuildContext context) {
@@ -43,7 +67,7 @@ class _LandingScreenInvestorState extends State<LandingScreenInvestor> {
       backgroundColor: AppColors.black,
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.only(top: 8, bottom: 8, left: 12, right:12),
+        padding: const EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
         decoration: BoxDecoration(
           color: AppColors.blackCard,
           borderRadius: const BorderRadius.only(

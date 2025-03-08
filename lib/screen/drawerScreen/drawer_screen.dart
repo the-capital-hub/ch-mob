@@ -47,6 +47,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../controller/homeController/home_controller.dart';
 import '../../controller/profileController/profile_controller.dart';
 import '../../utils/appcolors/app_colors.dart';
 import '../../utils/getStore/get_store.dart';
@@ -66,6 +67,7 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
   final ProfileController profileController = Get.put(ProfileController());
+  HomeController homeController = Get.find();
 
   // final LogoutDialog _logout = LogoutDialog();
   List<String> items = [
@@ -230,6 +232,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         } else {
                           return InkWell(
                             onTap: () {
+                              if (index == 0) {
+                                homeController.selectIndex = 0;
+                              }
                               Get.to(page[index]);
                             },
                             child: Container(

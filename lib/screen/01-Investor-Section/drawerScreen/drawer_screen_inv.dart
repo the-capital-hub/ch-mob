@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:capitalhub_crm/screen/01-Investor-Section/landingScreen/landing_screen_inv.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityHomeScreen/community_home_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityLandingScreen/create_community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/exploreCommunityScreen/explore_community_screen.dart';
@@ -23,10 +24,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import '../../../controller/homeController/home_controller.dart';
 import '../../../utils/appcolors/app_colors.dart';
 import '../../../utils/getStore/get_store.dart';
 import '../../../widget/textwidget/text_widget.dart';
+import '../../connectionScreen/connection_screen.dart';
 import '../../liveDealsScreen/live_deal_screen.dart';
+import '../../newsScreen/news_screen.dart';
+import '../../savedPostScreen/saved_post_screen.dart';
 
 class DrawerWidgetInvestor extends StatefulWidget {
   const DrawerWidgetInvestor({super.key});
@@ -37,6 +42,7 @@ class DrawerWidgetInvestor extends StatefulWidget {
 
 class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
   // final ProfileController profileController = Get.put(ProfileController());
+  HomeController homeController = Get.find();
 
   List<String> items = [
     "Home",
@@ -47,6 +53,9 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     "My Startups",
     "Community",
     "Meetings",
+    "News",
+    "Saved Post",
+    "Connection",
     "Log Out",
   ];
   List<String> communitySubItems = [
@@ -70,10 +79,13 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     PngAssetPath.mystartupIcon,
     PngAssetPath.communityIcon,
     PngAssetPath.meetingIcon,
+    PngAssetPath.newsIcon,
+    PngAssetPath.saveIcon,
+    PngAssetPath.teamIcon,
     PngAssetPath.logoutIcon,
   ];
   List page = [
-    const LandingScreen(),
+    const LandingScreenInvestor(),
     const CompanyInvScreen(),
     const ExploreScreen(),
     const LiveDealScreen(),
@@ -81,6 +93,9 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     const MyStartupScreen(),
     const CommunityHomeScreen(),
     const EventsScreen(),
+    const NewsScreen(),
+    const SavedPostScreen(),
+    const ConnectionScreen(),
     const LogoutScreen(),
   ];
   List communitySubPages = [
@@ -179,6 +194,9 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
                           } else {
                             return InkWell(
                               onTap: () {
+                                if (index == 0) {
+                                  homeController.selectIndex = 0;
+                                }
                                 Get.to(page[index]);
                               },
                               child: Container(

@@ -187,8 +187,8 @@ class _SignupByNumberScreenState extends State<SignupByNumberScreen> {
                   AppButton.primaryButton(
                       onButtonPressed: () {
                         // Get.to(SignupOtpPage());
-                        loginMobileController.signupApi(context);
                         loginMobileController.base64 = _base64Image;
+                        loginMobileController.signupApi(context);
                       },
                       bgColor: loginMobileController.selectedRoleIndex == 0
                           ? AppColors.primary

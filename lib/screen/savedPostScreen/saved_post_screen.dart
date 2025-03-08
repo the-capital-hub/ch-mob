@@ -13,6 +13,11 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
+import '../../utils/getStore/get_store.dart';
+import '../01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import '../homeScreen/widget/video_player.dart';
 
 class SavedPostScreen extends StatefulWidget {
   const SavedPostScreen({super.key});
@@ -75,13 +80,16 @@ class _SavedPostScreenState extends State<SavedPostScreen>
     super.dispose();
   }
 
+  int index = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
         decoration: bgDec,
         child: Scaffold(
           backgroundColor: AppColors.transparent,
-          drawer: const DrawerWidget(),
+          drawer: GetStoreData.getStore.read('isInvestor')
+              ? const DrawerWidgetInvestor()
+              : const DrawerWidget(),
           appBar: HelperAppBar.appbarHelper(
               title: "Saved Posts", hideBack: true, autoAction: true),
           body: Padding(
@@ -99,40 +107,31 @@ class _SavedPostScreenState extends State<SavedPostScreen>
                               controller: _tabController,
                               labelPadding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 4),
-                              indicatorSize: TabBarIndicatorSize.label,
+                              indicatorSize: TabBarIndicatorSize.tab,
                               isScrollable: true,
                               tabAlignment: TabAlignment.start,
                               indicatorPadding: const EdgeInsets.symmetric(
                                   horizontal: 0, vertical: 10),
                               indicator: BoxDecoration(
-                                color: AppColors.primary,
+                                color: GetStoreData.getStore.read('isInvestor')
+                                    ? AppColors.primaryInvestor
+                                    : AppColors.primary,
                                 borderRadius: BorderRadius.circular(4.0),
                               ),
                               dividerHeight: 0,
                               onTap: (val) {
+                                index = val;
                                 savedPostController.getSavedPost(
                                     savedPostController.tabNames[val]);
                               },
+                              unselectedLabelColor: AppColors.white,
+                              labelColor:
+                                  GetStoreData.getStore.read('isInvestor')
+                                      ? AppColors.black
+                                      : AppColors.white,
                               tabs: savedPostController.tabNames
                                   .map((name) => Tab(
-                                        child: Container(
-                                          height: 35,
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: AppColors.white12,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(4.0),
-                                          ),
-                                          child: Center(
-                                            child: TextWidget(
-                                              text: name,
-                                              textSize: 14,
-                                            ),
-                                          ),
-                                        ),
+                                        text: name,
                                       ))
                                   .toList())
                           : SizedBox(),
@@ -290,6 +289,7 @@ class _SavedPostScreenState extends State<SavedPostScreen>
                                                                 .pollOptions!
                                                                 .isNotEmpty)
                                                               PollWidgetProfile(
+                                                                  height: 35,
                                                                   pollOptions: savedPostController
                                                                       .savedPost[
                                                                           index]
@@ -312,7 +312,7 @@ class _SavedPostScreenState extends State<SavedPostScreen>
                                                                     children: [
                                                                         SizedBox(
                                                                           height:
-                                                                              133,
+                                                                              150,
                                                                           child:
                                                                               PageView.builder(
                                                                             controller:
@@ -359,7 +359,38 @@ class _SavedPostScreenState extends State<SavedPostScreen>
                                                                               ),
                                                                             ),
                                                                           ),
-                                                                      ])
+                                                                      ]),
+                        //                                                if (savedPostController.savedPost[index].video_url!.isNotEmpty)
+                        //   VideoPlayerItem(
+                        //     videoUrl: savedPostController.savedPost[index].video_url!,
+                        //   ),
+                        // if (savedPostController.savedPost[index].document_url!.isNotEmpty)
+                        //   SizedBox(
+                        //       width: 150,
+                        //       height: 200,
+                        //       child: SfPdfViewer.network(savedPostController.savedPost[index].document_url!)),
+                        // if (savedPostController.savedPost[index].resharedPostData !=
+                        //         null &&
+                        //     !savedPostController.savedPost[index].resharedPostData!
+                        //         .isEmpty())
+                        //   Container(
+                        //       padding: const EdgeInsets.all(8),
+                        //       decoration: BoxDecoration(
+                        //           borderRadius: BorderRadius.circular(12),
+                        //           color: AppColors.black54),
+                        //       child: Column(
+                        //         crossAxisAlignment: CrossAxisAlignment.start,
+                        //         children: [
+                        //           TextWidget(
+                        //             text: "   Reshared Post",
+                        //             textSize: 12,
+                        //             color: AppColors.grey,
+                        //             fontWeight: FontWeight.w500,
+                        //           ),
+                        //           resharedPostPreview(index),
+                        //         ],
+                        //       ))
+                      
                                                           ],
                                                         ),
                                                       )

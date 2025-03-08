@@ -32,16 +32,14 @@ class _LandingScreenState extends State<LandingScreen> {
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      
       notificaitonController.getNotificationCount().then((val) {
         {
-          if (notificaitonController.isRequiredFieldsExist==false)
-    {Get.offAll(const SignupInfoScreen());}
+          if (notificaitonController.isRequiredFieldsExist == false) {
+            Get.offAll(const SignupInfoScreen());
+          }
         }
       });
     });
-    
-    
   }
 
   List icons = [
@@ -55,7 +53,7 @@ class _LandingScreenState extends State<LandingScreen> {
   List screen = [
     const HomeScreen(),
     const OneLinkScreeen(),
-     CreatePostScreen(),
+    CreatePostScreen(),
     const CommunityMemberScreen(),
     const ProfileScreen()
   ];

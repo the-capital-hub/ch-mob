@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../utils/appcolors/app_colors.dart';
 import '../../utils/constant/app_var.dart';
+import '../../utils/getStore/get_store.dart';
 import '../../utils/helper/helper.dart';
 import '../../widget/appbar/appbar.dart';
 import '../../widget/textwidget/text_widget.dart';
+import '../01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 import '../drawerScreen/drawer_screen.dart';
 
 class ConnectionScreen extends StatefulWidget {
@@ -32,7 +34,9 @@ class _ConnectionScreenState extends State<ConnectionScreen>
       decoration: bgDec,
       child: Scaffold(
         backgroundColor: AppColors.transparent,
-        drawer: const DrawerWidget(),
+        drawer: GetStoreData.getStore.read('isInvestor')
+            ? const DrawerWidgetInvestor()
+            : const DrawerWidget(),
         appBar: HelperAppBar.appbarHelper(
             title: "Connection", hideBack: true, autoAction: true),
         body: Padding(
@@ -48,13 +52,15 @@ class _ConnectionScreenState extends State<ConnectionScreen>
                   controller: tabController,
                   dividerHeight: 0,
                   indicator: BoxDecoration(
-                    color: AppColors.primary,
+                    color: GetStoreData.getStore.read('isInvestor')
+                        ? AppColors.primaryInvestor
+                        : AppColors.primary,
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  labelPadding: const EdgeInsets.symmetric(horizontal: 2),
+                  labelPadding: const EdgeInsets.symmetric(horizontal: 12),
                   indicatorPadding:
                       const EdgeInsets.symmetric(horizontal: 0, vertical: 5.0),
-                  indicatorSize: TabBarIndicatorSize.label,
+                  indicatorSize: TabBarIndicatorSize.tab,
                   isScrollable: true,
                   tabAlignment: TabAlignment.start,
                   onTap: (val) {
@@ -67,33 +73,20 @@ class _ConnectionScreenState extends State<ConnectionScreen>
                     }
                   },
                   tabs: const [
-                    SizedBox(
-                        width: 70,
-                        height: 40,
-                        child: Center(
-                            child: TextWidget(
-                          text: "Received",
-                          textSize: 14,
-                        ))),
-                    SizedBox(
-                        width: 70,
-                        height: 40,
-                        child: Center(
-                            child: TextWidget(
-                          text: "Sent",
-                          textSize: 14,
-                        ))),
-                    SizedBox(
-                        width: 70,
-                        height: 40,
-                        child: Center(
-                            child: TextWidget(
-                          text: "Accepted",
-                          textSize: 14,
-                        ))),
+                    Tab(
+                      text: "Received",
+                    ),
+                    Tab(
+                      text: "Sent",
+                    ),
+                    Tab(
+                      text: "Accepted",
+                    ),
                   ],
-                  labelColor: Colors.white,
-                  unselectedLabelColor: Colors.white,
+                  labelColor: GetStoreData.getStore.read('isInvestor')
+                      ? AppColors.black
+                      : AppColors.white,
+                  unselectedLabelColor: AppColors.white,
                   unselectedLabelStyle:
                       const TextStyle(fontWeight: FontWeight.normal),
                   labelStyle: const TextStyle(fontWeight: FontWeight.bold),
@@ -182,11 +175,19 @@ class _ConnectionScreenState extends State<ConnectionScreen>
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(100),
                               ),
-                              color: AppColors.primary,
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(
+                              color: GetStoreData.getStore.read('isInvestor')
+                                  ? AppColors.primaryInvestor
+                                  : AppColors.primary,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 4),
-                                child: TextWidget(text: "Accept", textSize: 12),
+                                child: TextWidget(
+                                    text: "Accept",
+                                    color:
+                                        GetStoreData.getStore.read('isInvestor')
+                                            ? AppColors.black
+                                            : AppColors.white,
+                                    textSize: 12),
                               ),
                             ),
                           ),
