@@ -31,6 +31,8 @@ class PngAssetPath {
   static const String avtar4Img = 'assets/img/onboarding&auth/avtar4.png';
   static const String avtar5Img = 'assets/img/onboarding&auth/avtar5.png';
   static const String communityImg = 'assets/img/community.png';
+  static const String addNewProductImg = 'assets/img/add_new_product.png';
+  static const String resourceUrlImg = 'assets/img/resource_url.png';
 
   static const String foxImg = 'assets/img/fox.png';
   static const String foxCurveImg = 'assets/img/fox_curved.png';
@@ -40,6 +42,7 @@ class PngAssetPath {
   static const String financialImg = 'assets/img/financial.png';
   static const String pickDeckImg = 'assets/img/pitch_deck.png';
   static const String marketingImg = 'assets/img/marketing.png';
+  static const String puechaseProductImg = 'assets/img/purchase_product.png';
   
   //drawer
   static const String homeIcon = 'assets/img/drawerIcon/home.png';
@@ -48,7 +51,7 @@ class PngAssetPath {
   static const String exploreIcon = 'assets/img/drawerIcon/explore.png';
   static const String newsIcon = 'assets/img/drawerIcon/news.png';
   static const String onelinkIcon = 'assets/img/drawerIcon/onelink.png';
-  static const String resourceIcon = 'assets/img/drawerIcon/onelink.png';
+  static const String resourceIcon = 'assets/img/drawerIcon/resource.png';
   static const String financeIcon = 'assets/img/drawerIcon/finance.png';
   static const String teamIcon = 'assets/img/drawerIcon/team.png';
   static const String customerIcon = 'assets/img/drawerIcon/customer.png';

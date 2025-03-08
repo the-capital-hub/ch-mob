@@ -35,24 +35,14 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
     "Education",];
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: bgDec,
-      child: Scaffold(
-        drawer: const DrawerWidget(),
-        backgroundColor: AppColors.transparent,
-        appBar: HelperAppBar.appbarHelper(
-          title: "Meetings",
-          hideBack: true,
-          autoAction: true,
-        ),
-        body: ListView.builder(
-            padding: const EdgeInsets.all(12),
+    return  ListView.builder(
+            padding:  EdgeInsets.zero,
             itemCount: 5,
             itemBuilder: (context, index) {
               return Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
-                color: AppColors.blackCard,
+                color: AppColors.navyBlue,
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
@@ -69,7 +59,7 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                             textSize: 20,
                             fontWeight: FontWeight.w500,
                                                  ),
-                                                 Icon(Icons.share,color: AppColors.white,)
+                                                 Icon(Icons.mobile_screen_share_rounded,color: AppColors.white,)
                          ],
                        ),
                  
@@ -184,8 +174,7 @@ Card(
                 ),
               );
             },
-          ),
-      ),
-    );
+          );
+    
   }
 }

@@ -82,6 +82,7 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
                    createdCommunityId = myCommunities.myCommunitiesDetails[index].id;
                    communityLogo = myCommunities.myCommunitiesDetails[index].image;
                    communityName = myCommunities.myCommunitiesDetails[index].community;
+                   isAdmin = myCommunities.myCommunitiesDetails[index].role=="Admin"?true:false;
                    Get.to(() =>  const CommunityLandingScreen());
                   },
                   child: Card(

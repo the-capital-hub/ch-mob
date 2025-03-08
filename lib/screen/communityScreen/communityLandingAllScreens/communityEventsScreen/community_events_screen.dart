@@ -59,587 +59,578 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> with Sing
   ];
   @override
   Widget build(BuildContext context) {
-    return Container(
-       decoration: bgDec,
-      child: Scaffold(
-        backgroundColor: AppColors.transparent,
-        
-    //     body:Padding(
-    //       padding: const EdgeInsets.only(left: 12,right: 12,bottom: 12),
-    //       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-    //           TabBar(
-                
-                
-    //             controller: _tabController,
-    //             isScrollable: true,
-               
-    //             tabAlignment: TabAlignment.start,
-                
-    //             dividerHeight: 0,
-    //                           indicator: BoxDecoration(
-    //                             color: AppColors
-    //                               .transparent,// Background color for selected tab
-                                  
-                              
-    //                          borderRadius:
-    //                               BorderRadius.circular(5), // Rounded corners
-    //                         ),// Adjust the horizontal padding to make the box wider
-    //                         indicatorSize: TabBarIndicatorSize.tab,
-    //                         labelPadding: EdgeInsets.symmetric(horizontal: 4),
-    //                         indicatorPadding: const EdgeInsets.symmetric(
-    //                             horizontal: 2.0,
-    //                             vertical:
-    //                                 5.0), 
-    //             tabs: [
-    // // Dynamically create Tabs to easily modify the background color
-    
-    //   Tab(
-    //                 child: Container(
-    //                   decoration: BoxDecoration(
-    //                     color: activeTabIndex == 0
-    //                         ? AppColors.brown
-    //                         : AppColors.white12,
-    //                     // color: Color(0xFFC8E0DA),
-    //                     borderRadius: BorderRadius.circular(20)
-                      
-    //                     // border:
-    //                     //     Border.all(color: Colors.redAccent, width: 1)
-    //                   ),
-    //                   child: Padding(
-    //                     padding: const EdgeInsets.all(12.0),
-    //                     child: Text("Upcoming"),
-    //                   ),
-    //                 ),
-    //               ),
-    //               Tab(
-    //                 child: Container(
-    //                   decoration: BoxDecoration(
-    //                     color: activeTabIndex == 1
-    //                         ? AppColors.brown
-    //                         : AppColors.white12,
-    //                     // color: Color(0xFFC8E0DA),
-    //                   borderRadius: BorderRadius.circular(20)
-    //                     // border:
-    //                     //     Border.all(color: Colors.redAccent, width: 1)
-    //                   ),
-    //                   child: Padding(
-    //                     padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 12),
-    //                     child: Text("Past"),
-    //                   ),
-    //                 ),
-    //               ),
-    //             ],
-    
-    
+    return 
       
-    //             labelColor: AppColors.white,
-    //             unselectedLabelColor: AppColors.white,
-    //             unselectedLabelStyle:
-    //                 const TextStyle(fontWeight: FontWeight.normal),
-    //             labelStyle:
-    //                 const TextStyle(fontWeight: FontWeight.normal),
-    //           ),
-    //           Expanded(
-    //               child: 
-                  
-                  
-    //               TabBarView(controller: _tabController, children: [
-    //                  ListView.builder(
-                        
-    //                     itemCount: 5,
-    //                     shrinkWrap: true,
-    //                     itemBuilder: (context, index) {
-                          
-    //                       Color containerColor =
-    //                           containerColors[index % containerColors.length];
-                     
-    //                       return Card(
-    //                         shape: RoundedRectangleBorder(
-    //                             borderRadius: BorderRadius.circular(6)),
-    //                         color: containerColor,
-    //                         child: Padding(
-    //                           padding: const EdgeInsets.all(12.0),
-    //                           child: Column(
-    //                             crossAxisAlignment: CrossAxisAlignment.start,
-    //                             children: [
-    //                               TextWidget(text: "Discovery Call", textSize: 25),
-    //                               const SizedBox(height: 8),
-    //                               Card(
-    //                                 color: AppColors.white38,
-    //                                 child: Padding(
-    //                                   padding: const EdgeInsets.all(8.0),
-    //                                   child: Row(
-    //                                     children: [
-    //                                       Container(
-    //                                         padding: const EdgeInsets.all(8.0),
-    //                                         decoration: BoxDecoration(
-    //                                             borderRadius:
-    //                                                 BorderRadius.circular(7),
-    //                                             color: AppColors.primary),
-    //                                         child: Center(
-    //                                           child: Image.asset(
-    //                                             PngAssetPath.meetingIcon,
-    //                                             color: AppColors.white,
-    //                                             height: 22,
-    //                                           ),
-    //                                         ),
-    //                                       ),
-    //                                       const SizedBox(width: 8),
-    //                                       Column(
-    //                                         crossAxisAlignment:
-    //                                             CrossAxisAlignment.start,
-    //                                         children: [
-    //                                           TextWidget(
-    //                                               text: "15 Mins",
-    //                                               textSize: 15),
-    //                                           const TextWidget(
-    //                                               text: "Video Meeting",
-    //                                               textSize: 15),
-    //                                         ],
-    //                                       ),
-    //                                       Spacer(),
-    //                                      Container(
-    //                                        padding: const EdgeInsets.symmetric(
-    //                                            horizontal: 5, vertical: 5),
-    //                                        decoration: BoxDecoration(
-    //                                          borderRadius:
-    //                                              BorderRadius.circular(20),
-    //                                          border: Border.all(
-    //                                              color: AppColors.white, width: 1),
-    //                                        ),
-    //                                        child: Row(
-    //                                          mainAxisAlignment:
-    //                                              MainAxisAlignment.center,
-    //                                          children: [
-    //                                            TextWidget(
-    //                                                text: "Rs 0 +",
-    //                                                textSize: 12),
-    //                                            const SizedBox(width: 5),
-    //                                            Icon(Icons.arrow_forward,
-    //                                                color: AppColors.white,
-    //                                                size: 12),
-    //                                                // const SizedBox(width: 5),
-                                         
-    //                                          ],
-    //                                        ),
-    //                                      ),
-    //                                     ],
-    //                                   ),
-    //                                 ),
-    //                               ),
-    //                               sizedTextfield, // You might want to customize this part
-    //                               Row(
-    //                                 children: [
-    //                                   Expanded(
-    //                                     child: ElevatedButton.icon(
-    //                                       onPressed: () {},
-    //                                       icon: Icon(Icons.file_copy_outlined,
-    //                                           color: AppColors.white, size: 14),
-    //                                       label: const TextWidget(
-    //                                           text: "Copy Link", textSize: 14),
-    //                                       style: ElevatedButton.styleFrom(
-    //                                         backgroundColor:AppColors.blue,
-    //                                       ),
-    //                                     ),
-    //                                   ),
-    //                                   const SizedBox(width: 8),
-    //                                   Expanded(
-    //                                     child: AppButton.primaryButton(
-    //                                         onButtonPressed: () {
-                                              
-    //                                           showDialog(
-    //                        context: context,
-    //                        builder: (BuildContext context) {
-    //                          return AlertDialog(
-    //                            backgroundColor: AppColors.blackCard,
-    //                            title:  TextWidget(text: 'Are you sure you want to cancel this event?', textSize: 16,maxLine: 2,),
-    //                            content: TextWidget(text: 'No. of People who have booked this event :', textSize: 16,maxLine: 2,),
-    //                            actions: [
-    //                              // "Cancel Event" button
-    //                              AppButton.primaryButton(
-    //                                title: 'Cancel Event',
-    //                                onButtonPressed: () {
-    //                                },
-    //                              ),
-    //                              sizedTextfield,
-    //                              AppButton.outlineButton(
-    //                                borderColor: AppColors.primary,
-    //                                title: 'Back',
-    //                                onButtonPressed: () {
-    //                                  // Close the dialog without performing any action
-    //                                  Navigator.of(context).pop();
-    //                                },
-                                   
-    //                              ),
-    //                            ],
-    //                          );
-    //                        },
-    //                      );
-    //                    },
-                                                  
-                                            
-    //                                         title: "Cancel Event",
-    //                                         bgColor:AppColors.redColor
-    //                                         ),
-    //                                   ),
-    //                                 ],
-    //                               ),
-    //                             ],
-    //                           ),
-    //                         ),
-    //                       );
-    //                     },
-    //                   ),
-    //                   ListView.builder(
-                        
-    //                     itemCount: 5,
-    //                     shrinkWrap: true,
-    //                     itemBuilder: (context, index) {
-                          
-    //                       Color containerColor =
-    //                           containerColors[index % containerColors.length];
-                     
-    //                       return Card(
-    //                         shape: RoundedRectangleBorder(
-    //                             borderRadius: BorderRadius.circular(6)),
-    //                         color: containerColor,
-    //                         child: Padding(
-    //                           padding: const EdgeInsets.all(12.0),
-    //                           child: Column(
-    //                             crossAxisAlignment: CrossAxisAlignment.start,
-    //                             children: [
-    //                               TextWidget(text: "Discovery Call", textSize: 25),
-    //                               const SizedBox(height: 8),
-    //                               Card(
-    //                                 color: AppColors.white38,
-    //                                 child: Padding(
-    //                                   padding: const EdgeInsets.all(8.0),
-    //                                   child: Row(
-    //                                     children: [
-    //                                       Container(
-    //                                         padding: const EdgeInsets.all(8.0),
-    //                                         decoration: BoxDecoration(
-    //                                             borderRadius:
-    //                                                 BorderRadius.circular(7),
-    //                                             color: AppColors.primary),
-    //                                         child: Center(
-    //                                           child: Image.asset(
-    //                                             PngAssetPath.meetingIcon,
-    //                                             color: AppColors.white,
-    //                                             height: 22,
-    //                                           ),
-    //                                         ),
-    //                                       ),
-    //                                       const SizedBox(width: 8),
-    //                                       Column(
-    //                                         crossAxisAlignment:
-    //                                             CrossAxisAlignment.start,
-    //                                         children: [
-    //                                           TextWidget(
-    //                                               text: "15 Mins",
-    //                                               textSize: 15),
-    //                                           const TextWidget(
-    //                                               text: "Video Meeting",
-    //                                               textSize: 15),
-    //                                         ],
-    //                                       ),
-    //                                       Spacer(),
-    //                                      Container(
-    //                                        padding: const EdgeInsets.symmetric(
-    //                                            horizontal: 5, vertical: 5),
-    //                                        decoration: BoxDecoration(
-    //                                          borderRadius:
-    //                                              BorderRadius.circular(20),
-    //                                          border: Border.all(
-    //                                              color: AppColors.white, width: 1),
-    //                                        ),
-    //                                        child: Row(
-    //                                          mainAxisAlignment:
-    //                                              MainAxisAlignment.center,
-    //                                          children: [
-    //                                            TextWidget(
-    //                                                text: "Rs 0 +",
-    //                                                textSize: 12),
-    //                                            const SizedBox(width: 5),
-    //                                            Icon(Icons.arrow_forward,
-    //                                                color: AppColors.white,
-    //                                                size: 12),
-    //                                                // const SizedBox(width: 5),
-                                         
-    //                                          ],
-    //                                        ),
-    //                                      ),
-    //                                     ],
-    //                                   ),
-    //                                 ),
-    //                               ),
-    //                               sizedTextfield, // You might want to customize this part
-    //                               Row(
-    //                                 children: [
-    //                                   Expanded(
-    //                                     child: ElevatedButton.icon(
-    //                                       onPressed: () {},
-    //                                       icon: Icon(Icons.file_copy_outlined,
-    //                                           color: AppColors.white, size: 14),
-    //                                       label: const TextWidget(
-    //                                           text: "Copy Link", textSize: 14),
-    //                                       style: ElevatedButton.styleFrom(
-    //                                         backgroundColor:AppColors.blue,
-    //                                       ),
-    //                                     ),
-    //                                   ),
-    //                                   const SizedBox(width: 8),
-    //                                   Expanded(
-    //                                     child: AppButton.primaryButton(
-    //                                         onButtonPressed: () {
-                                              
-    //                                           showDialog(
-    //                        context: context,
-    //                        builder: (BuildContext context) {
-    //                          return AlertDialog(
-    //                            backgroundColor: AppColors.blackCard,
-    //                            title:  TextWidget(text: 'Are you sure you want to cancel this event?', textSize: 16,maxLine: 2,),
-    //                            content: TextWidget(text: 'No. of People who have booked this event :', textSize: 16,maxLine: 2,),
-    //                            actions: [
-    //                              // "Cancel Event" button
-    //                              AppButton.primaryButton(
-    //                                title: 'Cancel Event',
-    //                                onButtonPressed: () {
-    //                                },
-    //                              ),
-    //                              sizedTextfield,
-    //                              AppButton.outlineButton(
-    //                                borderColor: AppColors.primary,
-    //                                title: 'Back',
-    //                                onButtonPressed: () {
-    //                                  // Close the dialog without performing any action
-    //                                  Navigator.of(context).pop();
-    //                                },
-                                   
-    //                              ),
-    //                            ],
-    //                          );
-    //                        },
-    //                      );
-    //                    },
-                                                  
-                                            
-    //                                         title: "Cancel Event",
-    //                                         bgColor:AppColors.redColor
-    //                                         ),
-    //                                   ),
-    //                                 ],
-    //                               ),
-    //                             ],
-    //                           ),
-    //                         ),
-    //                       );
-    //                     },
-    //                   ),])
-          
-            
-    //           )
-    //           ]
-    //           ),
-    //     )
-    body:Obx(() => Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: 
-            communityEvents.isLoading.value
-                ? Helper.pageLoading()
-                : 
-                communityEvents.communityEventsList[0].webinars.isEmpty
-                      ? Center(child: TextWidget(text: "No Community Events Available", textSize: 16))
-                      :
-                 ListView.builder(
-                    // padding: const EdgeInsets.all(12.0),
-                    itemCount: communityEvents.communityEventsList[0].webinars.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
+      
+        //     body:Padding(
+        //       padding: const EdgeInsets.only(left: 12,right: 12,bottom: 12),
+        //       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        //           TabBar(
+              
+              
+        //             controller: _tabController,
+        //             isScrollable: true,
+             
+        //             tabAlignment: TabAlignment.start,
+              
+        //             dividerHeight: 0,
+        //                           indicator: BoxDecoration(
+        //                             color: AppColors
+        //                               .transparent,// Background color for selected tab
+                                
+                            
+        //                          borderRadius:
+        //                               BorderRadius.circular(5), // Rounded corners
+        //                         ),// Adjust the horizontal padding to make the box wider
+        //                         indicatorSize: TabBarIndicatorSize.tab,
+        //                         labelPadding: EdgeInsets.symmetric(horizontal: 4),
+        //                         indicatorPadding: const EdgeInsets.symmetric(
+        //                             horizontal: 2.0,
+        //                             vertical:
+        //                                 5.0), 
+        //             tabs: [
+        // // Dynamically create Tabs to easily modify the background color
+        
+        //   Tab(
+        //                 child: Container(
+        //                   decoration: BoxDecoration(
+        //                     color: activeTabIndex == 0
+        //                         ? AppColors.brown
+        //                         : AppColors.white12,
+        //                     // color: Color(0xFFC8E0DA),
+        //                     borderRadius: BorderRadius.circular(20)
+                    
+        //                     // border:
+        //                     //     Border.all(color: Colors.redAccent, width: 1)
+        //                   ),
+        //                   child: Padding(
+        //                     padding: const EdgeInsets.all(12.0),
+        //                     child: Text("Upcoming"),
+        //                   ),
+        //                 ),
+        //               ),
+        //               Tab(
+        //                 child: Container(
+        //                   decoration: BoxDecoration(
+        //                     color: activeTabIndex == 1
+        //                         ? AppColors.brown
+        //                         : AppColors.white12,
+        //                     // color: Color(0xFFC8E0DA),
+        //                   borderRadius: BorderRadius.circular(20)
+        //                     // border:
+        //                     //     Border.all(color: Colors.redAccent, width: 1)
+        //                   ),
+        //                   child: Padding(
+        //                     padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 12),
+        //                     child: Text("Past"),
+        //                   ),
+        //                 ),
+        //               ),
+        //             ],
+        
+        
+    
+        //             labelColor: AppColors.white,
+        //             unselectedLabelColor: AppColors.white,
+        //             unselectedLabelStyle:
+        //                 const TextStyle(fontWeight: FontWeight.normal),
+        //             labelStyle:
+        //                 const TextStyle(fontWeight: FontWeight.normal),
+        //           ),
+        //           Expanded(
+        //               child: 
+                
+                
+        //               TabBarView(controller: _tabController, children: [
+        //                  ListView.builder(
                       
-                      Color containerColor =
-                          containerColors[index % containerColors.length];
-                 
-                      return Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)),
-                        color: containerColor,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextWidget(text: communityEvents.communityEventsList[0].webinars[index].title, textSize: 25),
-                              communityEvents.communityEventsList[0].webinars[index].isActive?const SizedBox():
-                              TextWidget(text: "This meeting is cancelled.", textSize: 16,color: AppColors.grey,),
-                              const SizedBox(height: 8),
-                              Card(
-                                color: AppColors.white38,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(8.0),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(7),
-                                            color: AppColors.primary),
-                                        child: Center(
-                                          child: Image.asset(
-                                            PngAssetPath.meetingIcon,
-                                            color: AppColors.white,
-                                            height: 22,
+        //                     itemCount: 5,
+        //                     shrinkWrap: true,
+        //                     itemBuilder: (context, index) {
+                        
+        //                       Color containerColor =
+        //                           containerColors[index % containerColors.length];
+                   
+        //                       return Card(
+        //                         shape: RoundedRectangleBorder(
+        //                             borderRadius: BorderRadius.circular(6)),
+        //                         color: containerColor,
+        //                         child: Padding(
+        //                           padding: const EdgeInsets.all(12.0),
+        //                           child: Column(
+        //                             crossAxisAlignment: CrossAxisAlignment.start,
+        //                             children: [
+        //                               TextWidget(text: "Discovery Call", textSize: 25),
+        //                               const SizedBox(height: 8),
+        //                               Card(
+        //                                 color: AppColors.white38,
+        //                                 child: Padding(
+        //                                   padding: const EdgeInsets.all(8.0),
+        //                                   child: Row(
+        //                                     children: [
+        //                                       Container(
+        //                                         padding: const EdgeInsets.all(8.0),
+        //                                         decoration: BoxDecoration(
+        //                                             borderRadius:
+        //                                                 BorderRadius.circular(7),
+        //                                             color: AppColors.primary),
+        //                                         child: Center(
+        //                                           child: Image.asset(
+        //                                             PngAssetPath.meetingIcon,
+        //                                             color: AppColors.white,
+        //                                             height: 22,
+        //                                           ),
+        //                                         ),
+        //                                       ),
+        //                                       const SizedBox(width: 8),
+        //                                       Column(
+        //                                         crossAxisAlignment:
+        //                                             CrossAxisAlignment.start,
+        //                                         children: [
+        //                                           TextWidget(
+        //                                               text: "15 Mins",
+        //                                               textSize: 15),
+        //                                           const TextWidget(
+        //                                               text: "Video Meeting",
+        //                                               textSize: 15),
+        //                                         ],
+        //                                       ),
+        //                                       Spacer(),
+        //                                      Container(
+        //                                        padding: const EdgeInsets.symmetric(
+        //                                            horizontal: 5, vertical: 5),
+        //                                        decoration: BoxDecoration(
+        //                                          borderRadius:
+        //                                              BorderRadius.circular(20),
+        //                                          border: Border.all(
+        //                                              color: AppColors.white, width: 1),
+        //                                        ),
+        //                                        child: Row(
+        //                                          mainAxisAlignment:
+        //                                              MainAxisAlignment.center,
+        //                                          children: [
+        //                                            TextWidget(
+        //                                                text: "Rs 0 +",
+        //                                                textSize: 12),
+        //                                            const SizedBox(width: 5),
+        //                                            Icon(Icons.arrow_forward,
+        //                                                color: AppColors.white,
+        //                                                size: 12),
+        //                                                // const SizedBox(width: 5),
+                                       
+        //                                          ],
+        //                                        ),
+        //                                      ),
+        //                                     ],
+        //                                   ),
+        //                                 ),
+        //                               ),
+        //                               sizedTextfield, // You might want to customize this part
+        //                               Row(
+        //                                 children: [
+        //                                   Expanded(
+        //                                     child: ElevatedButton.icon(
+        //                                       onPressed: () {},
+        //                                       icon: Icon(Icons.file_copy_outlined,
+        //                                           color: AppColors.white, size: 14),
+        //                                       label: const TextWidget(
+        //                                           text: "Copy Link", textSize: 14),
+        //                                       style: ElevatedButton.styleFrom(
+        //                                         backgroundColor:AppColors.blue,
+        //                                       ),
+        //                                     ),
+        //                                   ),
+        //                                   const SizedBox(width: 8),
+        //                                   Expanded(
+        //                                     child: AppButton.primaryButton(
+        //                                         onButtonPressed: () {
+                                            
+        //                                           showDialog(
+        //                        context: context,
+        //                        builder: (BuildContext context) {
+        //                          return AlertDialog(
+        //                            backgroundColor: AppColors.blackCard,
+        //                            title:  TextWidget(text: 'Are you sure you want to cancel this event?', textSize: 16,maxLine: 2,),
+        //                            content: TextWidget(text: 'No. of People who have booked this event :', textSize: 16,maxLine: 2,),
+        //                            actions: [
+        //                              // "Cancel Event" button
+        //                              AppButton.primaryButton(
+        //                                title: 'Cancel Event',
+        //                                onButtonPressed: () {
+        //                                },
+        //                              ),
+        //                              sizedTextfield,
+        //                              AppButton.outlineButton(
+        //                                borderColor: AppColors.primary,
+        //                                title: 'Back',
+        //                                onButtonPressed: () {
+        //                                  // Close the dialog without performing any action
+        //                                  Navigator.of(context).pop();
+        //                                },
+                                 
+        //                              ),
+        //                            ],
+        //                          );
+        //                        },
+        //                      );
+        //                    },
+                                                
+                                          
+        //                                         title: "Cancel Event",
+        //                                         bgColor:AppColors.redColor
+        //                                         ),
+        //                                   ),
+        //                                 ],
+        //                               ),
+        //                             ],
+        //                           ),
+        //                         ),
+        //                       );
+        //                     },
+        //                   ),
+        //                   ListView.builder(
+                      
+        //                     itemCount: 5,
+        //                     shrinkWrap: true,
+        //                     itemBuilder: (context, index) {
+                        
+        //                       Color containerColor =
+        //                           containerColors[index % containerColors.length];
+                   
+        //                       return Card(
+        //                         shape: RoundedRectangleBorder(
+        //                             borderRadius: BorderRadius.circular(6)),
+        //                         color: containerColor,
+        //                         child: Padding(
+        //                           padding: const EdgeInsets.all(12.0),
+        //                           child: Column(
+        //                             crossAxisAlignment: CrossAxisAlignment.start,
+        //                             children: [
+        //                               TextWidget(text: "Discovery Call", textSize: 25),
+        //                               const SizedBox(height: 8),
+        //                               Card(
+        //                                 color: AppColors.white38,
+        //                                 child: Padding(
+        //                                   padding: const EdgeInsets.all(8.0),
+        //                                   child: Row(
+        //                                     children: [
+        //                                       Container(
+        //                                         padding: const EdgeInsets.all(8.0),
+        //                                         decoration: BoxDecoration(
+        //                                             borderRadius:
+        //                                                 BorderRadius.circular(7),
+        //                                             color: AppColors.primary),
+        //                                         child: Center(
+        //                                           child: Image.asset(
+        //                                             PngAssetPath.meetingIcon,
+        //                                             color: AppColors.white,
+        //                                             height: 22,
+        //                                           ),
+        //                                         ),
+        //                                       ),
+        //                                       const SizedBox(width: 8),
+        //                                       Column(
+        //                                         crossAxisAlignment:
+        //                                             CrossAxisAlignment.start,
+        //                                         children: [
+        //                                           TextWidget(
+        //                                               text: "15 Mins",
+        //                                               textSize: 15),
+        //                                           const TextWidget(
+        //                                               text: "Video Meeting",
+        //                                               textSize: 15),
+        //                                         ],
+        //                                       ),
+        //                                       Spacer(),
+        //                                      Container(
+        //                                        padding: const EdgeInsets.symmetric(
+        //                                            horizontal: 5, vertical: 5),
+        //                                        decoration: BoxDecoration(
+        //                                          borderRadius:
+        //                                              BorderRadius.circular(20),
+        //                                          border: Border.all(
+        //                                              color: AppColors.white, width: 1),
+        //                                        ),
+        //                                        child: Row(
+        //                                          mainAxisAlignment:
+        //                                              MainAxisAlignment.center,
+        //                                          children: [
+        //                                            TextWidget(
+        //                                                text: "Rs 0 +",
+        //                                                textSize: 12),
+        //                                            const SizedBox(width: 5),
+        //                                            Icon(Icons.arrow_forward,
+        //                                                color: AppColors.white,
+        //                                                size: 12),
+        //                                                // const SizedBox(width: 5),
+                                       
+        //                                          ],
+        //                                        ),
+        //                                      ),
+        //                                     ],
+        //                                   ),
+        //                                 ),
+        //                               ),
+        //                               sizedTextfield, // You might want to customize this part
+        //                               Row(
+        //                                 children: [
+        //                                   Expanded(
+        //                                     child: ElevatedButton.icon(
+        //                                       onPressed: () {},
+        //                                       icon: Icon(Icons.file_copy_outlined,
+        //                                           color: AppColors.white, size: 14),
+        //                                       label: const TextWidget(
+        //                                           text: "Copy Link", textSize: 14),
+        //                                       style: ElevatedButton.styleFrom(
+        //                                         backgroundColor:AppColors.blue,
+        //                                       ),
+        //                                     ),
+        //                                   ),
+        //                                   const SizedBox(width: 8),
+        //                                   Expanded(
+        //                                     child: AppButton.primaryButton(
+        //                                         onButtonPressed: () {
+                                            
+        //                                           showDialog(
+        //                        context: context,
+        //                        builder: (BuildContext context) {
+        //                          return AlertDialog(
+        //                            backgroundColor: AppColors.blackCard,
+        //                            title:  TextWidget(text: 'Are you sure you want to cancel this event?', textSize: 16,maxLine: 2,),
+        //                            content: TextWidget(text: 'No. of People who have booked this event :', textSize: 16,maxLine: 2,),
+        //                            actions: [
+        //                              // "Cancel Event" button
+        //                              AppButton.primaryButton(
+        //                                title: 'Cancel Event',
+        //                                onButtonPressed: () {
+        //                                },
+        //                              ),
+        //                              sizedTextfield,
+        //                              AppButton.outlineButton(
+        //                                borderColor: AppColors.primary,
+        //                                title: 'Back',
+        //                                onButtonPressed: () {
+        //                                  // Close the dialog without performing any action
+        //                                  Navigator.of(context).pop();
+        //                                },
+                                 
+        //                              ),
+        //                            ],
+        //                          );
+        //                        },
+        //                      );
+        //                    },
+                                                
+                                          
+        //                                         title: "Cancel Event",
+        //                                         bgColor:AppColors.redColor
+        //                                         ),
+        //                                   ),
+        //                                 ],
+        //                               ),
+        //                             ],
+        //                           ),
+        //                         ),
+        //                       );
+        //                     },
+        //                   ),])
+        
+          
+        //           )
+        //           ]
+        //           ),
+        //     )
+        Obx(() => communityEvents.isLoading.value
+            ? Helper.pageLoading()
+            : 
+            communityEvents.communityEventsList[0].webinars.isEmpty
+                  ? Center(child: TextWidget(text: "No Community Events Available", textSize: 16))
+                  :
+             Column(
+               children: [
+                 Expanded(
+                   child: ListView.builder(
+                      // padding: const EdgeInsets.all(12.0),
+                      itemCount: communityEvents.communityEventsList[0].webinars.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        
+                        Color containerColor =
+                            containerColors[index % containerColors.length];
+                   
+                        return Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6)),
+                          color: containerColor,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TextWidget(text: communityEvents.communityEventsList[0].webinars[index].title, textSize: 25),
+                                communityEvents.communityEventsList[0].webinars[index].isActive?const SizedBox():
+                                TextWidget(text: "This meeting is cancelled.", textSize: 16,color: AppColors.grey,),
+                                const SizedBox(height: 8),
+                                Card(
+                                  color: AppColors.white38,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(7),
+                                              color: AppColors.primary),
+                                          child: Center(
+                                            child: Image.asset(
+                                              PngAssetPath.meetingIcon,
+                                              color: AppColors.white,
+                                              height: 22,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          TextWidget(
-                                              text: "${communityEvents.communityEventsList[0].webinars[index].duration}",
-                                              textSize: 15),
-                                          const TextWidget(
-                                              text: "Video Meeting",
-                                              textSize: 15),
-                                        ],
-                                      ),
-                                      Spacer(),
-                                     Container(
-                                       padding: const EdgeInsets.symmetric(
-                                           horizontal: 5, vertical: 5),
-                                       decoration: BoxDecoration(
-                                         borderRadius:
-                                             BorderRadius.circular(20),
-                                         border: Border.all(
-                                             color: AppColors.white, width: 1),
+                                        const SizedBox(width: 8),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            TextWidget(
+                                                text: "${communityEvents.communityEventsList[0].webinars[index].duration}",
+                                                textSize: 15),
+                                            const TextWidget(
+                                                text: "Video Meeting",
+                                                textSize: 15),
+                                          ],
+                                        ),
+                                        Spacer(),
+                                       Container(
+                                         padding: const EdgeInsets.symmetric(
+                                             horizontal: 5, vertical: 5),
+                                         decoration: BoxDecoration(
+                                           borderRadius:
+                                               BorderRadius.circular(20),
+                                           border: Border.all(
+                                               color: AppColors.white, width: 1),
+                                         ),
+                                         child: Row(
+                                           mainAxisAlignment:
+                                               MainAxisAlignment.center,
+                                           children: [
+                                             TextWidget(
+                                                 text: "Rs ${communityEvents.communityEventsList[0].webinars[index].price} +",
+                                                 textSize: 12),
+                                             const SizedBox(width: 5),
+                                             Icon(Icons.arrow_forward,
+                                                 color: AppColors.white,
+                                                 size: 12),
+                                                 // const SizedBox(width: 5),
+                                       
+                                           ],
+                                         ),
                                        ),
-                                       child: Row(
-                                         mainAxisAlignment:
-                                             MainAxisAlignment.center,
-                                         children: [
-                                           TextWidget(
-                                               text: "Rs ${communityEvents.communityEventsList[0].webinars[index].price} +",
-                                               textSize: 12),
-                                           const SizedBox(width: 5),
-                                           Icon(Icons.arrow_forward,
-                                               color: AppColors.white,
-                                               size: 12),
-                                               // const SizedBox(width: 5),
-                                     
-                                         ],
-                                       ),
-                                     ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              sizedTextfield, // You might want to customize this part
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton.icon(
-                                      onPressed: communityEvents.communityEventsList[0].webinars[index].isActive 
-    ?  () async {
-     
-      // Copy the text to the clipboard
-      await Clipboard.setData(ClipboardData(text: communityEvents.communityEventsList[0].webinars[index].webinarLink));
-
-      // Optionally, show a snackbar or a confirmation that the text was copied
-      HelperSnackBar.snackBar("Success", "Link copied to clipboard!" );
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(content: Text("Link copied to clipboard!")),
-      // );
-    }:null,
-                                      icon: Icon(Icons.file_copy_outlined,
-                                          color: AppColors.white, size: 14),
-                                      label: const TextWidget(
-                                          text: "Copy Link", textSize: 14),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppColors.blue,
-                                        disabledBackgroundColor: AppColors.grey,
-                                      ),
+                                      ],
                                     ),
                                   ),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: AppButton.primaryButton(
-                                      height: 40,
-                                        onButtonPressed: communityEvents.communityEventsList[0].webinars[index].isActive
-    ? () {
-                                          
-                                          showDialog(
-                       context: context,
-                       builder: (BuildContext context) {
-                         return AlertDialog(
-                           backgroundColor: AppColors.blackCard,
-                           title:  TextWidget(text: 'Are you sure you want to cancel this event?', textSize: 16,maxLine: 2,),
-                           content: TextWidget(text: 'No. of People who have booked this event : ${communityEvents.communityEventsList[0].webinars[index].joinedUsers.length}', textSize: 16,maxLine: 2,),
-                           actions: [
-                             // "Cancel Event" button
-                             AppButton.primaryButton(
-                               title: 'Cancel Event',
-                               onButtonPressed: () {
-                                 
-                                 // Call the delete event function
-                                 communityEvents.disableWebinar(communityEvents.communityEventsList[0].webinars[index].id);
-                                 // Close the dialog after confirming
-                                communityEvents.getCommunityEvents();
-                                //  Get.to(() => const EventsScreen(), preventDuplicates: false);
-                               },
-                               
-                             ),
-                             sizedTextfield,
-                             // "Back" button to close the dialog
-                             AppButton.outlineButton(
-                               borderColor: AppColors.primary,
-                               title: 'Back',
-                               onButtonPressed: () {
-                                 // Close the dialog without performing any action
-                                 Navigator.of(context).pop();
-                               },
-                               
-                             ),
-                           ],
-                         );
-                       },
-                     );
-                   }: null,
-                                              
-                                        
-                                        title: "Cancel Event",fontSize: 14,
-                                        bgColor:communityEvents.communityEventsList[0].webinars[index].isActive? AppColors.redColor:AppColors.grey
+                                ),
+                                sizedTextfield, // You might want to customize this part
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: ElevatedButton.icon(
+                                        onPressed: communityEvents.communityEventsList[0].webinars[index].isActive 
+                       ?  () async {
+                        
+                         // Copy the text to the clipboard
+                         await Clipboard.setData(ClipboardData(text: communityEvents.communityEventsList[0].webinars[index].webinarLink));
+                   
+                         // Optionally, show a snackbar or a confirmation that the text was copied
+                         HelperSnackBar.snackBar("Success", "Link copied to clipboard!" );
+                         // ScaffoldMessenger.of(context).showSnackBar(
+                         //   SnackBar(content: Text("Link copied to clipboard!")),
+                         // );
+                       }:null,
+                                        icon: Icon(Icons.file_copy_outlined,
+                                            color: AppColors.white, size: 14),
+                                        label: const TextWidget(
+                                            text: "Copy Link", textSize: 14),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppColors.blue,
+                                          disabledBackgroundColor: AppColors.grey,
                                         ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: AppButton.primaryButton(
+                                        height: 40,
+                                          onButtonPressed: communityEvents.communityEventsList[0].webinars[index].isActive
+                       ? () {
+                                            
+                                            showDialog(
+                         context: context,
+                         builder: (BuildContext context) {
+                           return AlertDialog(
+                             backgroundColor: AppColors.blackCard,
+                             title:  TextWidget(text: 'Are you sure you want to cancel this event?', textSize: 16,maxLine: 2,),
+                             content: TextWidget(text: 'No. of People who have booked this event : ${communityEvents.communityEventsList[0].webinars[index].joinedUsers.length}', textSize: 16,maxLine: 2,),
+                             actions: [
+                               // "Cancel Event" button
+                               AppButton.primaryButton(
+                                 title: 'Cancel Event',
+                                 onButtonPressed: () {
+                                   
+                                   // Call the delete event function
+                                   communityEvents.disableWebinar(communityEvents.communityEventsList[0].webinars[index].id);
+                                   // Close the dialog after confirming
+                                  communityEvents.getCommunityEvents();
+                                  //  Get.to(() => const EventsScreen(), preventDuplicates: false);
+                                 },
+                                 
+                               ),
+                               sizedTextfield,
+                               // "Back" button to close the dialog
+                               AppButton.outlineButton(
+                                 borderColor: AppColors.primary,
+                                 title: 'Back',
+                                 onButtonPressed: () {
+                                   // Close the dialog without performing any action
+                                   Navigator.of(context).pop();
+                                 },
+                                 
+                               ),
+                             ],
+                           );
+                         },
+                       );
+                     }: null,
+                                                
+                                          
+                                          title: "Cancel Event",fontSize: 14,
+                                          bgColor:communityEvents.communityEventsList[0].webinars[index].isActive? AppColors.redColor:AppColors.grey
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ))),
-                  bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(12),
-          // child: AppButton.primaryButton(
-          //     onButtonPressed: () {
-          //       // Get.to(() => const CreateNewWebinarScreen());
-          //       print('Current route: ${Get.toString()}'); 
-          //       Get.toNamed('/createNewWebinar');
+                        );
+                      },
+                    ),
+                 ),
+                 SizedBox(height: 12,),
+                 AppButton.primaryButton(
+              onButtonPressed: () {
+                Get.to(() => const CommunityCreateNewWebinarScreen());
+              },
+              title: "+ Create New Community Webinar"
+            )
+               ],
+             ));
                 
-          //     },
-          //     title: "+ Create Webinars"),
-          child: AppButton.primaryButton(
-  onButtonPressed: () {
-    Get.to(() => const CommunityCreateNewWebinarScreen());
-  },
-  title: "+ Create New Community Webinar"
-)
-        ),
-    )
-    );
+        
   }
 }
 

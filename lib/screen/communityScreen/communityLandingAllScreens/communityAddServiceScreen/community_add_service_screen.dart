@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/controller/exploreController/explore_controller.dart';
 import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
+import 'package:capitalhub_crm/screen/homeScreen/home_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
@@ -56,12 +58,49 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen> w
             drawer: GetStoreData.getStore.read('isInvestor')
                 ? const DrawerWidgetInvestor()
                 : const DrawerWidget(),
-            appBar: HelperAppBar.appbarHelper(
-                title: "Add New Service", hideBack: true, autoAction: true),
+            appBar: AppBar(
+          
+          backgroundColor: AppColors.black,
+          leading: 
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // IconButton(
+              //   onPressed: () {
+              //     Get.back();
+              //   },
+              //   icon: Icon(
+              //     Icons.arrow_back_ios_new_sharp,
+              //     size: 20,
+              //     color: AppColors.white,
+              //   ),
+              // ),
+              InkWell(child: Icon(Icons.arrow_back_ios_new_sharp,color: AppColors.white,),onTap: (){
+                Get.back();
+              },),
+              
+              CircleAvatar(
+                radius: 16,
+                foregroundImage: NetworkImage(communityLogo),
+              ),
+            ],
+          ),
+      
+          title: 
+          // aboutCommunity.aboutCommunityList.isEmpty
+          //       ? CircularProgressIndicator():
+          TextWidget(
+            text: communityName,
+            // aboutCommunity.aboutCommunityList[0].community.name, 
+            textSize: 16),
+          actions: [
+            IconButton(onPressed: (){Get.to(() =>  const HomeScreen());}, icon:  Icon(Icons.swap_horizontal_circle_sharp,color: AppColors.white,size: 30,))
+          ],
+        ),
             body: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // MyCustomTextField.textField(
                     //     hintText: "Search",
@@ -71,6 +110,8 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen> w
                     //       Icons.search,
                     //       color: AppColors.white54,
                     //     )),
+                    TextWidget(text: "Add New Service", textSize: 20,fontWeight: FontWeight.w500,),
+                    SizedBox(height: 12,),
                     Row(
                       children: [
                         Expanded(

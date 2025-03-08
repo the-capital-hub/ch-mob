@@ -438,7 +438,7 @@ class AllCommunities {
     String shareLink;
     String members;
     bool isCommunityMember;
-    Role role;
+    String role;
     String isAbleToJoinTag;
     bool isOpen;
     String createdAtTimeAgo;
@@ -467,7 +467,7 @@ class AllCommunities {
         shareLink: json["shareLink"],
         members: json["members"],
         isCommunityMember: json["isCommunityMember"],
-        role: roleValues.map[json["role"]]!,
+        role: json["role"],
         isAbleToJoinTag: json["isAbleToJoinTag"],
         isOpen: json["isOpen"],
         createdAtTimeAgo: json["createdAtTimeAgo"],
@@ -482,11 +482,11 @@ class AllCommunities {
         "shareLink": shareLink,
         "members": members,
         "isCommunityMember": isCommunityMember,
-        "role": roleValues.reverse[role],
-        "isAbleToJoinTag": isAbleToJoinTagValues.reverse[isAbleToJoinTag],
+        "role": role,
+        "isAbleToJoinTag": isAbleToJoinTag,
         "isOpen": isOpen,
         "createdAtTimeAgo": createdAtTimeAgo,
-        "amount": amountValues.reverse[amount],
+        "amount": amount,
     };
 }
 
