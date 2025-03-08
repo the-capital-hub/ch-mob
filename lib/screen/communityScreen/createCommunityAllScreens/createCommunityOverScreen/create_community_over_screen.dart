@@ -153,6 +153,7 @@ void initState() {
                 
                 communityLogo = aboutCommunity.aboutCommunityList[0].community.image;
                 communityName = aboutCommunity.aboutCommunityList[0].community.name;
+                isAdmin = true;
                 Get.to(() =>  const CommunityLandingScreen());
               },
               title: "Continue"),

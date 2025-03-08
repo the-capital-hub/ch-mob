@@ -86,6 +86,7 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                                                                              {createdCommunityId = allCommunities.allCommunitiesDetails[index].id;
                                                                              communityLogo = allCommunities.allCommunitiesDetails[index].image;
                                                                                                               communityName = allCommunities.allCommunitiesDetails[index].community;
+                                                                                                              isAdmin = allCommunities.allCommunitiesDetails[index].role=="Admin"?true:false;
                    Get.to(() => const CommunityPublicScreen());}
                    else if(
                     !allCommunities.allCommunitiesDetails[index].isCommunityMember&&!allCommunities.allCommunitiesDetails[index].isOpen
@@ -95,6 +96,7 @@ showCommunityDetailsPopup(context);
 createdCommunityId = allCommunities.allCommunitiesDetails[index].id;
                                                                              communityLogo = allCommunities.allCommunitiesDetails[index].image;
                                                                                                               communityName = allCommunities.allCommunitiesDetails[index].community;
+                                                                                                              isAdmin = allCommunities.allCommunitiesDetails[index].role=="Admin"?true:false;
                    Get.to(() => const CommunityLandingScreen());
                    }
                                                                           },
@@ -145,6 +147,7 @@ createdCommunityId = allCommunities.allCommunitiesDetails[index].id;
                                                                                                               createdCommunityId = allCommunities.allCommunitiesDetails[index].id;
                                                                                                               communityLogo = allCommunities.allCommunitiesDetails[index].image;
                                                                                                               communityName = allCommunities.allCommunitiesDetails[index].community;
+                                                                                                              isAdmin = allCommunities.allCommunitiesDetails[index].role=="Admin"?true:false;
                    Get.to(() =>  const CommunityLandingScreen());
                                                                                                             },
                                                                                                              child: Card(
