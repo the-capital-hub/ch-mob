@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 String createdCommunityId = "676fac57e86b189878cdfb9a";
 String communityLogo = "";
 String communityName = "";
+bool isAdmin = false;
 class CommunityController extends GetxController {
   
   var isLoading = false.obs;

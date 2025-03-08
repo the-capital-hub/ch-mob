@@ -1,4 +1,5 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityProductsAndMembersController/community_products_and_members_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityDrawerScreen/community_drawer_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
@@ -105,15 +106,18 @@ List<String> communityNames = [
                                                                           children: [
                                                                             TextWidget(text: "${communityMembers.communityMembersList[index].firstName} ${communityMembers.communityMembersList[index].lastName}", textSize: 20),
                                                                             TextWidget(text: communityMembers.communityMembersList[index].designation.toString(), textSize: 13,color: AppColors.primary,),
-                                                                            TextWidget(text: communityMembers.communityMembersList[index].company.toString(), textSize: 16),
-                                                                            TextWidget(text: communityMembers.communityMembersList[index].location.toString(), textSize: 16),
-                                                                            TextWidget(text: communityMembers.communityMembersList[index].joinedDate, textSize: 16),
+                                                                            TextWidget(text: communityMembers.communityMembersList[index].company.toString(), textSize: 15),
+                                                                            TextWidget(text: communityMembers.communityMembersList[index].location.toString(), textSize: 15),
+                                                                            TextWidget(text: communityMembers.communityMembersList[index].joinedDate, textSize: 15),
                                                                             
                                                                           ],
                                                                           
                                                                           
                                                                           
                                                                         ),
+                                                                        Spacer(),
+                                                                        // if(isAdmin)
+                                                                        IconButton(onPressed: (){}, icon: Icon(Icons.person_remove,color: AppColors.redColor,))
                                                                         
                                                                           
                                                                       ],

@@ -10,6 +10,7 @@ import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
+import 'package:capitalhub_crm/widget/dilogue/share_dilogue.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -39,158 +40,291 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration:bgDec,
-      child: Scaffold(
-        backgroundColor: AppColors.transparent,
+    return 
+      
+      
+      Obx(()=>
+      communityProducts.isLoading.value
+              ? Helper.pageLoading()
+              : 
+              communityProducts.communityProductsList.isEmpty
+                    ? Center(child: TextWidget(text: "No Products Available", textSize: 16))
+                    :
+      
+      ListView.separated(
+        separatorBuilder: (context, index) {
+                    return const SizedBox(
+                      height: 12,
+                    );},
         
-        body:Obx(()=>
-        communityProducts.isLoading.value
-                ? Helper.pageLoading()
-                : 
-                communityProducts.communityProductsList.isEmpty
-                      ? Center(child: TextWidget(text: "No Products Available", textSize: 16))
-                      :
-        
-        ListView.separated(
-          separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 12,
-                      );},
-          
-          padding: const EdgeInsets.all(12),
-          shrinkWrap: true,
-          itemCount: communityProducts.communityProductsList.length,
-          itemBuilder: (context, index) {
-            return Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              color: AppColors.navyBlue,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
-                      children: [
-                        
-                        Container(
-                         
-                        height: 200,
-                        // width : 300,
-                        // color: AppColors.brown,
-                        decoration: BoxDecoration(
-                            image:  DecorationImage(
-                                image: NetworkImage(
-                                  communityProducts.communityProductsList[index].image,
-                                ),
-                                fit: BoxFit.fill),
-                            borderRadius: BorderRadius.circular(15)),
-                      ),
-            Positioned(
-              top: 0,
-              right: 0,
-              child: Card(
-              
-                            shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                            color: AppColors.primary,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
-                              child: TextWidget(text: communityProducts.communityProductsList[index].isFree?"Free":"\u{20B9}${communityProducts.communityProductsList[index].amount}/-", textSize: 16)
-                            ),
-                          ),
-            ),
-                      ]
+        padding:  EdgeInsets.zero,
+        shrinkWrap: true,
+        itemCount: communityProducts.communityProductsList.length,
+        itemBuilder: (context, index) {
+          return Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15)),
+            color: AppColors.navyBlue,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
+                    children: [
+                      
+                      Container(
+                       
+                      height: 200,
+                      // width : 300,
+                      // color: AppColors.brown,
+                      decoration: BoxDecoration(
+                          image:  DecorationImage(
+                              image: NetworkImage(
+                                communityProducts.communityProductsList[index].image,
+                              ),
+                              fit: BoxFit.fill),
+                          borderRadius: BorderRadius.circular(15)),
                     ),
-                    sizedTextfield,
-              //       Row(
-              //         children: [
-                        
-              //           Card(
-              //             shape: RoundedRectangleBorder(
-              //   borderRadius: BorderRadius.circular(12),
-              // ),
-              //             color: AppColors.primary,
-              //             child: Padding(
-              //               padding: EdgeInsets.symmetric(horizontal: 5,vertical: 4),
-              //               child: Icon(Icons.description,color: AppColors.white,),
-              //             ),
-              //           ),
-                        
-                        
-              //         ],
-              //       ),
-                    
-                      TextWidget(
-                          text:
-                              communityProducts.communityProductsList[index].name,
-                          textSize: 18,
-                          maxLine: 2,
-                          fontWeight: FontWeight.w500,
+          Positioned(
+            top: -4,
+            left: -4,
+            child: Card(
+            
+                          shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(12),topLeft: Radius.circular(12)),
+              ),
+                          color: AppColors.primary,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+                            child: TextWidget(text: communityProducts.communityProductsList[index].isFree?"Free":"\u{20B9}${communityProducts.communityProductsList[index].amount}/-", textSize: 16)
+                          ),
                         ),
-                        SizedBox(height: 8,),
-                         HtmlWidget(
-                              communityProducts.communityProductsList[index].description,
-                              textStyle: TextStyle(fontSize: 14, color: AppColors.white,),
-                            ),
-                        // TextWidget(
-                        //   text:
-                        //       communityProducts.communityProductsList[index].description,
-                        //   textSize: 14,
-                        //   maxLine: 3,
-                          
-                        // ),
-                        SizedBox(height: 12,),
-                    
+          ),
+          if(!isAdmin)
+          Positioned(
+            top: -4,
+            right: -4,
+            child: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  icon: Icon(
+                                  
+                                Icons.mobile_screen_share_rounded,
+                                color: AppColors.whiteCard,
+                                // size: 22,
+                              ),onPressed: (){
+                                sharePostPopup(context,"","share product detail");
+                              },),),
+                        Positioned(
+            top: 8,
+            right: 8,
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: AppColors.black,
+                  child: IconButton(
+                                        padding: EdgeInsets.zero,
+                                        icon: Icon(
+                                        
+                                      Icons.edit,
+                                      color: AppColors.whiteCard,
+                                      // size: 22,
+                                    ),onPressed: (){
+                                     Get.to(() => const AddNewProductScreen());
+                                    },),
+                ),
+                SizedBox(width: 8,),
+                                  CircleAvatar(
+                                    backgroundColor: AppColors.black,
+                                    child: IconButton(
+                                        padding: EdgeInsets.zero,
+                                        icon: Icon(
+                                        
+                                      Icons.delete,
+                                      color: AppColors.whiteCard,
+                                      // size: 22,
+                                    ),onPressed: (){
+                                      showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          backgroundColor: AppColors.blackCard,
+                                          title: TextWidget(
+                                              text:
+                                                  'Are you sure you want to delete product ?',
+                                              textSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              maxLine: 2,
+                                            ),
+                                              
+                                          
+                                          actions: [
+                                            Row(
+                                              children: [
+Expanded(
+  child: AppButton.outlineButton(
+                                 borderColor: AppColors.primary,
+                                 title: 'Cancel',
+                                 onButtonPressed: () {
+                                   // Close the dialog without performing any action
+                                   Get.back();
+                                 },
+                                 
+                               ),
+),
+                             SizedBox(width:12),
+                              Expanded(
+                                child: AppButton.primaryButton(
+                                                bgColor: AppColors.primary,
+                                                title: 'Delete Product',
+                                                onButtonPressed: () {
+                                                  
+                                                },
+                                              ),
+                              ),
+                                              ],
+                                            )
+                                            
+                                           
+                                          ],
+                                        );
+                                      },
+                                    );
+                                    },),
+                                  ),
+                                  SizedBox(width: 8,),
+                                  CircleAvatar(
+                                    backgroundColor: AppColors.black,
+                                    child: IconButton(
+                                        padding: EdgeInsets.zero,
+                                        icon: Icon(
+                                        
+                                      Icons.mobile_screen_share_rounded,
+                                      color: AppColors.whiteCard,
+                                      // size: 22,
+                                    ),onPressed: (){
+                                      sharePostPopup(context,"","share product detail");
+                                    },),
+                                  ),
+              ],
+            ),),       
+                    ]
+                  ),
+                  if(isAdmin)
                   
-                    // Row(
-                    //   children: [
-                    //     Icon(
-                    //       Icons.language,
-                    //       color: AppColors.white,
-                    //       size: 22,
-                    //     ),
-                    //     const SizedBox(
-                    //       width: 5,
-                    //     ),
-                    //     const TextWidget(text: "Online", textSize: 16)
-                    //   ],
-                    // ),
-                    
-                    // sizedTextfield,
-                    
-                     Padding(
-                       padding: const EdgeInsets.symmetric(horizontal: 50),
-                       child: AppButton.primaryButton(
-                           onButtonPressed: () {
-                            if(
-                              communityProducts.communityProductsList[index].isFree && !communityProducts.communityProductsList[index].isProductPurchased
-                            ){
-                             communityProducts.buyProduct(context,communityProducts.communityProductsList[index].id);
-
-                            
-                              showDialog(
-                       context: context,
-                       builder: (BuildContext context) {
-                         return AlertDialog(
-                           backgroundColor: AppColors.blackCard,
-                           title:  Align(alignment:Alignment.center, child: TextWidget(text: 'Resource URLs', textSize: 25,fontWeight: FontWeight.bold,)),
-                           content: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                             children: [
-                               for (var i = 0; i < communityProducts.communityProductsList[index].urls.length; i++)
-                                 TextWidget(
-                                   text: communityProducts.communityProductsList[index].urls[i],
-                                   textSize: 16,
-                                   color: AppColors.primary,
+                  sizedTextfield,
+            //       Row(
+            //         children: [
+                      
+            //           Card(
+            //             shape: RoundedRectangleBorder(
+            //   borderRadius: BorderRadius.circular(12),
+            // ),
+            //             color: AppColors.primary,
+            //             child: Padding(
+            //               padding: EdgeInsets.symmetric(horizontal: 5,vertical: 4),
+            //               child: Icon(Icons.description,color: AppColors.white,),
+            //             ),
+            //           ),
+                      
+                      
+            //         ],
+            //       ),
+                  
+                    TextWidget(
+                        text:
+                            communityProducts.communityProductsList[index].name,
+                        textSize: 18,
+                        maxLine: 2,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      SizedBox(height: 8,),
+                       HtmlWidget(
+                            communityProducts.communityProductsList[index].description,
+                            textStyle: TextStyle(fontSize: 14, color: AppColors.white,),
+                          ),
+                      // TextWidget(
+                      //   text:
+                      //       communityProducts.communityProductsList[index].description,
+                      //   textSize: 14,
+                      //   maxLine: 3,
+                        
+                      // ),
+                      SizedBox(height: 12,),
+                  
+                
+                  // Row(
+                  //   children: [
+                  //     Icon(
+                  //       Icons.language,
+                  //       color: AppColors.white,
+                  //       size: 22,
+                  //     ),
+                  //     const SizedBox(
+                  //       width: 5,
+                  //     ),
+                  //     const TextWidget(text: "Online", textSize: 16)
+                  //   ],
+                  // ),
+                  
+                  // sizedTextfield,
+                  
+                   Padding(
+                     padding: const EdgeInsets.symmetric(horizontal: 50),
+                     child: AppButton.primaryButton(
+                         onButtonPressed: () {
+                          if(isAdmin)
+                          {
+                          showDialog(
+                     context: context,
+                     builder: (BuildContext context) {
+                       return AlertDialog(
+                         backgroundColor: AppColors.blackCard,
+                        //  title:  Align(alignment:Alignment.center, child: TextWidget(text: 'Resource URLs', textSize: 20,fontWeight: FontWeight.w500,)),
+                         content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                           children: [
+                            Image.asset(PngAssetPath.resourceUrlImg, height: 200,),
+                            SizedBox(height: 20),
+                            TextWidget(text: 'Resource URLs', textSize: 20,fontWeight: FontWeight.w500,),
+    
+                             for (var i = 0; i < communityProducts.communityProductsList[index].urls.length; i++)
+                               Card(
+                                color: AppColors.white12,
+                                 child: Padding(
+                                   padding: const EdgeInsets.all(8.0),
+                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                     children: [
+                                       Expanded(
+                                         child: TextWidget(
+                                           text: communityProducts.communityProductsList[index].urls[i],
+                                           textSize: 16,
+                                           color: AppColors.white,
+                                           maxLine: 4,
+                                         ),
+                                       ),
+                                       InkWell(
+                                        onTap: (){
+                                          Helper.launchUrl(
+                                                            communityProducts.communityProductsList[index].urls[i]                      );
+                                        },
+                                         child: Card(
+                                          color: AppColors.primary,
+                                          child: Padding(padding: EdgeInsets.all(8),child: TextWidget(text: "Open", textSize: 10),),
+                                         ),
+                                       )
+                                     ],
+                                   ),
                                  ),
-                             ],
-                           ),
-                           actions: [
-                             AppButton.primaryButton(
+                               ),
+                           ],
+                         ),
+                         actions: [
+                           Padding(
+                             padding: const EdgeInsets.symmetric(horizontal: 50),
+                             child: AppButton.primaryButton(
                               bgColor: AppColors.primary,
                                title: 'Close',
                                onButtonPressed: () {
@@ -199,55 +333,102 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                },
                                
                              ),
-                             
+                           ),
+                           
+                         ],
+                       );
+                     },
+                   );
+                         }
+                          else if(
+                            communityProducts.communityProductsList[index].isFree && !communityProducts.communityProductsList[index].isProductPurchased
+                          ){
+                           communityProducts.buyProduct(context,communityProducts.communityProductsList[index].id);
+    
+                          
+                            showDialog(
+                     context: context,
+                     builder: (BuildContext context) {
+                       return AlertDialog(
+                         backgroundColor: AppColors.blackCard,
+                        //  title:  Align(alignment:Alignment.center, child: TextWidget(text: 'Resource URLs', textSize: 20,fontWeight: FontWeight.w500,)),
+                         content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                           children: [
+                            Image.asset(PngAssetPath.resourceUrlImg, height: 200,),
+                            SizedBox(height: 20),
+                            TextWidget(text: 'Resource URLs', textSize: 20,fontWeight: FontWeight.w500,),
+    
+                             for (var i = 0; i < communityProducts.communityProductsList[index].urls.length; i++)
+                               Card(
+                                color: AppColors.white12,
+                                 child: Padding(
+                                   padding: const EdgeInsets.all(8.0),
+                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                     children: [
+                                       Expanded(
+                                         child: TextWidget(
+                                           text: communityProducts.communityProductsList[index].urls[i],
+                                           textSize: 16,
+                                           color: AppColors.white,
+                                           maxLine: 4,
+                                         ),
+                                       ),
+                                       InkWell(
+                                        onTap: (){
+                                          Helper.launchUrl(
+                                                            communityProducts.communityProductsList[index].urls[i]                      );
+                                        },
+                                         child: Card(
+                                          color: AppColors.primary,
+                                          child: Padding(padding: EdgeInsets.all(8),child: TextWidget(text: "Open", textSize: 10),),
+                                         ),
+                                       )
+                                     ],
+                                   ),
+                                 ),
+                               ),
                            ],
-                         );
-                       },
-                     );
-                            }
-                            else{
-                              Get.to(() =>  PurchaseScreen(index: index));
-                            }
-                                   
-                                   
-                           }, title: communityProducts.communityProductsList[index].isFree?"Access Resource":"Buy \u{20B9}${communityProducts.communityProductsList[index].amount} "),
-                     ),
-                    
-                 
-                  ],
-                ),
+                         ),
+                         actions: [
+                           Padding(
+                             padding: const EdgeInsets.symmetric(horizontal: 50),
+                             child: AppButton.primaryButton(
+                              bgColor: AppColors.primary,
+                               title: 'Close',
+                               onButtonPressed: () {
+                                 Navigator.of(context).pop();
+                                
+                               },
+                               
+                             ),
+                           ),
+                           
+                         ],
+                       );
+                     },
+                   );
+                          }
+                          else{
+                            Get.to(() =>  PurchaseScreen(index: index));
+                          }
+                                 
+                                 
+                         }, title: 
+                         
+                         isAdmin?"Access Resource":communityProducts.communityProductsList[index].isFree?"Buy for free":"Buy \u{20B9} ${communityProducts.communityProductsList[index].amount} "),
+                   ),
+                  
+               
+                ],
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
-      bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(
-            left: 12,
-            right: 12,
-            bottom: 12,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: AppButton.primaryButton(
-                    onButtonPressed: () {
-                      Get.to(() =>  const AddNewProductScreen());
-                    },
-                    title: "Add New Product"),
-              ),
-              SizedBox(width: 12,),
-              Expanded(
-                child: AppButton.primaryButton(
-                    onButtonPressed: () {
-                      Get.to(() =>  const CommunityAddServiceScreen());
-                    },
-                    title: "Add New Service"),
-              ),
-            ],
-          ),
-        ),
-      )
     );
+    
   }
 }

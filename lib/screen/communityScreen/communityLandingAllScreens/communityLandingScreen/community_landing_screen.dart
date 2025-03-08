@@ -1,8 +1,10 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityAboutController/community_about_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAboutScreen/communities_about_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityEventsScreen/community_events_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityHomeScreen/community_home_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPeopleScreen/community_people_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityProductsAndServicesScreen/community_products_and_services_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityProductsScreen/community_products_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityUpdateSettingsScreen/community_update_settings_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityOverScreen/create_community_over_screen.dart';
@@ -37,19 +39,19 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
   List icons = [
    PngAssetPath.homeIcon,
      PngAssetPath.categoryIcon,
-     PngAssetPath.meetingIcon,
      PngAssetPath.teamIcon,
+     PngAssetPath.infoIcon,
 
 
     PngAssetPath.exploreIcon
     // PngAssetPath.userIcon,
   ];
-  List title = ["Home", "Products", "Events", "People", "Settings"];
+  List title = ["Home", "Products & Services", "People", "About", "Settings"];
   List screen = [
     CommunityHomeScreen(),
-    CommunityProductsScreen(),
-    CommunityEventsScreen(),
+    CommunityProductsAndServicesScreen(),
     CommunityPeopleScreen(),
+    CommunityAboutScreen(),
     CommunityUpdateSettingsScreen()
   ];
    @override

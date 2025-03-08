@@ -341,7 +341,58 @@ class _ProfileScreenState extends State<ProfileScreen>
                         //       ),
                         //     )),
 
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 8),
+                        Card(
+                          margin: EdgeInsets.all(4),
+                          color: AppColors.blackCard,
+                          surfaceTintColor: AppColors.blackCard,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                TextWidget(
+                                    text: "Top Voice ",
+                                    textSize: 16,
+                                    fontWeight: FontWeight.w500),
+                                Icon(
+                                  Icons.shield,
+                                  color: AppColors.white,
+                                )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            TextWidget(
+                                text: profileController
+                                    .profileData.user!.topVoice.description
+                                    .toString(),
+                                textSize: 14,maxLine: 2,),
+                            const Divider(),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            LinearProgressIndicator(
+                              value: profileController.profileData.user!.topVoice
+                                  .postsCount, // 50% progress
+                              backgroundColor: AppColors
+                                  .grey700, // background color of the progress bar
+                              valueColor: const AlwaysStoppedAnimation<Color>(
+                                  AppColors.primary), // color of the progress bar
+                              borderRadius: BorderRadius.circular(20),
+                              minHeight: 5,
+                              semanticsLabel: "Post",
+                            ),
+                            const SizedBox(height: 12),
+                              ],
+                            
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 6),
 
                         TabBar(
                           indicator:
@@ -1241,7 +1292,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                     const ChatMemberScreen());
                                               },
                                               title: "Message",
-                                              width: 92,
+                                              // width: 100,
                                               fontSize: 12,
                                               height: 32)
                                         ],
@@ -1307,46 +1358,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ]),
                         ),
                         const SizedBox(height: 8),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              TextWidget(
-                                  text: "Top Voice ",
-                                  textSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              Icon(
-                                Icons.shield,
-                                color: AppColors.white,
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        TextWidget(
-                            text: profileController
-                                .profileData.user!.topVoice.description
-                                .toString(),
-                            textSize: 14),
-                        const Divider(),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        LinearProgressIndicator(
-                          value: profileController.profileData.user!.topVoice
-                              .postsCount, // 50% progress
-                          backgroundColor: AppColors
-                              .grey700, // background color of the progress bar
-                          valueColor: const AlwaysStoppedAnimation<Color>(
-                              AppColors.primary), // color of the progress bar
-                          borderRadius: BorderRadius.circular(20),
-                          minHeight: 5,
-                          semanticsLabel: "Post",
-                        ),
-                        const SizedBox(height: 12),
+                        
+                        
                         // Padding(
                         //   padding:
                         //       const EdgeInsets.symmetric(horizontal: 4),
@@ -1691,9 +1704,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     image: DecorationImage(
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fill,
                         image: NetworkImage(milestone.image!))),
               ),
+              SizedBox(height:3),
               Stack(
                 alignment: Alignment.center,
                 children: [
@@ -1712,16 +1726,17 @@ class _ProfileScreenState extends State<ProfileScreen>
                   TextWidget(text: "${milestone.completion}%", textSize: 10)
                 ],
               ),
-              TextWidget(
-                  text: "${milestone.description}",
-                  maxLine: 4,
-                  align: TextAlign.center,
-                  textSize: 12),
-              AppButton.primaryButton(
-                  onButtonPressed: ontap,
-                  title: title,
-                  fontSize: 12,
-                  height: 32)
+                               TextWidget(
+              text: "${milestone.description}",
+              maxLine: 4,
+              align: TextAlign.center,
+              textSize: 12),
+                            AppButton.primaryButton(
+              onButtonPressed: ontap,
+              title: title,
+              fontSize: 12,
+              height: 32),
+              
             ],
           ),
         ),
