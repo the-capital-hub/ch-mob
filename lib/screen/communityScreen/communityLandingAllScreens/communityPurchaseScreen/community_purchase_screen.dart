@@ -22,7 +22,7 @@ class PurchaseScreen extends StatefulWidget {
 }
 
 class _PurchaseScreenState extends State<PurchaseScreen> {
-  // TextEditingController urlController = TextEditingController();
+  TextEditingController urlController = TextEditingController();
   CommunityProductsAndMembersController communityProducts = Get.put(CommunityProductsAndMembersController());
   @override
   Widget build(BuildContext context) {

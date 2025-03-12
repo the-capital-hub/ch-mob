@@ -33,8 +33,11 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen> w
   // ExploreController exploreController = Get.put(ExploreController());
   late final TabController _tabController;
     TextEditingController input = TextEditingController();
+    TextEditingController output = TextEditingController();
   String selectedTimeline = "Hours";
   String base64 = "";
+  String selectedMonth = "Select From Community";
+  bool isAddNewMemberFieldVisible = false;
   @override
   void initState() {
     super.initState();
@@ -269,6 +272,7 @@ priorityDMTab(){
 meetingTab(){
    return SingleChildScrollView(
      child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
          children: [
              MyCustomTextField.textField(hintText: "Enter service title", controller: input,lableText: "Title"),
              SizedBox(height: 16,),
@@ -310,6 +314,92 @@ meetingTab(){
                      }
                    },
                    controller: input),
+                   SizedBox(height: 16,),
+                   TextWidget(text: "Set Time Slots", textSize: 16),
+                   SizedBox(height: 16,),
+                   Row(
+                  children: [
+                    Expanded(
+                      child: MyCustomTextField.textField(
+                        hintText: "Select Start Time",
+                        readonly: true,
+                        lableText: "Start Time",
+                        onTap: () async {
+                          DateTime? selectedTime =
+                              await selectTime(context, false);
+
+                          if (selectedTime != null) {
+                            input.text =
+                                DateFormat('hh:mm a').format(selectedTime);
+                                
+                          }
+                        },
+                        controller: input,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: MyCustomTextField.textField(
+                        hintText: "Select End Time",
+                        readonly: true,
+                        lableText: "End Time",
+                        onTap: () async {
+                          DateTime? selectedTime =
+                              await selectTime(context, false);
+
+                          if (selectedTime != null) {
+                            output.text =
+                                DateFormat('hh:mm a').format(selectedTime);
+                                
+                          }
+                        },
+                        controller: output,
+                      ),
+                    ),
+                  ],
+                ),
+                sizedTextfield,
+                TextWidget(text: "Select Member", textSize: 16),
+                sizedTextfield,
+                Container(
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: AppColors.white38),
+                                            borderRadius:
+                                                BorderRadius.circular(7)),
+                                        child: DropDownWidget(
+                                            status: selectedMonth,
+                                            statusList: const [
+                                              'Add a new member',
+                                              'dhairya.jan9@gmail.com',
+                                              'dhairya.jan9@gmail.com',
+                                              'dhairya.jan9@gmail.com',
+                                              'dhairya.jan9@gmail.com',
+                                              'dhairya.jan9@gmail.com',
+                                              
+                                            ],
+                                            onChanged: (val) {
+                                              setState(() {
+                                                selectedMonth = val.toString();
+                                                if (selectedMonth == "Add a new member")
+                                                isAddNewMemberFieldVisible = true;
+
+                                              });
+                                            }),
+                                      ),
+                                      sizedTextfield,
+                                      if(isAddNewMemberFieldVisible)
+                                      MyCustomTextField.textField(hintText: "Enter member's email", controller: input,lableText: "Add Member"),
+                                      sizedTextfield,
+                                      AppButton.primaryButton(onButtonPressed: (){
+                                        setState(() {
+                                          isAddNewMemberFieldVisible = false;
+                                        });
+                                      }, title: "Add Member"),
+                                      
+
+
+
          ]
        ),
    );

@@ -1,10 +1,17 @@
+import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityMeetingsScreen/communityMeetingBookingsScreen/community_meeting_bookings_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityProductsAndServicesScreen/community_products_and_services_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
+import 'package:capitalhub_crm/widget/datePicker/datePicker.dart';
+import 'package:capitalhub_crm/widget/dilogue/custom_dialogue.dart';
+import 'package:capitalhub_crm/widget/dilogue/share_dilogue.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CommunityMeetingsScreen extends StatefulWidget {
   const CommunityMeetingsScreen({super.key});
@@ -59,7 +66,7 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                             textSize: 20,
                             fontWeight: FontWeight.w500,
                                                  ),
-                                                 Icon(Icons.mobile_screen_share_rounded,color: AppColors.white,)
+                                                 IconButton(icon:Icon(Icons.mobile_screen_share_rounded,color: AppColors.white,),onPressed:(){sharePostPopup(context,"","share meeting details");},)
                          ],
                        ),
                  
@@ -75,7 +82,7 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                      Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-TextWidget(text: "Response Time: 1 hour", textSize: 16),
+TextWidget(text: "Duration : 45 minutes", textSize: 16),
 Card(
   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
@@ -138,21 +145,45 @@ Card(
                       const SizedBox(
                         height: 15,
                       ),
-          
+          if(isAdmin)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Expanded(
                             child: AppButton.primaryButton(
-                                onButtonPressed: (){},
-                                title: "View Bookings",
+                                onButtonPressed: (){
+                                  Get.to(() => const CommunityMeetingBookingsScreen());
+                                },
+                                title: "View Bookings (1)",
                                 
                                 ),
                           ),
                           SizedBox(width: 8,),
-                          IconButton(onPressed: (){}, icon: Icon(Icons.edit,color: AppColors.white,)),
+                          IconButton(onPressed: (){
+                             Get.to(() => const CommunityProductsAndServicesScreen());
+                          }, icon: Icon(Icons.edit,color: AppColors.white,)),
                           const SizedBox(width: 8),
-                          IconButton(onPressed: (){}, icon: Icon(Icons.delete,color: AppColors.white,)),
+                          IconButton(onPressed: (){
+                            showCustomPopup(
+      context: context,  // Pass the context
+      title: "Delete this meeting",  // Dialog Title
+      message: "Are you sure you\n want to delete this meeting?",  // Dialog Message
+      button1Text: "Cancel",  // First button text
+      button2Text: "OK",  // Second button text
+      icon: Icons.delete,  // Icon to display in the popup
+      onButton1Pressed: () {
+        // Action for the first button (e.g., Cancel)
+        Get.back();  // Close the dialog
+      },
+      onButton2Pressed: () {
+        // Action for the second button (e.g., OK)
+        Get.back();  // Close the dialog
+      },
+    );
+
+
+
+                          }, icon: Icon(Icons.delete,color: AppColors.white,)),
                           // const Icon(
                           //   Icons.schedule,
                           //   color: AppColors.redColor,
@@ -169,6 +200,38 @@ Card(
                         ],
                       ),
                       // sizedTextfield,
+AppButton.primaryButton(
+                                onButtonPressed: (){
+                                   DateTime customDate = DateTime(2023, 12, 31);
+                                  selectDate(context, customDate);
+
+                                },
+                                title: "Book Meeting",
+                                
+                                ),
+
+                                Card(
+                                  shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20), // Border radius
+              side: BorderSide(
+                color: AppColors.green, // Border color
+                width: 1, // Border width
+              ),
+            ),
+                                  color: AppColors.green.withOpacity(0.3),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Column(
+                                      children: [
+                                        AppButton.primaryButton(onButtonPressed: (){}, title: "Booked!", bgColor: AppColors.green700),
+                                        sizedTextfield,
+                                        TextWidget(text: "March 13, 2024", textSize: 16,),
+                                        sizedTextfield,
+                                        TextWidget(text: "09:00 - 09:30", textSize: 16,),
+                                      ],
+                                    ),
+                                  ),
+                                )
                     ],
                   ),
                 ),

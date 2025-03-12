@@ -6,13 +6,22 @@ import 'package:capitalhub_crm/screen/chatScreen/community_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAboutScreen/communities_about_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddNewProductScreen/community_add_new_product_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddServiceScreen/community_add_service_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityEventsScreen/communityBookingDetailsScreen/community_booking_details_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityEventsScreen/communityScheduleEventsScreen/community_schedule_events_screen.dart';
 
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityEventsScreen/community_events_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityHomeScreen/community_home_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityMeetingsScreen/communityBookAMeetingScreen/community_book_a_meeting_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityMeetingsScreen/communityMeetingBookingsScreen/community_meeting_bookings_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityMeetingsScreen/communitySelectTimeSlotScreen/community_select_time_slot_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityMeetingsScreen/community_meetings_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPeopleScreen/community_people_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPriorityDMsScreen/communityQuestionsScreen/community_questions_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPriorityDMsScreen/community_priority_dms_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityProductsScreen/community_products_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityWebinarsScreen/communityRegisterNowScreen/community_register_now_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityWebinarsScreen/communityRegisteredUsersScreen/community_registered_users_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityWebinarsScreen/community_webinars_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityOverScreen/create_community_over_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityLandingScreen/create_community_landing_screen.dart';
@@ -142,8 +151,19 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     const PriorityDMScreen()
   ];
   List communitySubPages = [
-    // const CreateCommunityLandingScreen(),
-    const CommunityWebinarsScreen(),
+    const CreateCommunityLandingScreen(),
+    // const CommunityWebinarsScreen(),
+    // const CommunityPriorityDMsScreen(),
+    // const CommunityMeetingsScreen(),
+    // const CommunityMeetingBookingsScreen(),
+    // const CommunitySelectTimeSlotScreen(),
+    // const CommunityBookAMeetingScreen(),
+    // const CommunityEventsScreen(),
+    // const CommunityBookingDetailsScreen(),
+    // const CommunityWebinarsScreen(),
+    // const CommunityRegisteredUsersScreen(),
+    // const CommunityRegisterNowScreen(), .
+    // const CommunityScheduleEventsScreen(),
     const MyCommunityScreen(),
     const ExploreCommunityScreen()
   ];

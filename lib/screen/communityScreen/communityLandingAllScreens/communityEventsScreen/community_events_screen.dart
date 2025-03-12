@@ -1,6 +1,11 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityEventsController/community_events_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityDrawerScreen/community_drawer_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddNewProductScreen/community_add_new_product_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityCreateNewWebinarScreen/community_create_new_webinar_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityEventsScreen/communityBookingDetailsScreen/community_booking_details_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityMeetingsScreen/communityBookAMeetingScreen/community_book_a_meeting_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityProductsAndServicesScreen/community_products_and_services_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
@@ -8,6 +13,8 @@ import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
+import 'package:capitalhub_crm/widget/dilogue/custom_dialogue.dart';
+import 'package:capitalhub_crm/widget/dilogue/share_dilogue.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -467,10 +474,69 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> with Sing
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                TextWidget(text: communityEvents.communityEventsList[0].webinars[index].title, textSize: 25),
+                                Row(
+                                  children: [
+                                    TextWidget(text: communityEvents.communityEventsList[0].webinars[index].title, textSize: 20),
+                                    Spacer(),
+                                    if(isAdmin)...[
+                                    IconButton(
+                                        padding: EdgeInsets.zero,
+                                        icon: Icon(
+                                        
+                                      Icons.edit,
+                                      color: AppColors.whiteCard,
+                                      size: 20,
+                                      // size: 22,
+                                    ),onPressed: (){
+                                     Get.to(() => const AddNewProductScreen());
+                                    },),
+                                     
+                        
+                        IconButton(onPressed: (){
+                          showCustomPopup(
+      context: context,  // Pass the context
+      title: "Disable this event",  // Dialog Title
+      message: "Are you sure you\nwant to disable this event?",  // Dialog Message
+      button1Text: "Cancel",  // First button text
+      button2Text: "OK",  // Second button text
+      icon: Icons.delete,  // Icon to display in the popup
+      onButton1Pressed: () {
+        // Action for the first button (e.g., Cancel)
+        Get.back();  // Close the dialog
+      },
+      onButton2Pressed: () {
+        // Action for the second button (e.g., OK)
+        Get.back();  // Close the dialog
+      },
+    );
+                        }, icon: Icon(Icons.delete,color: AppColors.white,)),
+                                    IconButton(
+                                  padding: EdgeInsets.zero,
+                                  icon: Icon(
+                                  
+                                Icons.mobile_screen_share_rounded,
+                                color: AppColors.whiteCard,
+                                // size: 22,
+                              ),onPressed: (){
+                                sharePostPopup(context,"","share event detail");
+                              },),],
+                              IconButton(
+                                  padding: EdgeInsets.zero,
+                                  icon: Icon(
+                                  
+                                Icons.mobile_screen_share_rounded,
+                                color: AppColors.whiteCard,
+                                // size: 22,
+                              ),onPressed: (){
+                                sharePostPopup(context,"","share event detail");
+                              },),
+                                  ],
+                                ),
                                 communityEvents.communityEventsList[0].webinars[index].isActive?const SizedBox():
                                 TextWidget(text: "This meeting is cancelled.", textSize: 16,color: AppColors.grey,),
                                 const SizedBox(height: 8),
+                                TextWidget(text: "Description", textSize: 16),
+                                sizedTextfield,
                                 Card(
                                   color: AppColors.white38,
                                   child: Padding(
@@ -500,7 +566,7 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> with Sing
                                                 text: "${communityEvents.communityEventsList[0].webinars[index].duration}",
                                                 textSize: 15),
                                             const TextWidget(
-                                                text: "Video Meeting",
+                                                text: "0 Bookings",
                                                 textSize: 15),
                                           ],
                                         ),
@@ -535,84 +601,93 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> with Sing
                                   ),
                                 ),
                                 sizedTextfield, // You might want to customize this part
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: ElevatedButton.icon(
-                                        onPressed: communityEvents.communityEventsList[0].webinars[index].isActive 
-                       ?  () async {
+                                if(isAdmin)
+                                AppButton.primaryButton(onButtonPressed: (){
+                                  Get.to(() => const CommunityBookingDetailsScreen());
+                                }, title: "View All Bookings"),
+                                AppButton.primaryButton(onButtonPressed: (){
+                                  
+                                }, title: "Book Now")
+
+
+                    //             Row(
+                    //               children: [
+                    //                 Expanded(
+                    //                   child: ElevatedButton.icon(
+                    //                     onPressed: communityEvents.communityEventsList[0].webinars[index].isActive 
+                    //    ?  () async {
                         
-                         // Copy the text to the clipboard
-                         await Clipboard.setData(ClipboardData(text: communityEvents.communityEventsList[0].webinars[index].webinarLink));
+                    //      // Copy the text to the clipboard
+                    //      await Clipboard.setData(ClipboardData(text: communityEvents.communityEventsList[0].webinars[index].webinarLink));
                    
-                         // Optionally, show a snackbar or a confirmation that the text was copied
-                         HelperSnackBar.snackBar("Success", "Link copied to clipboard!" );
-                         // ScaffoldMessenger.of(context).showSnackBar(
-                         //   SnackBar(content: Text("Link copied to clipboard!")),
-                         // );
-                       }:null,
-                                        icon: Icon(Icons.file_copy_outlined,
-                                            color: AppColors.white, size: 14),
-                                        label: const TextWidget(
-                                            text: "Copy Link", textSize: 14),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: AppColors.blue,
-                                          disabledBackgroundColor: AppColors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Expanded(
-                                      child: AppButton.primaryButton(
-                                        height: 40,
-                                          onButtonPressed: communityEvents.communityEventsList[0].webinars[index].isActive
-                       ? () {
+                    //      // Optionally, show a snackbar or a confirmation that the text was copied
+                    //      HelperSnackBar.snackBar("Success", "Link copied to clipboard!" );
+                    //      // ScaffoldMessenger.of(context).showSnackBar(
+                    //      //   SnackBar(content: Text("Link copied to clipboard!")),
+                    //      // );
+                    //    }:null,
+                    //                     icon: Icon(Icons.file_copy_outlined,
+                    //                         color: AppColors.white, size: 14),
+                    //                     label: const TextWidget(
+                    //                         text: "Copy Link", textSize: 14),
+                    //                     style: ElevatedButton.styleFrom(
+                    //                       backgroundColor: AppColors.blue,
+                    //                       disabledBackgroundColor: AppColors.grey,
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //                 const SizedBox(width: 8),
+                    //                 Expanded(
+                    //                   child: AppButton.primaryButton(
+                    //                     height: 40,
+                    //                       onButtonPressed: communityEvents.communityEventsList[0].webinars[index].isActive
+                    //    ? () {
                                             
-                                            showDialog(
-                         context: context,
-                         builder: (BuildContext context) {
-                           return AlertDialog(
-                             backgroundColor: AppColors.blackCard,
-                             title:  TextWidget(text: 'Are you sure you want to cancel this event?', textSize: 16,maxLine: 2,),
-                             content: TextWidget(text: 'No. of People who have booked this event : ${communityEvents.communityEventsList[0].webinars[index].joinedUsers.length}', textSize: 16,maxLine: 2,),
-                             actions: [
-                               // "Cancel Event" button
-                               AppButton.primaryButton(
-                                 title: 'Cancel Event',
-                                 onButtonPressed: () {
+                    //                         showDialog(
+                    //      context: context,
+                    //      builder: (BuildContext context) {
+                    //        return AlertDialog(
+                    //          backgroundColor: AppColors.blackCard,
+                    //          title:  TextWidget(text: 'Are you sure you want to cancel this event?', textSize: 16,maxLine: 2,),
+                    //          content: TextWidget(text: 'No. of People who have booked this event : ${communityEvents.communityEventsList[0].webinars[index].joinedUsers.length}', textSize: 16,maxLine: 2,),
+                    //          actions: [
+                    //            // "Cancel Event" button
+                    //            AppButton.primaryButton(
+                    //              title: 'Cancel Event',
+                    //              onButtonPressed: () {
                                    
-                                   // Call the delete event function
-                                   communityEvents.disableWebinar(communityEvents.communityEventsList[0].webinars[index].id);
-                                   // Close the dialog after confirming
-                                  communityEvents.getCommunityEvents();
-                                  //  Get.to(() => const EventsScreen(), preventDuplicates: false);
-                                 },
+                    //                // Call the delete event function
+                    //                communityEvents.disableWebinar(communityEvents.communityEventsList[0].webinars[index].id);
+                    //                // Close the dialog after confirming
+                    //               communityEvents.getCommunityEvents();
+                    //               //  Get.to(() => const EventsScreen(), preventDuplicates: false);
+                    //              },
                                  
-                               ),
-                               sizedTextfield,
-                               // "Back" button to close the dialog
-                               AppButton.outlineButton(
-                                 borderColor: AppColors.primary,
-                                 title: 'Back',
-                                 onButtonPressed: () {
-                                   // Close the dialog without performing any action
-                                   Navigator.of(context).pop();
-                                 },
+                    //            ),
+                    //            sizedTextfield,
+                    //            // "Back" button to close the dialog
+                    //            AppButton.outlineButton(
+                    //              borderColor: AppColors.primary,
+                    //              title: 'Back',
+                    //              onButtonPressed: () {
+                    //                // Close the dialog without performing any action
+                    //                Navigator.of(context).pop();
+                    //              },
                                  
-                               ),
-                             ],
-                           );
-                         },
-                       );
-                     }: null,
+                    //            ),
+                    //          ],
+                    //        );
+                    //      },
+                    //    );
+                    //  }: null,
                                                 
                                           
-                                          title: "Cancel Event",fontSize: 14,
-                                          bgColor:communityEvents.communityEventsList[0].webinars[index].isActive? AppColors.redColor:AppColors.grey
-                                          ),
-                                    ),
-                                  ],
-                                ),
+                    //                       title: "Cancel Event",fontSize: 14,
+                    //                       bgColor:communityEvents.communityEventsList[0].webinars[index].isActive? AppColors.redColor:AppColors.grey
+                    //                       ),
+                    //                 ),
+                    //               ],
+                    //             ),
                               ],
                             ),
                           ),
@@ -621,12 +696,12 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> with Sing
                     ),
                  ),
                  SizedBox(height: 12,),
-                 AppButton.primaryButton(
-              onButtonPressed: () {
-                Get.to(() => const CommunityCreateNewWebinarScreen());
-              },
-              title: "+ Create New Community Webinar"
-            )
+            //      AppButton.primaryButton(
+            //   onButtonPressed: () {
+            //     Get.to(() => const CommunityCreateNewWebinarScreen());
+            //   },
+            //   title: "+ Create New Community Webinar"
+            // )
                ],
              ));
                 
