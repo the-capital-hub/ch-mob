@@ -4,33 +4,16 @@ import 'package:capitalhub_crm/controller/newsController/news_controller.dart';
 import 'package:capitalhub_crm/screen/Auth-Process/authScreen/signup_info_page.dart';
 import 'package:capitalhub_crm/screen/campaignsScreen/campaign_landing_screen.dart';
 import 'package:capitalhub_crm/screen/chatScreen/community_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAboutScreen/communities_about_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddNewProductScreen/community_add_new_product_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddServiceScreen/community_add_service_screen.dart';
-
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityEventsScreen/community_events_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityHomeScreen/community_home_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPeopleScreen/community_people_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPriorityDMsScreen/community_priority_dms_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityProductsScreen/community_products_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityWebinarsScreen/community_webinars_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityOverScreen/create_community_over_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityLandingScreen/create_community_landing_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityStartScreen/create_community_start_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/exploreCommunityScreen/explore_community_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/myCommunityScreen/my_community_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPurchaseScreen/community_purchase_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communitySettingsScreen/community_settings_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityUpdateSettingsScreen/community_update_settings_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/availability_screen.dart';
-import 'package:capitalhub_crm/screen/meetingsScreen/create_new_webinar_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/events_screen.dart';
 import 'package:capitalhub_crm/screen/analyticsScreen/analytics_screen.dart';
 import 'package:capitalhub_crm/screen/companyScreen/company_screen.dart';
 import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';
 import 'package:capitalhub_crm/screen/exploreScreen/explore_screen.dart';
-import 'package:capitalhub_crm/screen/homeScreen/home_screen.dart';
 import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:capitalhub_crm/screen/logoutScreen/logout_Screen.dart';
 import 'package:capitalhub_crm/screen/manageAccountScreen/manage_account_Screen.dart';
@@ -53,7 +36,6 @@ import '../../controller/homeController/home_controller.dart';
 import '../../controller/profileController/profile_controller.dart';
 import '../../utils/appcolors/app_colors.dart';
 import '../../utils/getStore/get_store.dart';
-import '../../widget/dilogue/community_details.dart';
 import '../../widget/textwidget/text_widget.dart';
 import '../connectionScreen/connection_screen.dart';
 import '../documentationScreen/documentation_screen.dart';
@@ -146,8 +128,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     const PriorityDMScreen()
   ];
   List communitySubPages = [
-    // const CreateCommunityLandingScreen(),
-    const CommunityWebinarsScreen(),
+    const CreateCommunityLandingScreen(),
     const MyCommunityScreen(),
     const ExploreCommunityScreen()
   ];
@@ -336,155 +317,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
-  // Widget _buildExpansionTile() {
-  //   return Theme(
-  //     data: ThemeData(
-  //       dividerColor: Colors.transparent,
-  //     ),
-  //     child: ExpansionTile(
-  //       visualDensity: VisualDensity.compact,
-  //       dense: true,
-  //       tilePadding: const EdgeInsets.only(left: 20),
-  //       collapsedIconColor: AppColors.white,
-  //       iconColor: AppColors.primary,
-  //       onExpansionChanged: (bool expanded) {
-  //         setState(() {
-  //           isExpanded = expanded;
-  //         });
-  //       },
-  //       title: Row(
-  //         mainAxisAlignment: MainAxisAlignment.start,
-  //         children: [
-  //           Image.asset(
-  //             PngAssetPath.meetingIcon,
-  //             color: isExpanded ? AppColors.primary : AppColors.white,
-  //             height: 22,
-  //           ),
-  //           const SizedBox(width: 12),
-  //           TextWidget(
-  //             text: "Meetings",
-  //             textSize: 16,
-  //             fontWeight: FontWeight.w500,
-  //             maxLine: 1,
-  //             align: TextAlign.center,
-  //             color: isExpanded ? AppColors.primary : AppColors.white,
-  //           ),
-  //         ],
-  //       ),
-  //       children: meetingsSubItems.map((meetingsSubItemsTitle) {
-  //         int meetingsSubItemsIndex =
-  //             meetingsSubItems.indexOf(meetingsSubItemsTitle);
-  //         return SizedBox(
-  //           height: 30,
-  //           child: ListTile(
-  //             dense: true,
-  //             visualDensity: VisualDensity.compact,
-  //             contentPadding:
-  //                 const EdgeInsets.only(left: 55, top: 0, bottom: 0),
-  //             title: TextWidget(
-  //               text: meetingsSubItemsTitle,
-  //               textSize: 16,
-  //               fontWeight: FontWeight.w500,
-  //               maxLine: 1,
-  //               color: AppColors.white,
-  //             ),
-  //             onTap: () {
-  //               Get.to(meetingsSubPages[meetingsSubItemsIndex]);
-  //             },
-  //           ),
-  //         );
-  //       }).toList(),
-  //     ),
-  //   );
-  // }
-  // Widget _buildExpansionTile(int index) {
-  //   return Theme(
-  //     data: ThemeData(
-  //       dividerColor: Colors.transparent,
-  //     ),
-  //     child: ExpansionTile(
-  //       visualDensity: VisualDensity.compact,
-  //       dense: true,
-  //       tilePadding: const EdgeInsets.only(left: 20),
-  //       collapsedIconColor: AppColors.white,
-  //       iconColor: AppColors.primary,
-  //       onExpansionChanged: (bool expanded) {
-  //         setState(() {
-  //           isExpanded = expanded;
-  //         });
-  //       },
-  //       title: Row(
-  //         mainAxisAlignment: MainAxisAlignment.start,
-  //         children: [
-  //           Image.asset(
-  //             icons[index],
-  //             color: isExpanded ? AppColors.primary : AppColors.white,
-  //             height: 22,
-  //           ),
-  //           const SizedBox(width: 12),
-  //           TextWidget(
-  //             text: items[index],
-  //             textSize: 16,
-  //             fontWeight: FontWeight.w500,
-  //             maxLine: 1,
-  //             align: TextAlign.center,
-  //             color: isExpanded ? AppColors.primary : AppColors.white,
-  //           ),
-  //         ],
-  //       ),
-  //       children:
-  //       items[index]=="Community"?
-
-  //        communitySubItems.map((communitySubItemsTitle) {
-  //         int communitySubItemsIndex =
-  //             communitySubItems.indexOf(communitySubItemsTitle);
-  //         return SizedBox(
-  //           height: 30,
-  //           child: ListTile(
-  //             dense: true,
-  //             visualDensity: VisualDensity.compact,
-  //             contentPadding:
-  //                 const EdgeInsets.only(left: 55, top: 0, bottom: 0),
-  //             title: TextWidget(
-  //               text: communitySubItemsTitle,
-  //               textSize: 16,
-  //               fontWeight: FontWeight.w500,
-  //               maxLine: 1,
-  //               color: AppColors.white,
-  //             ),
-  //             onTap: () {
-  //               Get.to(communitySubPages[communitySubItemsIndex]);
-  //             },
-  //           ),
-  //         );
-  //       }).toList():
-  //       meetingsSubItems.map((meetingsSubItemsTitle) {
-  //         int meetingsSubItemsIndex =
-  //             meetingsSubItems.indexOf(meetingsSubItemsTitle);
-  //         return SizedBox(
-  //           height: 30,
-  //           child: ListTile(
-  //             dense: true,
-  //             visualDensity: VisualDensity.compact,
-  //             contentPadding:
-  //                 const EdgeInsets.only(left: 55, top: 0, bottom: 0),
-  //             title: TextWidget(
-  //               text: meetingsSubItemsTitle,
-  //               textSize: 16,
-  //               fontWeight: FontWeight.w500,
-  //               maxLine: 1,
-  //               color: AppColors.white,
-  //             ),
-  //             onTap: () {
-  //               Get.to(meetingsSubPages[meetingsSubItemsIndex]);
-  //             },
-  //           ),
-  //         );
-  //       }).toList()
-  //     ),
-  //   );
-  // }
-
   Widget _buildExpansionTile(int index) {
     return Theme(
       data: ThemeData(
@@ -498,8 +330,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         iconColor: AppColors.primary,
         onExpansionChanged: (bool expanded) {
           setState(() {
-            isExpandedList[index] =
-                expanded; // Update specific index expansion state
+            isExpandedList[index] = expanded;
           });
         },
         title: Row(

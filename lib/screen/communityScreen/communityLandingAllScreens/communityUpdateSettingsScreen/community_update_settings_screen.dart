@@ -162,21 +162,21 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
           body: Obx(() => aboutCommunity.isLoading.value
               ? Helper.pageLoading()
               : aboutCommunity.aboutCommunityList.isEmpty
-                  ? Center(
+                  ? const Center(
                       child: TextWidget(
                           text: "Cannot Update Community Settings",
                           textSize: 16))
                   : Padding(
-                      padding: EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(12),
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            TextWidget(
+                            const TextWidget(
                               text: "Update Community Settings",
                               textSize: 20,
                               fontWeight: FontWeight.w500,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 12,
                             ),
                             base64 != ""
@@ -190,7 +190,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                     foregroundImage: NetworkImage(aboutCommunity
                                         .aboutCommunityList[0].community.image),
                                   ),
-                            SizedBox(
+                            const SizedBox(
                               height: 12,
                             ),
 
@@ -209,8 +209,8 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                       // border:
                                       //     Border.all(color: Colors.redAccent, width: 1)
                                       ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
+                                  child: const Padding(
+                                    padding: EdgeInsets.symmetric(
                                         horizontal: 15, vertical: 12),
                                     child: TextWidget(
                                         text: "Change community image",
@@ -219,7 +219,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                 ),
                               ]),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 16,
                             ),
                             MyCustomTextField.textField(
@@ -227,7 +227,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                 controller:
                                     updateSettings.communityNameController,
                                 lableText: "Community Name"),
-                            SizedBox(
+                            const SizedBox(
                               height: 16,
                             ),
                             DropDownWidget(
@@ -245,7 +245,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                         val.toString();
                                   });
                                 }),
-                            SizedBox(
+                            const SizedBox(
                               height: 16,
                             ),
                             DropDownWidget(
@@ -258,7 +258,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                         val.toString();
                                   });
                                 }),
-                            SizedBox(
+                            const SizedBox(
                               height: 16,
                             ),
                             if (updateSettings.subscriptionType == "paid")
@@ -269,7 +269,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                   controller: updateSettings
                                       .subscriptionAmountController),
                             if (updateSettings.subscriptionType == "Paid")
-                              SizedBox(
+                              const SizedBox(
                                 height: 16,
                               ),
                             Row(
@@ -286,18 +286,18 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                   materialTapTargetSize:
                                       MaterialTapTargetSize.shrinkWrap,
                                 ),
-                                TextWidget(
+                                const TextWidget(
                                     text: "Is Community Open ?", textSize: 16),
                               ],
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             MyCustomTextField.textField(
                                 hintText: "Enter Community description",
                                 controller:
                                     updateSettings.aboutCommunityController,
                                 lableText: "About Community",
                                 maxLine: 5),
-                            SizedBox(
+                            const SizedBox(
                               height: 16,
                             ),
                             MyCustomTextField.textField(
@@ -309,7 +309,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                             //  Align(child: TextWidget(text: "Terms and conditions", textSize: 13),alignment: Alignment.centerLeft,),
                             ListView.separated(
                               separatorBuilder: (context, index) =>
-                                  SizedBox(height: 12),
+                                  const SizedBox(height: 12),
                               shrinkWrap: true,
                               padding: EdgeInsets.zero,
                               itemCount: controllers.length,
@@ -320,7 +320,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                       index], // Bind the controller to each text field
                                   lableText: "Terms and conditions",
                                   suffixIcon: IconButton(
-                                    icon: Icon(Icons.delete),
+                                    icon: const Icon(Icons.delete),
                                     color: AppColors.primary,
                                     onPressed: () => removeTextField(index),
                                   ),
@@ -328,7 +328,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                               },
                             ),
 
-                            SizedBox(
+                            const SizedBox(
                               height: 16,
                             ),
 
@@ -338,7 +338,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                   addNewTextField();
                                 },
                                 title: "Add Term"),
-                            SizedBox(
+                            const SizedBox(
                               height: 16,
                             ),
                             AppButton.primaryButton(
@@ -348,7 +348,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                   updateSettings.updateCommunity(base64);
                                 },
                                 title: "Update Community"),
-                            SizedBox(
+                            const SizedBox(
                               height: 16,
                             ),
                             Padding(
@@ -373,7 +373,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                                       .image,
                                                 ),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 12,
                                               ),
                                               TextWidget(
@@ -386,9 +386,8 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                               ),
                                             ],
                                           ),
-                                          content: Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 25),
+                                          content: const Padding(
+                                            padding: EdgeInsets.only(left: 25),
                                             child: TextWidget(
                                               text:
                                                   'Are you sure to delete community',
@@ -411,7 +410,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                   },
                                   title: "Delete Community"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 16,
                             ),
                           ],
