@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
@@ -20,19 +22,10 @@ class CreateNewTemplate extends StatefulWidget {
 class _CreateNewTemplateState extends State<CreateNewTemplate> {
   TextEditingController templateNameController = TextEditingController();
   TextEditingController emailSubjectController = TextEditingController();
-  TextEditingController emailBodyController = TextEditingController();
   String folder = "Capitalhub";
   String visibility = "Only you";
   String freeOrPaid = "Free";
   final QuillEditorController controller = QuillEditorController();
-  Future<void> requestStoragePermission() async {
-    if (await Permission.photos.isDenied) {
-      await Permission.photos.request();
-    }
-    if (await Permission.storage.isDenied) {
-      await Permission.storage.request();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,88 +50,11 @@ class _CreateNewTemplateState extends State<CreateNewTemplate> {
                     lableText: "Email Subject",
                     controller: emailSubjectController),
                 sizedTextfield,
-                MyCustomTextField.textField(
+                MyCustomTextField.htmlTextField(
                     hintText: "Enter Email Body",
                     lableText: "Email Body",
-                    maxLine: 4,
-                    controller: emailBodyController),
-                sizedTextfield,
-                const TextWidget(
-                    text: "Email Body",
-                    textSize: 12,
-                    fontWeight: FontWeight.w500),
-                const SizedBox(height: 8),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: AppColors.blackCard,
-                    borderRadius: BorderRadius.circular(8),
-                    border:
-                        Border.all(color: AppColors.white12), // Border effect
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: AppColors.white12)),
-                        child: ToolBar(
-                          controller: controller,
-                          toolBarColor: AppColors.transparent,
-                          iconSize: 20,
-                          activeIconColor: AppColors.white,
-                          iconColor: AppColors.grey,
-                          customButtons: [
-                            InkWell(
-                              onTap: () async {
-                                await requestStoragePermission();
-                                ImagePickerWidget imagePickerWidget =
-                                    ImagePickerWidget();
-                                imagePickerWidget.getImage(false).then((val) {
-                                  controller.embedImage(
-                                      'data:image/png;base64,' + val);
-                                });
-                              },
-                              child: Icon(Icons.image,
-                                  color: AppColors.white54, size: 20),
-                            )
-                          ],
-                          padding: const EdgeInsets.all(8),
-                          toolBarConfig: const [
-                            ToolBarStyle.size,
-                            ToolBarStyle.bold,
-                            ToolBarStyle.underline,
-                            ToolBarStyle.strike,
-                            ToolBarStyle.listBullet,
-                            ToolBarStyle.listOrdered,
-                            ToolBarStyle.align,
-                            ToolBarStyle.link,
-                            // ToolBarStyle.image,
-                            ToolBarStyle.codeBlock,
-                            ToolBarStyle.italic,
-                            ToolBarStyle.undo,
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      QuillHtmlEditor(
-                        controller: controller,
-                        hintText: "Enter Email Body",
-                        minHeight: 200,
-                        backgroundColor: AppColors.blackCard,
-                        hintTextStyle: TextStyle(color: AppColors.white12),
-                        textStyle: TextStyle(color: AppColors.white),
+                    controller: controller),
 
-                        loadingBuilder: (context) {
-                          return SizedBox();
-                        }, // White text
-                        onTextChanged: (text) {
-                          print("HTML Output: $text");
-                        },
-                      ),
-                    ],
-                  ),
-                ),
                 sizedTextfield,
                 DropDownWidget(
                     status: folder,
