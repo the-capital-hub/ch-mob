@@ -127,7 +127,7 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
   //         isCardVisible = communityHomeController.communityPostList[0].community!.whatsappGroupLink != ""?true:false;
   //       }),
   //       communityHomeController.getSavedCommunityPostCollections(),
-        
+
   //     ]);
   //   } catch (e) {
   //     print("Error calling APIs: $e");
@@ -135,23 +135,27 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
   // }
 
   Future<void> _fetchAllApis() async {
-  try {
-    // Call all APIs concurrently
-    await Future.wait([
-      communityHomeController.getCommunityPosts(page, true).then((v) {
-        _controller.forward();
-        
-        // Safely check if communityPostList is not empty and community is not null before accessing whatsappGroupLink
-        isCardVisible = communityHomeController.communityPostList.isNotEmpty &&
-                        communityHomeController.communityPostList[0].communityData != null &&
-                        (communityHomeController.communityPostList[0].communityData!.whatsappGroupLink?.isNotEmpty ?? false);
-      }),
-      communityHomeController.getSavedCommunityPostCollections(),
-    ]);
-  } catch (e) {
-    print("Error calling APIs: $e");
+    try {
+      // Call all APIs concurrently
+      await Future.wait([
+        communityHomeController.getCommunityPosts(page, true).then((v) {
+          _controller.forward();
+
+          // Safely check if communityPostList is not empty and community is not null before accessing whatsappGroupLink
+          isCardVisible =
+              communityHomeController.communityPostList.isNotEmpty &&
+                  communityHomeController.communityPostList[0].communityData !=
+                      null &&
+                  (communityHomeController.communityPostList[0].communityData!
+                          .whatsappGroupLink?.isNotEmpty ??
+                      false);
+        }),
+        communityHomeController.getSavedCommunityPostCollections(),
+      ]);
+    } catch (e) {
+      print("Error calling APIs: $e");
+    }
   }
-}
 
   @override
   void dispose() {
@@ -164,7 +168,8 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
     _animationController.reset();
 
     _animationController.forward();
-    communityHomeController.communityPostList[0].postData![index].isLiked = true;
+    communityHomeController.communityPostList[0].postData![index].isLiked =
+        true;
     communityHomeController.likeUnlikeCommunityPost(
         communityHomeController.communityPostList[0].postData![index].postId);
     Future.delayed(const Duration(milliseconds: 1000), () {
@@ -175,7 +180,6 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
 
   int tapindex = -1;
 
-  
   String privacyStatus = "Public";
   List<String> postsFilter = ['All Posts', 'Admin Posts', 'Member Posts'];
   GlobalKey<PopupMenuButtonState<String>> _popupMenuKey = GlobalKey();
@@ -185,15 +189,14 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
         decoration: bgDec,
         child: Scaffold(
             backgroundColor: AppColors.transparent,
-            
             body: Obx(
               () => isLoading.value
-                  ? Helper.pageLoading():
-                //  : communityHomeController.communityPostList[0].postData.isEmpty
-                //       ? Center(child: TextWidget(text: "No Community Post Available", textSize: 16))
-                //       :
-                
-                  
+                  ? Helper.pageLoading()
+                  :
+                  //  : communityHomeController.communityPostList[0].postData.isEmpty
+                  //       ? Center(child: TextWidget(text: "No Community Post Available", textSize: 16))
+                  //       :
+
                   Padding(
                       padding: EdgeInsets.only(left: 8, right: 8, top: 8),
                       child: RefreshIndicator(
@@ -282,7 +285,8 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                         child: Padding(
                                           padding: const EdgeInsets.all(12.0),
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             children: [
                                               Icon(
                                                 Icons.post_add,
@@ -414,31 +418,36 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                               child: Stack(
                                   alignment: Alignment.bottomCenter,
                                   children: [
-    //                                 if (communityHomeController.communityPostList[0].postData.isEmpty)
-    //   const Center(
-    //     child: TextWidget(text: "No Posts in this Community", textSize: 16)
-    //   )
-    // else
+                                    //                                 if (communityHomeController.communityPostList[0].postData.isEmpty)
+                                    //   const Center(
+                                    //     child: TextWidget(text: "No Posts in this Community", textSize: 16)
+                                    //   )
+                                    // else
                                     Column(
                                       children: [
                                         Expanded(
                                           child: ListView.separated(
                                             controller: scrollController,
                                             itemCount: communityHomeController
-                                                .communityPostList[0].postData!.length,
+                                                .communityPostList[0]
+                                                .postData!
+                                                .length,
                                             separatorBuilder: (context, index) {
                                               return const SizedBox(height: 8);
                                             },
                                             shrinkWrap: true,
-                                            itemBuilder:
-                                                (BuildContext context, int index) {
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
                                               // Show feed postData
                                               if (index <
                                                   communityHomeController
-                                                .communityPostList[0].postData!.length) {
-                                                return feeds(index); // Show feed post
+                                                      .communityPostList[0]
+                                                      .postData!
+                                                      .length) {
+                                                return feeds(
+                                                    index); // Show feed post
                                               }
-                                          
+
                                               // If there are no more feed postData or news, return an empty widget
                                               return const SizedBox
                                                   .shrink(); // No more items to display
@@ -485,17 +494,18 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CircleAvatar(
-                          backgroundColor: 
-                          communityHomeController
-                                  .communityPostList[0].postData![index].userIsSubscribed!
+                          backgroundColor: communityHomeController
+                                  .communityPostList[0]
+                                  .postData![index]
+                                  .userIsSubscribed!
                               ? AppColors.golden
-                              : 
-                              AppColors.transparent,
+                              : AppColors.transparent,
                           radius: 22,
                           child: CircleAvatar(
                             radius: 20,
                             backgroundImage: NetworkImage(
-                                communityHomeController.communityPostList[0].postData![index].userImage!),
+                                communityHomeController.communityPostList[0]
+                                    .postData![index].userImage!),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -510,7 +520,8 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                       Get.to(PublicProfileScreen(
                                           id: communityHomeController
                                               .communityPostList[0]
-                                              .postData![index].userId!));
+                                              .postData![index]
+                                              .userId!));
                                     },
                                     child: TextWidget(
                                         text:
@@ -520,13 +531,16 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                   const SizedBox(width: 4),
                                   if (communityHomeController
                                       .communityPostList[0]
-                                      .postData![index].userIsSubscribed!)
+                                      .postData![index]
+                                      .userIsSubscribed!)
                                     Image.asset(PngAssetPath.verifyImg,
                                         height: 14),
                                   const SizedBox(width: 4),
                                   TextWidget(
-                                    text:
-                                        communityHomeController.communityPostList[0].postData![index].createdAt!,
+                                    text: communityHomeController
+                                        .communityPostList[0]
+                                        .postData![index]
+                                        .createdAt!,
                                     textSize: 10,
                                     color: AppColors.white54,
                                   ),
@@ -535,35 +549,41 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                     onTap: () {
                                       if (communityHomeController
                                               .communityPostList[0]
-                                              .postData![index].connectionStatus !=
+                                              .postData![index]
+                                              .connectionStatus !=
                                           "pending") {
                                         homeController
                                             .followUnfollow(
                                                 userId: communityHomeController
                                                     .communityPostList[0]
-                                                    .postData![index].userId!,
+                                                    .postData![index]
+                                                    .userId!,
                                                 connectionStatus:
                                                     communityHomeController
-                                                        .communityPostList[
-                                                            0]
-                                                        .postData![index].connectionStatus!)
+                                                        .communityPostList[0]
+                                                        .postData![index]
+                                                        .connectionStatus!)
                                             .then((val) {
                                           if (val) {}
                                         });
                                         if (communityHomeController
                                                 .communityPostList[0]
-                                                .postData![index].connectionStatus ==
+                                                .postData![index]
+                                                .connectionStatus ==
                                             "not_sent") {
                                           communityHomeController
                                               .communityPostList[0]
-                                              .postData![index].connectionStatus = "pending";
+                                              .postData![index]
+                                              .connectionStatus = "pending";
                                         } else if (communityHomeController
                                                 .communityPostList[0]
-                                                .postData![index].connectionStatus ==
+                                                .postData![index]
+                                                .connectionStatus ==
                                             "accepted") {
                                           communityHomeController
                                               .communityPostList[0]
-                                              .postData![index].connectionStatus = "not_sent";
+                                              .postData![index]
+                                              .connectionStatus = "not_sent";
                                         }
                                         setState(() {});
                                       }
@@ -572,12 +592,14 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                       // text: "",
                                       text: communityHomeController
                                                   .communityPostList[0]
-                                                  .postData![index].connectionStatus ==
+                                                  .postData![index]
+                                                  .connectionStatus ==
                                               "not_sent"
                                           ? "Follow"
                                           : communityHomeController
                                                       .communityPostList[0]
-                                                      .postData![index].connectionStatus ==
+                                                      .postData![index]
+                                                      .connectionStatus ==
                                                   "pending"
                                               ? "Pending"
                                               : "Unfollow",
@@ -624,21 +646,26 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                       children: [
                         HtmlWidget(
                           _isExpanded
-                              ? communityHomeController.communityPostList[0].postData![index].description.toString()
-                              : communityHomeController.communityPostList[0]
-                                          .postData![index].description!.length >
+                              ? communityHomeController.communityPostList[0]
+                                  .postData![index].description
+                                  .toString()
+                              : communityHomeController
+                                          .communityPostList[0]
+                                          .postData![index]
+                                          .description!
+                                          .length >
                                       200
                                   ? "${communityHomeController.communityPostList[0].postData![index].description!.substring(0, 200)} ..."
-                                  : communityHomeController
-                                      .communityPostList[0].postData![index].description!,
+                                  : communityHomeController.communityPostList[0]
+                                      .postData![index].description!,
                           onTapUrl: (url) async {
                             return await launch(url);
                           },
                           textStyle:
                               TextStyle(fontSize: 12, color: AppColors.white),
                         ),
-                        if (communityHomeController
-                                .communityPostList[0].postData![index].description!.length >
+                        if (communityHomeController.communityPostList[0]
+                                .postData![index].description!.length >
                             200)
                           InkWell(
                             onTap: () {
@@ -655,27 +682,38 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                             ),
                           ),
                         const SizedBox(height: 10),
-                        if (communityHomeController
-                            .communityPostList[0].postData![index].pollOptions!.isNotEmpty)
+                        if (communityHomeController.communityPostList[0]
+                            .postData![index].pollOptions!.isNotEmpty)
                           CommunityPollWidget(
                               pollOptions: communityHomeController
-                                  .communityPostList[0].postData![index].pollOptions!,
+                                  .communityPostList[0]
+                                  .postData![index]
+                                  .pollOptions!,
                               totalVotes: communityHomeController
-                                  .communityPostList[0].postData![index].totalVotes!,
+                                  .communityPostList[0]
+                                  .postData![index]
+                                  .totalVotes!,
                               postId: communityHomeController
-                                  .communityPostList[0].postData![index].postId!,
+                                  .communityPostList[0]
+                                  .postData![index]
+                                  .postId!,
                               myVotes: communityHomeController
-                                  .communityPostList[0].postData![index].myVotes!),
+                                  .communityPostList[0]
+                                  .postData![index]
+                                  .myVotes!),
                         const SizedBox(height: 6),
-                        if (communityHomeController
-                            .communityPostList[0].postData![index].image!.isNotEmpty)
+                        if (communityHomeController.communityPostList[0]
+                            .postData![index].image!.isNotEmpty)
                           Column(children: [
                             SizedBox(
                               height: 250,
                               child: PageView.builder(
                                 controller: _pageController,
                                 itemCount: communityHomeController
-                                    .communityPostList[0].postData![index].image!.length,
+                                    .communityPostList[0]
+                                    .postData![index]
+                                    .image!
+                                    .length,
                                 onPageChanged: (index) {
                                   setState(() {
                                     _currentIndex = index;
@@ -690,13 +728,16 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                         Get.to(() => FullscreenImageView(
                                             imageURl: communityHomeController
                                                 .communityPostList[0]
-                                                .postData![0].image![ind],
+                                                .postData![0]
+                                                .image![ind],
                                             name: communityHomeController
                                                     .communityPostList[0]
-                                                    .postData![index].userFirstName! +
+                                                    .postData![index]
+                                                    .userFirstName! +
                                                 communityHomeController
                                                     .communityPostList[0]
-                                                    .postData![index].userLastName!));
+                                                    .postData![index]
+                                                    .userLastName!));
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
@@ -707,7 +748,8 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                             image: NetworkImage(
                                                 communityHomeController
                                                     .communityPostList[0]
-                                                    .postData![index].image![ind]),
+                                                    .postData![index]
+                                                    .image![ind]),
                                           ),
                                         ),
                                       ),
@@ -726,8 +768,8 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: List.generate(
-                                  communityHomeController
-                                      .communityPostList[0].postData![index].image!.length,
+                                  communityHomeController.communityPostList[0]
+                                      .postData![index].image!.length,
                                   (index) => Container(
                                     margin: const EdgeInsets.only(
                                         left: 4, right: 4, top: 8),
@@ -743,24 +785,26 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                 ),
                               ),
                           ]),
-                        if (communityHomeController
-                            .communityPostList[0].postData![index].video!.isNotEmpty)
+                        if (communityHomeController.communityPostList[0]
+                            .postData![index].video!.isNotEmpty)
                           VideoPlayerItem(
                             videoUrl: communityHomeController
                                 .communityPostList[0].postData![index].video!,
                           ),
-                        if (communityHomeController
-                            .communityPostList[0].postData![index].documentUrl!.isNotEmpty)
+                        if (communityHomeController.communityPostList[0]
+                            .postData![index].documentUrl!.isNotEmpty)
                           SizedBox(
                               width: 150,
                               height: 200,
                               child: SfPdfViewer.network(communityHomeController
-                                  .communityPostList[0].postData![index].documentUrl!)),
+                                  .communityPostList[0]
+                                  .postData![index]
+                                  .documentUrl!)),
                         if (communityHomeController.communityPostList[0]
                                     .postData![index].resharedPostData !=
                                 null &&
-                            !communityHomeController
-                                .communityPostList[0].postData![index].resharedPostData!
+                            !communityHomeController.communityPostList[0]
+                                .postData![index].resharedPostData!
                                 .isEmpty())
                           Container(
                               padding: const EdgeInsets.all(8),
@@ -811,8 +855,8 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                           //   ),
                           // ),
                           const SizedBox(width: 8),
-                          if (communityHomeController
-                              .communityPostList[0].postData![index].likes!.isNotEmpty)
+                          if (communityHomeController.communityPostList[0]
+                              .postData![index].likes!.isNotEmpty)
                             Expanded(
                               child: TextWidget(
                                 text:
@@ -821,8 +865,8 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                 maxLine: 2,
                               ),
                             ),
-                          if (communityHomeController
-                              .communityPostList[0].postData![index].comments!.isNotEmpty)
+                          if (communityHomeController.communityPostList[0]
+                              .postData![index].comments!.isNotEmpty)
                             TextWidget(
                                 text:
                                     "${communityHomeController.communityPostList[0].postData![index].comments!.length} Comments",
@@ -842,23 +886,23 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                         InkWell(
                           splashColor: AppColors.transparent,
                           onTap: () {
-                            communityHomeController
-                                    .communityPostList[0].postData![index].isLiked =
-                                !communityHomeController
-                                    .communityPostList[0].postData![index].isLiked!;
+                            communityHomeController.communityPostList[0]
+                                    .postData![index].isLiked =
+                                !communityHomeController.communityPostList[0]
+                                    .postData![index].isLiked!;
                             communityHomeController.likeUnlikeCommunityPost(
-                                communityHomeController
-                                    .communityPostList[0].postData![index].postId);
+                                communityHomeController.communityPostList[0]
+                                    .postData![index].postId);
 
                             setState(() {});
                           },
                           child: Icon(
-                            communityHomeController
-                                    .communityPostList[0].postData![index].isLiked!
+                            communityHomeController.communityPostList[0]
+                                    .postData![index].isLiked!
                                 ? Icons.favorite
                                 : Icons.favorite_border_outlined,
-                            color: communityHomeController
-                                    .communityPostList[0].postData![index].isLiked!
+                            color: communityHomeController.communityPostList[0]
+                                    .postData![index].isLiked!
                                 ? AppColors.redColor
                                 : AppColors.whiteCard,
                             size: 22,
@@ -888,8 +932,9 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                           onTap: () {
                             sharePostPopup(
                                 context,
-                                communityHomeController
-                                    .communityPostList[0].postData![index].postId!,"");
+                                communityHomeController.communityPostList[0]
+                                    .postData![index].postId!,
+                                "");
                           },
                           child: Icon(
                             Icons.mobile_screen_share_rounded,
@@ -917,13 +962,15 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                         const SizedBox(width: 8),
                         InkWell(
                           onTap: () {
-                            if (communityHomeController
-                                .communityPostList[0].postData![index].isSaved!) {
+                            if (communityHomeController.communityPostList[0]
+                                .postData![index].isSaved!) {
                               communityHomeController
                                   .unsaveCommunityPost(
                                 context,
                                 postID: communityHomeController
-                                    .communityPostList[0].postData![index].postId!,
+                                    .communityPostList[0]
+                                    .postData![index]
+                                    .postId!,
                               )
                                   .then((val) {
                                 communityHomeController
@@ -938,8 +985,8 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                             }
                           },
                           child: Icon(
-                            communityHomeController
-                                    .communityPostList[0].postData![index].isSaved!
+                            communityHomeController.communityPostList[0]
+                                    .postData![index].isSaved!
                                 ? Icons.bookmark
                                 : Icons.bookmark_border_outlined,
                             color: AppColors.whiteCard,
@@ -1037,20 +1084,23 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                 children: [
                   HtmlWidget(
                     _isExpanded
-                        ? communityHomeController.communityPostList[0].postData![index].description.toString()
-                        : communityHomeController.communityPostList[0].postData![index].
-                                    description!.length >
+                        ? communityHomeController
+                            .communityPostList[0].postData![index].description
+                            .toString()
+                        : communityHomeController.communityPostList[0]
+                                    .postData![index].description!.length >
                                 100
                             ? "${communityHomeController.communityPostList[0].postData![index].description!.substring(0, 100)} ..."
-                            : communityHomeController
-                                .communityPostList[0].postData![index].description.toString(),
+                            : communityHomeController.communityPostList[0]
+                                .postData![index].description
+                                .toString(),
                     onTapUrl: (url) async {
                       return await launch(url);
                     },
                     textStyle: TextStyle(fontSize: 10, color: AppColors.white),
                   ),
-                  if (communityHomeController
-                          .communityPostList[0].postData![index].description!.length >
+                  if (communityHomeController.communityPostList[0]
+                          .postData![index].description!.length >
                       100)
                     InkWell(
                       onTap: () {
@@ -1070,26 +1120,31 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                   if (communityHomeController.communityPostList[0]
                               .postData![index].resharedPostData!.pollOptions !=
                           null &&
-                      communityHomeController.communityPostList[0]
-                          .postData![index].resharedPostData!.pollOptions!.isNotEmpty)
+                      communityHomeController
+                          .communityPostList[0]
+                          .postData![index]
+                          .resharedPostData!
+                          .pollOptions!
+                          .isNotEmpty)
                     CommunityPollWidgetProfile(
                         pollOptions: communityHomeController
                             .communityPostList[0]
-                            .postData![index].resharedPostData!
+                            .postData![index]
+                            .resharedPostData!
                             .pollOptions!,
-                        totalVotes: communityHomeController
-                            .communityPostList[0]
-                            .postData![index].resharedPostData!
-                            .totalVotes!,
-                        myVotes: communityHomeController
-                            .communityPostList[0]
-                            .postData![index].resharedPostData!
-                            .myVotes!),
-                  communityHomeController.communityPostList[0]
-                                  .postData![index].resharedPostData!.images !=
+                        totalVotes: communityHomeController.communityPostList[0]
+                            .postData![index].resharedPostData!.totalVotes!,
+                        myVotes: communityHomeController.communityPostList[0]
+                            .postData![index].resharedPostData!.myVotes!),
+                  communityHomeController.communityPostList[0].postData![index]
+                                  .resharedPostData!.images !=
                               null &&
-                          communityHomeController.communityPostList[0]
-                              .postData![index].resharedPostData!.images!.isEmpty
+                          communityHomeController
+                              .communityPostList[0]
+                              .postData![index]
+                              .resharedPostData!
+                              .images!
+                              .isEmpty
                       ? const SizedBox(height: 0)
                       : Column(children: [
                           if (communityHomeController.communityPostList[0]
@@ -1100,7 +1155,8 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                               child: PageView.builder(
                                 itemCount: communityHomeController
                                     .communityPostList[0]
-                                    .postData![index].resharedPostData!
+                                    .postData![index]
+                                    .resharedPostData!
                                     .images!
                                     .length,
                                 onPageChanged: (ind) {},
@@ -1113,7 +1169,8 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                         image: NetworkImage(
                                             communityHomeController
                                                 .communityPostList[0]
-                                                .postData![index].resharedPostData!
+                                                .postData![index]
+                                                .resharedPostData!
                                                 .images![ind]),
                                       ),
                                     ),
@@ -1159,7 +1216,8 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                   borderRadius: BorderRadius.circular(12),
                   color: AppColors.whiteCard),
             ),
-            if (communityHomeController.communityPostList[0].postData![index].isMyPost!)
+            if (communityHomeController
+                .communityPostList[0].postData![index].isMyPost!)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -1168,7 +1226,9 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                       communityHomeController
                           .deleteCommunityPost(context,
                               postID: communityHomeController
-                                  .communityPostList[0].postData![index].postId!)
+                                  .communityPostList[0]
+                                  .postData![index]
+                                  .postId!)
                           .then((val) {
                         if (val) {
                           Get.back();
@@ -1190,7 +1250,6 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                         dividerColor: Colors.transparent,
                       ),
                       child: ExpansionTile(
-                      
                         collapsedIconColor: AppColors.white,
                         iconColor: AppColors.white,
                         title: Row(
@@ -1199,18 +1258,17 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                             Icon(Icons.report, color: AppColors.white),
                             const SizedBox(width: 16),
                             TextWidget(
-                              text: "Report",
-                              textSize: 14,
-                              color: AppColors.white,
-                              fontWeight: FontWeight.w500
-                            ),
+                                text: "Report",
+                                textSize: 14,
+                                color: AppColors.white,
+                                fontWeight: FontWeight.w500),
                           ],
                         ),
                         onExpansionChanged: (bool expanded) {
-                            setState(() {
-                              isExpanded = expanded;  // Track expansion state
-                            });
-                          },
+                          setState(() {
+                            isExpanded = expanded; // Track expansion state
+                          });
+                        },
                         childrenPadding: const EdgeInsets.only(left: 40),
                         children: [
                           ListTile(
@@ -1219,7 +1277,9 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                             dense: true,
                             visualDensity: VisualDensity.compact,
                             title: const TextWidget(
-                                text: "Harassment", textSize: 14, fontWeight: FontWeight.w500),
+                                text: "Harassment",
+                                textSize: 14,
+                                fontWeight: FontWeight.w500),
                             tileColor: reportReason == "Harassment"
                                 ? AppColors.white38
                                 : null,
@@ -1233,7 +1293,10 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                 borderRadius: BorderRadius.circular(20)),
                             dense: true,
                             visualDensity: VisualDensity.compact,
-                            title: const TextWidget(text: "Spam", textSize: 14, fontWeight: FontWeight.w500),
+                            title: const TextWidget(
+                                text: "Spam",
+                                textSize: 14,
+                                fontWeight: FontWeight.w500),
                             tileColor: reportReason == "Spam"
                                 ? AppColors.white38
                                 : null,
@@ -1248,7 +1311,9 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                             dense: true,
                             visualDensity: VisualDensity.compact,
                             title: const TextWidget(
-                                text: "Fraud or scam", textSize: 14, fontWeight: FontWeight.w500),
+                                text: "Fraud or scam",
+                                textSize: 14,
+                                fontWeight: FontWeight.w500),
                             tileColor: reportReason == "Fraud or scam"
                                 ? AppColors.white38
                                 : null,
@@ -1263,7 +1328,9 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                             dense: true,
                             visualDensity: VisualDensity.compact,
                             title: const TextWidget(
-                                text: "Hateful Speech", textSize: 14, fontWeight: FontWeight.w500),
+                                text: "Hateful Speech",
+                                textSize: 14,
+                                fontWeight: FontWeight.w500),
                             tileColor: reportReason == "Hateful Speech"
                                 ? AppColors.white38
                                 : null,
@@ -1284,7 +1351,9 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                             communityHomeController
                                 .reportPost(context,
                                     postID: communityHomeController
-                                        .communityPostList[0].postData![index].postId!,
+                                        .communityPostList[0]
+                                        .postData![index]
+                                        .postId!,
                                     reportReason: reportReason)
                                 .then((val) {
                               if (val) {
@@ -1367,7 +1436,8 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                               children: [
                                 if (communityHomeController
                                     .communityPostList[0]
-                                    .postData![Index].comments![ind]
+                                    .postData![Index]
+                                    .comments![ind]
                                     .isMyComment!)
                                   InkWell(
                                       onTap: () {
@@ -1375,12 +1445,14 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                             .deleteCommentCommunityPost(context,
                                                 postID: communityHomeController
                                                     .communityPostList[0]
-                                                    .postData![Index].postId!,
+                                                    .postData![Index]
+                                                    .postId!,
                                                 commentID:
                                                     communityHomeController
                                                         .communityPostList[
                                                             Index]
-                                                        .postData![Index].comments![ind]
+                                                        .postData![Index]
+                                                        .comments![ind]
                                                         .id!)
                                             .then((val) {
                                           if (val) {
@@ -1409,20 +1481,24 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                   onTap: () {
                                     communityHomeController
                                             .communityPostList[0]
-                                            .postData![Index].comments![ind]
+                                            .postData![Index]
+                                            .comments![ind]
                                             .isLiked =
                                         !communityHomeController
                                             .communityPostList[0]
-                                            .postData![Index].comments![ind]
+                                            .postData![Index]
+                                            .comments![ind]
                                             .isLiked!;
                                     communityHomeController
                                         .toggleLikeCommentCommunityPost(context,
                                             postID: communityHomeController
                                                 .communityPostList[0]
-                                                .postData![Index].postId!,
+                                                .postData![Index]
+                                                .postId!,
                                             commentID: communityHomeController
                                                 .communityPostList[0]
-                                                .postData![Index].comments![ind]
+                                                .postData![Index]
+                                                .comments![ind]
                                                 .id!)
                                         .then((val) {
                                       if (val) {
@@ -1440,13 +1516,15 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                   child: Icon(
                                     communityHomeController
                                             .communityPostList[0]
-                                            .postData![Index].comments![ind]
+                                            .postData![Index]
+                                            .comments![ind]
                                             .isLiked!
                                         ? Icons.favorite
                                         : Icons.favorite_border_outlined,
                                     color: communityHomeController
                                             .communityPostList[0]
-                                            .postData![Index].comments![ind]
+                                            .postData![Index]
+                                            .comments![ind]
                                             .isLiked!
                                         ? AppColors.redColor
                                         : AppColors.whiteCard,
@@ -1479,7 +1557,9 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                 communityHomeController
                                     .commentCommunityPost(context,
                                         postID: communityHomeController
-                                            .communityPostList[0].postData![Index].postId!,
+                                            .communityPostList[0]
+                                            .postData![Index]
+                                            .postId!,
                                         userId: GetStoreData.getStore
                                             .read('id')
                                             .toString(),
@@ -1551,7 +1631,9 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                   communityHomeController
                                       .saveCommunityPost(context,
                                           postID: communityHomeController
-                                              .communityPostList[0].postData![Index].postId!,
+                                              .communityPostList[0]
+                                              .postData![Index]
+                                              .postId!,
                                           colelctionName:
                                               communityHomeController
                                                   .communityCollectionList[ind]

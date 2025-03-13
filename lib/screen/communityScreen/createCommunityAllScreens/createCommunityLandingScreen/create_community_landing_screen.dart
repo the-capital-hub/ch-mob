@@ -13,7 +13,8 @@ class CreateCommunityLandingScreen extends StatefulWidget {
   const CreateCommunityLandingScreen({super.key});
 
   @override
-  State<CreateCommunityLandingScreen> createState() => _CreateCommunityScreenState();
+  State<CreateCommunityLandingScreen> createState() =>
+      _CreateCommunityScreenState();
 }
 
 class _CreateCommunityScreenState extends State<CreateCommunityLandingScreen> {

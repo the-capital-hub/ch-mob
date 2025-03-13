@@ -1,16 +1,22 @@
-import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
+import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityMeetingsScreen/communityMeetingBookingsScreen/community_meeting_bookings_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityProductsAndServicesScreen/community_products_and_services_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
-import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
+import 'package:capitalhub_crm/widget/datePicker/datePicker.dart';
+import 'package:capitalhub_crm/widget/dilogue/custom_dialogue.dart';
+import 'package:capitalhub_crm/widget/dilogue/share_dilogue.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CommunityMeetingsScreen extends StatefulWidget {
   const CommunityMeetingsScreen({super.key});
 
   @override
-  State<CommunityMeetingsScreen> createState() => _CommunityMeetingScreenState();
+  State<CommunityMeetingsScreen> createState() =>
+      _CommunityMeetingScreenState();
 }
 
 class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
@@ -32,149 +38,185 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
     "DeepTech",
     "Developer Tools",
     "E-Commerce",
-    "Education",];
+    "Education",
+  ];
   @override
   Widget build(BuildContext context) {
-    return  ListView.builder(
-            padding:  EdgeInsets.zero,
-            itemCount: 5,
-            itemBuilder: (context, index) {
-              return Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                color: AppColors.navyBlue,
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      itemCount: 5,
+      itemBuilder: (context, index) {
+        return Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          color: AppColors.navyBlue,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const TextWidget(
+                      text: "Title",
+                      textSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.mobile_screen_share_rounded,
+                        color: AppColors.white,
+                      ),
+                      onPressed: () {
+                        sharePostPopup(context, "", "share meeting details");
+                      },
+                    )
+                  ],
+                ),
+                sizedTextfield,
+                const TextWidget(
+                  text: "Description",
+                  textSize: 15,
+                ),
+                sizedTextfield,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const TextWidget(
+                        text: "Duration : 45 minutes", textSize: 16),
+                    Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      color: AppColors.white,
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: TextWidget(
+                          text: "Free",
+                          textSize: 10,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                sizedTextfield,
+                Wrap(
+                  spacing: 4.0,
+                  runSpacing: 4.0,
+                  children: List.generate(data.length, (index) {
+                    return InkWell(
+                      onTap: () {},
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4)),
+                        color: AppColors.white12,
+                        surfaceTintColor: AppColors.white12,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 4),
+                          child: TextWidget(text: data[index], textSize: 14),
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                if (isAdmin)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      
-                      
-                      
-                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                         children: [
-                           TextWidget(
-                            text: "Title",
-                            textSize: 20,
-                            fontWeight: FontWeight.w500,
-                                                 ),
-                                                 Icon(Icons.mobile_screen_share_rounded,color: AppColors.white,)
-                         ],
-                       ),
-                 
-                      sizedTextfield,
-                      TextWidget(
-                            text: "Description",
-                            textSize: 15,
-                            // fontWeight: FontWeight.w500,
-                                                 ),
-                                                 sizedTextfield,
-                        
-
-                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-TextWidget(text: "Response Time: 1 hour", textSize: 16),
-Card(
-  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-  color: AppColors.white,
-  child: Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: TextWidget(text: "Free", textSize: 10,color: AppColors.primary,),
-  ),
-)
-                      ],
-                     ),
-                      sizedTextfield,
-                      // Row(
-                      //   children: [
-                      //     Icon(
-                      //       Icons.language,
-                      //       color: AppColors.white,
-                      //       size: 22,
-                      //     ),
-                      //     const SizedBox(
-                      //       width: 5,
-                      //     ),
-                      //     const TextWidget(text: "Online", textSize: 16)
-                      //   ],
-                      // ),
-          
-                      // sizedTextfield,
-          
-                        Wrap(
-                                spacing: 4.0,
-                                runSpacing: 4.0,
-                                children: List.generate(
-                                    data.length,
-                                    (index) {
-                                  return InkWell(
-                                    onTap: () {
-                                      // loginMobileController
-                                      //         .userNameController.text =
-                                      //     loginMobileController
-                                      //         .suggestions[index];
-                                    },
-                                    child: Card(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(4)),
-                                      color: AppColors.white12,
-                                      surfaceTintColor: AppColors.white12,
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 12, vertical: 4),
-                                        child: TextWidget(
-                                            text: data[index],
-                                            textSize: 14),
-                                      ),
-                                    ),
-                                  );
-                                }),
-                              ),
-          
+                      Expanded(
+                        child: AppButton.primaryButton(
+                          onButtonPressed: () {
+                            Get.to(
+                                () => const CommunityMeetingBookingsScreen());
+                          },
+                          title: "View Bookings (1)",
+                        ),
+                      ),
                       const SizedBox(
-                        height: 15,
+                        width: 8,
                       ),
-          
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: AppButton.primaryButton(
-                                onButtonPressed: (){},
-                                title: "View Bookings",
-                                
-                                ),
-                          ),
-                          SizedBox(width: 8,),
-                          IconButton(onPressed: (){}, icon: Icon(Icons.edit,color: AppColors.white,)),
-                          const SizedBox(width: 8),
-                          IconButton(onPressed: (){}, icon: Icon(Icons.delete,color: AppColors.white,)),
-                          // const Icon(
-                          //   Icons.schedule,
-                          //   color: AppColors.redColor,
-                          //   size: 22,
-                          // ),
-                          // const SizedBox(width: 5),
-                          //  TextWidget(
-                          //   text: webinarController.webinarsList[index].duration,
-                          //   textSize: 16,
-                          //   color: AppColors.redColor,
-                          // ),
-                          
-
-                        ],
-                      ),
-                      // sizedTextfield,
+                      IconButton(
+                          onPressed: () {
+                            Get.to(() =>
+                                const CommunityProductsAndServicesScreen());
+                          },
+                          icon: Icon(
+                            Icons.edit,
+                            color: AppColors.white,
+                          )),
+                      const SizedBox(width: 8),
+                      IconButton(
+                          onPressed: () {
+                            showCustomPopup(
+                              context: context,
+                              title: "Delete this meeting",
+                              message:
+                                  "Are you sure you\n want to delete this meeting?",
+                              button1Text: "Cancel",
+                              button2Text: "OK",
+                              icon: Icons.delete,
+                              onButton1Pressed: () {
+                                Get.back();
+                              },
+                              onButton2Pressed: () {
+                                Get.back();
+                              },
+                            );
+                          },
+                          icon: Icon(
+                            Icons.delete,
+                            color: AppColors.white,
+                          )),
                     ],
                   ),
+                AppButton.primaryButton(
+                  onButtonPressed: () {
+                    DateTime customDate = DateTime(2023, 12, 31);
+                    selectDate(context, customDate);
+                  },
+                  title: "Book Meeting",
                 ),
-              );
-            },
-          );
-    
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: const BorderSide(
+                      color: AppColors.green,
+                      width: 1,
+                    ),
+                  ),
+                  color: AppColors.green.withOpacity(0.3),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      children: [
+                        AppButton.primaryButton(
+                            onButtonPressed: () {},
+                            title: "Booked!",
+                            bgColor: AppColors.green700),
+                        sizedTextfield,
+                        const TextWidget(
+                          text: "March 13, 2024",
+                          textSize: 16,
+                        ),
+                        sizedTextfield,
+                        const TextWidget(
+                          text: "09:00 - 09:30",
+                          textSize: 16,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
