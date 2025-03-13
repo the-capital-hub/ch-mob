@@ -58,4 +58,10 @@ package="com.capitalhub.app">
             <data android:mimeType="text/plain"/>
         </intent>
     </queries>
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.GET_CONTENT"/>
+        </intent>
+    </queries>
+
 </manifest>

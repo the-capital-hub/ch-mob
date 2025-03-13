@@ -21,6 +21,7 @@ class MyCustomTextField {
     Widget? prefixIcon,
     Widget? suffixIcon,
     Function()? onTap,
+    Function(String val)? onSubmitted,
     Function(String val)? onChange,
     required TextEditingController controller,
     TextInputType? textInputType,
@@ -35,6 +36,7 @@ class MyCustomTextField {
         TextFormField(
           readOnly: readonly,
           maxLines: maxLine ?? 1,
+          onFieldSubmitted: onSubmitted,
           controller: controller,
           maxLength: textInputType == TextInputType.phone ? 10 : maxLength,
           keyboardType: textInputType,

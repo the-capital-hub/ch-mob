@@ -127,7 +127,8 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                           }
                                         });
                                       }
-                                    },textColor: AppColors.white,
+                                    },
+                                    textColor: AppColors.white,
                                     bgColor: AppColors.blue,
                                     height: 40,
                                     title: publicProfileController
@@ -353,92 +354,98 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                             ),
                           ),
                           sizedTextfield,
-                          const Align(
-                            alignment: Alignment.topLeft,
-                            child: TextWidget(
-                                text: "Communities",
-                                textSize: 16,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          const SizedBox(height: 6),
-                          SizedBox(
-                            height: 250,
-                            child: ListView.builder(
-                              itemCount: publicProfileController
-                                  .publicData.communities!.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  width: Get.width / 1.5,
-                                  margin: const EdgeInsets.only(right: 12),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.blackCard,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 120,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(20),
-                                                    topRight:
-                                                        Radius.circular(20)),
-                                            image: DecorationImage(
-                                                image: NetworkImage(
-                                                    publicProfileController
-                                                        .publicData
-                                                        .communities![index]
-                                                        .image!),
-                                                fit: BoxFit.cover)),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            TextWidget(
-                                                text:
-                                                    "${publicProfileController.publicData.communities![index].community}",
-                                                textSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.white),
-                                            const SizedBox(height: 3),
-                                            TextWidget(
-                                                text:
-                                                    "${publicProfileController.publicData.communities![index].size}",
-                                                textSize: 16,
-                                                color: AppColors.grey),
-                                            const SizedBox(height: 3),
-                                            TextWidget(
-                                                text:
-                                                    "${publicProfileController.publicData.communities![index].members} . ${publicProfileController.publicData.communities![index].createdAtTimeAgo}",
-                                                textSize: 14),
-                                            const SizedBox(height: 8),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 16),
-                                              child: AppButton.primaryButton(
-                                                  height: 36,
-                                                  onButtonPressed: () {},
-                                                  title:
-                                                      "${publicProfileController.publicData.communities![index].amount}"),
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },
+                          if (publicProfileController
+                              .publicData.communities!.isNotEmpty)
+                            const Align(
+                              alignment: Alignment.topLeft,
+                              child: TextWidget(
+                                  text: "Communities",
+                                  textSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
-                          ),
+                          if (publicProfileController
+                              .publicData.communities!.isNotEmpty)
+                            const SizedBox(height: 6),
+                          if (publicProfileController
+                              .publicData.communities!.isNotEmpty)
+                            SizedBox(
+                              height: 250,
+                              child: ListView.builder(
+                                itemCount: publicProfileController
+                                    .publicData.communities!.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    width: Get.width / 1.5,
+                                    margin: const EdgeInsets.only(right: 12),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.blackCard,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          height: 120,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(20),
+                                                      topRight:
+                                                          Radius.circular(20)),
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      publicProfileController
+                                                          .publicData
+                                                          .communities![index]
+                                                          .image!),
+                                                  fit: BoxFit.cover)),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              TextWidget(
+                                                  text:
+                                                      "${publicProfileController.publicData.communities![index].community}",
+                                                  textSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: AppColors.white),
+                                              const SizedBox(height: 3),
+                                              TextWidget(
+                                                  text:
+                                                      "${publicProfileController.publicData.communities![index].size}",
+                                                  textSize: 16,
+                                                  color: AppColors.grey),
+                                              const SizedBox(height: 3),
+                                              TextWidget(
+                                                  text:
+                                                      "${publicProfileController.publicData.communities![index].members} . ${publicProfileController.publicData.communities![index].createdAtTimeAgo}",
+                                                  textSize: 14),
+                                              const SizedBox(height: 8),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 16),
+                                                child: AppButton.primaryButton(
+                                                    height: 36,
+                                                    onButtonPressed: () {},
+                                                    title:
+                                                        "${publicProfileController.publicData.communities![index].amount}"),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                           if (publicProfileController
                               .publicData.events!.isNotEmpty)
                             Column(

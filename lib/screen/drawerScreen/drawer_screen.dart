@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:capitalhub_crm/controller/newsController/news_controller.dart';
 import 'package:capitalhub_crm/screen/Auth-Process/authScreen/signup_info_page.dart';
+import 'package:capitalhub_crm/screen/campaignsScreen/campaign_landing_screen.dart';
 import 'package:capitalhub_crm/screen/chatScreen/community_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAboutScreen/communities_about_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddNewProductScreen/community_add_new_product_screen.dart';
@@ -82,6 +83,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     "Company",
     "Team",
     "Analytics",
+    "Campaign",
     "Community",
     "Meetings",
     "Investors",
@@ -112,6 +114,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     PngAssetPath.teamIcon,
     PngAssetPath.customerIcon,
     PngAssetPath.communityIcon,
+    PngAssetPath.communityIcon,
     PngAssetPath.meetingIcon,
     PngAssetPath.investorsIcon,
     PngAssetPath.helpIcon,
@@ -128,6 +131,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     const CompanyScreen(),
     const ConnectionScreen(),
     const AnalyticsScreen(),
+    const CampaignLandingScreen(),
     const EventsScreen(),
     const CommunityLandingScreen(),
     const LandingScreen(),
@@ -148,7 +152,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     const ExploreCommunityScreen()
   ];
   bool isExpanded = false;
-  List<bool> isExpandedList = List.generate(13, (index) => false);
+  List<bool> isExpandedList = List.generate(14, (index) => false);
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -229,7 +233,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         //   return _buildExpansionTile(index); // For index 8
                         // } else if (index == 10) {
                         //   return _buildExpansionTile(index); // For index 9
-                        if (index == 10 || index == 11) {
+                        if (index == 11 || index == 12) {
                           return _buildExpansionTile(index);
                         } else {
                           return InkWell(
@@ -519,7 +523,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           ],
         ),
-        children: index == 10
+        children: index == 11
             ? communitySubItems.map((communitySubItemsTitle) {
                 int communitySubItemsIndex =
                     communitySubItems.indexOf(communitySubItemsTitle);

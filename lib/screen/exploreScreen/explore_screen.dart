@@ -11,6 +11,7 @@ import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
+import 'package:capitalhub_crm/widget/dilogue/campaignDilogue/add_list_investor_dilogue.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -81,8 +82,7 @@ class _ExploreScreenState extends State<ExploreScreen>
                               color: GetStoreData.getStore.read('isInvestor')
                                   ? AppColors.primaryInvestor
                                   : AppColors.primary,
-                              borderRadius:
-                                  BorderRadius.circular(5), // Rounded corners
+                              borderRadius: BorderRadius.circular(5),
                             ),
                             labelPadding:
                                 const EdgeInsets.symmetric(horizontal: 4),
@@ -141,7 +141,7 @@ class _ExploreScreenState extends State<ExploreScreen>
                         const SizedBox(width: 12),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 6),
 
                     // const Padding(
                     //   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 8),
@@ -1034,6 +1034,9 @@ class _ExploreScreenState extends State<ExploreScreen>
           );
   }
 
+  bool isAllChecked = false;
+  List<String> selectedInvestorIds = [];
+
   investorTab() {
     return exploreController.investorExploreList.isEmpty
         ? const Center(
@@ -1043,242 +1046,341 @@ class _ExploreScreenState extends State<ExploreScreen>
               fontWeight: FontWeight.w500,
             ),
           )
-        : ListView.separated(
-            itemCount: exploreController.investorExploreList.length,
-            separatorBuilder: (context, index) {
-              return const SizedBox(height: 8);
-            },
-            shrinkWrap: true,
-            itemBuilder: (BuildContext context, int index) {
-              return Card(
-                  color: AppColors.blackCard,
-                  surfaceTintColor: AppColors.blackCard,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Container(
-                              height: 55,
-                              width: 55,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(exploreController
-                                          .investorExploreList[index]
-                                          .profilePicture!))),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      TextWidget(
-                                        text:
-                                            "${exploreController.investorExploreList[index].name}",
-                                        textSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      // Icon(Icons.bookmark_border_outlined,
-                                      //     color: AppColors.white, size: 20)
-                                    ],
-                                  ),
-                                  const SizedBox(height: 4),
-                                  TextWidget(
-                                    text:
-                                        "${exploreController.investorExploreList[index].name}",
-                                    textSize: 12,
-                                  ),
-                                  const SizedBox(height: 4),
-                                  TextWidget(
-                                    text:
-                                        "${exploreController.investorExploreList[index].designation} of ${exploreController.investorExploreList[index].companyName}",
-                                    textSize: 10,
-                                    fontWeight: FontWeight.w300,
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Divider(
-                        thickness: 0.5,
-                        color: AppColors.white38,
-                        height: 0,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(6),
-                        child: SizedBox(
-                          width: Get.width,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (GetStoreData.getStore.read('isInvestor') == false)
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Checkbox(
+                      value: isAllChecked,
+                      onChanged: (value) {
+                        setState(() {
+                          isAllChecked = value!;
+                          selectedInvestorIds.clear();
+
+                          for (var investor
+                              in exploreController.investorExploreList) {
+                            investor.isChecked = isAllChecked;
+                            if (isAllChecked) {
+                              selectedInvestorIds.add(investor.investorId!);
+                            }
+                          }
+                        });
+                      },
+                      side: BorderSide(color: AppColors.grey, width: 1.5),
+                      activeColor: AppColors.primary,
+                      checkColor: AppColors.white,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    const TextWidget(
+                      text: "Select All",
+                      textSize: 12,
+                    ),
+                    const Spacer(),
+                    if (selectedInvestorIds.isNotEmpty)
+                      InkWell(
+                        onTap: () {
+                          addInvestorPopup(context);
+                        },
+                        child: Container(
+                            margin: const EdgeInsets.only(right: 6),
+                            decoration: BoxDecoration(
+                                color: AppColors.primary,
                                 borderRadius: BorderRadius.circular(6)),
-                            color: AppColors.white12,
-                            surfaceTintColor: AppColors.white12,
-                            child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 4),
+                            child: TextWidget(
+                                text: "+ ADD (${selectedInvestorIds.length})",
+                                textSize: 12,
+                                fontWeight: FontWeight.w500)),
+                      )
+                  ],
+                ),
+              if (GetStoreData.getStore.read('isInvestor') == false)
+                const SizedBox(height: 4),
+              Expanded(
+                child: ListView.separated(
+                  itemCount: exploreController.investorExploreList.length,
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(height: 8);
+                  },
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                        color: AppColors.blackCard,
+                        surfaceTintColor: AppColors.blackCard,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Column(
+                              child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const TextWidget(
-                                      text: "About the company :",
-                                      textSize: 14,
-                                      fontWeight: FontWeight.w500),
-                                  const SizedBox(height: 4),
-                                  TextWidget(
-                                    text:
-                                        "${exploreController.investorExploreList[index].designation}",
-                                    textSize: 12,
-                                    maxLine: 2,
-                                  )
+                                  Container(
+                                    height: 55,
+                                    width: 55,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(6),
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(
+                                                exploreController
+                                                    .investorExploreList[index]
+                                                    .profilePicture!))),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        TextWidget(
+                                          text:
+                                              "${exploreController.investorExploreList[index].name}",
+                                          textSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        const SizedBox(height: 2),
+                                        TextWidget(
+                                          text:
+                                              "${exploreController.investorExploreList[index].name}",
+                                          textSize: 12,
+                                        ),
+                                        const SizedBox(height: 2),
+                                        TextWidget(
+                                          text:
+                                              "${exploreController.investorExploreList[index].designation} of ${exploreController.investorExploreList[index].companyName}",
+                                          textSize: 10,
+                                          fontWeight: FontWeight.w300,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  if (GetStoreData.getStore
+                                          .read('isInvestor') ==
+                                      false)
+                                    Checkbox(
+                                      value: exploreController
+                                          .investorExploreList[index].isChecked,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          exploreController
+                                              .investorExploreList[index]
+                                              .isChecked = value!;
+                                          if (value) {
+                                            selectedInvestorIds.add(
+                                                exploreController
+                                                    .investorExploreList[index]
+                                                    .investorId!);
+                                          } else {
+                                            selectedInvestorIds.remove(
+                                                exploreController
+                                                    .investorExploreList[index]
+                                                    .investorId!);
+                                          }
+                                          isAllChecked =
+                                              selectedInvestorIds.length ==
+                                                  exploreController
+                                                      .investorExploreList
+                                                      .length;
+                                        });
+                                      },
+                                      side: BorderSide(
+                                          color: AppColors.grey, width: 1.5),
+                                      activeColor: AppColors.primary,
+                                      checkColor: AppColors.white,
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      visualDensity: VisualDensity.compact,
+                                    ),
                                 ],
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 6),
-                        child: Row(
-                          children: [
-                            sqaureCard(
-                                img: PngAssetPath.samIcon,
-                                title: "Recent Investment",
-                                subTitle: exploreController
-                                    .investorExploreList[index]
-                                    .recentInvestment!),
-                            sqaureCard(
-                                img: PngAssetPath.tamIcon,
-                                title: "Ave Recent Investments",
-                                subTitle: exploreController
-                                    .investorExploreList[index]
-                                    .recentInvestment!),
-                            sqaureCard(
-                                img: PngAssetPath.fundingAskIcon,
-                                title: "Avg Age of Startup",
-                                subTitle: exploreController
-                                    .investorExploreList[index]
-                                    .recentInvestment!),
-                          ],
-                        ),
-                      ),
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                        child: TextWidget(
-                            text: "Public Links",
-                            textSize: 16,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                        child: SizedBox(
-                            height: 42,
-                            child: InkWell(
-                              onTap: () {
-                                Helper.launchUrl(exploreController
-                                    .investorExploreList[index].linkedin!);
-                              },
-                              child: Card(
-                                color: AppColors.white12,
-                                surfaceTintColor: AppColors.white12,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(100)),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Image.network(
-                                        'https://ch-social-link-logo.s3.ap-south-1.amazonaws.com/linkedin.png',
-                                        height: 25,
-                                      ),
-                                      const SizedBox(width: 6),
-                                      const TextWidget(
-                                          text: "Linkedin", textSize: 12)
-                                    ],
+                            Divider(
+                              thickness: 0.5,
+                              color: AppColors.white38,
+                              height: 0,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(6),
+                              child: SizedBox(
+                                width: Get.width,
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6)),
+                                  color: AppColors.white12,
+                                  surfaceTintColor: AppColors.white12,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const TextWidget(
+                                            text: "About the company :",
+                                            textSize: 14,
+                                            fontWeight: FontWeight.w500),
+                                        const SizedBox(height: 4),
+                                        TextWidget(
+                                          text:
+                                              "${exploreController.investorExploreList[index].designation}",
+                                          textSize: 12,
+                                          maxLine: 2,
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            )),
-                      ),
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                        child: TextWidget(
-                            text: "Company Invested",
-                            textSize: 16,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Wrap(
-                          spacing: 4.0,
-                          runSpacing: 4.0,
-                          children: List.generate(
-                              exploreController.investorExploreList[index]
-                                  .startupsInvested!.length, (ind) {
-                            return Card(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4)),
-                              color: AppColors.white12,
-                              surfaceTintColor: AppColors.white12,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 4),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Image.network(
-                                        exploreController
-                                                .investorExploreList[index]
-                                                .startupsInvested![ind]
-                                                .logo ??
-                                            "",
-                                        height: 12),
-                                    const SizedBox(width: 6),
-                                    TextWidget(
-                                        text:
-                                            '${exploreController.investorExploreList[index].startupsInvested![ind].name}',
-                                        textSize: 14),
-                                  ],
-                                ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 6),
+                              child: Row(
+                                children: [
+                                  sqaureCard(
+                                      img: PngAssetPath.samIcon,
+                                      title: "Recent Investment",
+                                      subTitle: exploreController
+                                          .investorExploreList[index]
+                                          .recentInvestment!),
+                                  sqaureCard(
+                                      img: PngAssetPath.tamIcon,
+                                      title: "Ave Recent Investments",
+                                      subTitle: exploreController
+                                          .investorExploreList[index]
+                                          .recentInvestment!),
+                                  sqaureCard(
+                                      img: PngAssetPath.fundingAskIcon,
+                                      title: "Avg Age of Startup",
+                                      subTitle: exploreController
+                                          .investorExploreList[index]
+                                          .recentInvestment!),
+                                ],
                               ),
-                            );
-                          }),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 60),
-                        child: AppButton.outlineButton(
-                            onButtonPressed: () {
-                              Get.to(() => PublicProfileScreen(
-                                  id: exploreController
-                                      .investorExploreList[index].investorId!));
-                            },
-                            borderColor:
-                                GetStoreData.getStore.read('isInvestor')
-                                    ? AppColors.primaryInvestor
-                                    : AppColors.primary,
-                            borderRadius: 12,
-                            height: 40,
-                            title: "Connect with the Investor"),
-                      ),
-                      sizedTextfield,
-                    ],
-                  ));
-            },
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 6),
+                              child: TextWidget(
+                                  text: "Public Links",
+                                  textSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 6.0),
+                              child: SizedBox(
+                                  height: 42,
+                                  child: InkWell(
+                                    onTap: () {
+                                      Helper.launchUrl(exploreController
+                                          .investorExploreList[index]
+                                          .linkedin!);
+                                    },
+                                    child: Card(
+                                      color: AppColors.white12,
+                                      surfaceTintColor: AppColors.white12,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(100)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12.0),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Image.network(
+                                              'https://ch-social-link-logo.s3.ap-south-1.amazonaws.com/linkedin.png',
+                                              height: 25,
+                                            ),
+                                            const SizedBox(width: 6),
+                                            const TextWidget(
+                                                text: "Linkedin", textSize: 12)
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  )),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 6),
+                              child: TextWidget(
+                                  text: "Company Invested",
+                                  textSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Wrap(
+                                spacing: 4.0,
+                                runSpacing: 4.0,
+                                children: List.generate(
+                                    exploreController.investorExploreList[index]
+                                        .startupsInvested!.length, (ind) {
+                                  return Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(4)),
+                                    color: AppColors.white12,
+                                    surfaceTintColor: AppColors.white12,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 4),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Image.network(
+                                              exploreController
+                                                      .investorExploreList[
+                                                          index]
+                                                      .startupsInvested![ind]
+                                                      .logo ??
+                                                  "",
+                                              height: 12),
+                                          const SizedBox(width: 6),
+                                          TextWidget(
+                                              text:
+                                                  '${exploreController.investorExploreList[index].startupsInvested![ind].name}',
+                                              textSize: 14),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 60),
+                              child: AppButton.outlineButton(
+                                  onButtonPressed: () {
+                                    Get.to(() => PublicProfileScreen(
+                                        id: exploreController
+                                            .investorExploreList[index]
+                                            .investorId!));
+                                  },
+                                  borderColor:
+                                      GetStoreData.getStore.read('isInvestor')
+                                          ? AppColors.primaryInvestor
+                                          : AppColors.primary,
+                                  borderRadius: 12,
+                                  height: 40,
+                                  title: "Connect with the Investor"),
+                            ),
+                            sizedTextfield,
+                          ],
+                        ));
+                  },
+                ),
+              ),
+            ],
           );
   }
 
@@ -1506,6 +1608,4 @@ class _ExploreScreenState extends State<ExploreScreen>
       ),
     );
   }
-
-
 }

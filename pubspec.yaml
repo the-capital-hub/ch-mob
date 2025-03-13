@@ -42,7 +42,7 @@ dependencies:
   flutter_spinkit: ^5.2.1
   image_picker: ^1.1.1
   video_player: ^2.9.1
-  file_picker: ^8.1.4
+  file_picker: ^6.2.1
   image_cropper: ^6.0.0
   pinput: ^4.0.0
   animated_introduction: ^1.0.4
@@ -61,6 +61,8 @@ dependencies:
   multi_image_picker_plus: ^0.0.5
   syncfusion_flutter_pdfviewer: ^26.2.14
   google_sign_in: ^6.2.2
+  quill_html_editor: ^2.2.8
+  permission_handler: ^11.3.1
   # firebase_auth: 
   # firebase_core: 
 

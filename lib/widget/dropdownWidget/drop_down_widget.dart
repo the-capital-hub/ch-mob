@@ -10,7 +10,7 @@ class DropDownWidget extends StatefulWidget {
   final String status;
   final String? lable;
 
-  // final Color color;
+  final Color? borderColor;
   final List<String> statusList;
   final Function(String?) onChanged;
   final double? circleVal;
@@ -25,7 +25,7 @@ class DropDownWidget extends StatefulWidget {
       required this.onChanged,
       this.circleVal,
       this.isValidate,
-      // required this.color,
+      this.borderColor,
       this.height})
       : super(key: key);
 
@@ -51,7 +51,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
           decoration: BoxDecoration(
             color: AppColors.blackCard,
             borderRadius: BorderRadius.circular(widget.circleVal ?? 6),
-            border: Border.all(color: AppColors.transparent, width: 1),
+            border: Border.all(color:widget.borderColor?? AppColors.transparent, width: 1),
           ),
           child: DropdownButtonHideUnderline(
             child: ButtonTheme(
