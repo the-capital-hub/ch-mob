@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:capitalhub_crm/controller/exploreController/explore_controller.dart';
@@ -1083,7 +1084,19 @@ class _ExploreScreenState extends State<ExploreScreen>
                     if (selectedInvestorIds.isNotEmpty)
                       InkWell(
                         onTap: () {
-                          addInvestorPopup(context);
+                          exploreController.getCampaignLists();
+                          addInvestorPopup(context, selectedInvestorIds)
+                              .then((val) {
+                            if (val) {
+                              selectedInvestorIds.clear();
+                              for (var investor
+                                  in exploreController.investorExploreList) {
+                                investor.isChecked = false;
+                              }
+                              isAllChecked = false;
+                              setState(() {});
+                            }
+                          });
                         },
                         child: Container(
                             margin: const EdgeInsets.only(right: 6),

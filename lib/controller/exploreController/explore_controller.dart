@@ -11,6 +11,7 @@ import '../../model/01-StartupModel/exploreModel/explore_investor_model.dart';
 import '../../model/01-StartupModel/exploreModel/explore_startup_model.dart';
 import '../../model/01-StartupModel/exploreModel/explore_vc_details_model.dart';
 import '../../model/01-StartupModel/exploreModel/explore_vc_model.dart';
+import '../../model/01-StartupModel/exploreModel/get_campaignList_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import '../../utils/helper/helper.dart';
@@ -181,5 +182,56 @@ class ExploreController extends GetxController {
     } finally {
       isButtonLoading.value = false;
     }
+  }
+
+  var isListLoading = false.obs;
+  List<CampaignList> campaignLists = [];
+  Future getCampaignLists() async {
+    try {
+      isListLoading.value = true;
+      campaignLists.clear();
+      var response =
+          await ApiBase.getRequest(extendedURL: ApiUrl.getCampaignUrl);
+      log(response.body);
+      var data = jsonDecode(response.body);
+      if (data['status'] == true) {
+        GetCampaignListModel getCampaignListModel =
+            GetCampaignListModel.fromJson(data);
+
+        campaignLists.addAll(getCampaignListModel.data!);
+      }
+    } catch (e) {
+      log("getCamp List $e");
+    } finally {
+      isListLoading.value = false;
+    }
+  }
+
+  Future createCampaignList({
+    String? listId,
+    String? listName,
+    required List<String> selectedInvId,
+  }) async {
+    try {
+      var body = {
+        if (listName != null) "list_name": listName,
+        if (listId != null) "list_id": listId,
+        "investors": selectedInvId
+      };
+      var response = await ApiBase.postRequest(
+          body: body, extendedURL: ApiUrl.createCampaignUrl, withToken: true);
+      log(response.body);
+      var data = json.decode(response.body);
+
+      if (data["status"] == true) {
+        // HelperSnackBar.snackBar("Success", data["message"]);
+        return true;
+      } else {
+        // HelperSnackBar.snackBar("Error", data["message"]);
+        return false;
+      }
+    } catch (e) {
+      log("message $e");
+    } finally {}
   }
 }

@@ -1,17 +1,22 @@
+import 'package:capitalhub_crm/utils/helper/helper.dart';
+import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:capitalhub_crm/widget/dropdownWidget/drop_down_widget.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../controller/exploreController/explore_controller.dart';
 import '../../../utils/appcolors/app_colors.dart';
 import '../../textWidget/text_widget.dart';
 
 Future<bool> addInvestorPopup(
   BuildContext context,
+  List<String> invIds,
 ) async {
   TextEditingController newListNameController = TextEditingController();
   String? selectedList;
+  String? selectedId;
   bool isCreatingNewList = false;
-
+  ExploreController exploreController = Get.find();
   return await showDialog(
     context: context,
     builder: (context) {
@@ -44,24 +49,32 @@ Future<bool> addInvestorPopup(
                           controller: newListNameController,
                         ),
                       )
-                    : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: DropDownWidget(
-                          status: selectedList ?? "Select List",
-                          lable: "Choose a list",
-                          borderColor: AppColors.white38,
-                          statusList: const [
-                            "a",
-                            "b",
-                            "c"
-                          ], // Provide the list of available statuses
-                          onChanged: (v) {
-                            setState(() {
-                              selectedList = v;
-                            });
-                          },
-                        ),
-                      ),
+                    : Obx(() => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: exploreController.isListLoading.value
+                              ? SizedBox(
+                                  height: 55,
+                                  child: Center(
+                                      child: Helper.pageLoading(
+                                          color: AppColors.blackCard)),
+                                )
+                              : DropDownWidget(
+                                  status: selectedList ?? "Select List",
+                                  lable: "Choose a list",
+                                  borderColor: AppColors.white38,
+                                  statusList: exploreController.campaignLists
+                                      .map((e) => e.listName!)
+                                      .toList(),
+                                  onChanged: (v) {
+                                    setState(() {
+                                      selectedList = v;
+                                    });
+                                    selectedId = exploreController.campaignLists
+                                        .firstWhere((e) => e.listName == v)
+                                        .listId!;
+                                  },
+                                ),
+                        )),
                 const SizedBox(height: 8),
                 Align(
                   alignment: Alignment.centerRight,
@@ -72,6 +85,8 @@ Future<bool> addInvestorPopup(
                       onTap: () {
                         setState(() {
                           selectedList = null;
+                          selectedId = null;
+                          newListNameController.clear();
                           isCreatingNewList = !isCreatingNewList;
                         });
                       },
@@ -121,7 +136,21 @@ Future<bool> addInvestorPopup(
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          Get.back();
+                          if (newListNameController.text.isNotEmpty ||
+                              selectedId != null) {
+                            Helper.loader(context);
+                            exploreController
+                                .createCampaignList(
+                                    listName: newListNameController.text,
+                                    listId: selectedId,
+                                    selectedInvId: invIds)
+                                .then((val) {
+                              Get.back(closeOverlays: true);
+                              Get.back(result: val);
+                              HelperSnackBar.snackBar("Success",
+                                  "Investors List created successfully");
+                            });
+                          }
                         },
                         child: SizedBox(
                           height: 45,

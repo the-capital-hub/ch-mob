@@ -109,6 +109,7 @@ class MyCustomTextField {
   static Widget htmlTextField({
     required String hintText,
     required QuillEditorController controller,
+    Function()? onEditorCreated,
     String? lableText,
   }) {
     Future<void> requestStoragePermission() async {
@@ -119,7 +120,7 @@ class MyCustomTextField {
         await Permission.storage.request();
       }
     }
-    
+
 //controller.getText().then((v) => log(v.toString()));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,6 +194,7 @@ class MyCustomTextField {
                         child: CircularProgressIndicator(color: Colors.white)),
                   );
                 },
+                onEditorCreated: onEditorCreated,
                 onTextChanged: (text) {
                   print("HTML Output: $text");
                 },

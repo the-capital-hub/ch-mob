@@ -95,7 +95,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     PngAssetPath.financeIcon,
     PngAssetPath.teamIcon,
     PngAssetPath.customerIcon,
-    PngAssetPath.communityIcon,
+    PngAssetPath.campaignIcon,
     PngAssetPath.communityIcon,
     PngAssetPath.meetingIcon,
     PngAssetPath.investorsIcon,

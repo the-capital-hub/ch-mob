@@ -1,31 +1,59 @@
 import 'dart:developer';
 
+import 'package:capitalhub_crm/controller/campaignsController/campaigns_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dropdownWidget/drop_down_widget.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:quill_html_editor/quill_html_editor.dart';
-import 'package:permission_handler/permission_handler.dart';
-import '../../../widget/imagePickerWidget/image_picker_widget.dart';
-import '../../../widget/textwidget/text_widget.dart';
+import 'package:get/get.dart';
 
 class CreateNewTemplate extends StatefulWidget {
-  const CreateNewTemplate({super.key});
+  bool isEdit;
+  int? index;
+  CreateNewTemplate({super.key, required this.isEdit, this.index});
 
   @override
   State<CreateNewTemplate> createState() => _CreateNewTemplateState();
 }
 
 class _CreateNewTemplateState extends State<CreateNewTemplate> {
-  TextEditingController templateNameController = TextEditingController();
-  TextEditingController emailSubjectController = TextEditingController();
-  String folder = "Capitalhub";
-  String visibility = "Only you";
-  String freeOrPaid = "Free";
-  final QuillEditorController controller = QuillEditorController();
+  CampaignsController campaignsController = Get.find();
+  @override
+  void initState() {
+    if (widget.isEdit) {
+      campaignsController.templateNameController.text =
+          campaignsController.templateList[widget.index!].templateName!;
+      campaignsController.templateSubjectController.text =
+          campaignsController.templateList[widget.index!].templateSubject!;
+
+      campaignsController.templateFolder =
+          campaignsController.templateList[widget.index!].folder!;
+      campaignsController.templateFreeOrPaid =
+          campaignsController.templateList[widget.index!].pricingType!;
+      campaignsController.templateVisibility =
+          campaignsController.templateList[widget.index!].visibility!;
+      campaignsController.templateAmountController.text =
+          campaignsController.templateList[widget.index!].price!;
+    } else {
+      campaignsController.templateNameController.clear();
+      campaignsController.templateSubjectController.clear();
+      campaignsController.templateBodyController.clear();
+      campaignsController.templateFolder = "Capitalhub";
+      campaignsController.templateFreeOrPaid = "Free";
+      campaignsController.templateVisibility = "Only you";
+      campaignsController.templateAmountController.clear();
+    }
+    super.initState();
+  }
+
+  addEmailBody() async {
+    await campaignsController.templateBodyController
+        .insertText(campaignsController.templateList[widget.index!].emailBody!);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,53 +71,76 @@ class _CreateNewTemplateState extends State<CreateNewTemplate> {
                 MyCustomTextField.textField(
                     hintText: "Enter Template Name",
                     lableText: "Template Name",
-                    controller: templateNameController),
+                    controller: campaignsController.templateNameController),
                 sizedTextfield,
                 MyCustomTextField.textField(
                     hintText: "Enter Email Subject",
                     lableText: "Email Subject",
-                    controller: emailSubjectController),
+                    controller: campaignsController.templateSubjectController),
                 sizedTextfield,
                 MyCustomTextField.htmlTextField(
                     hintText: "Enter Email Body",
                     lableText: "Email Body",
-                    controller: controller),
-
+                    onEditorCreated: () async {
+                      addEmailBody();
+                    },
+                    controller: campaignsController.templateBodyController),
                 sizedTextfield,
                 DropDownWidget(
-                    status: folder,
+                    status: campaignsController.templateFolder,
                     lable: "Folder",
-                    statusList: const ["Capitalhub", "xyz"],
+                    statusList: const [
+                      "Capitalhub",
+                      "Marketing",
+                      "Sales",
+                      "Support"
+                    ],
                     onChanged: (v) {
-                      folder = v!;
+                      campaignsController.templateFolder = v!;
                       setState(() {});
                     }),
                 sizedTextfield,
                 DropDownWidget(
-                    status: visibility,
+                    status: campaignsController.templateVisibility,
                     lable: "Visibility",
                     statusList: const ["Only you", "Team", "Public"],
                     onChanged: (v) {
-                      visibility = v!;
+                      campaignsController.templateVisibility = v!;
                       setState(() {});
                     }),
                 sizedTextfield,
                 DropDownWidget(
-                    status: freeOrPaid,
+                    status: campaignsController.templateFreeOrPaid,
                     lable: "Free or Paid",
                     statusList: const ["Free", "Paid"],
                     onChanged: (v) {
-                      freeOrPaid = v!;
+                      campaignsController.templateFreeOrPaid = v!;
                       setState(() {});
-                    })
+                    }),
+                sizedTextfield,
+                if (campaignsController.templateFreeOrPaid == "Paid")
+                  MyCustomTextField.textField(
+                      hintText: "Enter Amount",
+                      textInputType: TextInputType.number,
+                      lableText: "Amount",
+                      controller: campaignsController.templateAmountController)
               ],
             ),
           ),
         ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(12),
-          child:
-              AppButton.primaryButton(onButtonPressed: () {}, title: "Create"),
+          child: AppButton.primaryButton(
+              onButtonPressed: () {
+                Helper.loader(context);
+                if (widget.isEdit) {
+                  campaignsController.editTemplate(campaignsController
+                      .templateList[widget.index!].templateId);
+                } else {
+                  campaignsController.createTemplate();
+                }
+              },
+              title: widget.isEdit ? "Update" : "Create"),
         ),
       ),
     );

@@ -66,6 +66,7 @@ class PngAssetPath {
   static const String categoryIcon = 'assets/img/drawerIcon/category.png';
   static const String infoIcon = 'assets/img/drawerIcon/info.png';
   static const String userIcon = 'assets/img/drawerIcon/user.png';
+  static const String campaignIcon = 'assets/img/drawerIcon/campaign.png';
 
   static const String fundingAskIcon = 'assets/img/FundingAsk.png';
   static const String fundingRaisedIcon = 'assets/img/Fundingraised.png';

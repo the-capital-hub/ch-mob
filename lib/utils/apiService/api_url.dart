@@ -177,4 +177,16 @@ class ApiUrl {
   static const String delMyInterest = "investor/interest";
   static const String addPastInvestment = "investor/past-investment";//same for add edit del
 
+  static const String getCampaignUrl = "campaign/lists/getFilteredInvestorsList";
+  static const String createCampaignUrl = "campaign/lists/createUpdateFilteredInvestorsList";
+  static const String getAllCampaignDetailUrl = "campaign/lists/getFilteredInvestorsListCampaignPage";
+  static const String getInvListById = "campaign/lists/getFilteredInvestorsListById/";
+  static const String removeInvFromList = "campaign/lists/removeInvestorFromList/";
+  static const String deleteList = "campaign/lists/deleteFilteredInvestorsList/";
+  static const String createTemplate = "campaign/templates/createTemplate";
+  static const String updateTemplate = "campaign/templates/updateTemplate/";
+  static const String viewTemplate = "campaign/templates/getTemplates";
+  static const String deleteTemplate = "campaign/templates/deleteTemplate/";
+
+
 }
