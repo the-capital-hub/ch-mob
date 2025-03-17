@@ -70,9 +70,6 @@ class _CommunityBookAMeetingScreenState
                           textSize: 20,
                           fontWeight: FontWeight.w500,
                         ),
-                        // Divider(
-                        //   color: AppColors.white38,
-                        // ),
                         const SizedBox(height: 12),
                         const TextWidget(
                           text: "Meeting:",
@@ -82,10 +79,6 @@ class _CommunityBookAMeetingScreenState
                         ),
                         const SizedBox(height: 12),
                         const TextWidget(text: "title", textSize: 13),
-                        const SizedBox(height: 12),
-                        // Divider(
-                        //   color: AppColors.white38,
-                        // ),
                         const SizedBox(height: 12),
                         const TextWidget(
                           text: "Description:",
@@ -100,11 +93,6 @@ class _CommunityBookAMeetingScreenState
                               TextStyle(fontSize: 13, color: AppColors.white),
                         ),
                         const SizedBox(height: 12),
-                        // Divider(
-                        //   color: AppColors.white38,
-                        // ),
-                        const SizedBox(height: 8),
-
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

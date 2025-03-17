@@ -1,13 +1,9 @@
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddServiceScreen/community_add_service_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPriorityDMsScreen/communityQuestionsScreen/community_questions_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPriorityDMsScreen/communityYourQuestionsScreen/community_your_questions_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityProductsAndServicesScreen/community_products_and_services_screen.dart';
-import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
-import 'package:capitalhub_crm/screen/meetingsScreen/create_new_webinar_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
-import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
-import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dilogue/custom_dialogue.dart';
 import 'package:capitalhub_crm/widget/dilogue/share_dilogue.dart';
@@ -67,7 +63,7 @@ class _CommunityPriorityDMScreenState
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextWidget(
+                    const TextWidget(
                       text: "Title",
                       textSize: 20,
                       fontWeight: FontWeight.w500,
@@ -83,25 +79,23 @@ class _CommunityPriorityDMScreenState
                     )
                   ],
                 ),
-
                 sizedTextfield,
-                TextWidget(
+                const TextWidget(
                   text: "Description",
                   textSize: 15,
-                  // fontWeight: FontWeight.w500,
                 ),
                 sizedTextfield,
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextWidget(text: "Response Time: 1 hour", textSize: 16),
+                    const TextWidget(
+                        text: "Response Time: 1 hour", textSize: 16),
                     Card(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15)),
                       color: AppColors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
                         child: TextWidget(
                           text: "Free",
                           textSize: 10,
@@ -112,48 +106,26 @@ class _CommunityPriorityDMScreenState
                   ],
                 ),
                 sizedTextfield,
-                // Row(
-                //   children: [
-                //     Icon(
-                //       Icons.language,
-                //       color: AppColors.white,
-                //       size: 22,
-                //     ),
-                //     const SizedBox(
-                //       width: 5,
-                //     ),
-                //     const TextWidget(text: "Online", textSize: 16)
-                //   ],
-                // ),
-
-                // sizedTextfield,
-
                 Wrap(
                   spacing: 4.0,
                   runSpacing: 4.0,
                   children: List.generate(data.length, (index) {
                     return InkWell(
-                      onTap: () {
-                        // loginMobileController
-                        //         .userNameController.text =
-                        //     loginMobileController
-                        //         .suggestions[index];
-                      },
+                      onTap: () {},
                       child: Card(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4)),
                         color: AppColors.white12,
                         surfaceTintColor: AppColors.white12,
                         child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 4),
                           child: TextWidget(text: data[index], textSize: 14),
                         ),
                       ),
                     );
                   }),
                 ),
-
                 const SizedBox(
                   height: 15,
                 ),
@@ -169,13 +141,13 @@ class _CommunityPriorityDMScreenState
                           title: "View Questions",
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
                       IconButton(
                           onPressed: () {
-                            Get.to(() =>
-                                const CommunityProductsAndServicesScreen());
+                            addServiceIndex = 0;
+                            Get.to(() => const CommunityAddServiceScreen());
                           },
                           icon: Icon(
                             Icons.edit,
@@ -185,21 +157,18 @@ class _CommunityPriorityDMScreenState
                       IconButton(
                           onPressed: () {
                             showCustomPopup(
-                              context: context, // Pass the context
-                              title: "Delete this Priority DM", // Dialog Title
+                              context: context,
+                              title: "Delete this Priority DM",
                               message:
-                                  "Are you sure you\nwant to delete this Priority DM?", // Dialog Message
-                              button1Text: "Cancel", // First button text
-                              button2Text: "OK", // Second button text
-                              icon:
-                                  Icons.delete, // Icon to display in the popup
+                                  "Are you sure you\nwant to delete this Priority DM?",
+                              button1Text: "Cancel",
+                              button2Text: "OK",
+                              icon: Icons.delete,
                               onButton1Pressed: () {
-                                // Action for the first button (e.g., Cancel)
-                                Get.back(); // Close the dialog
+                                Get.back();
                               },
                               onButton2Pressed: () {
-                                // Action for the second button (e.g., OK)
-                                Get.back(); // Close the dialog
+                                Get.back();
                               },
                             );
                           },
@@ -207,23 +176,10 @@ class _CommunityPriorityDMScreenState
                             Icons.delete,
                             color: AppColors.white,
                           )),
-                      // const Icon(
-                      //   Icons.schedule,
-                      //   color: AppColors.redColor,
-                      //   size: 22,
-                      // ),
-                      // const SizedBox(width: 5),
-                      //  TextWidget(
-                      //   text: webinarController.webinarsList[index].duration,
-                      //   textSize: 16,
-                      //   color: AppColors.redColor,
-                      // ),
                     ],
                   ),
-                // sizedTextfield,
                 if (!isAdmin)
                   if (noQuestions)
-                    // Show this section if there are no questions
                     Column(
                       children: [
                         AppButton.primaryButton(
@@ -245,7 +201,6 @@ class _CommunityPriorityDMScreenState
                           sizedTextfield,
                           AppButton.primaryButton(
                             onButtonPressed: () {
-                              // Handle question submission
                               setState(() {
                                 noQuestions = false;
                                 isQuestionFieldVisible = false;
@@ -257,7 +212,6 @@ class _CommunityPriorityDMScreenState
                       ],
                     )
                   else
-                    // Show this section when there are existing questions
                     Column(
                       children: [
                         Row(
@@ -267,22 +221,20 @@ class _CommunityPriorityDMScreenState
                                 onButtonPressed: () {
                                   setState(() {
                                     isQuestionFieldVisible =
-                                        !isQuestionFieldVisible; // Toggle visibility of the question input
+                                        !isQuestionFieldVisible;
                                   });
                                 },
                                 title: "Ask Question",
                               ),
                             ),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             Expanded(
                               child: AppButton.primaryButton(
                                 onButtonPressed: () {
-                                  // Handle "View Your Questions" action (navigate to a page, etc.)
                                   Get.to(() =>
                                       const CommunityYourQuestionsScreen());
                                 },
-                                title:
-                                    "View Your\nQuestions (3)", // This should reflect the actual number of questions
+                                title: "View Your\nQuestions (3)",
                               ),
                             ),
                           ],
@@ -297,9 +249,7 @@ class _CommunityPriorityDMScreenState
                           ),
                           sizedTextfield,
                           AppButton.primaryButton(
-                            onButtonPressed: () {
-                              // Handle question submission
-                            },
+                            onButtonPressed: () {},
                             title: "Submit",
                           ),
                         ],

@@ -1,5 +1,4 @@
 import 'package:capitalhub_crm/screen/resourceScreen/resource_screen.dart';
-
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:flutter/material.dart';

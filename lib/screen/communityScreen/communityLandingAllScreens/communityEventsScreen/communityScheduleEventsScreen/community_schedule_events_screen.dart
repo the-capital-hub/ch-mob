@@ -155,36 +155,6 @@ class _CommunityScheduleEventsScreenState
                           fontWeight: FontWeight.w500,
                         ),
                         sizedTextfield,
-// Wrap(
-//                                 spacing: 4.0,
-//                                 runSpacing: 4.0,
-//                                 children: List.generate(
-//                                     data.length,
-//                                     (index) {
-//                                   return InkWell(
-//                                     onTap: () {
-//                                       // loginMobileController
-//                                       //         .userNameController.text =
-//                                       //     loginMobileController
-//                                       //         .suggestions[index];
-//                                     },
-//                                     child: Card(
-//                                       shape: RoundedRectangleBorder(
-//                                           borderRadius:
-//                                               BorderRadius.circular(4)),
-//                                       color: AppColors.white12,
-//                                       surfaceTintColor: AppColors.white12,
-//                                       child: Padding(
-//                                         padding: EdgeInsets.symmetric(
-//                                             horizontal: 12, vertical: 4),
-//                                         child: TextWidget(
-//                                             text: data[index],
-//                                             textSize: 14),
-//                                       ),
-//                                     ),
-//                                   );
-//                                 }),
-//                               ),
                         Wrap(
                           spacing: 4.0,
                           runSpacing: 4.0,
@@ -228,7 +198,6 @@ class _CommunityScheduleEventsScreenState
                           ),
                         ),
                         sizedTextfield,
-
                         AppButton.primaryButton(
                             onButtonPressed: () {
                               Get.to(() => const CommunityBookAMeetingScreen());

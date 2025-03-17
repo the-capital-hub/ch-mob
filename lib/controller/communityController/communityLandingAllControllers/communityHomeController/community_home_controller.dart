@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityPostModel/community_post_model.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/savedCommunityCollectionModel/saved_community_collection_model.dart';
@@ -10,7 +9,6 @@ import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 class CommunityHomeController extends GetxController {
   int selectIndex = 0;
@@ -23,31 +21,17 @@ class CommunityHomeController extends GetxController {
         isLoading.value = isLoadOn;
       }
       var response = await ApiBase.getRequest(
-          extendedURL: ApiUrl.getCommunityPosts+createdCommunityId+"?page="+page.toString());
+          extendedURL:
+              "${ApiUrl.getCommunityPosts}$createdCommunityId?page=$page");
       log(response.body);
       var data = jsonDecode(response.body);
       if (data['status'] == true) {
         CommunityPostModel communityPostModel =
             CommunityPostModel.fromJson(data);
         communityPostList.addAll([communityPostModel.data!]);
-      }
-      else {
+      } else {
         HelperSnackBar.snackBar("Info", data["message"]);
       }
-//       if (data['status'] == true) {
-//   // Check if the 'posts' list is not empty
-//   if (data['data']['postData'] != null && data['data']['postData'].isNotEmpty) {
-//     // Parse the response and create the model
-//     CommunityPostModel communityPostModel = CommunityPostModel.fromJson(data);
-    
-//     // Assign the data to your communityPostList
-//     communityPostList.assignAll([communityPostModel.data]);
-//   } else {
-//     // If posts are empty, handle accordingly (maybe show a message or set default data)
-//     print("No posts available.");
-//     HelperSnackBar.snackBar("Info", "No New Posts Yet");
-//   }
-// }
     } catch (e) {
       log("getCommunityPosts $e");
     } finally {
@@ -74,7 +58,6 @@ class CommunityHomeController extends GetxController {
     var data = json.decode(response.body);
     if (data["status"] == true) {
       HelperSnackBar.snackBar("Success", data["message"]);
-
       return true;
     } else {
       HelperSnackBar.snackBar("Error", data["message"]);
@@ -90,7 +73,7 @@ class CommunityHomeController extends GetxController {
         extendedURL: ApiUrl.likeUnlikeCommunityPost + postID,
         withToken: true);
     log(response.body);
-    var data = json.decode(response.body);
+    json.decode(response.body);
   }
 
   Future<bool> commentCommunityPost(context,
@@ -122,7 +105,6 @@ class CommunityHomeController extends GetxController {
     required String commentID,
   }) async {
     Helper.loader(context);
-
     var response = await ApiBase.deleteRequest(
       extendedURL: "${ApiUrl.deleteCommentCommunityPost}$postID/$commentID",
     );
@@ -187,18 +169,17 @@ class CommunityHomeController extends GetxController {
       var response = await ApiBase.getRequest(
           extendedURL: ApiUrl.getSavedCommunityPostCollections +
               GetStoreData.getStore.read('id').toString());
-      // log(response.body);
+      log(response.body);
       var data = jsonDecode(response.body);
       if (data['status'] == true) {
         GetSavedCommunityCollectionModel savedCommunityCollectionModel =
             GetSavedCommunityCollectionModel.fromJson(data);
         communityCollectionList.addAll(savedCommunityCollectionModel.data!);
-      }
-      else{
+      } else {
         HelperSnackBar.snackBar("Info", data["message"]);
       }
     } catch (e) {
-      log("getcollection $e");
+      log("getSavedCommunityPostCollections $e");
     } finally {
       isLoading.value = false;
     }

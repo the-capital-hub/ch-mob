@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'dart:convert';
-import 'dart:developer';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../../utils/appcolors/app_colors.dart';
 import '../textWidget/text_widget.dart';
 
@@ -83,7 +78,11 @@ Future<bool> showCustomPopup({
                   ),
                 ),
               ),
-              const SizedBox(width: 8),  // Add space between the two buttons
+              Container(
+                height: 45,
+                width: 1,
+                color: AppColors.grey3Color,
+              ),
               Expanded(
                 child: InkWell(
                   onTap: onButton2Pressed,

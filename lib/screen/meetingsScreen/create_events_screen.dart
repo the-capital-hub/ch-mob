@@ -8,7 +8,6 @@ import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dropdownWidget/drop_down_widget.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
-import 'package:capitalhub_crm/widget/timePicker/timePicker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,29 +22,25 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController durationMinutesController = TextEditingController();
-  TextEditingController privacyController = TextEditingController(text : "Public");
+  TextEditingController privacyController =
+      TextEditingController(text: "Public");
   TextEditingController priceController = TextEditingController();
   TextEditingController priceDiscountController = TextEditingController();
   String privacyStatus = "Public";
-  
-  static void _validateDuration(String value, TextEditingController controller) {
+
+  static void _validateDuration(
+      String value, TextEditingController controller) {
     if (value.isNotEmpty) {
       int? duration = int.tryParse(value);
       if (duration != null) {
-        // If the value is not in the range of 1 to 60, reset the input
         if (duration < 1 || duration > 60) {
-          // Show a Snackbar or an error message to the user
-          print('Value should be between 1 and 60');
-          controller.text = '';  // Clear the input
+          controller.text = '';
         }
       } else {
-        // Handle invalid non-numeric input
-        print('Invalid input: please enter a number');
-        controller.text = '';  // Clear the input
+        controller.text = '';
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -75,22 +70,11 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
                 sizedTextfield,
                 MyCustomTextField.textField(
                   hintText: "Enter Duration(Minutes)",
-                  
                   lableText: "Duration(Minutes)",
                   textInputType: TextInputType.number,
                   onChange: (value) {
-        // Validation when text changes
-        _validateDuration(value, durationMinutesController);
-      },
-                  
-                  // onTap: () async {
-                  //   DateTime? selectedTime = await selectTime(context, true);
-
-                  //   if (selectedTime != null) {
-                  //     durationMinutesController.text =
-                  //         selectedTime.minute.toString();
-                  //   }
-                  // },
+                    _validateDuration(value, durationMinutesController);
+                  },
                   controller: durationMinutesController,
                 ),
                 sizedTextfield,
@@ -105,13 +89,13 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
                     }),
                 sizedTextfield,
                 MyCustomTextField.textField(
-                  textInputType: TextInputType.number,
+                    textInputType: TextInputType.number,
                     lableText: "Event Price",
                     hintText: "Enter Price",
                     controller: priceController),
                 sizedTextfield,
                 MyCustomTextField.textField(
-                  textInputType: TextInputType.number,
+                    textInputType: TextInputType.number,
                     lableText: "Price Discount(%)",
                     hintText: "Enter Price Discount(%)",
                     controller: priceDiscountController),
@@ -135,20 +119,23 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
                       price: priceController.text,
                       discount: priceDiscountController.text,
                     );
-                    Get.to(() => const EventsScreen(), preventDuplicates: false);
+                    Get.to(() => const EventsScreen(),
+                        preventDuplicates: false);
                   },
                   title: "Create Event"),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: AppButton.outlineButton(
-                  borderColor: GetStoreData.getStore.read('isInvestor')? AppColors.primaryInvestor:AppColors.primary,
+                  borderColor: GetStoreData.getStore.read('isInvestor')
+                      ? AppColors.primaryInvestor
+                      : AppColors.primary,
                   onButtonPressed: () {
                     titleController.clear();
                     descriptionController.clear();
-                    
+
                     durationMinutesController.clear();
-                   
+
                     priceController.clear();
                     priceDiscountController.clear();
                     setState(() {

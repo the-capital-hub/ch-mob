@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityAddNewProductController/community_add_new_product_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
@@ -31,8 +30,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
   String base64 = "";
   List<TextEditingController> controllers = [TextEditingController()];
   void addNewTextField() {
-    print("inside");
-
     setState(() {
       controllers.add(TextEditingController());
     });
@@ -67,16 +64,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
             leading: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // IconButton(
-                //   onPressed: () {
-                //     Get.back();
-                //   },
-                //   icon: Icon(
-                //     Icons.arrow_back_ios_new_sharp,
-                //     size: 20,
-                //     color: AppColors.white,
-                //   ),
-                // ),
                 InkWell(
                   child: Icon(
                     Icons.arrow_back_ios_new_sharp,
@@ -86,20 +73,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     Get.back();
                   },
                 ),
-
                 CircleAvatar(
                   radius: 16,
                   foregroundImage: NetworkImage(communityLogo),
                 ),
               ],
             ),
-            title:
-                // aboutCommunity.aboutCommunityList.isEmpty
-                //       ? CircularProgressIndicator():
-                TextWidget(
-                    text: communityName,
-                    // aboutCommunity.aboutCommunityList[0].community.name,
-                    textSize: 16),
+            title: TextWidget(text: communityName, textSize: 16),
             actions: [
               IconButton(
                   onPressed: () {
@@ -118,7 +98,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               child: Column(children: [
                 Image.asset(
                   PngAssetPath.addNewProductImg,
-                  height: 200,
+                  height: 100,
                 ),
                 const SizedBox(
                   height: 12,
@@ -140,7 +120,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         radius: 60,
                         child:
                             Icon(Icons.add_photo_alternate_outlined, size: 40)),
-
                 const SizedBox(
                   height: 12,
                 ),
@@ -154,11 +133,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     Container(
                       decoration: BoxDecoration(
                           color: AppColors.white12,
-                          // color: Color(0xFFC8E0DA),
-                          borderRadius: BorderRadius.circular(20)
-                          // border:
-                          //     Border.all(color: Colors.redAccent, width: 1)
-                          ),
+                          borderRadius: BorderRadius.circular(20)),
                       child: const Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 12),
@@ -168,18 +143,17 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     ),
                   ]),
                 ),
-
                 const SizedBox(height: 12),
                 MyCustomTextField.textField(
                     hintText: "eg : Hub",
                     controller: addNewProduct.productNameController,
                     lableText: "Product Name"),
                 const SizedBox(height: 12),
-                MyCustomTextField.textField(
-                    hintText: "Enter description",
-                    controller: addNewProduct.productDescriptionController,
-                    lableText: "Description",
-                    maxLine: 7),
+                MyCustomTextField.htmlTextField(
+                  hintText: "Enter description",
+                  controller: addNewProduct.productDescriptionController,
+                  lableText: "Description",
+                ),
                 const SizedBox(
                   height: 12,
                 ),
@@ -210,17 +184,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                   const SizedBox(
                     height: 12,
                   ),
-                // MyCustomTextField.textField(hintText: "", controller: urlController, lableText: "Product Image",suffixIcon: Card(
-                //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                //   color: AppColors.grey700,
-                //   child:
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 12,left: 15,right: 15),
-                //   child: TextWidget(text: "Upload", textSize: 11),
-                // ),)),
-
-                // SizedBox(height: 12,),
-
                 ListView.separated(
                   separatorBuilder: (context, index) => const SizedBox(
                     height: 12,
@@ -267,18 +230,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               Expanded(
                 child: AppButton.outlineButton(
                     borderColor: AppColors.primary,
-                    onButtonPressed: () {
-                      // titleController.clear();
-                      // descriptionController.clear();
-
-                      // durationMinutesController.clear();
-
-                      // priceController.clear();
-                      // priceDiscountController.clear();
-                      // setState(() {
-                      //   privacyStatus = "Public";
-                      // });
-                    },
+                    onButtonPressed: () {},
                     title: "Cancel"),
               ),
               const SizedBox(width: 12),
@@ -350,24 +302,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       text: "Choose from Gallery", textSize: 15),
                 ),
               ),
-              // sizedTextfield,
-              // InkWell(
-              //   onTap: () {
-              //     getImage(true).then((value) {
-              //       Get.back();
-              //       setState(() {});
-              //     });
-              //   },
-              //   child: Container(
-              //     width: Get.width,
-              //     padding:
-              //         const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-              //     decoration: BoxDecoration(
-              //         color: AppColors.white12,
-              //         borderRadius: BorderRadius.circular(12)),
-              //     child: const TextWidget(text: "Take Photo", textSize: 15),
-              //   ),
-              // ),
             ],
           ),
         ),

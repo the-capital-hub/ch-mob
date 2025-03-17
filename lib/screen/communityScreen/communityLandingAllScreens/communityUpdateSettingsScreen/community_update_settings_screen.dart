@@ -29,49 +29,23 @@ class CommunityUpdateSettingsScreen extends StatefulWidget {
 }
 
 class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
-  // CommunityController allCommunities = Get.put(CommunityController());
-  // CommunityController createdCommunity = Get.put(CommunityController());
   CommunityUpdateSettingsController updateSettings =
       Get.put(CommunityUpdateSettingsController());
   CommunityAboutController aboutCommunity = Get.put(CommunityAboutController());
   String base64 = "";
   List<TextEditingController> controllers = [TextEditingController()];
 
-  //  @override
-  // void initState() {
-  //   SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-  //     createdCommunity.getCommunityById().then((v) {
-  //       WidgetsBinding.instance.addPostFrameCallback((_) {
-  //       urlController.text = createdCommunity.createdCommunityDetails[0].community.shareLink.toString();
-  //       updateSettings.communityNameController.text = createdCommunity.createdCommunityDetails[0].community.name;
-  //       updateSettings.aboutCommunityController.text = createdCommunity.createdCommunityDetails[0].community.about;
-  //       updateSettings.whatsappGroupLinkController.text = createdCommunity.createdCommunityDetails[0].community.whatsappGroupLink;
-  //       updateSettings.isOpen = createdCommunity.createdCommunityDetails[0].community.isOpen;
-  //       updateSettings.termsAndConditions = createdCommunity.createdCommunityDetails[0].community.termsAndConditions;
-  //       // Ensure controllers are initialized with the terms and conditions list
-  //         initializeControllers();
-  //       });
-  //     });
-  //   });
-  //   super.initState();
-  // }
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      Future.wait([
-        // communityProducts.getCommunityProductsandMembers(),
-        // createdCommunity.getCommunityById(),
-        aboutCommunity.getAboutCommunity()
-      ]).then((values) {
-        // Perform any additional logic after both calls are completed
+      Future.wait([aboutCommunity.getAboutCommunity()]).then((values) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          // Your post-frame callback logic goes here
           urlController.text =
               aboutCommunity.aboutCommunityList[0].community.shareLink;
           updateSettings.communityNameController.text =
               aboutCommunity.aboutCommunityList[0].community.name;
-          updateSettings.aboutCommunityController.text =
-              aboutCommunity.aboutCommunityList[0].community.about;
+          updateSettings.aboutCommunityController
+              .setText(aboutCommunity.aboutCommunityList[0].community.about);
 
           updateSettings.subscriptionAmountController.text =
               aboutCommunity.aboutCommunityList[0].community.amount.toString();
@@ -81,7 +55,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
               aboutCommunity.aboutCommunityList[0].community.isOpen;
           updateSettings.termsAndConditions =
               aboutCommunity.aboutCommunityList[0].community.termsAndConditions;
-          // Ensure controllers are initialized with the terms and conditions list
+
           setState(() {
             updateSettings.communitySize =
                 aboutCommunity.aboutCommunityList[0].community.communitySize;
@@ -96,55 +70,46 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
   }
 
   TextEditingController urlController = TextEditingController();
-  // Initialize controllers based on the termsAndConditions list
+
   void initializeControllers() {
     setState(() {
       controllers = [];
       for (int i = 0; i < updateSettings.termsAndConditions.length; i++) {
         TextEditingController controller =
             TextEditingController(text: updateSettings.termsAndConditions[i]);
-        // Add a listener to update termsAndConditions when the text is changed
+
         controller.addListener(() {
-          updateSettings.termsAndConditions[i] =
-              controller.text; // Update the corresponding term
+          updateSettings.termsAndConditions[i] = controller.text;
         });
         controllers.add(controller);
       }
     });
   }
 
-  // Add a new empty text field
   void addNewTextField() {
     setState(() {
-      // Add a new controller
       controllers.add(TextEditingController());
-      updateSettings.termsAndConditions
-          .add(""); // Add empty string to terms list
+      updateSettings.termsAndConditions.add("");
 
-      // Add listener to the newly created controller to sync with the termsAndConditions list
       controllers.last.addListener(() {
         int index = controllers.length - 1;
-        updateSettings.termsAndConditions[index] =
-            controllers[index].text; // Sync new term
+        updateSettings.termsAndConditions[index] = controllers[index].text;
       });
     });
   }
 
-  // Remove a text field
   void removeTextField(int index) {
-    if (controllers.length > 0) {
+    if (controllers.isNotEmpty) {
       setState(() {
         controllers[index].dispose();
         controllers.removeAt(index);
-        updateSettings.termsAndConditions
-            .removeAt(index); // Remove corresponding term
+        updateSettings.termsAndConditions.removeAt(index);
       });
     }
   }
 
   @override
   void dispose() {
-    // Dispose all controllers when the widget is disposed
     for (var controller in controllers) {
       controller.dispose();
     }
@@ -156,9 +121,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
     return Container(
         decoration: bgDec,
         child: Scaffold(
-          // drawer: const CommunityDrawerWidget(),
           backgroundColor: AppColors.transparent,
-
           body: Obx(() => aboutCommunity.isLoading.value
               ? Helper.pageLoading()
               : aboutCommunity.aboutCommunityList.isEmpty
@@ -204,11 +167,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                 Container(
                                   decoration: BoxDecoration(
                                       color: AppColors.white12,
-                                      // color: Color(0xFFC8E0DA),
-                                      borderRadius: BorderRadius.circular(20)
-                                      // border:
-                                      //     Border.all(color: Colors.redAccent, width: 1)
-                                      ),
+                                      borderRadius: BorderRadius.circular(20)),
                                   child: const Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 15, vertical: 12),
@@ -291,12 +250,12 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                               ],
                             ),
                             const SizedBox(height: 10),
-                            MyCustomTextField.textField(
-                                hintText: "Enter Community description",
-                                controller:
-                                    updateSettings.aboutCommunityController,
-                                lableText: "About Community",
-                                maxLine: 5),
+                            MyCustomTextField.htmlTextField(
+                              hintText: "Enter Community description",
+                              controller:
+                                  updateSettings.aboutCommunityController,
+                              lableText: "About Community",
+                            ),
                             const SizedBox(
                               height: 16,
                             ),
@@ -316,8 +275,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                               itemBuilder: (context, index) {
                                 return MyCustomTextField.textField(
                                   hintText: "Enter Terms and conditions",
-                                  controller: controllers[
-                                      index], // Bind the controller to each text field
+                                  controller: controllers[index],
                                   lableText: "Terms and conditions",
                                   suffixIcon: IconButton(
                                     icon: const Icon(Icons.delete),
@@ -421,12 +379,12 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
             onPressed: () {
               Get.to(() => const CommunityAboutScreen());
             },
+            backgroundColor: AppColors.primary,
             child: Icon(
               Icons.info,
               size: 30,
               color: AppColors.white,
-            ), // You can use any icon, "info" is the typical one for info buttons
-            backgroundColor: AppColors.primary,
+            ),
           ),
         ));
   }
@@ -478,24 +436,6 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                       text: "Choose from Gallery", textSize: 15),
                 ),
               ),
-              // sizedTextfield,
-              // InkWell(
-              //   onTap: () {
-              //     getImage(true).then((value) {
-              //       Get.back();
-              //       setState(() {});
-              //     });
-              //   },
-              //   child: Container(
-              //     width: Get.width,
-              //     padding:
-              //         const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-              //     decoration: BoxDecoration(
-              //         color: AppColors.white12,
-              //         borderRadius: BorderRadius.circular(12)),
-              //     child: const TextWidget(text: "Take Photo", textSize: 15),
-              //   ),
-              // ),
             ],
           ),
         ),

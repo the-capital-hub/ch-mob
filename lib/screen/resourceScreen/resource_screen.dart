@@ -8,7 +8,6 @@ import 'package:capitalhub_crm/widget/textWidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
-
 import '../../utils/appcolors/app_colors.dart';
 import '../../utils/constant/app_var.dart';
 import '../../widget/appbar/appbar.dart';

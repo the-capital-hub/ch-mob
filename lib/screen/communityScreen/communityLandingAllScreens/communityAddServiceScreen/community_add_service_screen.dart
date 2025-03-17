@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
@@ -19,6 +18,7 @@ import 'package:capitalhub_crm/widget/timePicker/timePicker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:quill_html_editor/quill_html_editor.dart';
 
 class CommunityAddServiceScreen extends StatefulWidget {
   const CommunityAddServiceScreen({super.key});
@@ -33,6 +33,9 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
   late final TabController _tabController;
   TextEditingController input = TextEditingController();
   TextEditingController output = TextEditingController();
+  TextEditingController durationMinutesController = TextEditingController();
+  QuillEditorController descriptionController = QuillEditorController();
+
   String selectedTimeline = "Hours";
   String base64 = "";
   String selectedMonth = "Select From Community";
@@ -40,10 +43,12 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
   @override
   void initState() {
     super.initState();
-    // exploreController.selectedType = "startup";
-    // exploreController.tabController = TabController(length: 4, vsync: this);
-    // exploreController.getExploreCollection();
-    _tabController = TabController(length: 4, vsync: this);
+
+    _tabController = TabController(
+      length: 4,
+      vsync: this,
+      initialIndex: addServiceIndex,
+    );
   }
 
   @override
@@ -66,16 +71,6 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             leading: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // IconButton(
-                //   onPressed: () {
-                //     Get.back();
-                //   },
-                //   icon: Icon(
-                //     Icons.arrow_back_ios_new_sharp,
-                //     size: 20,
-                //     color: AppColors.white,
-                //   ),
-                // ),
                 InkWell(
                   child: Icon(
                     Icons.arrow_back_ios_new_sharp,
@@ -85,20 +80,13 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                     Get.back();
                   },
                 ),
-
                 CircleAvatar(
                   radius: 16,
                   foregroundImage: NetworkImage(communityLogo),
                 ),
               ],
             ),
-            title:
-                // aboutCommunity.aboutCommunityList.isEmpty
-                //       ? CircularProgressIndicator():
-                TextWidget(
-                    text: communityName,
-                    // aboutCommunity.aboutCommunityList[0].community.name,
-                    textSize: 16),
+            title: TextWidget(text: communityName, textSize: 16),
             actions: [
               IconButton(
                   onPressed: () {
@@ -116,14 +104,6 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // MyCustomTextField.textField(
-                //     hintText: "Search",
-                //     controller: searchController,
-                //     borderRadius: 12,
-                //     prefixIcon: Icon(
-                //       Icons.search,
-                //       color: AppColors.white54,
-                //     )),
                 const TextWidget(
                   text: "Add New Service",
                   textSize: 20,
@@ -142,28 +122,13 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                           color: GetStoreData.getStore.read('isInvestor')
                               ? AppColors.primaryInvestor
                               : AppColors.primary,
-                          borderRadius:
-                              BorderRadius.circular(5), // Rounded corners
+                          borderRadius: BorderRadius.circular(5),
                         ),
                         labelPadding: const EdgeInsets.symmetric(horizontal: 4),
                         indicatorPadding: const EdgeInsets.symmetric(
                             horizontal: 2.0, vertical: 5.0),
                         indicatorSize: TabBarIndicatorSize.tab,
-                        onTap: (val) {
-                          // if (val == 0) {
-                          //   exploreController.selectedType = "startup";
-                          //   // exploreController.getExploreCollection();
-                          // } else if (val == 1) {
-                          //   exploreController.selectedType = "founder";
-                          //   // exploreController.getExploreCollection();
-                          // } else if (val == 2) {
-                          //   exploreController.selectedType = "investor";
-                          //   // exploreController.getExploreCollection();
-                          // } else if (val == 3) {
-                          //   exploreController.selectedType = "vc";
-                          //   // exploreController.getExploreCollection();
-                          // }
-                        },
+                        onTap: (val) {},
                         tabs: const [
                           Tab(text: "Priority DM"),
                           Tab(text: "Meeting"),
@@ -172,9 +137,8 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                         ],
                         labelColor: GetStoreData.getStore.read('isInvestor')
                             ? AppColors.black
-                            : AppColors.white, // Text color for selected tab
-                        unselectedLabelColor:
-                            Colors.white, // Text color for unselected tab
+                            : AppColors.white,
+                        unselectedLabelColor: Colors.white,
                         unselectedLabelStyle:
                             const TextStyle(fontWeight: FontWeight.normal),
                         labelStyle: const TextStyle(
@@ -186,16 +150,11 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                   ],
                 ),
                 const SizedBox(height: 12),
-
                 Expanded(
-                  child:
-                      // exploreController.isLoading.value
-                      //     ? Helper.pageLoading()
-                      //     :
-                      TabBarView(
-                          controller: _tabController,
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: [
+                  child: TabBarView(
+                      controller: _tabController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
                         priorityDMTab(),
                         meetingTab(),
                         eventTab(),
@@ -236,11 +195,11 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
         const SizedBox(
           height: 16,
         ),
-        MyCustomTextField.textField(
-            hintText: "Enter service description",
-            controller: input,
-            lableText: "Description",
-            maxLine: 7),
+        MyCustomTextField.htmlTextField(
+          hintText: "Enter service description",
+          controller: descriptionController,
+          lableText: "Description",
+        ),
         const SizedBox(
           height: 16,
         ),
@@ -300,11 +259,11 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
         const SizedBox(
           height: 16,
         ),
-        MyCustomTextField.textField(
-            hintText: "Enter service description",
-            controller: input,
-            lableText: "Description",
-            maxLine: 7),
+        MyCustomTextField.htmlTextField(
+          hintText: "Enter service description",
+          controller: descriptionController,
+          lableText: "Description",
+        ),
         const SizedBox(
           height: 16,
         ),
@@ -321,7 +280,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             Expanded(
                 child: MyCustomTextField.textField(
                     hintText: "Enter duration",
-                    controller: input,
+                    controller: durationMinutesController,
                     lableText: "Duration (minutes)")),
           ],
         ),
@@ -375,6 +334,8 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
 
                   if (selectedTime != null) {
                     input.text = DateFormat('hh:mm a').format(selectedTime);
+
+                    _updateEndTime(selectedTime);
                   }
                 },
                 controller: input,
@@ -386,14 +347,16 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                 hintText: "Select End Time",
                 readonly: true,
                 lableText: "End Time",
+                controller: output,
                 onTap: () async {
                   DateTime? selectedTime = await selectTime(context, false);
 
                   if (selectedTime != null) {
                     output.text = DateFormat('hh:mm a').format(selectedTime);
+
+                    _updateStartTime(selectedTime);
                   }
                 },
-                controller: output,
               ),
             ),
           ],
@@ -442,6 +405,20 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
     );
   }
 
+  void _updateEndTime(DateTime startTime) {
+    final durationInMinutes =
+        int.tryParse(durationMinutesController.text) ?? 30;
+    final endTime = startTime.add(Duration(minutes: durationInMinutes));
+    output.text = DateFormat('hh:mm a').format(endTime);
+  }
+
+  void _updateStartTime(DateTime endTime) {
+    final durationInMinutes =
+        int.tryParse(durationMinutesController.text) ?? 30;
+    final startTime = endTime.subtract(Duration(minutes: durationInMinutes));
+    input.text = DateFormat('hh:mm a').format(startTime);
+  }
+
   eventTab() {
     return SingleChildScrollView(
       child: Column(children: [
@@ -452,11 +429,11 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
         const SizedBox(
           height: 16,
         ),
-        MyCustomTextField.textField(
-            hintText: "Enter service description",
-            controller: input,
-            lableText: "Description",
-            maxLine: 7),
+        MyCustomTextField.htmlTextField(
+          hintText: "Enter service description",
+          controller: descriptionController,
+          lableText: "Description",
+        ),
         const SizedBox(
           height: 16,
         ),
@@ -498,11 +475,11 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
               hintText: "Enter service title",
               controller: input),
           sizedTextfield,
-          MyCustomTextField.textField(
-              lableText: "Description",
-              hintText: "Enter service description",
-              maxLine: 7,
-              controller: input),
+          MyCustomTextField.htmlTextField(
+            hintText: "Enter service description",
+            controller: descriptionController,
+            lableText: "Description",
+          ),
           sizedTextfield,
           base64 != ""
               ? CircleAvatar(
@@ -567,9 +544,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                 hintText: "Enter duration (min.)",
                 lableText: "Duration (min.)",
                 textInputType: TextInputType.number,
-                onChange: (value) {
-                  // _validateDuration(value, webinarController.durationMinutesController);
-                },
+                onChange: (value) {},
                 controller: input,
               )),
             ],
@@ -675,24 +650,6 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                       text: "Choose from Gallery", textSize: 15),
                 ),
               ),
-              // sizedTextfield,
-              // InkWell(
-              //   onTap: () {
-              //     getImage(true).then((value) {
-              //       Get.back();
-              //       setState(() {});
-              //     });
-              //   },
-              //   child: Container(
-              //     width: Get.width,
-              //     padding:
-              //         const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-              //     decoration: BoxDecoration(
-              //         color: AppColors.white12,
-              //         borderRadius: BorderRadius.circular(12)),
-              //     child: const TextWidget(text: "Take Photo", textSize: 15),
-              //   ),
-              // ),
             ],
           ),
         ),
