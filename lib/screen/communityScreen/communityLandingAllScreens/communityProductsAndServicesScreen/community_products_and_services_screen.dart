@@ -10,7 +10,6 @@ import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
-import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -31,7 +30,7 @@ class _CommunityProductsAndServicesScreenState
     super.initState();
     _tabController = TabController(length: 5, vsync: this);
     _tabController.addListener(() {
-      setState(() {}); // Rebuild when tab index changes
+      setState(() {});
     });
   }
 
@@ -53,7 +52,7 @@ class _CommunityProductsAndServicesScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (isAdmin)
+              if (isAdmin) ...[
                 Row(
                   children: [
                     Expanded(
@@ -63,20 +62,23 @@ class _CommunityProductsAndServicesScreenState
                           },
                           title: "Add New Product"),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 12,
                     ),
                     Expanded(
                       child: AppButton.primaryButton(
                           onButtonPressed: () {
+                            addServiceIndex = 0;
                             Get.to(() => const CommunityAddServiceScreen());
                           },
                           title: "Add New Service"),
                     ),
                   ],
                 ),
-              // if(isAdmin)
-              // SizedBox(height: 12,),
+                const SizedBox(
+                  height: 12,
+                ),
+              ],
               Row(
                 children: [
                   Expanded(
@@ -97,41 +99,17 @@ class _CommunityProductsAndServicesScreenState
                           horizontal: 2.0, vertical: 5.0),
                       indicatorSize: TabBarIndicatorSize.tab,
                       onTap: (val) {},
-                      // tabs:  [
-
-                      //   Padding(
-                      //     padding: const EdgeInsets.symmetric(horizontal: 8),
-                      //     child: Tab(text: "Products"),
-                      //   ),
-                      //   Padding(
-                      //     padding: const EdgeInsets.symmetric(horizontal: 8),
-                      //     child: Tab(text: "Priority DMs"),
-                      //   ),
-                      //   Padding(
-                      //     padding: const EdgeInsets.symmetric(horizontal: 8),
-                      //     child: Tab(text: "Meetings"),
-                      //   ),
-                      //   Padding(
-                      //     padding: const EdgeInsets.symmetric(horizontal: 8),
-                      //     child: Tab(text: "Events"),
-                      //   ),
-                      //   Padding(
-                      //     padding: const EdgeInsets.symmetric(horizontal: 8),
-                      //     child: Tab(text: "Webinars"),
-                      //   ),
-                      // ],
                       tabs: [
                         Tab(
                           child: Container(
                             decoration: BoxDecoration(
                               color: _tabController.index == 0
-                                  ? null // Selected tab will not have background color
-                                  : AppColors
-                                      .white12, // Grey background for unselected tabs
+                                  ? null
+                                  : AppColors.white12,
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 11.0),
                               child: Text("Products"),
                             ),
@@ -142,12 +120,11 @@ class _CommunityProductsAndServicesScreenState
                             decoration: BoxDecoration(
                               color: _tabController.index == 1
                                   ? null
-                                  : AppColors
-                                      .white12, // Grey background for unselected tabs
+                                  : AppColors.white12,
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 11),
                               child: Text("Priority DMs"),
                             ),
@@ -158,12 +135,11 @@ class _CommunityProductsAndServicesScreenState
                             decoration: BoxDecoration(
                               color: _tabController.index == 2
                                   ? null
-                                  : AppColors
-                                      .white12, // Grey background for unselected tabs
+                                  : AppColors.white12,
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 11),
                               child: Text("Meetings"),
                             ),
@@ -174,12 +150,11 @@ class _CommunityProductsAndServicesScreenState
                             decoration: BoxDecoration(
                               color: _tabController.index == 3
                                   ? null
-                                  : AppColors
-                                      .white12, // Grey background for unselected tabs
+                                  : AppColors.white12,
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 11),
                               child: Text("Events"),
                             ),
@@ -190,12 +165,11 @@ class _CommunityProductsAndServicesScreenState
                             decoration: BoxDecoration(
                               color: _tabController.index == 4
                                   ? null
-                                  : AppColors
-                                      .white12, // Grey background for unselected tabs
+                                  : AppColors.white12,
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 11),
                               child: Text("Webinars"),
                             ),
@@ -204,9 +178,8 @@ class _CommunityProductsAndServicesScreenState
                       ],
                       labelColor: GetStoreData.getStore.read('isInvestor')
                           ? AppColors.black
-                          : AppColors.white, // Text color for selected tab
-                      unselectedLabelColor:
-                          AppColors.white, // Text color for unselected tab
+                          : AppColors.white,
+                      unselectedLabelColor: AppColors.white,
                       unselectedLabelStyle:
                           const TextStyle(fontWeight: FontWeight.normal),
                       labelStyle: const TextStyle(
@@ -218,27 +191,15 @@ class _CommunityProductsAndServicesScreenState
               ),
               const SizedBox(width: 12),
               const SizedBox(height: 12),
-
-              // const Padding(
-              //   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 8),
-              //   child: TextWidget(
-              //       text: "Startup Results",
-              //       textSize: 16,
-              //       fontWeight: FontWeight.w500),
-              // ),
               Expanded(
-                child:
-                    // exploreController.isLoading.value
-                    //     ? Helper.pageLoading()
-                    //     :
-                    TabBarView(
-                        controller: _tabController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: [
-                      const CommunityProductsScreen(),
-                      const CommunityPriorityDMsScreen(),
-                      const CommunityMeetingsScreen(),
-                      const CommunityEventsScreen(),
+                child: TabBarView(
+                    controller: _tabController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: const [
+                      CommunityProductsScreen(),
+                      CommunityPriorityDMsScreen(),
+                      CommunityMeetingsScreen(),
+                      CommunityEventsScreen(),
                       CommunityWebinarsScreen()
                     ]),
               ),

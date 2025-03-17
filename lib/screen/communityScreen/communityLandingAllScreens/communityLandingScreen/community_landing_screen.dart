@@ -64,13 +64,7 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
                 foregroundImage: NetworkImage(communityLogo),
               ),
             ),
-            title:
-                // aboutCommunity.aboutCommunityList.isEmpty
-                //       ? CircularProgressIndicator():
-                TextWidget(
-                    text: communityName,
-                    // aboutCommunity.aboutCommunityList[0].community.name,
-                    textSize: 16),
+            title: TextWidget(text: communityName, textSize: 16),
             actions: [
               IconButton(
                   onPressed: () {

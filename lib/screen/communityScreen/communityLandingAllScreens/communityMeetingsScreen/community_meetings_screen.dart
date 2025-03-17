@@ -1,6 +1,6 @@
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddServiceScreen/community_add_service_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityMeetingsScreen/communityMeetingBookingsScreen/community_meeting_bookings_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityProductsAndServicesScreen/community_products_and_services_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
@@ -40,6 +40,7 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
     "E-Commerce",
     "Education",
   ];
+  bool isBooked = false;
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -142,8 +143,10 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                       ),
                       IconButton(
                           onPressed: () {
+                            addServiceIndex = 1;
                             Get.to(() =>
-                                const CommunityProductsAndServicesScreen());
+                                const CommunityAddServiceScreen());
+                                
                           },
                           icon: Icon(
                             Icons.edit,
@@ -174,6 +177,7 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                           )),
                     ],
                   ),
+                  if(!isAdmin)
                 AppButton.primaryButton(
                   onButtonPressed: () {
                     DateTime customDate = DateTime(2023, 12, 31);
@@ -181,6 +185,7 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                   },
                   title: "Book Meeting",
                 ),
+                if(isBooked)
                 Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),

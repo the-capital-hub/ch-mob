@@ -81,11 +81,11 @@ Future<bool> showCommunityDetailsPopup(BuildContext context) async {
                     //     ),
                     //   ),
                     // ),
-                    // Container(
-                    //   height: 45,
-                    //   width: 1,
-                    //   color: AppColors.grey3Color,
-                    // ),
+                    Container(
+                      height: 45,
+                      width: 1,
+                      color: AppColors.grey3Color,
+                    ),
                     Expanded(
                       child: InkWell(
                         onTap: () {

@@ -1,14 +1,11 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityProductsAndMembersController/community_products_and_members_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddNewProductScreen/community_add_new_product_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityDrawerScreen/community_drawer_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddServiceScreen/community_add_service_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPurchaseScreen/community_purchase_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
-import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dilogue/share_dilogue.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
@@ -70,8 +67,6 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                             Stack(children: [
                               Container(
                                 height: 200,
-                                // width : 300,
-                                // color: AppColors.brown,
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
                                         image: NetworkImage(
@@ -113,7 +108,6 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                     icon: Icon(
                                       Icons.mobile_screen_share_rounded,
                                       color: AppColors.whiteCard,
-                                      // size: 22,
                                     ),
                                     onPressed: () {
                                       sharePostPopup(
@@ -121,128 +115,117 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                     },
                                   ),
                                 ),
-                              Positioned(
-                                top: 8,
-                                right: 8,
-                                child: Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: AppColors.black,
-                                      child: IconButton(
-                                        padding: EdgeInsets.zero,
-                                        icon: Icon(
-                                          Icons.edit,
-                                          color: AppColors.whiteCard,
-                                          // size: 22,
+                              if (isAdmin)
+                                Positioned(
+                                  top: 8,
+                                  right: 8,
+                                  child: Row(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 16,
+                                        backgroundColor: AppColors.black,
+                                        child: IconButton(
+                                          iconSize: 17,
+                                          padding: EdgeInsets.zero,
+                                          icon: Icon(
+                                            Icons.edit,
+                                            color: AppColors.whiteCard,
+                                          ),
+                                          onPressed: () {
+                                            Get.to(() =>
+                                                const AddNewProductScreen());
+                                          },
                                         ),
-                                        onPressed: () {
-                                          Get.to(() =>
-                                              const AddNewProductScreen());
-                                        },
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
-                                    CircleAvatar(
-                                      backgroundColor: AppColors.black,
-                                      child: IconButton(
-                                        padding: EdgeInsets.zero,
-                                        icon: Icon(
-                                          Icons.delete,
-                                          color: AppColors.whiteCard,
-                                          // size: 22,
-                                        ),
-                                        onPressed: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                backgroundColor:
-                                                    AppColors.blackCard,
-                                                title: const TextWidget(
-                                                  text:
-                                                      'Are you sure you want to delete product ?',
-                                                  textSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                  maxLine: 2,
-                                                ),
-                                                actions: [
-                                                  Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: AppButton
-                                                            .outlineButton(
-                                                          borderColor:
-                                                              AppColors.primary,
-                                                          title: 'Cancel',
-                                                          onButtonPressed: () {
-                                                            // Close the dialog without performing any action
-                                                            Get.back();
-                                                          },
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
+                                      CircleAvatar(
+                                        radius: 16,
+                                        backgroundColor: AppColors.black,
+                                        child: IconButton(
+                                          iconSize: 17,
+                                          padding: EdgeInsets.zero,
+                                          icon: Icon(
+                                            Icons.delete,
+                                            color: AppColors.whiteCard,
+                                          ),
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  backgroundColor:
+                                                      AppColors.blackCard,
+                                                  title: const TextWidget(
+                                                    text:
+                                                        'Are you sure you want to delete product ?',
+                                                    textSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                    maxLine: 2,
+                                                  ),
+                                                  actions: [
+                                                    Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: AppButton
+                                                              .outlineButton(
+                                                            borderColor:
+                                                                AppColors
+                                                                    .primary,
+                                                            title: 'Cancel',
+                                                            onButtonPressed:
+                                                                () {
+                                                              Get.back();
+                                                            },
+                                                          ),
                                                         ),
-                                                      ),
-                                                      const SizedBox(width: 12),
-                                                      Expanded(
-                                                        child: AppButton
-                                                            .primaryButton(
-                                                          bgColor:
-                                                              AppColors.primary,
-                                                          title:
-                                                              'Delete Product',
-                                                          onButtonPressed:
-                                                              () {},
+                                                        const SizedBox(
+                                                            width: 12),
+                                                        Expanded(
+                                                          child: AppButton
+                                                              .primaryButton(
+                                                            bgColor: AppColors
+                                                                .primary,
+                                                            title:
+                                                                'Delete Product',
+                                                            onButtonPressed:
+                                                                () {},
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
-                                    CircleAvatar(
-                                      backgroundColor: AppColors.black,
-                                      child: IconButton(
-                                        padding: EdgeInsets.zero,
-                                        icon: Icon(
-                                          Icons.mobile_screen_share_rounded,
-                                          color: AppColors.whiteCard,
-                                          // size: 22,
+                                                      ],
+                                                    )
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
                                         ),
-                                        onPressed: () {
-                                          sharePostPopup(context, "",
-                                              "share product detail");
-                                        },
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
+                                      CircleAvatar(
+                                        radius: 16,
+                                        backgroundColor: AppColors.black,
+                                        child: IconButton(
+                                          iconSize: 17,
+                                          padding: EdgeInsets.zero,
+                                          icon: Icon(
+                                            Icons.mobile_screen_share_rounded,
+                                            color: AppColors.whiteCard,
+                                          ),
+                                          onPressed: () {
+                                            sharePostPopup(context, "",
+                                                "share product detail");
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
                             ]),
                             if (isAdmin) sizedTextfield,
-                            //       Row(
-                            //         children: [
-
-                            //           Card(
-                            //             shape: RoundedRectangleBorder(
-                            //   borderRadius: BorderRadius.circular(12),
-                            // ),
-                            //             color: AppColors.primary,
-                            //             child: Padding(
-                            //               padding: EdgeInsets.symmetric(horizontal: 5,vertical: 4),
-                            //               child: Icon(Icons.description,color: AppColors.white,),
-                            //             ),
-                            //           ),
-
-                            //         ],
-                            //       ),
-
                             TextWidget(
                               text: communityProducts
                                   .communityProductsList[index].name,
@@ -261,33 +244,9 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                 color: AppColors.white,
                               ),
                             ),
-                            // TextWidget(
-                            //   text:
-                            //       communityProducts.communityProductsList[index].description,
-                            //   textSize: 14,
-                            //   maxLine: 3,
-
-                            // ),
                             const SizedBox(
                               height: 12,
                             ),
-
-                            // Row(
-                            //   children: [
-                            //     Icon(
-                            //       Icons.language,
-                            //       color: AppColors.white,
-                            //       size: 22,
-                            //     ),
-                            //     const SizedBox(
-                            //       width: 5,
-                            //     ),
-                            //     const TextWidget(text: "Online", textSize: 16)
-                            //   ],
-                            // ),
-
-                            // sizedTextfield,
-
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 50),
@@ -300,7 +259,6 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                           return AlertDialog(
                                             backgroundColor:
                                                 AppColors.blackCard,
-                                            //  title:  Align(alignment:Alignment.center, child: TextWidget(text: 'Resource URLs', textSize: 20,fontWeight: FontWeight.w500,)),
                                             content: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
@@ -410,7 +368,6 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                           return AlertDialog(
                                             backgroundColor:
                                                 AppColors.blackCard,
-                                            //  title:  Align(alignment:Alignment.center, child: TextWidget(text: 'Resource URLs', textSize: 20,fontWeight: FontWeight.w500,)),
                                             content: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,

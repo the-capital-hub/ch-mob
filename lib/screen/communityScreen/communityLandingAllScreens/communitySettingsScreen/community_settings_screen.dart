@@ -1,13 +1,8 @@
-import 'package:capitalhub_crm/screen/communityScreen/communityDrawerScreen/community_drawer_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAboutScreen/communities_about_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityOverScreen/create_community_over_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityUpdateSettingsScreen/community_update_settings_screen.dart';
 import 'package:capitalhub_crm/screen/manageAccountScreen/manage_account_Screen.dart';
-import 'package:capitalhub_crm/screen/profileScreen/personal_info_screen.dart';
 import 'package:capitalhub_crm/screen/profileScreen/profile_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
-import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
@@ -29,7 +24,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         height: Get.height,
         decoration: bgDec,
         child: Scaffold(
-          // drawer: const CommunityDrawerWidget(),
           backgroundColor: AppColors.transparent,
           appBar: HelperAppBar.appbarHelper(
             title: "Settings",
@@ -63,11 +57,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
+                    color: AppColors.brown,
                     child: const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: TextWidget(text: "Edit Profile", textSize: 13),
                     ),
-                    color: AppColors.brown,
                   ),
                 ),
                 const SizedBox(
@@ -111,9 +105,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     title: const TextWidget(
                         text: "Community Settings", textSize: 16),
                     trailing: IconButton(
-                        onPressed: () {
-                          // Get.to(() =>  const UpdateSettingsScreen());
-                        },
+                        onPressed: () {},
                         icon: Icon(
                           Icons.chevron_right,
                           color: AppColors.white,

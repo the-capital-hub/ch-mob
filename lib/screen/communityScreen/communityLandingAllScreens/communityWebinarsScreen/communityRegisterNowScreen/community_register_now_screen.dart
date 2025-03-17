@@ -64,18 +64,7 @@ class _CommunityRegisterNowScreenState
                               fit: BoxFit.fill),
                           borderRadius: BorderRadius.circular(10)),
                     ),
-
                     const SizedBox(height: 12),
-                    // TextWidget(text: "Please fill these details for purchase confirmation and further communication.", textSize: 13,maxLine: 2,align: TextAlign.center,),
-                    // SizedBox(height: 12),
-                    // TextWidget(text: "Details", textSize: 20,fontWeight: FontWeight.w500,),
-                    // SizedBox(height: 8),
-                    // MyCustomTextField.textField(hintText: "Enter Name", controller: urlController, lableText: "Name"),
-                    // SizedBox(height: 12),
-                    // MyCustomTextField.textField(hintText: "Enter Email", controller: urlController, lableText: "Email"),
-                    // SizedBox(height: 12),
-                    // MyCustomTextField.textField(hintText: "Enter Mobile Number", controller: urlController, lableText: "Mobile Number"),
-                    // SizedBox(height: 12),
                     Card(
                         margin: EdgeInsets.zero,
                         color: AppColors.blackCard,
@@ -172,10 +161,6 @@ class _CommunityRegisterNowScreenState
                               // SizedBox(height: 8),
                               // // HtmlWidget(communityProducts.communityProductsList[widget.index].description, textStyle: TextStyle(fontSize: 13,color: AppColors.white),),
                               // SizedBox(height: 8),
-                              // Divider(
-                              //   color: AppColors.white38,
-                              // ),
-                              // SizedBox(height: 8),
                               sizedTextfield,
                             ],
                           ),
@@ -185,11 +170,10 @@ class _CommunityRegisterNowScreenState
                       margin: EdgeInsets.zero,
                       color: AppColors.blackCard,
                       shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(20), // Border radius
+                        borderRadius: BorderRadius.circular(20),
                         side: BorderSide(
-                          color: AppColors.white38, // Border color
-                          width: 1, // Border width
+                          color: AppColors.white38,
+                          width: 1,
                         ),
                       ),
                       child: Padding(

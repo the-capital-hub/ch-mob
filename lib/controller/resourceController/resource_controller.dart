@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:capitalhub_crm/model/resourceModel/get_all_resources_by_id_model.dart';
 import 'package:capitalhub_crm/model/resourceModel/get_all_resources_model.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
@@ -15,13 +14,10 @@ class ResourceController extends GetxController {
   Future<void> getAllResources() async {
     try {
       isLoading.value = true;
-
       var response =
           await ApiBase.getRequest(extendedURL: ApiUrl.getAllResources);
       log(response.body);
-
       var data = json.decode(response.body);
-
       if (data["status"]) {
         GetAllResourcesModel allResourcesModel =
             GetAllResourcesModel.fromJson(data);
@@ -35,21 +31,16 @@ class ResourceController extends GetxController {
   }
 
   ResourceById resourceById = ResourceById();
-
   Future<void> getAllResourcesById() async {
     try {
       isLoading.value = true;
-
       var response = await ApiBase.getRequest(
           extendedURL: ApiUrl.getResourceById + resourceId);
       log(response.body);
-
       var data = json.decode(response.body);
-
       if (data["status"]) {
         GetAllResourcesByIdModel resourceByIdModel =
             GetAllResourcesByIdModel.fromJson(data);
-
         resourceById = resourceByIdModel.data!;
       }
     } catch (e) {

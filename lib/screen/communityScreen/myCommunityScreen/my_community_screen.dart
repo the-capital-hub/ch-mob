@@ -2,7 +2,6 @@ import 'package:capitalhub_crm/controller/communityController/community_controll
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityLandingScreen/create_community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
-import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
@@ -23,32 +22,17 @@ class MyCommunityScreen extends StatefulWidget {
 }
 
 class _MyCommunityScreenState extends State<MyCommunityScreen> {
-  
   CommunityController myCommunities = Get.put(CommunityController());
-   @override
+  @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       myCommunities.getMyCommunities().then((v) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-         
-        });
+        WidgetsBinding.instance.addPostFrameCallback((_) {});
       });
     });
     super.initState();
   }
-  List<String> communityNames = [
-    "Capital Hub Community",
-    "Hub Community",
-    "Hustler's Community",
-    "Pixel Community",
-    "Monday Community",
-    "Monday Community",
-    "Monday Community",
-    "Monday Community",
-    "Monday Community",
-    "Monday Community",
-    "Monday Community"
-  ];
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -62,109 +46,203 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
             autoAction: true,
           ),
           body: Obx(() => myCommunities.isLoading.value
-                ? Helper.pageLoading()
-                : myCommunities.myCommunitiesDetails.isEmpty
-                      ? Center(child: TextWidget(text: "No Community Available", textSize: 16))
-                      :
-          
-          Padding(
-            padding: const EdgeInsets.only(left: 12,right:12,bottom: 12), // Padding around the card
-            child: ListView.separated(
-              separatorBuilder: (context, index) =>SizedBox(height: 12,),
-              shrinkWrap:
-                  true, // Makes ListView take only as much space as it needs
-              padding:
-                  EdgeInsets.zero, // Remove extra padding from ListView
-              itemCount: myCommunities.myCommunitiesDetails.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: (){
-                   createdCommunityId = myCommunities.myCommunitiesDetails[index].id;
-                   communityLogo = myCommunities.myCommunitiesDetails[index].image;
-                   communityName = myCommunities.myCommunitiesDetails[index].community;
-                   isAdmin = myCommunities.myCommunitiesDetails[index].role=="Admin"?true:false;
-                   Get.to(() =>  const CommunityLandingScreen());
-                  },
-                  child: Card(
-                    color: AppColors.blackCard,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10,top: 12,bottom: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  CircleAvatar(
-                                    foregroundImage: NetworkImage(myCommunities.myCommunitiesDetails[index].image),
-                                  
+              ? Helper.pageLoading()
+              : myCommunities.myCommunitiesDetails.isEmpty
+                  ? const Center(
+                      child: TextWidget(
+                          text: "No Community Available", textSize: 16))
+                  : Padding(
+                      padding: const EdgeInsets.only(
+                          left: 12, right: 12, bottom: 12),
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) => const SizedBox(
+                          height: 12,
+                        ),
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        itemCount: myCommunities.myCommunitiesDetails.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              createdCommunityId =
+                                  myCommunities.myCommunitiesDetails[index].id;
+                              communityLogo = myCommunities
+                                  .myCommunitiesDetails[index].image;
+                              communityName = myCommunities
+                                  .myCommunitiesDetails[index].community;
+                              isAdmin = myCommunities
+                                          .myCommunitiesDetails[index].role ==
+                                      "Admin"
+                                  ? true
+                                  : false;
+                              Get.to(() => const CommunityLandingScreen());
+                            },
+                            child: Card(
+                                color: AppColors.blackCard,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, top: 12, bottom: 12),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              CircleAvatar(
+                                                foregroundImage: NetworkImage(
+                                                    myCommunities
+                                                        .myCommunitiesDetails[
+                                                            index]
+                                                        .image),
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              TextWidget(
+                                                text: myCommunities
+                                                    .myCommunitiesDetails[index]
+                                                    .community,
+                                                textSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              const SizedBox(
+                                                width: 3,
+                                              ),
+                                              Card(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20)),
+                                                  color: AppColors.green700,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 6),
+                                                    child: TextWidget(
+                                                        text: myCommunities
+                                                            .myCommunitiesDetails[
+                                                                index]
+                                                            .role
+                                                            .toString(),
+                                                        textSize: 11),
+                                                  ))
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 12,
+                                          ),
+                                          TextWidget(
+                                            text: myCommunities
+                                                .myCommunitiesDetails[index]
+                                                .size
+                                                .toString(),
+                                            textSize: 13,
+                                            color: GetStoreData.getStore
+                                                    .read('isInvestor')
+                                                ? AppColors.primaryInvestor
+                                                : AppColors.primary,
+                                          ),
+                                          const SizedBox(
+                                            height: 12,
+                                          ),
+                                          Row(
+                                            children: [
+                                              TextWidget(
+                                                  text:
+                                                      "${myCommunities.myCommunitiesDetails[index].members!.length.toString()} Members",
+                                                  textSize: 14),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              Container(
+                                                  height: 5,
+                                                  width: 5,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      color: AppColors.white)),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              TextWidget(
+                                                  text: myCommunities
+                                                      .myCommunitiesDetails[
+                                                          index]
+                                                      .createdAtTimeAgo
+                                                      .toString(),
+                                                  textSize: 14),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      Flexible(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            IconButton(
+                                              padding: EdgeInsets.zero,
+                                              icon: Icon(
+                                                Icons
+                                                    .mobile_screen_share_rounded,
+                                                color: AppColors.whiteCard,
+                                                // size: 22,
+                                              ),
+                                              onPressed: () {
+                                                sharePostPopup(
+                                                    context,
+                                                    "",
+                                                    myCommunities
+                                                        .myCommunitiesDetails[
+                                                            index]
+                                                        .shareLink
+                                                        .toString());
+                                              },
+                                            ),
+                                            IconButton(
+                                              padding: EdgeInsets.zero,
+                                              icon: const Icon(Icons.logout),
+                                              color: GetStoreData.getStore
+                                                      .read('isInvestor')
+                                                  ? AppColors.primaryInvestor
+                                                  : AppColors.primary,
+                                              onPressed: () {
+                                                myCommunities.leaveCommunity(
+                                                    context,
+                                                    myCommunities
+                                                        .myCommunitiesDetails[
+                                                            index]
+                                                        .id);
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                  SizedBox(width: 10,),
-                                  TextWidget(text: myCommunities.myCommunitiesDetails[index].community, textSize: 15,fontWeight: FontWeight.w500,),
-                                  SizedBox(width: 3,),
-                                  Card(
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                    child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 6),
-                                    child: TextWidget(text: myCommunities.myCommunitiesDetails[index].role.toString(), textSize: 11),
-                                  ),color: AppColors.green700)
-                                ],
-                              ),
-                              SizedBox(height: 12,),
-                              TextWidget(text: myCommunities.myCommunitiesDetails[index].size.toString(), textSize: 13,color:  GetStoreData.getStore.read('isInvestor')? AppColors.primaryInvestor:AppColors.primary,),
-                              SizedBox(height: 12,),
-                              Row(
-                                children: [TextWidget(text: "${myCommunities.myCommunitiesDetails[index].members!.length.toString()} Members", textSize: 14), SizedBox(width: 8,),Container(height: 5,width: 5,
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: AppColors.white)),SizedBox(width: 8,),TextWidget(text: myCommunities.myCommunitiesDetails[index].createdAtTimeAgo.toString(), textSize: 14),],
-                              )
-                      
-                            ],
-                          ),
-                          Flexible(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                IconButton(
-                                  padding: EdgeInsets.zero,
-                                  icon: Icon(
-                                  
-                                Icons.mobile_screen_share_rounded,
-                                color: AppColors.whiteCard,
-                                // size: 22,
-                              ),onPressed: (){
-                                sharePostPopup(context,"",myCommunities.myCommunitiesDetails[index].shareLink.toString());
-                              },),
-                                IconButton(padding: EdgeInsets.zero,icon: Icon(Icons.logout),color:  GetStoreData.getStore.read('isInvestor')? AppColors.primaryInvestor:AppColors.primary,onPressed: (){
-                                  myCommunities.leaveCommunity(context,myCommunities.myCommunitiesDetails[index].id);
-                                },),
-                                
-                              ],
-                            ),
-                          )
-                        ],
-                        
+                                )),
+                          );
+                        },
                       ),
                     )),
-                );
-              },
-            ),
-          )
-          ),
           bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(
-            left: 12,
-            right: 12,
-            bottom: 12,
+            padding: const EdgeInsets.only(
+              left: 12,
+              right: 12,
+              bottom: 12,
+            ),
+            child: AppButton.primaryButton(
+                onButtonPressed: () {
+                  Get.to(() => const CreateCommunityLandingScreen());
+                },
+                title: "Create new Community"),
           ),
-          child: AppButton.primaryButton(
-              onButtonPressed: () {
-                Get.to(() => const CreateCommunityLandingScreen());
-              },
-              title: "Create new Community"),
-        ),
-        )
-        );
+        ));
   }
 }

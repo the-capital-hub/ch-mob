@@ -14,292 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 
-// class AvailabilityScreen extends StatefulWidget {
-//   const AvailabilityScreen({super.key});
-
-//   @override
-//   State<AvailabilityScreen> createState() => _AvailabilityScreenState();
-// }
-
-// class _AvailabilityScreenState extends State<AvailabilityScreen> {
-//   final List<String> daysOfWeek = [
-//     'Monday',
-//     'Tuesday',
-//     'Wednesday',
-//     'Thursday',
-//     'Friday',
-//     'Saturday',
-//     'Sunday'
-//   ];
-
-//   List<bool> isChecked = [false, false, false, false, false, false, false];
-
-//   List<TimeOfDay> startTimes = [
-//     const TimeOfDay(hour: 9, minute: 0),
-//     const TimeOfDay(hour: 9, minute: 0),
-//     const TimeOfDay(hour: 9, minute: 0),
-//     const TimeOfDay(hour: 9, minute: 0),
-//     const TimeOfDay(hour: 9, minute: 0),
-//     const TimeOfDay(hour: 9, minute: 0),
-//     const TimeOfDay(hour: 9, minute: 0),
-//   ];
-
-//   List<TimeOfDay> endTimes = [
-//     const TimeOfDay(hour: 17, minute: 0),
-//     const TimeOfDay(hour: 17, minute: 0),
-//     const TimeOfDay(hour: 17, minute: 0),
-//     const TimeOfDay(hour: 17, minute: 0),
-//     const TimeOfDay(hour: 17, minute: 0),
-//     const TimeOfDay(hour: 17, minute: 0),
-//     const TimeOfDay(hour: 17, minute: 0),
-//   ];
-
-//   int selectedMinutes = 15;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//         decoration: bgDec,
-//         child: Scaffold(
-//             drawer: const DrawerWidget(),
-//             backgroundColor: AppColors.transparent,
-//             appBar: HelperAppBar.appbarHelper(
-//                 title: "Availability", hideBack: true, autoAction: true),
-//             body: Padding(
-//               padding: const EdgeInsets.all(12),
-//               child: Card(
-//                 color: AppColors.blackCard,
-//                 child: Padding(
-//                   padding: const EdgeInsets.all(12),
-//                   child: Column(
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     mainAxisSize: MainAxisSize.min,
-//                     children: [
-//                       Flexible(
-//                         child: ListView.builder(
-//                           scrollDirection: Axis.vertical,
-//                           shrinkWrap: true,
-//                           itemCount: daysOfWeek.length,
-//                           itemBuilder: (context, index) {
-//                             return Column(
-//                               children: [
-//                                 Row(
-//                                   children: [
-//                                     Checkbox(
-//                                       value: isChecked[index],
-//                                       activeColor: AppColors.primary,
-//                                       onChanged: (bool? value) {
-//                                         setState(() {
-//                                           isChecked[index] = value!;
-//                                         });
-//                                       },
-//                                       materialTapTargetSize:
-//                                           MaterialTapTargetSize.shrinkWrap,
-//                                     ),
-//                                     TextWidget(
-//                                       text: daysOfWeek[index],
-//                                       textSize: 16,
-//                                     ),
-//                                   ],
-//                                 ),
-//                                 if (isChecked[index])
-//                                   Padding(
-//                                     padding: const EdgeInsets.only(left: 10),
-//                                     child: Row(
-//                                       mainAxisAlignment:
-//                                           MainAxisAlignment.start,
-//                                       children: [
-//                                         InkWell(
-//                                           child: Container(
-//                                             padding: const EdgeInsets.all(8),
-//                                             decoration: BoxDecoration(
-//                                               borderRadius:
-//                                                   BorderRadius.circular(5),
-//                                               border: Border.all(
-//                                                 color: AppColors.grey700,
-//                                                 width: 1,
-//                                               ),
-//                                             ),
-//                                             child: Row(
-//                                               children: [
-//                                                 TextWidget(
-//                                                     text: startTimes[index]
-//                                                         .format(context),
-//                                                     textSize: 16),
-//                                                 const SizedBox(width: 8),
-//                                                 Icon(
-//                                                   Icons.schedule,
-//                                                   color: AppColors.white,
-//                                                   size: 20,
-//                                                 ),
-//                                               ],
-//                                             ),
-//                                           ),
-//                                           onTap: () async {
-//                                             DateTime? selectedTime =
-//                                                 await selectTime(
-//                                                     context, false);
-//                                             if (selectedTime != null) {
-//                                               setState(() {
-//                                                 startTimes[index] = TimeOfDay(
-//                                                     hour: selectedTime.hour,
-//                                                     minute:
-//                                                         selectedTime.minute);
-//                                               });
-//                                             }
-//                                           },
-//                                         ),
-//                                         const SizedBox(width: 12),
-//                                         const TextWidget(
-//                                           text: "to",
-//                                           textSize: 16,
-//                                         ),
-//                                         const SizedBox(width: 12),
-//                                         InkWell(
-//                                           child: Container(
-//                                             padding: const EdgeInsets.all(8),
-//                                             decoration: BoxDecoration(
-//                                               borderRadius:
-//                                                   BorderRadius.circular(5),
-//                                               border: Border.all(
-//                                                 color: AppColors.grey700,
-//                                                 width: 1,
-//                                               ),
-//                                             ),
-//                                             child: Row(
-//                                               children: [
-//                                                 TextWidget(
-//                                                   text: endTimes[index]
-//                                                       .format(context),
-//                                                   textSize: 16,
-//                                                 ),
-//                                                 const SizedBox(width: 8),
-//                                                 Icon(
-//                                                   Icons.schedule,
-//                                                   color: AppColors.white,
-//                                                   size: 20,
-//                                                 ),
-//                                               ],
-//                                             ),
-//                                           ),
-//                                           onTap: () async {
-//                                             DateTime? selectedEndTime =
-//                                                 await selectTime(
-//                                                     context, false);
-//                                             if (selectedEndTime != null) {
-//                                               if (selectedEndTime.hour ==
-//                                                       startTimes[index].hour &&
-//                                                   selectedEndTime.minute ==
-//                                                       startTimes[index]
-//                                                           .minute) {
-//                                                 ScaffoldMessenger.of(context)
-//                                                     .showSnackBar(
-//                                                   const SnackBar(
-//                                                       content: Text(
-//                                                           "End time cannot be the same as start time")),
-//                                                 );
-//                                               } else {
-//                                                 // Update the state with the selected end time
-//                                                 setState(() {
-//                                                   endTimes[index] = TimeOfDay(
-//                                                     hour: selectedEndTime.hour,
-//                                                     minute:
-//                                                         selectedEndTime.minute,
-//                                                   );
-//                                                 });
-//                                               }
-//                                             }
-//                                           },
-//                                         ),
-//                                       ],
-//                                     ),
-//                                   ),
-//                               ],
-//                             );
-//                           },
-//                         ),
-//                       ),
-//                       sizedTextfield,
-//                       const Padding(
-//                         padding: EdgeInsets.only(left: 10),
-//                         child: TextWidget(
-//                             text: "Minimum gap before booking (minutes) :",
-//                             textSize: 16),
-//                       ),
-//                       sizedTextfield,
-//                       Padding(
-//                         padding: const EdgeInsets.only(left: 10),
-//                         child: InkWell(
-//                           child: Container(
-//                             padding: const EdgeInsets.all(8),
-//                             decoration: BoxDecoration(
-//                               borderRadius: BorderRadius.circular(5),
-//                               border: Border.all(
-//                                 color: AppColors.grey700,
-//                                 width: 1,
-//                               ),
-//                             ),
-//                             child: Row(
-//                               mainAxisSize: MainAxisSize.min,
-//                               children: [
-//                                 TextWidget(
-//                                   text: '$selectedMinutes mins',
-//                                   textSize: 16,
-//                                   color: AppColors.white,
-//                                 ),
-//                                 const SizedBox(width: 8),
-//                                 Icon(Icons.schedule,
-//                                     color: AppColors.white, size: 20),
-//                               ],
-//                             ),
-//                           ),
-//                           onTap: () async {
-//                             DateTime? selectedTime =
-//                                 await selectTime(context, true);
-
-//                             if (selectedTime != null) {
-//                               setState(() {
-//                                 selectedMinutes = selectedTime.minute;
-//                               });
-//                             }
-//                           },
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             bottomNavigationBar: Padding(
-//               padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
-//               child: AppButton.primaryButton(
-//                 onButtonPressed: () async {
-//                   List<Map<String, dynamic>> dayAvailability = [];
-
-//                   for (int i = 0; i < daysOfWeek.length; i++) {
-//                     if (isChecked[i]) {
-//                       dayAvailability.add({
-//                         "dayAvailability": daysOfWeek[i],
-//                         "startTime":
-//                             "${startTimes[i].hour}:${startTimes[i].minute}",
-//                         "endTime": "${endTimes[i].hour}:${endTimes[i].minute}",
-//                       });
-//                     }
-//                   }
-
-//                   await MeetingController().updateAvailability(
-//                     context,
-//                     dayAvailability,
-//                     selectedMinutes,
-//                   );
-//                 },
-//                 title: "Update Availability",
-//               ),
-//             )));
-//   }
-// }
-
-
 class AvailabilityScreen extends StatefulWidget {
   const AvailabilityScreen({super.key});
 
@@ -309,21 +23,18 @@ class AvailabilityScreen extends StatefulWidget {
 
 class _AvailabilityScreenState extends State<AvailabilityScreen> {
   MeetingController availabilityController = Get.put(MeetingController());
-  TextEditingController durationMinutesController = TextEditingController(text: "15");
-  static void _validateDuration(String value, TextEditingController controller) {
+  TextEditingController durationMinutesController =
+      TextEditingController(text: "15");
+  static void _validateDuration(
+      String value, TextEditingController controller) {
     if (value.isNotEmpty) {
       int? duration = int.tryParse(value);
       if (duration != null) {
-        // If the value is not in the range of 1 to 60, reset the input
         if (duration < 1 || duration > 60) {
-          // Show a Snackbar or an error message to the user
-          print('Value should be between 1 and 60');
-          controller.text = '';  // Clear the input
+          controller.text = '';
         }
       } else {
-        // Handle invalid non-numeric input
-        print('Invalid input: please enter a number');
-        controller.text = '';  // Clear the input
+        controller.text = '';
       }
     }
   }
@@ -360,56 +71,57 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
     const TimeOfDay(hour: 17, minute: 0),
   ];
 
- 
+  @override
+  void initState() {
+    super.initState();
 
- @override
-void initState() {
-  super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+      await availabilityController.getAvailability().then((_) {
+        if (availabilityController.isAvailabilityAvailable) {
+          var availabilityData =
+              availabilityController.availabilityList.isNotEmpty
+                  ? availabilityController.availabilityList[0]
+                  : null;
 
-  SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
-    await availabilityController.getAvailability().then((_) {
-      if (availabilityController.isAvailabilityAvailable) {
-        var availabilityData = availabilityController.availabilityList.isNotEmpty
-            ? availabilityController.availabilityList[0]
-            : null;
+          if (availabilityData != null) {
+            setState(() {
+              durationMinutesController.text =
+                  availabilityData.minGap.toString();
 
-        if (availabilityData != null) {
-          setState(() {
-            durationMinutesController.text = availabilityData.minGap.toString();
+              for (int i = 0; i < daysOfWeek.length; i++) {
+                var dayData = availabilityData.dayAvailability.firstWhere(
+                  (data) =>
+                      data.day.toLowerCase() == daysOfWeek[i].toLowerCase(),
+                  orElse: () => DayAvailability(
+                    day: daysOfWeek[i],
+                    startTime: "09:00",
+                    endTime: "17:00",
+                  ),
+                );
 
-            for (int i = 0; i < daysOfWeek.length; i++) {
-              var dayData = availabilityData.dayAvailability.firstWhere(
-                (data) => data.day.toLowerCase() == daysOfWeek[i].toLowerCase(),
-                orElse: () => DayAvailability(
-                  day: daysOfWeek[i],
-                  startTime: "09:00",  // Default start time
-                  endTime: "17:00",    // Default end time
-                ),
-              );
+                if (dayData.startTime == "09:00" &&
+                    dayData.endTime == "17:00") {
+                  isChecked[i] = false;
+                } else {
+                  isChecked[i] = true;
+                }
 
-              // If `dayData` is the default, uncheck the checkbox
-              if (dayData.startTime == "09:00" && dayData.endTime == "17:00") {
-                isChecked[i] = false;
-              } else {
-                isChecked[i] = true;
+                startTimes[i] = TimeOfDay(
+                  hour: int.parse(dayData.startTime.split(':')[0]),
+                  minute: int.parse(dayData.startTime.split(':')[1]),
+                );
+                endTimes[i] = TimeOfDay(
+                  hour: int.parse(dayData.endTime.split(':')[0]),
+                  minute: int.parse(dayData.endTime.split(':')[1]),
+                );
               }
-
-              startTimes[i] = TimeOfDay(
-                hour: int.parse(dayData.startTime.split(':')[0]),
-                minute: int.parse(dayData.startTime.split(':')[1]),
-              );
-              endTimes[i] = TimeOfDay(
-                hour: int.parse(dayData.endTime.split(':')[0]),
-                minute: int.parse(dayData.endTime.split(':')[1]),
-              );
-            }
-          });
+            });
+          }
         }
-      }
+      });
     });
-  });
-}
-  
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -444,8 +156,14 @@ void initState() {
                                           children: [
                                             Checkbox(
                                               value: isChecked[index],
-                                              checkColor: GetStoreData.getStore.read('isInvestor')? AppColors.black:AppColors.white,
-                                              activeColor: GetStoreData.getStore.read('isInvestor')? AppColors.primaryInvestor:AppColors.primary,
+                                              checkColor: GetStoreData.getStore
+                                                      .read('isInvestor')
+                                                  ? AppColors.black
+                                                  : AppColors.white,
+                                              activeColor: GetStoreData.getStore
+                                                      .read('isInvestor')
+                                                  ? AppColors.primaryInvestor
+                                                  : AppColors.primary,
                                               onChanged: (bool? value) {
                                                 setState(() {
                                                   isChecked[index] = value!;
@@ -565,37 +283,53 @@ void initState() {
                                                     if (selectedEndTime !=
                                                         null) {
                                                       if (selectedEndTime
-                                                                  .hour == 
-                                                              startTimes[index]
-                                                                  .hour &&
+                                                                  .hour ==
+                                                              23 &&
                                                           selectedEndTime
-                                                                  .minute == 
-                                                              startTimes[index]
-                                                                  .minute) {
+                                                                  .minute >
+                                                              59) {
                                                         ScaffoldMessenger.of(
                                                                 context)
                                                             .showSnackBar(
                                                           const SnackBar(
                                                               content: Text(
-                                                                  "End time cannot be the same as start time")),
+                                                                  "End time cannot be more than 11:59 PM")),
                                                         );
-                                                      } else {
-                                                        // Update the state with the selected end time
-                                                        setState(() {
-                                                          endTimes[index] =
-                                                              TimeOfDay(
-                                                            hour:
-                                                                selectedEndTime
-                                                                    .hour,
-                                                            minute:
-                                                                selectedEndTime
-                                                                    .minute,
-                                                          );
-                                                        });
+                                                        return;
                                                       }
+
+                                                      if (selectedEndTime
+                                                          .isBefore(DateTime(
+                                                        selectedEndTime.year,
+                                                        selectedEndTime.month,
+                                                        selectedEndTime.day,
+                                                        startTimes[index].hour,
+                                                        startTimes[index]
+                                                            .minute,
+                                                      ))) {
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                              content: Text(
+                                                                  "End time cannot be before start time")),
+                                                        );
+                                                        return;
+                                                      }
+
+                                                      setState(() {
+                                                        endTimes[index] =
+                                                            TimeOfDay(
+                                                          hour: selectedEndTime
+                                                              .hour,
+                                                          minute:
+                                                              selectedEndTime
+                                                                  .minute,
+                                                        );
+                                                      });
                                                     }
                                                   },
-                                                ),
+                                                )
                                               ],
                                             ),
                                           ),
@@ -616,7 +350,6 @@ void initState() {
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
                                 child: Container(
-                                  // padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
                                     border: Border.all(
@@ -625,39 +358,26 @@ void initState() {
                                     ),
                                   ),
                                   child: Row(
-                                    
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      // TextWidget(
-                                      //   text: '$selectedMinutes mins',
-                                      //   textSize: 16,
-                                      //   color: AppColors.white,
-                                      // ),
                                       SizedBox(
                                         width: 40,
-                                       
                                         child: MyCustomTextField.textField(
-                                                          hintText: "30",
-                                                          
-                                                          
-                                                          textInputType: TextInputType.number,
-                                                          onChange: (value) {
-                                                // Validation when text changes
-                                                _validateDuration(value, durationMinutesController);
-                                              },
-                                                          
-                                                         
-                                                          controller: durationMinutesController,
-                                                        ),
-                                      ),TextWidget(
-                                    text:
-                                        "mins",
-                                    textSize: 16),
-                              
+                                          hintText: "30",
+                                          textInputType: TextInputType.number,
+                                          onChange: (value) {
+                                            _validateDuration(value,
+                                                durationMinutesController);
+                                          },
+                                          controller: durationMinutesController,
+                                        ),
+                                      ),
+                                      const TextWidget(
+                                          text: "mins", textSize: 16),
                                       const SizedBox(width: 8),
                                       Icon(Icons.schedule,
                                           color: AppColors.white, size: 20),
-                                          const SizedBox(width: 8),
+                                      const SizedBox(width: 8),
                                     ],
                                   ),
                                 ),

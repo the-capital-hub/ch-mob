@@ -1,4 +1,5 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityProductsAndMembersController/community_products_and_members_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
@@ -142,14 +143,14 @@ class _CommunityPeopleScreenState extends State<CommunityPeopleScreen> {
                                                     ],
                                                   ),
                                                   const Spacer(),
-                                                  // if(isAdmin)
-                                                  IconButton(
-                                                      onPressed: () {},
-                                                      icon: const Icon(
-                                                        Icons.person_remove,
-                                                        color:
-                                                            AppColors.redColor,
-                                                      ))
+                                                  if (isAdmin)
+                                                    IconButton(
+                                                        onPressed: () {},
+                                                        icon: const Icon(
+                                                          Icons.person_remove,
+                                                          color: AppColors
+                                                              .redColor,
+                                                        ))
                                                 ],
                                               ),
                                               const SizedBox(
