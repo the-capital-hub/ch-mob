@@ -1,14 +1,22 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:capitalhub_crm/controller/campaignsController/campaigns_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../../model/01-StartupModel/campaignModel/outreach_view_model.dart';
+import '../../../widget/dilogue/campaignDilogue/schedule_campaign_dilogue.dart';
 
 class ViewOutreachScreen extends StatefulWidget {
-  const ViewOutreachScreen({super.key});
+  String id;
+
+  ViewOutreachScreen({super.key, required this.id});
 
   @override
   State<ViewOutreachScreen> createState() => _ViewOutreachScreenState();
@@ -17,11 +25,45 @@ class ViewOutreachScreen extends StatefulWidget {
 class _ViewOutreachScreenState extends State<ViewOutreachScreen>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
-
+  CampaignsController campaignsController = Get.find();
   @override
   void initState() {
     super.initState();
     tabController = TabController(length: 3, vsync: this);
+    campaignsController.getOutrechView(widget.id).then((v) {
+      items = [
+        {
+          "title": "Sent",
+          "icon": Icons.mail,
+          "color": Colors.blue,
+          "value": campaignsController.outreachView.overview?.sent ?? 0,
+        },
+        {
+          "title": "Opened",
+          "icon": Icons.remove_red_eye,
+          "color": Colors.green,
+          "value": campaignsController.outreachView.overview?.opened ?? 0,
+        },
+        {
+          "title": "Clicked",
+          "icon": Icons.mouse,
+          "color": Colors.amber,
+          "value": campaignsController.outreachView.overview?.clicked ?? 0,
+        },
+        {
+          "title": "Replied",
+          "icon": Icons.reply,
+          "color": Colors.purple,
+          "value": campaignsController.outreachView.overview?.replied ?? 0,
+        },
+        {
+          "title": "Bounced",
+          "icon": Icons.error,
+          "color": Colors.red,
+          "value": campaignsController.outreachView.overview?.bounced ?? 0,
+        },
+      ];
+    });
   }
 
   @override
@@ -34,89 +76,141 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
   Widget build(BuildContext context) {
     return Container(
       decoration: bgDec,
-      child: Scaffold(
-        backgroundColor: AppColors.transparent,
-        appBar: HelperAppBar.appbarHelper(title: "Test 117"),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Column(
-            children: [
-              TextWidget(
-                  text: "Created: 3/11/2025, 11:42:48 AM",
-                  color: AppColors.whiteShade,
-                  align: TextAlign.right,
-                  textSize: 14),
-              sizedTextfield,
-              Row(
-                children: [
-                  Expanded(
-                      child: AppButton.primaryButton(
-                          borderRadius: 8,
-                          bgColor: AppColors.blue,
-                          onButtonPressed: () {},
-                          title: "Schedule")),
-                  SizedBox(width: 12),
-                  Expanded(
-                      child: AppButton.primaryButton(
-                          borderRadius: 8,
-                          bgColor: AppColors.green700,
-                          onButtonPressed: () {},
-                          title: "Send Now")),
-                ],
-              ),
-              sizedTextfield,
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: AppColors.white12),
-                child: TabBar(
-                  controller: tabController,
-                  indicator: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  indicatorPadding:
-                      const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  labelColor: AppColors.white,
-                  dividerColor: AppColors.transparent,
-                  dividerHeight: 0,
-                  unselectedLabelColor: AppColors.whiteShade,
-                  labelPadding: const EdgeInsets.symmetric(horizontal: 16),
-                  tabs: const [
-                    Tab(text: "Overview"),
-                    Tab(text: "Recipients"),
-                    Tab(text: "Content"),
+      child: Obx(() => campaignsController.isOutreachViewLoading.value
+          ? Helper.pageLoading()
+          : Scaffold(
+              backgroundColor: AppColors.transparent,
+              appBar: HelperAppBar.appbarHelper(
+                  title: "${campaignsController.outreachView.campaignName}"),
+              body: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextWidget(
+                        text:
+                            "Created: ${campaignsController.outreachView.campaignCreatedAt}",
+                        color: AppColors.whiteShade,
+                        align: TextAlign.right,
+                        textSize: 14),
+                    TextWidget(
+                        text:
+                            "Schedule: ${campaignsController.outreachView.campaignScheduledAt}",
+                        color: AppColors.whiteShade,
+                        align: TextAlign.right,
+                        textSize: 14),
+                    TextWidget(
+                        text:
+                            "Sent: ${campaignsController.outreachView.campaignSentAt}",
+                        color: AppColors.whiteShade,
+                        align: TextAlign.right,
+                        textSize: 14),
+                    sizedTextfield,
+                    if (campaignsController.outreachView.status == "draft" ||
+                        campaignsController.outreachView.status == "scheduled")
+                      Row(
+                        children: [
+                          Expanded(
+                              child: AppButton.primaryButton(
+                                  borderRadius: 8,
+                                  bgColor:
+                                      campaignsController.outreachView.status ==
+                                              "scheduled"
+                                          ? AppColors.redColor
+                                          : AppColors.blue,
+                                  onButtonPressed: () {
+                                    if (campaignsController
+                                            .outreachView.status ==
+                                        "scheduled") {
+                                      Helper.loader(context);
+                                      campaignsController
+                                          .scheduleOutreachCampaign(
+                                              id: campaignsController
+                                                  .outreachView.campaignId!,
+                                              fromViewScreen: true,
+                                              isCancel: true)
+                                          .then((v) {
+                                        setState(() {});
+                                      });
+                                    } else {
+                                      scheduleCampaignPopup(context, () {
+                                        Helper.loader(context);
+                                        campaignsController
+                                            .scheduleOutreachCampaign(
+                                                isCancel: false,
+                                                fromViewScreen: true,
+                                                id: campaignsController
+                                                    .outreachView.campaignId!)
+                                            .then((v) {
+                                          setState(() {});
+                                        });
+                                      });
+                                    }
+                                  },
+                                  title:
+                                      campaignsController.outreachView.status ==
+                                              "scheduled"
+                                          ? "Cancel"
+                                          : "Schedule")),
+                          SizedBox(width: 12),
+                          Expanded(
+                              child: AppButton.primaryButton(
+                                  borderRadius: 8,
+                                  bgColor: AppColors.green700,
+                                  onButtonPressed: () {
+                                    Helper.loader(context);
+                                    campaignsController
+                                        .runOutreachCampaign(widget.id, true)
+                                        .then((v) {
+                                      setState(() {});
+                                    });
+                                  },
+                                  title: "Send Now")),
+                        ],
+                      ),
+                    sizedTextfield,
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: AppColors.white12),
+                      child: TabBar(
+                        controller: tabController,
+                        indicator: BoxDecoration(
+                          color: AppColors.primary,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        indicatorPadding: const EdgeInsets.symmetric(
+                            vertical: 4, horizontal: 6),
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        labelColor: AppColors.white,
+                        dividerColor: AppColors.transparent,
+                        dividerHeight: 0,
+                        unselectedLabelColor: AppColors.whiteShade,
+                        labelPadding:
+                            const EdgeInsets.symmetric(horizontal: 16),
+                        tabs: const [
+                          Tab(text: "Overview"),
+                          Tab(text: "Recipients"),
+                          Tab(text: "Content"),
+                        ],
+                      ),
+                    ),
+                    sizedTextfield,
+                    Expanded(
+                      child: TabBarView(
+                        physics: NeverScrollableScrollPhysics(),
+                        controller: tabController,
+                        children: [overview(), recipients(), content()],
+                      ),
+                    ),
                   ],
                 ),
               ),
-              sizedTextfield,
-              Expanded(
-                child: TabBarView(
-                  physics: NeverScrollableScrollPhysics(),
-                  controller: tabController,
-                  children: [overview(), recipients(), content()],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            )),
     );
   }
 
-  final List<Map<String, dynamic>> items = [
-    {"title": "Sent", "icon": Icons.mail, "color": Colors.blue},
-    {"title": "Opened", "icon": Icons.remove_red_eye, "color": Colors.green},
-    {"title": "Clicked", "icon": Icons.mouse, "color": Colors.amber},
-    {"title": "Replied", "icon": Icons.reply, "color": Colors.purple},
-    {"title": "Bounced", "icon": Icons.error, "color": Colors.red},
-    {
-      "title": "Failed",
-      "icon": Icons.cancel,
-      "color": Colors.grey
-    }, // Extra item
-  ];
+  List<Map<String, dynamic>> items = [];
   Widget _buildGridItem(Map<String, dynamic> item) {
     return Container(
       decoration: BoxDecoration(
@@ -135,13 +229,11 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
           ),
           Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextWidget(textSize: 14, text: item["title"]),
                 const SizedBox(height: 6),
-                TextWidget(textSize: 14, text: "0"),
-                const SizedBox(height: 4),
-                TextWidget(textSize: 14, text: "0 %"),
+                TextWidget(textSize: 14, text: item['value']),
               ],
             ),
           ),
@@ -170,7 +262,8 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
         SizedBox(
           height: 55,
           child: ListView.separated(
-            itemCount: 5,
+            itemCount: campaignsController
+                .outreachView.overview!.investorLists!.length,
             separatorBuilder: (context, index) => SizedBox(width: 12),
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
@@ -183,7 +276,8 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
                     borderRadius: BorderRadius.circular(8)),
                 padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: TextWidget(
-                    text: "text",
+                    text: campaignsController
+                        .outreachView.overview!.investorLists![index],
                     maxLine: 2,
                     align: TextAlign.left,
                     textSize: 14),
@@ -195,32 +289,6 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
     );
   }
 
-  List<Map<String, dynamic>> campaigns = [
-    {
-      "investor": "Meet inv",
-      "emails": "dhairya.jan9@gmail.com",
-      "status": "Pending",
-      "opened": "No",
-      "clicked": "No",
-      "replied": "No",
-    },
-    {
-      "investor": "Meet inv",
-      "emails": "dhairya.jan9@gmail.com",
-      "status": "Pending",
-      "opened": "No",
-      "clicked": "No",
-      "replied": "No",
-    },
-    {
-      "investor": "Meet inv",
-      "emails": "dhairya.jan9@gmail.com",
-      "status": "Sent",
-      "opened": "No",
-      "clicked": "No",
-      "replied": "No",
-    },
-  ];
   recipients() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
@@ -265,16 +333,14 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
             DataColumn(label: TextWidget(text: "Clicked", textSize: 15)),
             DataColumn(label: TextWidget(text: "Replied", textSize: 15)),
           ],
-          rows: List.generate(campaigns.length, (index) {
-            final row = campaigns[index];
+          rows: List.generate(
+              campaignsController.outreachView.recipients!.investors!.length,
+              (index) {
+            Investor investor =
+                campaignsController.outreachView.recipients!.investors![index];
             return _buildDataRow(
               context,
-              row["investor"]!,
-              row["emails"]!,
-              row["status"]!,
-              row["opened"]!,
-              row["clicked"]!,
-              row["replied"]!,
+              investor,
               index,
             );
           }),
@@ -283,15 +349,7 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
     );
   }
 
-  DataRow _buildDataRow(
-      BuildContext context,
-      String campaignName,
-      String emails,
-      String status,
-      String recipients,
-      String openRate,
-      String replyRate,
-      int index) {
+  DataRow _buildDataRow(BuildContext context, Investor investor, int index) {
     return DataRow(
       color: MaterialStateProperty.resolveWith<Color?>(
         (Set<MaterialState> states) {
@@ -302,21 +360,24 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
         DataCell(SizedBox(
             width: 140,
             child: TextWidget(
-                text: campaignName,
+                text: "${investor.firstName!} ${investor.lastName!}",
                 align: TextAlign.center,
                 maxLine: 2,
                 textSize: 14))),
         DataCell(SizedBox(
             width: 165,
             child: TextWidget(
-                text: emails,
+                text: investor.email!,
                 align: TextAlign.center,
                 maxLine: 2,
                 textSize: 14))),
-        DataCell(_buildStatusBadge(status)),
-        DataCell(Center(child: TextWidget(text: recipients, textSize: 14))),
-        DataCell(Center(child: TextWidget(text: openRate, textSize: 14))),
-        DataCell(Center(child: TextWidget(text: replyRate, textSize: 14))),
+        DataCell(_buildStatusBadge(investor.status!)),
+        DataCell(Center(
+            child: TextWidget(text: investor.emailOpened!, textSize: 14))),
+        DataCell(Center(
+            child: TextWidget(text: investor.emailClicked!, textSize: 14))),
+        DataCell(Center(
+            child: TextWidget(text: investor.emailReplied!, textSize: 14))),
       ],
     );
   }
@@ -326,16 +387,16 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
     Color textColor;
 
     switch (status) {
-      case "Draft":
+      case "pending":
         badgeColor = Colors.brown;
         textColor = AppColors.white;
         break;
-      case "Sent":
+      case "sent":
         badgeColor = AppColors.green700;
         textColor = AppColors.white;
         break;
       default:
-        badgeColor = AppColors.grey700;
+        badgeColor = AppColors.redColor;
         textColor = AppColors.white;
     }
 
@@ -374,7 +435,8 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
                   children: [
                     Expanded(
                       child: TextWidget(
-                        text: "Test sbhsbhsdb",
+                        text: campaignsController
+                            .outreachView.emailContent!.subject!,
                         textSize: 16,
                         maxLine: 2,
                         fontWeight: FontWeight.w500,
@@ -397,17 +459,13 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
               children: [
                 TextWidget(text: "Body", textSize: 14),
                 SizedBox(height: 4),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextWidget(
-                        text: "Just Checking",
-                        textSize: 16,
-                        maxLine: 100,
-                      ),
-                    ),
-                  ],
-                )
+                HtmlWidget(
+                  campaignsController.outreachView.emailContent!.body!,
+                  onTapUrl: (url) async {
+                    return await launch(url);
+                  },
+                  textStyle: TextStyle(fontSize: 12, color: AppColors.white),
+                ),
               ],
             ),
           ),

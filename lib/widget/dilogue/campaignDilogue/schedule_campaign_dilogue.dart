@@ -1,3 +1,4 @@
+import 'package:capitalhub_crm/controller/campaignsController/campaigns_controller.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,10 +13,7 @@ Future<bool> scheduleCampaignPopup(
   BuildContext context,
   Function() onSchedule,
 ) async {
-  TextEditingController dateController = TextEditingController(
-      text: Helper.formatDatePost(DateTime.now().toString()));
-  TextEditingController timeController =
-      TextEditingController(text: DateFormat('hh:mm a').format(DateTime.now()));
+  CampaignsController campaignsController = Get.find();
   return await showDialog(
     context: context,
     builder: (context) {
@@ -51,15 +49,17 @@ Future<bool> scheduleCampaignPopup(
                       const SizedBox(height: 12),
                       MyCustomTextField.textField(
                           hintText: "Select Date",
-                          controller: dateController,
+                          controller:
+                              campaignsController.scheduleDateController,
                           borderClr: AppColors.white38,
                           onTap: () async {
                             final selectedDate =
                                 await selectDate(context, DateTime.now());
 
                             if (selectedDate != null) {
-                              dateController.text = Helper.formatDatePost(
-                                  selectedDate.toString());
+                              campaignsController.scheduleDateController.text =
+                                  Helper.formatDatePost(
+                                      selectedDate.toString());
                               setState(() {});
                             }
                           },
@@ -67,14 +67,16 @@ Future<bool> scheduleCampaignPopup(
                       const SizedBox(height: 12),
                       MyCustomTextField.textField(
                           hintText: "Select Time",
-                          controller: timeController,
+                          controller:
+                              campaignsController.scheduleTimeController,
                           borderClr: AppColors.white38,
                           onTap: () async {
                             DateTime? selectedTime =
                                 await selectTime(context, false);
                             if (selectedTime != null) {
                               setState(() {
-                                timeController.text =
+                                campaignsController
+                                        .scheduleTimeController.text =
                                     DateFormat('hh:mm a').format(selectedTime);
                               });
                             }

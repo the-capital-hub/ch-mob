@@ -82,7 +82,9 @@ class _CreateNewTemplateState extends State<CreateNewTemplate> {
                     hintText: "Enter Email Body",
                     lableText: "Email Body",
                     onEditorCreated: () async {
-                      addEmailBody();
+                      if (widget.isEdit) {
+                        addEmailBody();
+                      }
                     },
                     controller: campaignsController.templateBodyController),
                 sizedTextfield,

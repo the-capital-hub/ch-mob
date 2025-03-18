@@ -1,14 +1,19 @@
+import 'package:capitalhub_crm/controller/campaignsController/campaigns_controller.dart';
 import 'package:capitalhub_crm/screen/campaignsScreen/campaignsOutreachScreen/view_outreach_screen.dart';
+import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/dilogue/campaignDilogue/delete_campaign_dilogue.dart';
 import 'package:capitalhub_crm/widget/dilogue/campaignDilogue/schedule_campaign_dilogue.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../model/01-StartupModel/campaignModel/outreach_list_model.dart';
 import '../../../utils/appcolors/app_colors.dart';
 import '../../../widget/textwidget/text_widget.dart';
 
 class CampaignsOutreachScreen extends StatefulWidget {
-  const CampaignsOutreachScreen({super.key});
+  const CampaignsOutreachScreen({
+    super.key,
+  });
 
   @override
   State<CampaignsOutreachScreen> createState() =>
@@ -16,137 +21,113 @@ class CampaignsOutreachScreen extends StatefulWidget {
 }
 
 class _CampaignsOutreachScreenState extends State<CampaignsOutreachScreen> {
-  List<Map<String, dynamic>> campaigns = [
-    {
-      "status": "Draft",
-      "campaignName": "test (Copy)",
-      "emails": true,
-      "recipients": "1",
-      "openRate": "0%",
-      "replyRate": "0%",
-    },
-    {
-      "status": "Active",
-      "campaignName": "test (Copy)",
-      "emails": true,
-      "recipients": "1",
-      "openRate": "0%",
-      "replyRate": "0%",
-    },
-    
-    {
-      "status": "Sent",
-      "campaignName": "test (Copy)",
-      "emails": true,
-      "recipients": "1",
-      "openRate": "0%",
-      "replyRate": "0%",
-    },
-  ];
+  CampaignsController campaignsController = Get.find();
+
+  @override
+  void initState() {
+    campaignsController.getOutrechList();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black, // Dark background
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 8),
-          const TextWidget(
-            text: "Your Email Campaigns",
-            textSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
-          const SizedBox(height: 8),
-          Expanded(
-            child: SingleChildScrollView(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 80),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
+      body: Obx(
+        () => campaignsController.isOutreachLoading.value
+            ? Helper.pageLoading()
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 8),
+                  const TextWidget(
+                    text: "Your Email Campaigns",
+                    textSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  const SizedBox(height: 8),
+                  Expanded(
                     child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                        columnSpacing: 25,
-                        headingRowHeight: 50,
-                        dataRowHeight: 45,
-                        dividerThickness: 0.4,
-                        horizontalMargin: 20,
-                        border: TableBorder.all(
-                            color: AppColors.white38,
-                            width: 1,
-                            borderRadius: BorderRadius.circular(12)),
-                        headingRowColor:
-                            MaterialStateProperty.resolveWith<Color?>(
-                          (Set<MaterialState> states) {
-                            return AppColors.white12;
-                          },
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 80),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: DataTable(
+                                columnSpacing: 25,
+                                headingRowHeight: 50,
+                                dataRowHeight: 45,
+                                dividerThickness: 0.4,
+                                horizontalMargin: 20,
+                                border: TableBorder.all(
+                                    color: AppColors.white38,
+                                    width: 1,
+                                    borderRadius: BorderRadius.circular(12)),
+                                headingRowColor:
+                                    MaterialStateProperty.resolveWith<Color?>(
+                                  (Set<MaterialState> states) {
+                                    return AppColors.white12;
+                                  },
+                                ),
+                                columns: const [
+                                  DataColumn(
+                                      label: TextWidget(
+                                          text: "Status", textSize: 15)),
+                                  DataColumn(
+                                      label: SizedBox(
+                                          width: 140,
+                                          child: TextWidget(
+                                              text: "Campaign name",
+                                              align: TextAlign.center,
+                                              textSize: 15))),
+                                  DataColumn(
+                                      label: TextWidget(
+                                          text: "Emails", textSize: 15)),
+                                  DataColumn(
+                                      label: TextWidget(
+                                          text: "Recipients", textSize: 15)),
+                                  DataColumn(
+                                      label: TextWidget(
+                                          text: "Open rate", textSize: 15)),
+                                  DataColumn(
+                                      label: TextWidget(
+                                          text: "Reply rate", textSize: 15)),
+                                  DataColumn(
+                                      label: SizedBox(
+                                          width: 194,
+                                          child: TextWidget(
+                                              text: "Actions",
+                                              align: TextAlign.center,
+                                              textSize: 15))),
+                                ],
+                                rows: List.generate(
+                                    campaignsController.outreachList.length,
+                                    (index) {
+                                  return _buildDataRow(
+                                    context,
+                                    index,
+                                    campaignsController.outreachList[index],
+                                  );
+                                }),
+                              ),
+                            ),
+                          ),
                         ),
-                        columns: const [
-                          DataColumn(
-                              label: TextWidget(text: "Status", textSize: 15)),
-                          DataColumn(
-                              label: SizedBox(
-                                  width: 140,
-                                  child: TextWidget(
-                                      text: "Campaign name",
-                                      align: TextAlign.center,
-                                      textSize: 15))),
-                          DataColumn(
-                              label: TextWidget(text: "Emails", textSize: 15)),
-                          DataColumn(
-                              label:
-                                  TextWidget(text: "Recipients", textSize: 15)),
-                          DataColumn(
-                              label:
-                                  TextWidget(text: "Open rate", textSize: 15)),
-                          DataColumn(
-                              label:
-                                  TextWidget(text: "Reply rate", textSize: 15)),
-                          DataColumn(
-                              label: SizedBox(
-                                  width: 194,
-                                  child: TextWidget(
-                                      text: "Actions",
-                                      align: TextAlign.center,
-                                      textSize: 15))),
-                        ],
-                        rows: List.generate(campaigns.length, (index) {
-                          final row = campaigns[index];
-                          return _buildDataRow(
-                            context,
-                            row["status"]!,
-                            row["campaignName"]!,
-                            row["emails"]!,
-                            row["recipients"]!,
-                            row["openRate"]!,
-                            row["replyRate"]!,
-                            index,
-                          );
-                        }),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ),
-          ),
-        ],
       ),
     );
   }
 
   DataRow _buildDataRow(
-      BuildContext context,
-      String status,
-      String campaignName,
-      bool emails,
-      String recipients,
-      String openRate,
-      String replyRate,
-      int index) {
+      BuildContext context, int index, OutreachData outreachData) {
     return DataRow(
       color: MaterialStateProperty.resolveWith<Color?>(
         (Set<MaterialState> states) {
@@ -154,35 +135,46 @@ class _CampaignsOutreachScreenState extends State<CampaignsOutreachScreen> {
         },
       ),
       cells: [
-        DataCell(_buildStatusBadge(status)),
+        DataCell(_buildStatusBadge(outreachData.status!)),
         DataCell(SizedBox(
             width: 140,
             child: TextWidget(
-                text: campaignName,
+                text: outreachData.campaignName!,
                 align: TextAlign.center,
                 maxLine: 2,
                 textSize: 14))),
         const DataCell(Center(child: Icon(Icons.email, color: Colors.white))),
-        DataCell(Center(child: TextWidget(text: recipients, textSize: 14))),
-        DataCell(Center(child: TextWidget(text: openRate, textSize: 14))),
-        DataCell(Center(child: TextWidget(text: replyRate, textSize: 14))),
-        DataCell(_buildActionButtons()),
+        DataCell(Center(
+            child: TextWidget(text: outreachData.recipients!, textSize: 14))),
+        DataCell(Center(
+            child: TextWidget(text: outreachData.openRate!, textSize: 14))),
+        DataCell(Center(
+            child: TextWidget(text: outreachData.replyRate!, textSize: 14))),
+        DataCell(_buildActionButtons(outreachData)),
       ],
     );
   }
 
-  Widget _buildStatusBadge(String status) {
+  Widget _buildStatusBadge(CurrentStatus status) {
     Color badgeColor;
     Color textColor;
 
     switch (status) {
-      case "Draft":
+      case CurrentStatus.draft:
         badgeColor = Colors.brown;
-        textColor = AppColors.white;
+        textColor = Colors.white;
         break;
-      case "Active":
+      case CurrentStatus.completed:
         badgeColor = AppColors.green700;
-        textColor = AppColors.white;
+        textColor = Colors.white;
+        break;
+      case CurrentStatus.scheduled:
+        badgeColor = AppColors.blue;
+        textColor = Colors.white;
+        break;
+      case CurrentStatus.cancelled:
+        badgeColor = AppColors.redColor;
+        textColor = Colors.white;
         break;
       default:
         badgeColor = AppColors.grey700;
@@ -197,7 +189,7 @@ class _CampaignsOutreachScreenState extends State<CampaignsOutreachScreen> {
           borderRadius: BorderRadius.circular(100),
         ),
         child: TextWidget(
-          text: status,
+          text: status.toFormattedString(),
           color: textColor,
           textSize: 14,
         ),
@@ -205,25 +197,79 @@ class _CampaignsOutreachScreenState extends State<CampaignsOutreachScreen> {
     );
   }
 
-  Widget _buildActionButtons() {
+  Widget _buildActionButtons(OutreachData outreachData) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _buildActionIcon(Icons.remove_red_eye, AppColors.blue, () {
-          Get.to(() => const ViewOutreachScreen());
+          Get.to(() => ViewOutreachScreen(id: outreachData.campaignId!))!
+              .whenComplete(() {
+            setState(() {});
+          });
         }),
         const SizedBox(width: 6),
-        _buildActionIcon(Icons.play_arrow, AppColors.green700, () {}),
-        const SizedBox(width: 6),
-        _buildActionIcon(Icons.access_time, AppColors.blue, () {
-          scheduleCampaignPopup(context, () {});
-        }),
-        const SizedBox(width: 6),
+        if (outreachData.status == CurrentStatus.draft ||
+            outreachData.status == CurrentStatus.scheduled)
+          _buildActionIcon(Icons.play_arrow, AppColors.green700, () {
+            Helper.loader(context);
+            campaignsController
+                .runOutreachCampaign(outreachData.campaignId!, false)
+                .then((v) {
+              setState(() {});
+            });
+          }),
+        if (outreachData.status == CurrentStatus.draft ||
+            outreachData.status == CurrentStatus.scheduled)
+          const SizedBox(width: 6),
+        if (outreachData.status == CurrentStatus.scheduled)
+          _buildActionIcon(Icons.close, AppColors.redColor, () {
+            Helper.loader(context);
+            campaignsController
+                .scheduleOutreachCampaign(
+                    isCancel: true,
+                    id: outreachData.campaignId!,
+                    fromViewScreen: false)
+                .then((v) {
+              setState(() {});
+            });
+          }),
+        if (outreachData.status == CurrentStatus.scheduled)
+          const SizedBox(width: 6),
+        if (outreachData.status == CurrentStatus.draft)
+          _buildActionIcon(Icons.access_time, AppColors.blue, () {
+            scheduleCampaignPopup(context, () {
+              Helper.loader(context);
+              campaignsController
+                  .scheduleOutreachCampaign(
+                      isCancel: false,
+                      id: outreachData.campaignId!,
+                      fromViewScreen: false)
+                  .then((v) {
+                setState(() {});
+              });
+            });
+          }),
+        if (outreachData.status == CurrentStatus.draft)
+          const SizedBox(width: 6),
         _buildActionIcon(Icons.delete, AppColors.redColor, () {
-          deleteCampaignPopup(context, () {});
+          deleteCampaignPopup(context, () {
+            Helper.loader(context);
+            campaignsController
+                .deleteOutreachCampaign(id: outreachData.campaignId)
+                .then((v) {
+              setState(() {});
+            });
+          });
         }),
         const SizedBox(width: 6),
-        _buildActionIcon(Icons.copy, AppColors.green700, () {}),
+        _buildActionIcon(Icons.copy, AppColors.green700, () {
+          Helper.loader(context);
+          campaignsController
+              .duplicateOutreachCampaign(outreachData.campaignId!)
+              .then((v) {
+            setState(() {});
+          });
+        }),
       ],
     );
   }

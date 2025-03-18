@@ -6,6 +6,7 @@ import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dilogue/campaignDilogue/delete_campaign_dilogue.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/campaignsController/campaigns_controller.dart';
@@ -19,82 +20,16 @@ class CampaignsListScreen extends StatefulWidget {
 
 class _CampaignsListScreenState extends State<CampaignsListScreen> {
   CampaignsController campaignsController = Get.find();
-  final List<Map<String, String>> _data = [
-    {
-      "listName": "test",
-      "investors": "1",
-      "createdBy": "You",
-      "sharing": "Public"
-    },
-    {
-      "listName": "demo",
-      "investors": "5",
-      "createdBy": "Admin",
-      "sharing": "Private"
-    },
-    {
-      "listName": "demo",
-      "investors": "5",
-      "createdBy": "Admin",
-      "sharing": "Private"
-    },
-    {
-      "listName": "demo",
-      "investors": "5",
-      "createdBy": "Admin",
-      "sharing": "Private"
-    },
-    {
-      "listName": "test demo",
-      "investors": "1",
-      "createdBy": "You",
-      "sharing": "Public"
-    },
-    {
-      "listName": "demo",
-      "investors": "5",
-      "createdBy": "Admin",
-      "sharing": "Private"
-    },
-    {
-      "listName": "demo",
-      "investors": "5",
-      "createdBy": "Admin",
-      "sharing": "Private"
-    },
-    {
-      "listName": "demo",
-      "investors": "5",
-      "createdBy": "Admin",
-      "sharing": "Private"
-    },
-    {
-      "listName": "demo",
-      "investors": "5",
-      "createdBy": "Admin",
-      "sharing": "Private"
-    },
-    {
-      "listName": "demo",
-      "investors": "5",
-      "createdBy": "Admin",
-      "sharing": "Private"
-    },
-    {
-      "listName": "demo",
-      "investors": "5",
-      "createdBy": "Admin",
-      "sharing": "Private"
-    },
-  ];
   @override
   void initState() {
-    campaignsController.getCampaignLists();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      campaignsController.listIds.clear();
+      campaignsController.getCampaignLists();
+    });
     super.initState();
   }
 
   bool isAllChecked = false;
-  List<String> listIds = [];
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -122,13 +57,14 @@ class _CampaignsListScreenState extends State<CampaignsListScreen> {
                         onChanged: (value) {
                           setState(() {
                             isAllChecked = value!;
-                            listIds.clear();
+                            campaignsController.listIds.clear();
 
                             for (var campaignList
                                 in campaignsController.campaignList) {
                               campaignList.isSelected = isAllChecked;
                               if (isAllChecked) {
-                                listIds.add(campaignList.listId!);
+                                campaignsController.listIds
+                                    .add(campaignList.listId!);
                               }
                             }
                           });
@@ -214,7 +150,7 @@ class _CampaignsListScreenState extends State<CampaignsListScreen> {
                   ),
                 ],
               ),
-              bottomNavigationBar: listIds.isNotEmpty
+              bottomNavigationBar: campaignsController.listIds.isNotEmpty
                   ? Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 12),
@@ -222,7 +158,8 @@ class _CampaignsListScreenState extends State<CampaignsListScreen> {
                         onButtonPressed: () {
                           campaignsController.tabController.animateTo(1);
                         },
-                        title: "Proceed (${listIds.length})",
+                        title:
+                            "Proceed (${campaignsController.listIds.length})",
                       ),
                     )
                   : const SizedBox(),
@@ -250,14 +187,14 @@ class _CampaignsListScreenState extends State<CampaignsListScreen> {
                 setState(() {
                   campaignsController.campaignList[index].isSelected = value!;
                   if (value) {
-                    listIds
+                    campaignsController.listIds
                         .add(campaignsController.campaignList[index].listId!);
                   } else {
-                    listIds.remove(
+                    campaignsController.listIds.remove(
                         campaignsController.campaignList[index].listId!);
                   }
-                  isAllChecked =
-                      listIds.length == campaignsController.campaignList.length;
+                  isAllChecked = campaignsController.listIds.length ==
+                      campaignsController.campaignList.length;
                 });
               }),
         ),

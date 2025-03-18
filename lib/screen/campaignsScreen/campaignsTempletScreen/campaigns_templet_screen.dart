@@ -85,9 +85,11 @@ class _CampaignsTempletScreenState extends State<CampaignsTempletScreen> {
                                     maxLine: 2),
                                 const SizedBox(height: 2),
                                 TextWidget(
-                                    text:
-                                        "Subject: ${campaignsController.templateList[index].templateSubject!}",
-                                    textSize: 13),
+                                  text:
+                                      "Subject: ${campaignsController.templateList[index].templateSubject!}",
+                                  textSize: 13,
+                                  maxLine: 2,
+                                ),
                                 const SizedBox(height: 2),
                                 TextWidget(
                                     text:
@@ -146,7 +148,11 @@ class _CampaignsTempletScreenState extends State<CampaignsTempletScreen> {
                       padding: const EdgeInsets.all(12.0),
                       child: AppButton.primaryButton(
                           onButtonPressed: () {
-                            Get.to(() => const CreateCampaignsScreen());
+                            if (campaignsController.listIds.isNotEmpty) {
+                              Get.to(() => const CreateCampaignsScreen());
+                            } else {
+                              campaignsController.tabController.animateTo(0);
+                            }
                           },
                           title: "Proceed with Template"),
                     )
