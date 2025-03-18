@@ -143,6 +143,10 @@ class ApiUrl {
   static const String buyProduct = "Communities/buyProduct/";
   static const String getWebinarsByCommunityId =
       "webinars/getWebinarsByCommunityId/";
+  static const String getCommunityPriorityDMs =
+      "communities/services/priorityDMs/";
+  static const String getCommunityWebinars = "communities/services/webinars/";
+  static const String getCommunityMeetings = "communities/services/meetings/";
   static const String sendJoinRequest = "Communities/sendJoinRequest";
   static const String getCommunityPosts = "api/posts/getCommunityPosts/";
   static const String likeUnlikeCommunityPost =

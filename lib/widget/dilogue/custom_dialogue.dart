@@ -12,6 +12,7 @@ Future<bool> showCustomPopup({
   required VoidCallback onButton1Pressed,
   required VoidCallback onButton2Pressed,
   Color? buttonColor = AppColors.primary,
+  Widget? body,
 }) async {
   return await showDialog(
     context: context,
@@ -53,6 +54,10 @@ Future<bool> showCustomPopup({
             fontWeight: FontWeight.w400,
             align: TextAlign.center,
           ),
+          if (body != null) ...[
+            const SizedBox(height: 16),
+            body,
+          ],
           const SizedBox(height: 20),
           Divider(
             color: AppColors.grey3Color,

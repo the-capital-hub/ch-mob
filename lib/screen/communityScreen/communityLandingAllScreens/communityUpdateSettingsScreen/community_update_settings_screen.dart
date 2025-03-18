@@ -1,16 +1,10 @@
 import 'dart:convert';
-
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityAboutController/community_about_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityUpdateSettingsController/community_update_settings_controller.dart';
-import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/communityModel/getCreatedCommunityModel/get_created_community_model.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityDrawerScreen/community_drawer_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAboutScreen/communities_about_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
-import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
-import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dropdownWidget/drop_down_widget.dart';
 import 'package:capitalhub_crm/widget/imagePickerWidget/image_picker_widget.dart';
