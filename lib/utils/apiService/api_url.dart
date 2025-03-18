@@ -1,5 +1,3 @@
-
-
 class ApiUrl {
   /// base url
   static const String baseUrl =
@@ -43,8 +41,8 @@ class ApiUrl {
   static const String vcsUrl = "vc/getVcById";
 
   static const String livedealsUrl = "live_deals/get_live_deals";
-  static const String toggelDealsUrl = "live_deals/toggle_investor_to_live_deal";
-
+  static const String toggelDealsUrl =
+      "live_deals/toggle_investor_to_live_deal";
 
   static String getNotification = "notificaton/getNotification/";
   static String getNotificationCount = "notificaton/getNotificationCount";
@@ -141,11 +139,14 @@ class ApiUrl {
       "Communities/addProductToCommunity/";
   static const String getCommunityProductsAndMembers =
       "Communities/getCommunityProductsAndMembers/";
-  static const String getAboutCommunity =
-      "Communities/getCommunityById/";    
+  static const String getAboutCommunity = "Communities/getCommunityById/";
   static const String buyProduct = "Communities/buyProduct/";
   static const String getWebinarsByCommunityId =
       "webinars/getWebinarsByCommunityId/";
+  static const String getCommunityPriorityDMs =
+      "communities/services/priorityDMs/";
+  static const String getCommunityWebinars = "communities/services/webinars/";
+  static const String getCommunityMeetings = "communities/services/meetings/";
   static const String sendJoinRequest = "Communities/sendJoinRequest";
   static const String getCommunityPosts = "api/posts/getCommunityPosts/";
   static const String likeUnlikeCommunityPost =
@@ -172,21 +173,28 @@ class ApiUrl {
   static const String deleteCompanyInv = "investor/deleteInvestor";
   static const String createCompanyInv = "investor/createInvestor";
 
-  static const String getInvStartupInfo = "investor/getInvestorStartupInformation";
-  static const String addMyInvestment = "investor/startup-invested";//same for add edit del
+  static const String getInvStartupInfo =
+      "investor/getInvestorStartupInformation";
+  static const String addMyInvestment =
+      "investor/startup-invested"; //same for add edit del
   static const String delMyInterest = "investor/interest";
-  static const String addPastInvestment = "investor/past-investment";//same for add edit del
+  static const String addPastInvestment =
+      "investor/past-investment"; //same for add edit del
 
-  static const String getCampaignUrl = "campaign/lists/getFilteredInvestorsList";
-  static const String createCampaignUrl = "campaign/lists/createUpdateFilteredInvestorsList";
-  static const String getAllCampaignDetailUrl = "campaign/lists/getFilteredInvestorsListCampaignPage";
-  static const String getInvListById = "campaign/lists/getFilteredInvestorsListById/";
-  static const String removeInvFromList = "campaign/lists/removeInvestorFromList/";
-  static const String deleteList = "campaign/lists/deleteFilteredInvestorsList/";
+  static const String getCampaignUrl =
+      "campaign/lists/getFilteredInvestorsList";
+  static const String createCampaignUrl =
+      "campaign/lists/createUpdateFilteredInvestorsList";
+  static const String getAllCampaignDetailUrl =
+      "campaign/lists/getFilteredInvestorsListCampaignPage";
+  static const String getInvListById =
+      "campaign/lists/getFilteredInvestorsListById/";
+  static const String removeInvFromList =
+      "campaign/lists/removeInvestorFromList/";
+  static const String deleteList =
+      "campaign/lists/deleteFilteredInvestorsList/";
   static const String createTemplate = "campaign/templates/createTemplate";
   static const String updateTemplate = "campaign/templates/updateTemplate/";
   static const String viewTemplate = "campaign/templates/getTemplates";
   static const String deleteTemplate = "campaign/templates/deleteTemplate/";
-
-
 }
