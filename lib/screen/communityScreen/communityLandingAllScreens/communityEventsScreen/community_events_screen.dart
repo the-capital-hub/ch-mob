@@ -90,7 +90,7 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                           onPressed: () {
                                             addServiceIndex = 2;
                                             Get.to(() =>
-                                                const CommunityAddServiceScreen());
+                                                 CommunityAddServiceScreen(isEdit: true,));
                                           },
                                         ),
                                         IconButton(

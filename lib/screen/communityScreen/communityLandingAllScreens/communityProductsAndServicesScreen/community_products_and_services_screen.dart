@@ -69,7 +69,7 @@ class _CommunityProductsAndServicesScreenState
                       child: AppButton.primaryButton(
                           onButtonPressed: () {
                             addServiceIndex = 0;
-                            Get.to(() => const CommunityAddServiceScreen());
+                            Get.to(() =>  CommunityAddServiceScreen(isEdit: false,));
                           },
                           title: "Add New Service"),
                     ),

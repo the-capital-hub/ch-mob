@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityMeetingsController/community_meetings_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityPriorityDMsController/community_priority_dms_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
@@ -21,7 +23,11 @@ import 'package:intl/intl.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 
 class CommunityAddServiceScreen extends StatefulWidget {
-  const CommunityAddServiceScreen({super.key});
+  bool isEdit;
+  String? priorityDMId;
+  String? meetingId;
+  CommunityAddServiceScreen(
+      {required this.isEdit, this.priorityDMId, this.meetingId, super.key});
 
   @override
   State<CommunityAddServiceScreen> createState() =>
@@ -40,6 +46,10 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
   String base64 = "";
   String selectedMonth = "Select From Community";
   bool isAddNewMemberFieldVisible = false;
+  CommunityPriorityDMsController communityPriorityDMs =
+      Get.put(CommunityPriorityDMsController());
+  CommunityMeetingsController communityMeetings =
+      Get.put(CommunityMeetingsController());
   @override
   void initState() {
     super.initState();
@@ -55,6 +65,16 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
   void dispose() {
     // exploreController.tabController.dispose();
     super.dispose();
+  }
+
+  List<String> topics = [];
+  void splitTopics() {
+    setState(() {
+      String text = communityPriorityDMs.topicsController.text;
+      topics = text.isEmpty
+          ? []
+          : text.split(',').map((topic) => topic.trim()).toList();
+    });
   }
 
   @override
@@ -178,7 +198,15 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
               const SizedBox(width: 12),
               Expanded(
                 child: AppButton.primaryButton(
-                    onButtonPressed: () {}, title: "Create Service"),
+                    onButtonPressed: () {
+                      splitTopics();
+                      // communityPriorityDMs.createCommunityPriorityDM(topics);
+                      // communityMeetings.createCommunityMeeting(topics);
+                      // communityPriorityDMs.updateCommunityPriorityDM(topics,widget.priorityDMId.toString());
+                      communityMeetings.updateCommunityMeeting(
+                          topics, widget.meetingId);
+                    },
+                    title: "Create Service"),
               ),
             ]),
           ),
@@ -190,14 +218,14 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
       child: Column(children: [
         MyCustomTextField.textField(
             hintText: "Enter service title",
-            controller: input,
+            controller: communityPriorityDMs.titleController,
             lableText: "Title"),
         const SizedBox(
           height: 16,
         ),
         MyCustomTextField.htmlTextField(
           hintText: "Enter service description",
-          controller: descriptionController,
+          controller: communityPriorityDMs.descriptionController,
           lableText: "Description",
         ),
         const SizedBox(
@@ -205,7 +233,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
         ),
         MyCustomTextField.textField(
             hintText: "Enter amount",
-            controller: input,
+            controller: communityPriorityDMs.amountController,
             lableText: "Amount (\u{20B9})"),
         const SizedBox(
           height: 16,
@@ -215,7 +243,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             Expanded(
                 child: MyCustomTextField.textField(
                     hintText: "Enter Response Timeline",
-                    controller: input,
+                    controller: communityPriorityDMs.responseTimelineController,
                     lableText: "Response Timeline")),
             const SizedBox(
               width: 8,
@@ -243,7 +271,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
         ),
         MyCustomTextField.textField(
             hintText: "Enter topics, seperated by commas",
-            controller: input,
+            controller: communityPriorityDMs.topicsController,
             lableText: "Topics (comma-seperated)"),
       ]),
     );
@@ -254,14 +282,14 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         MyCustomTextField.textField(
             hintText: "Enter service title",
-            controller: input,
+            controller: communityMeetings.titleController,
             lableText: "Title"),
         const SizedBox(
           height: 16,
         ),
         MyCustomTextField.htmlTextField(
           hintText: "Enter service description",
-          controller: descriptionController,
+          controller: communityMeetings.descriptionController,
           lableText: "Description",
         ),
         const SizedBox(
@@ -272,7 +300,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             Expanded(
                 child: MyCustomTextField.textField(
                     hintText: "Enter amount",
-                    controller: input,
+                    controller: communityMeetings.amountController,
                     lableText: "Amount (\u{20B9})")),
             const SizedBox(
               width: 8,
@@ -280,7 +308,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             Expanded(
                 child: MyCustomTextField.textField(
                     hintText: "Enter duration",
-                    controller: durationMinutesController,
+                    controller: communityMeetings.durationController,
                     lableText: "Duration (minutes)")),
           ],
         ),
@@ -289,7 +317,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
         ),
         MyCustomTextField.textField(
             hintText: "Enter topics, seperated by commas",
-            controller: input,
+            controller: communityMeetings.topicsController,
             lableText: "Topics (comma-seperated)"),
         const SizedBox(
           height: 16,

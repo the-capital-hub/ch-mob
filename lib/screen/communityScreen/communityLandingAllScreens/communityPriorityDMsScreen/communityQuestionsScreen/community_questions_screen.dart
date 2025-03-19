@@ -1,4 +1,5 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityPriorityDMsController/community_priority_dms_controller.dart';
+import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityPriorityDMsModel/community_priority_dms_model.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
@@ -12,8 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CommunityQuestionsScreen extends StatefulWidget {
-  int index = 0;
-  CommunityQuestionsScreen({required this.index, super.key});
+  int? index;
+  CommunityQuestionsScreen({this.index, super.key});
 
   @override
   State<CommunityQuestionsScreen> createState() =>
@@ -23,10 +24,26 @@ class CommunityQuestionsScreen extends StatefulWidget {
 class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
     with SingleTickerProviderStateMixin {
   CommunityPriorityDMsController communityPriorityDMs = Get.find();
+  List<Question> answeredQuestions = [];
+  List<Question> unansweredQuestions = [];
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    for (int i = 0;
+        i <
+            communityPriorityDMs
+                .communityPriorityDMsList[widget.index!].questions!.length;
+        i++) {
+      if (communityPriorityDMs
+          .communityPriorityDMsList[widget.index!].questions![i].isAnswered!) {
+        answeredQuestions.add(communityPriorityDMs
+            .communityPriorityDMsList[widget.index!].questions![i]);
+      } else {
+        unansweredQuestions.add(communityPriorityDMs
+            .communityPriorityDMsList[widget.index!].questions![i]);
+      }
+    }
   }
 
   late final TabController _tabController;
@@ -68,9 +85,13 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                 ),
                                 labelPadding: const EdgeInsets.only(left: 12),
                                 indicatorSize: TabBarIndicatorSize.label,
-                                tabs: const [
-                                  Tab(text: "Unanswered (0)"),
-                                  Tab(text: "Answered (0)")
+                                tabs: [
+                                  Tab(
+                                      text:
+                                          "Unanswered (${unansweredQuestions.length})"),
+                                  Tab(
+                                      text:
+                                          "Answered (${answeredQuestions.length})")
                                 ],
                                 labelColor:
                                     GetStoreData.getStore.read('isInvestor')
@@ -89,7 +110,7 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                       controller: _tabController,
                                       children: [
                                     ListView.builder(
-                                      itemCount: 5,
+                                      itemCount: unansweredQuestions.length,
                                       itemBuilder: (context, index) {
                                         return Card(
                                           shape: RoundedRectangleBorder(
@@ -102,25 +123,26 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                const Row(
+                                                Row(
                                                   children: [
-                                                    CircleAvatar(
+                                                    const CircleAvatar(
                                                       radius: 18,
                                                       backgroundImage:
                                                           AssetImage(
                                                               PngAssetPath
                                                                   .accountImg),
                                                     ),
-                                                    SizedBox(
+                                                    const SizedBox(
                                                       width: 10,
                                                     ),
                                                     TextWidget(
-                                                      text: "Name",
+                                                      text:
+                                                          "${unansweredQuestions[index].question}",
                                                       textSize: 18,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),
-                                                    SizedBox(
+                                                    const SizedBox(
                                                       width: 12,
                                                     ),
                                                     Column(
@@ -130,12 +152,12 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                                       children: [
                                                         TextWidget(
                                                             text:
-                                                                "Asked 12 days ago",
+                                                                "${unansweredQuestions[index].createdAt}",
                                                             textSize: 13),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           height: 8,
                                                         ),
-                                                        TextWidget(
+                                                        const TextWidget(
                                                           text:
                                                               "Time to answer:Time expired",
                                                           textSize: 13,
@@ -212,8 +234,9 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                                   ],
                                                 ),
                                                 sizedTextfield,
-                                                const TextWidget(
-                                                  text: "Question",
+                                                TextWidget(
+                                                  text:
+                                                      "${answeredQuestions[index].question}",
                                                   textSize: 16,
                                                   maxLine: 2,
                                                 ),
@@ -221,8 +244,9 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                                 const TextWidget(
                                                     text: "Answer:",
                                                     textSize: 16),
-                                                const TextWidget(
-                                                    text: "Solution",
+                                                TextWidget(
+                                                    text:
+                                                        "${answeredQuestions[index].answer}",
                                                     textSize: 16),
                                               ],
                                             ),

@@ -137,10 +137,22 @@ class ApiUrl {
   static const String updateCommunity = "Communities/updateCommunity/";
   static const String addProductToCommunity =
       "Communities/addProductToCommunity/";
+  static const String updateCommunityProduct =
+      "Communities/updateProduct/";
+  static const String createCommunityPriorityDM =
+      "Communities/createPriorityDM/";
+  static const String updateCommunityPriorityDM =
+      "Communities/updatePriorityDM/";
+  static const String deleteCommunityPriorityDM =
+      "Communities/deletePriorityDM/";
+  static const String createCommunityMeeting = "Communities/createMeeting/";
+  static const String updateCommunityMeeting = "Communities/updateMeeting/";
+  static const String deleteCommunityMeeting = "Communities/deleteMeeting/";
   static const String getCommunityProductsAndMembers =
       "Communities/getCommunityProductsAndMembers/";
   static const String getAboutCommunity = "Communities/getCommunityById/";
   static const String buyProduct = "Communities/buyProduct/";
+  static const String deleteCommunityProduct = "Communities/deleteProduct/";
   static const String getWebinarsByCommunityId =
       "webinars/getWebinarsByCommunityId/";
   static const String getCommunityPriorityDMs =
