@@ -1,6 +1,6 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityPriorityDMsController/community_priority_dms_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityPriorityDMsModel/community_priority_dms_model.dart';
+
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddServiceScreen/community_add_service_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPriorityDMsScreen/communityQuestionsScreen/community_questions_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPriorityDMsScreen/communityYourQuestionsScreen/community_your_questions_screen.dart';
@@ -14,6 +14,7 @@ import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 
 class CommunityPriorityDMsScreen extends StatefulWidget {
@@ -38,26 +39,6 @@ class _CommunityPriorityDMScreenState
     super.initState();
   }
 
-  List<String> data = [
-    "Sector Agnostic",
-    "B2B",
-    "B2C",
-    "AI/ML",
-    "API",
-    "AR/VR",
-    "Analytics",
-    "Automation",
-    "BioTech",
-    "Cloud",
-    "Consumer Tech",
-    "Creator Economy",
-    "Crypto/Blockchain",
-    "D2C",
-    "DeepTech",
-    "Developer Tools",
-    "E-Commerce",
-    "Education",
-  ];
   bool isQuestionFieldVisible = false;
   bool noQuestions = true;
   TextEditingController urlController = TextEditingController();
@@ -104,10 +85,12 @@ class _CommunityPriorityDMScreenState
                             ],
                           ),
                           sizedTextfield,
-                          TextWidget(
-                            text:
-                                "${communityPriorityDMs.communityPriorityDMsList[index].description}",
-                            textSize: 15,
+                          HtmlWidget(
+                            "${communityPriorityDMs.communityPriorityDMsList[index].description}",
+                            textStyle: TextStyle(
+                              fontSize: 15,
+                              color: AppColors.white,
+                            ),
                           ),
                           sizedTextfield,
                           Row(
@@ -124,8 +107,12 @@ class _CommunityPriorityDMScreenState
                                 child: Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: TextWidget(
-                                    text:
-                                        "${communityPriorityDMs.communityPriorityDMsList[index].amount}",
+                                    text: communityPriorityDMs
+                                                .communityPriorityDMsList[index]
+                                                .amount ==
+                                            0
+                                        ? "Free"
+                                        : "\u{20B9} ${communityPriorityDMs.communityPriorityDMsList[index].amount}",
                                     textSize: 10,
                                     color: AppColors.primary,
                                   ),
@@ -134,27 +121,38 @@ class _CommunityPriorityDMScreenState
                             ],
                           ),
                           sizedTextfield,
-                          Wrap(
-                            spacing: 4.0,
-                            runSpacing: 4.0,
-                            children: List.generate(data.length, (index) {
-                              return InkWell(
-                                onTap: () {},
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4)),
-                                  color: AppColors.white12,
-                                  surfaceTintColor: AppColors.white12,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 4),
-                                    child: TextWidget(
-                                        text: data[index], textSize: 14),
+                          if (communityPriorityDMs
+                              .communityPriorityDMsList[index]
+                              .topics!
+                              .isNotEmpty)
+                            Wrap(
+                              spacing: 4.0,
+                              runSpacing: 4.0,
+                              children: List.generate(
+                                  communityPriorityDMs
+                                      .communityPriorityDMsList[index]
+                                      .topics!
+                                      .length, (innerIndex) {
+                                return InkWell(
+                                  onTap: () {},
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(4)),
+                                    color: AppColors.white12,
+                                    surfaceTintColor: AppColors.white12,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 4),
+                                      child: TextWidget(
+                                          text: communityPriorityDMs
+                                              .communityPriorityDMsList[index]
+                                              .topics![innerIndex],
+                                          textSize: 14),
+                                    ),
                                   ),
-                                ),
-                              );
-                            }),
-                          ),
+                                );
+                              }),
+                            ),
                           const SizedBox(
                             height: 15,
                           ),
@@ -177,8 +175,13 @@ class _CommunityPriorityDMScreenState
                                 IconButton(
                                     onPressed: () {
                                       addServiceIndex = 0;
-                                      Get.to(() =>
-                                          const CommunityAddServiceScreen());
+
+                                      Get.to(() => CommunityAddServiceScreen(
+                                          isEdit: true,
+                                          priorityDMId: communityPriorityDMs
+                                              .communityPriorityDMsList[index]
+                                              .id
+                                              .toString()));
                                     },
                                     icon: Icon(
                                       Icons.edit,
@@ -199,7 +202,13 @@ class _CommunityPriorityDMScreenState
                                           Get.back();
                                         },
                                         onButton2Pressed: () {
-                                          Get.back();
+                                          communityPriorityDMs
+                                              .deleteCommunityPriorityDM(
+                                                  communityPriorityDMs
+                                                      .communityPriorityDMsList[
+                                                          index]
+                                                      .id
+                                                      .toString());
                                         },
                                       );
                                     },
