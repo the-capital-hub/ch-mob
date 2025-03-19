@@ -88,7 +88,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                   onPressed: () {
                                     addServiceIndex = 3;
                                     Get.to(() =>
-                                        const CommunityAddServiceScreen());
+                                         CommunityAddServiceScreen(isEdit: true,));
                                   },
                                 ),
                                 IconButton(

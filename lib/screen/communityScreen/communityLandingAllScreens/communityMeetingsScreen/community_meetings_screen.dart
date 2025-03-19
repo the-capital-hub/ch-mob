@@ -36,26 +36,6 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
     super.initState();
   }
 
-  List<String> data = [
-    "Sector Agnostic",
-    "B2B",
-    "B2C",
-    "AI/ML",
-    "API",
-    "AR/VR",
-    "Analytics",
-    "Automation",
-    "BioTech",
-    "Cloud",
-    "Consumer Tech",
-    "Creator Economy",
-    "Crypto/Blockchain",
-    "D2C",
-    "DeepTech",
-    "Developer Tools",
-    "E-Commerce",
-    "Education",
-  ];
   bool isBooked = false;
   @override
   Widget build(BuildContext context) {
@@ -81,8 +61,8 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               TextWidget(
-                                text: communityMeetings
-                                    .communityMeetingsList[index].title,
+                                text:
+                                    "${communityMeetings.communityMeetingsList[index].title}",
                                 textSize: 20,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -100,8 +80,7 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                           ),
                           sizedTextfield,
                           HtmlWidget(
-                            communityMeetings
-                                .communityMeetingsList[index].description,
+                            "${communityMeetings.communityMeetingsList[index].description}",
                             textStyle: TextStyle(
                               fontSize: 15,
                               color: AppColors.white,
@@ -129,10 +108,10 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                                   child: TextWidget(
                                     text: communityMeetings
                                                 .communityMeetingsList[index]
-                                                .price ==
+                                                .amount ==
                                             0
                                         ? "Free"
-                                        : "Paid",
+                                        : "\u{20B9} ${communityMeetings.communityMeetingsList[index].amount}",
                                     textSize: 10,
                                     color: AppColors.primary,
                                   ),
@@ -141,27 +120,34 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                             ],
                           ),
                           sizedTextfield,
-                          Wrap(
-                            spacing: 4.0,
-                            runSpacing: 4.0,
-                            children: List.generate(data.length, (index) {
-                              return InkWell(
-                                onTap: () {},
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4)),
-                                  color: AppColors.white12,
-                                  surfaceTintColor: AppColors.white12,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 4),
-                                    child: TextWidget(
-                                        text: data[index], textSize: 14),
+                          if (communityMeetings
+                              .communityMeetingsList[index].topics!.isNotEmpty)
+                            Wrap(
+                              spacing: 4.0,
+                              runSpacing: 4.0,
+                              children: List.generate(
+                                  communityMeetings.communityMeetingsList[index]
+                                      .topics!.length, (innerIndex) {
+                                return InkWell(
+                                  onTap: () {},
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(4)),
+                                    color: AppColors.white12,
+                                    surfaceTintColor: AppColors.white12,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 4),
+                                      child: TextWidget(
+                                          text: communityMeetings
+                                              .communityMeetingsList[index]
+                                              .topics![innerIndex],
+                                          textSize: 14),
+                                    ),
                                   ),
-                                ),
-                              );
-                            }),
-                          ),
+                                );
+                              }),
+                            ),
                           const SizedBox(
                             height: 15,
                           ),
@@ -176,7 +162,7 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                                           const CommunityMeetingBookingsScreen());
                                     },
                                     title:
-                                        "View Bookings (${communityMeetings.communityMeetingsList[index].bookings.length})",
+                                        "View Bookings (${communityMeetings.communityMeetingsList[index].bookings!.length})",
                                   ),
                                 ),
                                 const SizedBox(
@@ -185,8 +171,12 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                                 IconButton(
                                     onPressed: () {
                                       addServiceIndex = 1;
-                                      Get.to(() =>
-                                          const CommunityAddServiceScreen());
+                                      Get.to(() => CommunityAddServiceScreen(
+                                            isEdit: true,
+                                            meetingId: communityMeetings
+                                                .communityMeetingsList[index]
+                                                .id,
+                                          ));
                                     },
                                     icon: Icon(
                                       Icons.edit,
@@ -207,7 +197,13 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                                           Get.back();
                                         },
                                         onButton2Pressed: () {
-                                          Get.back();
+                                          communityMeetings
+                                              .deleteCommunityMeeting(
+                                                  communityMeetings
+                                                      .communityMeetingsList[
+                                                          index]
+                                                      .id
+                                                      .toString());
                                         },
                                       );
                                     },

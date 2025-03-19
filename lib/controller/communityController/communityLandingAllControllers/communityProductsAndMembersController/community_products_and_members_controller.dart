@@ -44,7 +44,7 @@ class CommunityProductsAndMembersController extends GetxController {
     var response = await ApiBase.postRequest(
       body: {},
       withToken: true,
-      extendedURL: ApiUrl.buyProduct + createdCommunityId + "/" + productId,
+      extendedURL: "${ApiUrl.buyProduct}$createdCommunityId/$productId",
     );
     log(response.body);
     var data = json.decode(response.body);
@@ -54,6 +54,23 @@ class CommunityProductsAndMembersController extends GetxController {
       return true;
     } else {
       Get.back();
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
+  }
+
+  Future deleteCommunityProduct(productId) async {
+    var response = await ApiBase.deleteRequest(
+      extendedURL:
+          "${ApiUrl.deleteCommunityProduct}$createdCommunityId/$productId",
+    );
+    log(response.body);
+    var data = json.decode(response.body);
+    if (data["status"]) {
+      communityProductsList.removeWhere((product) => product.id == productId);
+      HelperSnackBar.snackBar("Success", data["message"]);
+      return true;
+    } else {
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
     }

@@ -190,7 +190,14 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                                             title:
                                                                 'Delete Product',
                                                             onButtonPressed:
-                                                                () {},
+                                                                () {
+                                                              communityProducts
+                                                                  .deleteCommunityProduct(
+                                                                      communityProducts
+                                                                          .communityProductsList[
+                                                                              index]
+                                                                          .id);
+                                                            },
                                                           ),
                                                         ),
                                                       ],
