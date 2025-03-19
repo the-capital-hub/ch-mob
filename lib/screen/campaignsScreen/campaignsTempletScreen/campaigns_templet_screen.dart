@@ -19,11 +19,11 @@ class CampaignsTempletScreen extends StatefulWidget {
 }
 
 class _CampaignsTempletScreenState extends State<CampaignsTempletScreen> {
-  int? selectedTemp;
+  String? selectedTemp;
   CampaignsController campaignsController = Get.find();
-  void toggleSelection(int index) {
+  void toggleSelection(String templateId) {
     setState(() {
-      selectedTemp = index;
+      selectedTemp = templateId;
     });
   }
 
@@ -60,9 +60,11 @@ class _CampaignsTempletScreenState extends State<CampaignsTempletScreen> {
                           const SizedBox(height: 12),
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        final isSelected = selectedTemp == index;
+                        final isSelected = selectedTemp ==
+                            campaignsController.templateList[index].templateId!;
                         return InkWell(
-                          onTap: () => toggleSelection(index),
+                          onTap: () => toggleSelection(campaignsController
+                              .templateList[index].templateId!),
                           child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
@@ -149,7 +151,15 @@ class _CampaignsTempletScreenState extends State<CampaignsTempletScreen> {
                       child: AppButton.primaryButton(
                           onButtonPressed: () {
                             if (campaignsController.listIds.isNotEmpty) {
-                              Get.to(() => const CreateCampaignsScreen());
+                              Helper.loader(context);
+                              campaignsController
+                                  .proceedWithTemplate(selectedTemp!)
+                                  .then((val) {
+                                if (val) {
+                                  Get.to(() => CreateCampaignsScreen(
+                                      templateId: selectedTemp!));
+                                }
+                              });
                             } else {
                               campaignsController.tabController.animateTo(0);
                             }

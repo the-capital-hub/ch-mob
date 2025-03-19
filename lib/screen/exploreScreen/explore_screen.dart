@@ -99,9 +99,11 @@ class _ExploreScreenState extends State<ExploreScreen>
                                 exploreController.selectedType = "founder";
                                 exploreController.getExploreCollection();
                               } else if (val == 2) {
+                                selectedInvestorIds.clear();
                                 exploreController.selectedType = "investor";
                                 exploreController.getExploreCollection();
                               } else if (val == 3) {
+                                selectedVcsIds.clear();
                                 exploreController.selectedType = "vc";
                                 exploreController.getExploreCollection();
                               }
@@ -1085,7 +1087,7 @@ class _ExploreScreenState extends State<ExploreScreen>
                       InkWell(
                         onTap: () {
                           exploreController.getCampaignLists();
-                          addInvestorPopup(context, selectedInvestorIds)
+                          addInvestorPopup(context, selectedInvestorIds, true)
                               .then((val) {
                             if (val) {
                               selectedInvestorIds.clear();
@@ -1397,6 +1399,8 @@ class _ExploreScreenState extends State<ExploreScreen>
           );
   }
 
+  bool isAllCheckedVc = false;
+  List<String> selectedVcsIds = [];
   vcsTab() {
     return exploreController.vcExploreList.isEmpty
         ? const Center(
@@ -1406,181 +1410,293 @@ class _ExploreScreenState extends State<ExploreScreen>
               fontWeight: FontWeight.w500,
             ),
           )
-        : ListView.separated(
-            itemCount: exploreController.vcExploreList.length,
-            separatorBuilder: (context, index) {
-              return const SizedBox(height: 8);
-            },
-            shrinkWrap: true,
-            itemBuilder: (BuildContext context, int index) {
-              return InkWell(
-                onTap: () {
-                  Get.to(() => VCsProfileScreen(
-                        vcId: exploreController.vcExploreList[index].id!,
-                      ));
-                },
-                child: Card(
-                    color: AppColors.blackCard,
-                    surfaceTintColor: AppColors.blackCard,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
+        : Column(
+            children: [
+              if (GetStoreData.getStore.read('isInvestor') == false)
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Checkbox(
+                      value: isAllCheckedVc,
+                      onChanged: (value) {
+                        setState(() {
+                          isAllCheckedVc = value!;
+                          selectedVcsIds.clear();
+
+                          for (var vc in exploreController.vcExploreList) {
+                            vc.isChecked = isAllCheckedVc;
+                            if (isAllCheckedVc) {
+                              selectedVcsIds.add(vc.id!);
+                            }
+                          }
+                        });
+                      },
+                      side: BorderSide(color: AppColors.grey, width: 1.5),
+                      activeColor: AppColors.primary,
+                      checkColor: AppColors.white,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    const TextWidget(
+                      text: "Select All",
+                      textSize: 12,
+                    ),
+                    const Spacer(),
+                    if (selectedVcsIds.isNotEmpty)
+                      InkWell(
+                        onTap: () {
+                          exploreController.getCampaignLists();
+                          addInvestorPopup(context, selectedVcsIds, false)
+                              .then((val) {
+                            if (val) {
+                              selectedVcsIds.clear();
+                              for (var vc in exploreController.vcExploreList) {
+                                vc.isChecked = false;
+                              }
+                              isAllCheckedVc = false;
+                              setState(() {});
+                            }
+                          });
+                        },
+                        child: Container(
+                            margin: const EdgeInsets.only(right: 6),
+                            decoration: BoxDecoration(
+                                color: AppColors.primary,
+                                borderRadius: BorderRadius.circular(6)),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 4),
+                            child: TextWidget(
+                                text: "+ ADD (${selectedVcsIds.length})",
+                                textSize: 12,
+                                fontWeight: FontWeight.w500)),
+                      )
+                  ],
+                ),
+              if (GetStoreData.getStore.read('isInvestor') == false)
+                const SizedBox(height: 4),
+              Expanded(
+                child: ListView.separated(
+                  itemCount: exploreController.vcExploreList.length,
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(height: 8);
+                  },
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    return InkWell(
+                      onTap: () {
+                        Get.to(() => VCsProfileScreen(
+                              vcId: exploreController.vcExploreList[index].id!,
+                            ));
+                      },
+                      child: Card(
+                          color: AppColors.blackCard,
+                          surfaceTintColor: AppColors.blackCard,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                height: 55,
-                                width: 55,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6),
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: NetworkImage(exploreController
-                                                .vcExploreList[index].logo ??
-                                            ""))),
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
                                   children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        TextWidget(
-                                          text:
-                                              "${exploreController.vcExploreList[index].name}",
-                                          textSize: 15,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        // Icon(Icons.bookmark_border_outlined,
-                                        //     color: AppColors.white, size: 20)
-                                      ],
+                                    Container(
+                                      height: 55,
+                                      width: 55,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(
+                                                  exploreController
+                                                          .vcExploreList[index]
+                                                          .logo ??
+                                                      ""))),
                                     ),
-                                    const SizedBox(height: 4),
-                                    TextWidget(
-                                      text:
-                                          "${exploreController.vcExploreList[index].location} ${exploreController.vcExploreList[index].age} years",
-                                      textSize: 12,
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              TextWidget(
+                                                text:
+                                                    "${exploreController.vcExploreList[index].name}",
+                                                textSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              // Icon(Icons.bookmark_border_outlined,
+                                              //     color: AppColors.white, size: 20)
+                                            ],
+                                          ),
+                                          const SizedBox(height: 4),
+                                          TextWidget(
+                                            text:
+                                                "${exploreController.vcExploreList[index].location} ${exploreController.vcExploreList[index].age} years",
+                                            textSize: 12,
+                                          ),
+                                        ],
+                                      ),
                                     ),
+                                    if (GetStoreData.getStore
+                                            .read('isInvestor') ==
+                                        false)
+                                      Checkbox(
+                                        value: exploreController
+                                            .vcExploreList[index].isChecked,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            exploreController
+                                                .vcExploreList[index]
+                                                .isChecked = value!;
+                                            if (value) {
+                                              selectedVcsIds.add(
+                                                  exploreController
+                                                      .vcExploreList[index]
+                                                      .id!);
+                                            } else {
+                                              selectedVcsIds.remove(
+                                                  exploreController
+                                                      .vcExploreList[index]
+                                                      .id!);
+                                            }
+                                            isAllCheckedVc =
+                                                selectedVcsIds.length ==
+                                                    exploreController
+                                                        .vcExploreList.length;
+                                          });
+                                        },
+                                        side: BorderSide(
+                                            color: AppColors.grey, width: 1.5),
+                                        activeColor: AppColors.primary,
+                                        checkColor: AppColors.white,
+                                        materialTapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                        visualDensity: VisualDensity.compact,
+                                      ),
                                   ],
                                 ),
-                              )
+                              ),
+                              SizedBox(height: 4),
+                              Divider(
+                                thickness: 0.5,
+                                color: AppColors.white38,
+                                height: 0,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 6),
+                                child: TextWidget(
+                                    text: "Stage Focus",
+                                    textSize: 15,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Wrap(
+                                  spacing: 4.0,
+                                  runSpacing: 4.0,
+                                  children: List.generate(
+                                      exploreController.vcExploreList[index]
+                                          .stageFocus!.length, (ind) {
+                                    return Card(
+                                      color: AppColors.purple,
+                                      // surfaceTintColor: AppColors.purple,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(100)),
+                                      child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 18.0, vertical: 6),
+                                          child: TextWidget(
+                                            text: exploreController
+                                                .vcExploreList[index]
+                                                .stageFocus![ind],
+                                            textSize: 14,
+                                            color: AppColors.white,
+                                          )),
+                                    );
+                                  }),
+                                ),
+                              ),
+                              SizedBox(height: 12),
+                              Divider(
+                                thickness: 0.5,
+                                color: AppColors.white38,
+                                height: 0,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 6),
+                                child: TextWidget(
+                                    text: "Sector Focus",
+                                    textSize: 15,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Wrap(
+                                  spacing: 4.0,
+                                  runSpacing: 4.0,
+                                  children: List.generate(
+                                      exploreController.vcExploreList[index]
+                                          .sectorFocus!.length, (ind) {
+                                    return Card(
+                                      color: AppColors.purple,
+                                      // surfaceTintColor: AppColors.purple,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(100)),
+                                      child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 18.0, vertical: 6),
+                                          child: TextWidget(
+                                            text: exploreController
+                                                .vcExploreList[index]
+                                                .sectorFocus![ind],
+                                            textSize: 14,
+                                            color: AppColors.white,
+                                          )),
+                                    );
+                                  }),
+                                ),
+                              ),
+                              SizedBox(height: 12),
+                              Divider(
+                                thickness: 0.5,
+                                color: AppColors.white38,
+                                height: 0,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 6),
+                                child: TextWidget(
+                                    text: "Ticket Size",
+                                    textSize: 15,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 12),
+                                  child: TextWidget(
+                                      text:
+                                          "${exploreController.vcExploreList[index].ticketSize}",
+                                      textSize: 18,
+                                      fontWeight: FontWeight.w600)),
+                              sizedTextfield,
                             ],
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Divider(
-                          thickness: 0.5,
-                          color: AppColors.white38,
-                          height: 0,
-                        ),
-                        const Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                          child: TextWidget(
-                              text: "Stage Focus",
-                              textSize: 16,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Wrap(
-                            spacing: 4.0,
-                            runSpacing: 4.0,
-                            children: List.generate(
-                                exploreController.vcExploreList[index]
-                                    .stageFocus!.length, (ind) {
-                              return Card(
-                                color: AppColors.purple,
-                                // surfaceTintColor: AppColors.purple,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(100)),
-                                child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 18.0, vertical: 6),
-                                    child: TextWidget(
-                                      text: exploreController
-                                          .vcExploreList[index]
-                                          .stageFocus![ind],
-                                      textSize: 15,
-                                      color: AppColors.white,
-                                    )),
-                              );
-                            }),
-                          ),
-                        ),
-                        SizedBox(height: 12),
-                        Divider(
-                          thickness: 0.5,
-                          color: AppColors.white38,
-                          height: 0,
-                        ),
-                        const Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                          child: TextWidget(
-                              text: "Sector Focus",
-                              textSize: 16,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Wrap(
-                            spacing: 4.0,
-                            runSpacing: 4.0,
-                            children: List.generate(
-                                exploreController.vcExploreList[index]
-                                    .sectorFocus!.length, (ind) {
-                              return Card(
-                                color: AppColors.purple,
-                                // surfaceTintColor: AppColors.purple,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(100)),
-                                child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 18.0, vertical: 6),
-                                    child: TextWidget(
-                                      text: exploreController
-                                          .vcExploreList[index]
-                                          .sectorFocus![ind],
-                                      textSize: 15,
-                                      color: AppColors.white,
-                                    )),
-                              );
-                            }),
-                          ),
-                        ),
-                        SizedBox(height: 12),
-                        Divider(
-                          thickness: 0.5,
-                          color: AppColors.white38,
-                          height: 0,
-                        ),
-                        const Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                          child: TextWidget(
-                              text: "Ticket Size",
-                              textSize: 16,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12),
-                            child: TextWidget(
-                                text:
-                                    "${exploreController.vcExploreList[index].ticketSize}",
-                                textSize: 20,
-                                fontWeight: FontWeight.w600)),
-                        sizedTextfield,
-                      ],
-                    )),
-              );
-            },
+                          )),
+                    );
+                  },
+                ),
+              ),
+            ],
           );
   }
 

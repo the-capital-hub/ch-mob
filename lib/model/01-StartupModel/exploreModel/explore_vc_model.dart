@@ -40,6 +40,7 @@ class VcDetail {
   String? name;
   String? logo;
   String? location;
+  bool isChecked = false;
   List<String>? stageFocus;
   List<String>? sectorFocus;
   String? ticketSize;
@@ -61,7 +62,7 @@ class VcDetail {
         name: json["name"],
         logo: json["logo"],
         location: json["location"],
-        stageFocus: List<String>.from(json["stage_focus"].map((x) => x)),
+        stageFocus: List<String>.from(json["stage_focus"].map((x) => x ?? "")),
         sectorFocus: List<String>.from(json["sector_focus"].map((x) => x)),
         ticketSize: json["ticket_size"],
         age: json["age"],

@@ -1,4 +1,3 @@
-
 import 'package:capitalhub_crm/controller/campaignsController/campaigns_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
@@ -93,18 +92,20 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
                         color: AppColors.whiteShade,
                         align: TextAlign.right,
                         textSize: 14),
-                    TextWidget(
-                        text:
-                            "Schedule: ${campaignsController.outreachView.campaignScheduledAt}",
-                        color: AppColors.whiteShade,
-                        align: TextAlign.right,
-                        textSize: 14),
-                    TextWidget(
-                        text:
-                            "Sent: ${campaignsController.outreachView.campaignSentAt}",
-                        color: AppColors.whiteShade,
-                        align: TextAlign.right,
-                        textSize: 14),
+                    if (campaignsController.outreachView.status == "scheduled")
+                      TextWidget(
+                          text:
+                              "Schedule: ${campaignsController.outreachView.campaignScheduledAt}",
+                          color: AppColors.whiteShade,
+                          align: TextAlign.right,
+                          textSize: 14),
+                    if (campaignsController.outreachView.status == "completed")
+                      TextWidget(
+                          text:
+                              "Sent: ${campaignsController.outreachView.campaignSentAt}",
+                          color: AppColors.whiteShade,
+                          align: TextAlign.right,
+                          textSize: 14),
                     sizedTextfield,
                     if (campaignsController.outreachView.status == "draft" ||
                         campaignsController.outreachView.status == "scheduled")
@@ -152,7 +153,7 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
                                               "scheduled"
                                           ? "Cancel"
                                           : "Schedule")),
-                          SizedBox(width: 12),
+                          const SizedBox(width: 12),
                           Expanded(
                               child: AppButton.primaryButton(
                                   borderRadius: 8,
@@ -198,7 +199,7 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
                     sizedTextfield,
                     Expanded(
                       child: TabBarView(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         controller: tabController,
                         children: [overview(), recipients(), content()],
                       ),
@@ -250,13 +251,13 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
           crossAxisCount: 2,
           crossAxisSpacing: 12,
           mainAxisSpacing: 12,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           childAspectRatio: 1.6,
           children: items.map((item) => _buildGridItem(item)).toList(),
         ),
         sizedTextfield,
-        TextWidget(
+        const TextWidget(
             text: "Investor Lists", textSize: 16, fontWeight: FontWeight.w500),
         sizedTextfield,
         SizedBox(
@@ -264,7 +265,7 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
           child: ListView.separated(
             itemCount: campaignsController
                 .outreachView.overview!.investorLists!.length,
-            separatorBuilder: (context, index) => SizedBox(width: 12),
+            separatorBuilder: (context, index) => const SizedBox(width: 12),
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemBuilder: (BuildContext context, int index) {
@@ -274,7 +275,7 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
                 decoration: BoxDecoration(
                     color: AppColors.blackCard,
                     borderRadius: BorderRadius.circular(8)),
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: TextWidget(
                     text: campaignsController
                         .outreachView.overview!.investorLists![index],
@@ -290,61 +291,165 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
   }
 
   recipients() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-          columnSpacing: 25,
-          headingRowHeight: 50,
-          dataRowHeight: 45,
-          dividerThickness: 0.4,
-          horizontalMargin: 20,
-          border: TableBorder.all(
-              color: AppColors.white38,
-              width: 1,
-              borderRadius: BorderRadius.circular(12)),
-          headingRowColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              return AppColors.white12;
-            },
+    return DefaultTabController(
+      length: 2,
+      child: Column(
+        children: [
+          TabBar(
+            labelColor: AppColors.white,
+            unselectedLabelColor: AppColors.grey,
+            indicatorColor: AppColors.primary,
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicatorWeight: 3.0,
+            tabs: [
+              Tab(
+                  text:
+                      "Investors (${campaignsController.outreachView.recipients!.investors!.length})"),
+              Tab(
+                  text:
+                      "VCs (${campaignsController.outreachView.recipients!.vcs!.length})"),
+            ],
           ),
-          columns: const [
-            DataColumn(
-                label: SizedBox(
-                    width: 140,
-                    child: TextWidget(
-                        text: "Investor",
-                        align: TextAlign.center,
-                        textSize: 15))),
-            DataColumn(
-                label: SizedBox(
-                    width: 165,
-                    child: TextWidget(
-                        text: "Email", align: TextAlign.center, textSize: 15))),
-            DataColumn(
-                label: SizedBox(
-                    width: 80,
-                    child: TextWidget(
-                        text: "Status",
-                        align: TextAlign.center,
-                        textSize: 15))),
-            DataColumn(label: TextWidget(text: "Opened", textSize: 15)),
-            DataColumn(label: TextWidget(text: "Clicked", textSize: 15)),
-            DataColumn(label: TextWidget(text: "Replied", textSize: 15)),
-          ],
-          rows: List.generate(
-              campaignsController.outreachView.recipients!.investors!.length,
-              (index) {
-            Investor investor =
-                campaignsController.outreachView.recipients!.investors![index];
-            return _buildDataRow(
-              context,
-              investor,
-              index,
-            );
-          }),
-        ),
+          sizedTextfield,
+          Expanded(
+            child: TabBarView(children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: campaignsController
+                        .outreachView.recipients!.investors!.isEmpty
+                    ? const Center(child: TextWidget(text: "No Data Found", textSize: 14))
+                    : SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: DataTable(
+                          columnSpacing: 25,
+                          headingRowHeight: 50,
+                          dataRowHeight: 45,
+                          dividerThickness: 0.4,
+                          horizontalMargin: 20,
+                          border: TableBorder.all(
+                              color: AppColors.white38,
+                              width: 1,
+                              borderRadius: BorderRadius.circular(12)),
+                          headingRowColor:
+                              MaterialStateProperty.resolveWith<Color?>(
+                            (Set<MaterialState> states) {
+                              return AppColors.white12;
+                            },
+                          ),
+                          columns: const [
+                            DataColumn(
+                                label: SizedBox(
+                                    width: 140,
+                                    child: TextWidget(
+                                        text: "Investor",
+                                        align: TextAlign.center,
+                                        textSize: 15))),
+                            DataColumn(
+                                label: SizedBox(
+                                    width: 165,
+                                    child: TextWidget(
+                                        text: "Email",
+                                        align: TextAlign.center,
+                                        textSize: 15))),
+                            DataColumn(
+                                label: SizedBox(
+                                    width: 80,
+                                    child: TextWidget(
+                                        text: "Status",
+                                        align: TextAlign.center,
+                                        textSize: 15))),
+                            DataColumn(
+                                label:
+                                    TextWidget(text: "Opened", textSize: 15)),
+                            DataColumn(
+                                label:
+                                    TextWidget(text: "Clicked", textSize: 15)),
+                            DataColumn(
+                                label:
+                                    TextWidget(text: "Replied", textSize: 15)),
+                          ],
+                          rows: List.generate(
+                              campaignsController.outreachView.recipients!
+                                  .investors!.length, (ind) {
+                            Investor investor = campaignsController
+                                .outreachView.recipients!.investors![ind];
+                            return _buildDataRow(
+                              context,
+                              investor,
+                              ind,
+                            );
+                          }),
+                        ),
+                      ),
+              ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: campaignsController
+                        .outreachView.recipients!.vcs!.isEmpty
+                    ? const Center(child: TextWidget(text: "No Data Found", textSize: 14))
+                    : SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: DataTable(
+                    columnSpacing: 25,
+                    headingRowHeight: 50,
+                    dataRowHeight: 45,
+                    dividerThickness: 0.4,
+                    horizontalMargin: 20,
+                    border: TableBorder.all(
+                        color: AppColors.white38,
+                        width: 1,
+                        borderRadius: BorderRadius.circular(12)),
+                    headingRowColor: MaterialStateProperty.resolveWith<Color?>(
+                      (Set<MaterialState> states) {
+                        return AppColors.white12;
+                      },
+                    ),
+                    columns: const [
+                      DataColumn(
+                          label: SizedBox(
+                              width: 140,
+                              child: TextWidget(
+                                  text: "VCs",
+                                  align: TextAlign.center,
+                                  textSize: 15))),
+                      DataColumn(
+                          label: SizedBox(
+                              width: 165,
+                              child: TextWidget(
+                                  text: "Email",
+                                  align: TextAlign.center,
+                                  textSize: 15))),
+                      DataColumn(
+                          label: SizedBox(
+                              width: 80,
+                              child: TextWidget(
+                                  text: "Status",
+                                  align: TextAlign.center,
+                                  textSize: 15))),
+                      DataColumn(
+                          label: TextWidget(text: "Opened", textSize: 15)),
+                      DataColumn(
+                          label: TextWidget(text: "Clicked", textSize: 15)),
+                      DataColumn(
+                          label: TextWidget(text: "Replied", textSize: 15)),
+                    ],
+                    rows: List.generate(
+                        campaignsController
+                            .outreachView.recipients!.vcs!.length, (ind) {
+                      VCs vcs = campaignsController
+                          .outreachView.recipients!.vcs![ind];
+                      return _buildDataRowVcs(
+                        context,
+                        vcs,
+                        ind,
+                      );
+                    }),
+                  ),
+                ),
+              ),
+            ]),
+          ),
+        ],
       ),
     );
   }
@@ -382,6 +487,39 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
     );
   }
 
+  DataRow _buildDataRowVcs(BuildContext context, VCs vcs, int index) {
+    return DataRow(
+      color: MaterialStateProperty.resolveWith<Color?>(
+        (Set<MaterialState> states) {
+          return index.isEven ? AppColors.transparent : AppColors.white12;
+        },
+      ),
+      cells: [
+        DataCell(SizedBox(
+            width: 140,
+            child: TextWidget(
+                text: "${vcs.name}",
+                align: TextAlign.center,
+                maxLine: 2,
+                textSize: 14))),
+        DataCell(SizedBox(
+            width: 165,
+            child: TextWidget(
+                text: vcs.email!,
+                align: TextAlign.center,
+                maxLine: 2,
+                textSize: 14))),
+        DataCell(_buildStatusBadge(vcs.status!)),
+        DataCell(
+            Center(child: TextWidget(text: vcs.emailOpened!, textSize: 14))),
+        DataCell(
+            Center(child: TextWidget(text: vcs.emailClicked!, textSize: 14))),
+        DataCell(
+            Center(child: TextWidget(text: vcs.emailReplied!, textSize: 14))),
+      ],
+    );
+  }
+
   Widget _buildStatusBadge(String status) {
     Color badgeColor;
     Color textColor;
@@ -408,7 +546,7 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
           borderRadius: BorderRadius.circular(100),
         ),
         child: TextWidget(
-          text: status,
+          text: status.capitalizeFirst!,
           color: textColor,
           textSize: 14,
         ),
@@ -429,8 +567,8 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextWidget(text: "Subject", textSize: 14),
-                SizedBox(height: 4),
+                const TextWidget(text: "Subject", textSize: 14),
+                const SizedBox(height: 4),
                 Row(
                   children: [
                     Expanded(
@@ -457,8 +595,8 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextWidget(text: "Body", textSize: 14),
-                SizedBox(height: 4),
+                const TextWidget(text: "Body", textSize: 14),
+                const SizedBox(height: 4),
                 HtmlWidget(
                   campaignsController.outreachView.emailContent!.body!,
                   onTapUrl: (url) async {

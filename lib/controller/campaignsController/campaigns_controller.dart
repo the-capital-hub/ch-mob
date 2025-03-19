@@ -8,6 +8,7 @@ import '../../model/01-StartupModel/campaignModel/campaign_list_model.dart';
 import '../../model/01-StartupModel/campaignModel/campaign_list_view_model.dart';
 import '../../model/01-StartupModel/campaignModel/outreach_list_model.dart';
 import '../../model/01-StartupModel/campaignModel/outreach_view_model.dart';
+import '../../model/01-StartupModel/campaignModel/proceed_template_model.dart';
 import '../../model/01-StartupModel/campaignModel/template_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
@@ -118,9 +119,9 @@ class CampaignsController extends GetxController {
   }
 
   Future removeInvFromViewList(
-      {required List<String> invIds, required String listId}) async {
+      {required List<String> invIds,required bool isInv, required String listId}) async {
     try {
-      var body = {"investorIds": invIds};
+      var body = {isInv?"investorIds":"vcIds": invIds};
       var response = await ApiBase.postRequest(
           body: body,
           extendedURL: ApiUrl.removeInvFromList + listId,
@@ -405,7 +406,6 @@ class CampaignsController extends GetxController {
         await getOutrechList(isload: false);
         Get.back(closeOverlays: true);
         Get.back();
-        HelperSnackBar.snackBar("Success", data["message"]);
         return true;
       } else {
         HelperSnackBar.snackBar("Error", data["message"]);
@@ -413,6 +413,61 @@ class CampaignsController extends GetxController {
       }
     } catch (e) {
       log("delete $e");
+    } finally {}
+  }
+
+  TextEditingController campaignNameController = TextEditingController();
+  TextEditingController campaignSubjectController = TextEditingController();
+  final QuillEditorController emailContentcontroller = QuillEditorController();
+  List<String> ccEmails = [];
+  List<String> bccEmails = [];
+  ProceedTemplateData proceedTemplateData = ProceedTemplateData();
+  Future proceedWithTemplate(String templateID) async {
+    try {
+      var body = {"list_ids": listIds, "template_id": templateID};
+      var response = await ApiBase.postRequest(
+          body: body, extendedURL: ApiUrl.preCreatedDate, withToken: true);
+      log(body.toString());
+      var data = json.decode(response.body);
+      Get.back(closeOverlays: true);
+      if (data["status"] == true) {
+        ProceedTemplateModel proceedTemplateModel =
+            ProceedTemplateModel.fromJson(data);
+        proceedTemplateData = proceedTemplateModel.data!;
+        return true;
+      } else {
+        HelperSnackBar.snackBar("Error", data["message"]);
+        return false;
+      }
+    } catch (e) {
+      log("message $e");
+    } finally {}
+  }
+
+  String newCampaignID = "";
+  Future createCampaign(String templateID) async {
+    try {
+      var body = {
+        "investorLists": listIds,
+        "template": templateID,
+        "campaignName": campaignNameController.text,
+        "cc": ccEmails,
+        "bcc": bccEmails,
+      };
+      var response = await ApiBase.postRequest(
+          body: body, extendedURL: ApiUrl.createCampaign, withToken: true);
+      log(body.toString());
+      var data = json.decode(response.body);
+      Get.back(closeOverlays: true);
+      if (data["status"] == true) {
+        newCampaignID = data['data'];
+        return true;
+      } else {
+        HelperSnackBar.snackBar("Error", data["message"]);
+        return false;
+      }
+    } catch (e) {
+      log("message $e");
     } finally {}
   }
 }

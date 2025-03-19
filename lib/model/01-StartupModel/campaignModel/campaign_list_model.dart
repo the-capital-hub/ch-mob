@@ -45,6 +45,7 @@ class AllCampaignList {
   String? listName;
   String? description;
   String? peopleCount;
+  String? vcCount;
   bool isSelected = false;
   bool? isMyList;
   String? createdBy;
@@ -55,6 +56,7 @@ class AllCampaignList {
     this.description,
     this.listName,
     this.peopleCount,
+    this.vcCount,
     this.isMyList,
     this.createdBy,
     this.sharing,
@@ -66,6 +68,7 @@ class AllCampaignList {
         listName: json["list_name"],
         description: json["description"],
         peopleCount: json["people_count"].toString(),
+        vcCount: json["vc_count"].toString(),
         isMyList: json["is_my_list"],
         createdBy: json["created_by"],
         sharing: json["sharing"] == null

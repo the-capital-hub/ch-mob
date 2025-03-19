@@ -210,14 +210,18 @@ class ExploreController extends GetxController {
   Future createCampaignList({
     String? listId,
     String? listName,
+    required bool isInvestorList,
     required List<String> selectedInvId,
   }) async {
     try {
       var body = {
         if (listName != null) "list_name": listName,
         if (listId != null) "list_id": listId,
-        "investors": selectedInvId
+        if (isInvestorList) "investors": selectedInvId,
+        if (isInvestorList == false) "vcs": selectedInvId
       };
+      log(body.toString());
+
       var response = await ApiBase.postRequest(
           body: body, extendedURL: ApiUrl.createCampaignUrl, withToken: true);
       log(response.body);

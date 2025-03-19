@@ -1,3 +1,4 @@
+import 'package:capitalhub_crm/controller/campaignsController/campaigns_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
@@ -7,20 +8,31 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 
+import '../../../utils/helper/helper.dart';
 import '../../../widget/dilogue/campaignDilogue/campaign_created_dilogue.dart';
+import '../../../widget/dilogue/campaignDilogue/schedule_campaign_dilogue.dart';
 import '../../../widget/textwidget/text_widget.dart';
 
 class CreateCampaignsScreen extends StatefulWidget {
-  const CreateCampaignsScreen({super.key});
+  String templateId;
+  CreateCampaignsScreen({super.key, required this.templateId});
 
   @override
   State<CreateCampaignsScreen> createState() => _CreateCampaignsScreenState();
 }
 
 class _CreateCampaignsScreenState extends State<CreateCampaignsScreen> {
-  TextEditingController campaignNameController = TextEditingController();
-  TextEditingController subjectController = TextEditingController();
-  final QuillEditorController controller = QuillEditorController();
+  CampaignsController campaignsController = Get.find();
+  @override
+  void initState() {
+    campaignsController.campaignSubjectController.text =
+        campaignsController.proceedTemplateData.templateSubject!;
+    campaignsController.ccEmails = campaignsController.proceedTemplateData.cc!;
+    campaignsController.bccEmails.clear();
+    campaignsController.campaignNameController.clear();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +74,9 @@ class _CreateCampaignsScreenState extends State<CreateCampaignsScreen> {
                                     color: AppColors.whiteShade,
                                   ),
                                   const SizedBox(height: 2),
-                                  const TextWidget(
-                                    text: "1",
+                                  TextWidget(
+                                    text:
+                                        "${campaignsController.proceedTemplateData.noOfList}",
                                     textSize: 15,
                                   ),
                                 ],
@@ -82,8 +95,30 @@ class _CreateCampaignsScreenState extends State<CreateCampaignsScreen> {
                                     color: AppColors.whiteShade,
                                   ),
                                   const SizedBox(height: 2),
-                                  const TextWidget(
-                                    text: "1",
+                                  TextWidget(
+                                    text:
+                                        "${campaignsController.proceedTemplateData.totalInvestor}",
+                                    textSize: 15,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                                height: 50,
+                                child: VerticalDivider(
+                                    color: AppColors.white38, width: 0)),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  TextWidget(
+                                    text: "VC",
+                                    textSize: 14,
+                                    color: AppColors.whiteShade,
+                                  ),
+                                  const SizedBox(height: 2),
+                                  TextWidget(
+                                    text:
+                                        "${campaignsController.proceedTemplateData.totalVc}",
                                     textSize: 15,
                                   ),
                                 ],
@@ -102,8 +137,9 @@ class _CreateCampaignsScreenState extends State<CreateCampaignsScreen> {
                                   color: AppColors.whiteShade,
                                 ),
                                 const SizedBox(height: 2),
-                                const TextWidget(
-                                  text: "TEST",
+                                TextWidget(
+                                  text:
+                                      "${campaignsController.proceedTemplateData.templateName}",
                                   maxLine: 2,
                                   textSize: 14,
                                 ),
@@ -119,12 +155,13 @@ class _CreateCampaignsScreenState extends State<CreateCampaignsScreen> {
                 MyCustomTextField.textField(
                     hintText: "Enter Campaign Name",
                     lableText: "Campaign Name",
-                    controller: campaignNameController),
+                    controller: campaignsController.campaignNameController),
                 sizedTextfield,
                 MyCustomTextField.textField(
                     hintText: "Enter Subject",
                     lableText: "Subject",
-                    controller: subjectController),
+                    readonly: true,
+                    controller: campaignsController.campaignSubjectController),
                 sizedTextfield,
                 const TextWidget(
                   text: "CC",
@@ -143,7 +180,7 @@ class _CreateCampaignsScreenState extends State<CreateCampaignsScreen> {
                     spacing: 8,
                     runSpacing: 8,
                     children: [
-                      ...ccEmails.map((email) => Chip(
+                      ...campaignsController.ccEmails.map((email) => Chip(
                             label: TextWidget(
                               text: email,
                               textSize: 14,
@@ -188,7 +225,7 @@ class _CreateCampaignsScreenState extends State<CreateCampaignsScreen> {
                     spacing: 8,
                     runSpacing: 8,
                     children: [
-                      ...bccEmails.map((email) => Chip(
+                      ...campaignsController.bccEmails.map((email) => Chip(
                             label: TextWidget(
                               text: email,
                               textSize: 14,
@@ -218,11 +255,54 @@ class _CreateCampaignsScreenState extends State<CreateCampaignsScreen> {
                 MyCustomTextField.htmlTextField(
                     hintText: "Enter Email Body",
                     lableText: "Email Body",
-                    controller: controller),
+                    isEnable: false,
+                    onEditorCreated: () {
+                      campaignsController.emailContentcontroller.insertText(
+                          campaignsController
+                              .proceedTemplateData.templateContent!);
+                    },
+                    controller: campaignsController.emailContentcontroller),
                 sizedTextfield,
                 AppButton.primaryButton(
                     onButtonPressed: () {
-                      campaignCreatedPopup(context, () {}, () {}, () {});
+                      Helper.loader(context);
+                      campaignsController
+                          .createCampaign(widget.templateId)
+                          .then((val) {
+                        if (val) {
+                          campaignCreatedPopup(
+                            context,
+                            () {
+                              Get.back(closeOverlays: true);
+                              Get.back();
+                            },
+                            () {
+                              scheduleCampaignPopup(context, () {
+                                Helper.loader(context);
+                                campaignsController
+                                    .scheduleOutreachCampaign(
+                                        isCancel: false,
+                                        id: campaignsController.newCampaignID,
+                                        fromViewScreen: false)
+                                    .then((v) {
+                                  Get.back(closeOverlays: true);
+                                  Get.back(closeOverlays: true);
+                                });
+                              });
+                            },
+                            () {
+                              Helper.loader(context);
+                              campaignsController
+                                  .runOutreachCampaign(
+                                      campaignsController.newCampaignID, false)
+                                  .then((val) {
+                                Get.back(closeOverlays: true);
+                                Get.back(closeOverlays: true);
+                              });
+                            },
+                          );
+                        }
+                      });
                     },
                     title: "Create Campaign")
               ],
@@ -235,17 +315,15 @@ class _CreateCampaignsScreenState extends State<CreateCampaignsScreen> {
 
   final TextEditingController ccController = TextEditingController();
   final TextEditingController bccController = TextEditingController();
-  List<String> ccEmails = [];
-  List<String> bccEmails = [];
 
   void ccAddEmail(String email) {
     final RegExp emailRegex =
         RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
 
     if (email.isNotEmpty && emailRegex.hasMatch(email)) {
-      if (!ccEmails.contains(email)) {
+      if (!campaignsController.ccEmails.contains(email)) {
         setState(() {
-          ccEmails.add(email);
+          campaignsController.ccEmails.add(email);
         });
         ccController.clear();
       }
@@ -254,7 +332,7 @@ class _CreateCampaignsScreenState extends State<CreateCampaignsScreen> {
 
   void ccRemoveEmail(String email) {
     setState(() {
-      ccEmails.remove(email);
+      campaignsController.ccEmails.remove(email);
     });
   }
 
@@ -263,9 +341,9 @@ class _CreateCampaignsScreenState extends State<CreateCampaignsScreen> {
         RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
 
     if (email.isNotEmpty && emailRegex.hasMatch(email)) {
-      if (!bccEmails.contains(email)) {
+      if (!campaignsController.bccEmails.contains(email)) {
         setState(() {
-          bccEmails.add(email);
+          campaignsController.bccEmails.add(email);
         });
         bccController.clear();
       }
@@ -274,7 +352,7 @@ class _CreateCampaignsScreenState extends State<CreateCampaignsScreen> {
 
   void bccRemoveEmail(String email) {
     setState(() {
-      bccEmails.remove(email);
+      campaignsController.bccEmails.remove(email);
     });
   }
 }

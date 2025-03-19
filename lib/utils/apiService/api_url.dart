@@ -204,4 +204,6 @@ class ApiUrl {
   static const String scheduleCampaign =
       "campaign/scheduleCampaign/"; //cancel campaign also
   static const String deleteCampaign = "campaign/deleteCampaign/";
+  static const String preCreatedDate = "campaign/getPreCreatedData";
+  static const String createCampaign = "campaign/createCampaign";
 }

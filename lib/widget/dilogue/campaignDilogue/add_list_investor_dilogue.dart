@@ -11,6 +11,7 @@ import '../../textWidget/text_widget.dart';
 Future<bool> addInvestorPopup(
   BuildContext context,
   List<String> invIds,
+  bool isInvestor,
 ) async {
   TextEditingController newListNameController = TextEditingController();
   String? selectedList;
@@ -143,12 +144,15 @@ Future<bool> addInvestorPopup(
                                 .createCampaignList(
                                     listName: newListNameController.text,
                                     listId: selectedId,
+                                    isInvestorList: isInvestor,
                                     selectedInvId: invIds)
                                 .then((val) {
                               Get.back(closeOverlays: true);
                               Get.back(result: val);
-                              HelperSnackBar.snackBar("Success",
-                                  "Investors List created successfully");
+                              if (val) {
+                                HelperSnackBar.snackBar("Success",
+                                    "List created successfully");
+                              }
                             });
                           }
                         },

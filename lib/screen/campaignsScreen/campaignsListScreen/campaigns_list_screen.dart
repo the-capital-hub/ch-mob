@@ -121,6 +121,9 @@ class _CampaignsListScreenState extends State<CampaignsListScreen> {
                                     label: TextWidget(
                                         text: "Investors", textSize: 15)),
                                 DataColumn(
+                                    label:
+                                        TextWidget(text: "VCs", textSize: 15)),
+                                DataColumn(
                                     label: TextWidget(
                                         text: "Created By", textSize: 15)),
                                 DataColumn(
@@ -208,6 +211,10 @@ class _CampaignsListScreenState extends State<CampaignsListScreen> {
         DataCell(Center(
             child: TextWidget(
                 text: campaignsController.campaignList[index].peopleCount!,
+                textSize: 14))),
+        DataCell(Center(
+            child: TextWidget(
+                text: campaignsController.campaignList[index].vcCount ?? "0",
                 textSize: 14))),
         DataCell(Center(
             child: TextWidget(

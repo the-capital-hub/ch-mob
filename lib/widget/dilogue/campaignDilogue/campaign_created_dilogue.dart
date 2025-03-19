@@ -11,6 +11,7 @@ Future<bool> campaignCreatedPopup(
 ) async {
   return await showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (context) {
       return StatefulBuilder(
         builder: (context, setState) {
@@ -44,21 +45,21 @@ Future<bool> campaignCreatedPopup(
                   text: "Save as Draft",
                   color: Colors.brown,
                   icon: Icons.check,
-                  onTap: () => onSaveDraft,
+                  onTap: onSaveDraft,
                 ),
                 const SizedBox(height: 12),
                 _buildButton(
                   text: "Schedule Campaign",
                   color: AppColors.blue,
                   icon: Icons.schedule,
-                  onTap: () => onSchedule,
+                  onTap: onSchedule,
                 ),
                 const SizedBox(height: 12),
                 _buildButton(
                   text: "Run Campaign Now",
                   color: AppColors.green700,
                   icon: Icons.play_arrow,
-                  onTap: () => onRunCampaign,
+                  onTap: onRunCampaign,
                 ),
               ],
             ),

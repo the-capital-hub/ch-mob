@@ -111,6 +111,7 @@ class MyCustomTextField {
     required QuillEditorController controller,
     Function()? onEditorCreated,
     String? lableText,
+    bool isEnable=true,
   }) {
     Future<void> requestStoragePermission() async {
       if (await Permission.photos.isDenied) {
@@ -183,6 +184,7 @@ class MyCustomTextField {
                 controller: controller,
                 hintText: hintText,
                 minHeight: 200,
+                isEnabled: isEnable,
                 backgroundColor: AppColors.blackCard,
                 hintTextStyle: TextStyle(color: AppColors.white12),
                 textStyle: TextStyle(color: AppColors.white),
