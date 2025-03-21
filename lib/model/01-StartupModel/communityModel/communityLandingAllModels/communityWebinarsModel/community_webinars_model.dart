@@ -42,6 +42,7 @@ class CommunityWebinars {
     int discount;
     int duration;
     List<Booking> bookings;
+    int joined;
 
     CommunityWebinars({
         required this.id,
@@ -53,6 +54,7 @@ class CommunityWebinars {
         required this.discount,
         required this.duration,
         required this.bookings,
+        required this.joined,
     });
 
     factory CommunityWebinars.fromJson(Map<String, dynamic> json) => CommunityWebinars(
@@ -65,6 +67,7 @@ class CommunityWebinars {
         discount: json["discount"],
         duration: json["duration"],
         bookings: List<Booking>.from(json["bookings"].map((x) => Booking.fromJson(x))),
+        joined: json["joined"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -77,6 +80,7 @@ class CommunityWebinars {
         "discount": discount,
         "duration": duration,
         "bookings": List<dynamic>.from(bookings.map((x) => x.toJson())),
+        "joined" : joined
     };
 }
 

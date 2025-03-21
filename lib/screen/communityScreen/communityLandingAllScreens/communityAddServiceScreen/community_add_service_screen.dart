@@ -1,8 +1,12 @@
 import 'dart:convert';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityEventsController/community_events_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityMeetingsController/community_meetings_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityPriorityDMsController/community_priority_dms_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityWebinarsController/community_webinars_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityMeetingsModel/communityMeetingsModel.dart';
 import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityMeetingsScreen/community_meetings_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/homeScreen/home_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
@@ -24,10 +28,27 @@ import 'package:quill_html_editor/quill_html_editor.dart';
 
 class CommunityAddServiceScreen extends StatefulWidget {
   bool isEdit;
+  int? index;
+  bool isPriorityDM;
+  bool isMeeting;
+  bool isEvent;
+  bool isWebinar;
   String? priorityDMId;
   String? meetingId;
+  String? eventId;
+  String? webinarId;
   CommunityAddServiceScreen(
-      {required this.isEdit, this.priorityDMId, this.meetingId, super.key});
+      {required this.isEdit,
+      this.index,
+      required this.isPriorityDM,
+      this.priorityDMId,
+      required this.isMeeting,
+      this.meetingId,
+      required this.isEvent,
+      this.eventId,
+      required this.isWebinar,
+      this.webinarId,
+      super.key});
 
   @override
   State<CommunityAddServiceScreen> createState() =>
@@ -44,14 +65,94 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
 
   String selectedTimeline = "Hours";
   String base64 = "";
-  String selectedMonth = "Select From Community";
+
   bool isAddNewMemberFieldVisible = false;
   CommunityPriorityDMsController communityPriorityDMs =
       Get.put(CommunityPriorityDMsController());
   CommunityMeetingsController communityMeetings =
       Get.put(CommunityMeetingsController());
+  CommunityEventsController communityEvents =
+      Get.put(CommunityEventsController());
+  CommunityWebinarsController communityWebinars =
+      Get.put(CommunityWebinarsController());
   @override
   void initState() {
+    if (!widget.isEdit) {
+      communityPriorityDMs.titleController.clear();
+      communityPriorityDMs.descriptionController.clear();
+      communityPriorityDMs.amountController.clear();
+      communityPriorityDMs.responseTimelineController.clear();
+      communityPriorityDMs.topicsController.clear();
+      communityMeetings.titleController.clear();
+      communityMeetings.descriptionController.clear();
+      communityMeetings.amountController.clear();
+      communityMeetings.durationController.clear();
+      communityMeetings.topicsController.clear();
+      communityEvents.titleController.clear();
+      communityEvents.descriptionController.clear();
+      communityEvents.durationMinutesController.clear();
+      communityEvents.priceController.clear();
+      communityEvents.priceDiscountController.clear();
+      communityWebinars.titleController.clear();
+      communityWebinars.descriptionController.clear();
+      communityWebinars.dateController.clear();
+      communityWebinars.durationMinutesController.clear();
+      communityWebinars.startTimeController.clear();
+      communityWebinars.endTimeController.clear();
+      communityWebinars.priceController.clear();
+      communityWebinars.priceDiscountController.clear();
+    }
+    if (widget.isEdit && widget.isPriorityDM) {
+      communityPriorityDMs.titleController.text =
+          communityPriorityDMs.communityPriorityDMsList[widget.index!].title!;
+      communityPriorityDMs.amountController.text = communityPriorityDMs
+          .communityPriorityDMsList[widget.index!].amount!
+          .toString();
+      communityPriorityDMs.responseTimelineController.text =
+          communityPriorityDMs.communityPriorityDMsList[widget.index!].timeline!
+              .toString();
+      communityPriorityDMs.topicsController.text = communityPriorityDMs
+          .communityPriorityDMsList[widget.index!].topics!
+          .join(", ");
+    }
+    if (widget.isEdit && widget.isMeeting!) {
+      communityMeetings.titleController.text =
+          communityMeetings.communityMeetingsList[widget.index!].title!;
+      communityMeetings.amountController.text = communityMeetings
+          .communityMeetingsList[widget.index!].amount!
+          .toString();
+      communityMeetings.durationController.text = communityMeetings
+          .communityMeetingsList[widget.index!].duration!
+          .toString();
+      communityMeetings.topicsController.text = communityMeetings
+          .communityMeetingsList[widget.index!].topics!
+          .join(", ");
+    }
+    if (widget.isEdit && widget.isEvent!) {
+      communityEvents.titleController.text =
+          communityEvents.communityEventsData.webinars![widget.index!].title!;
+      communityEvents.durationMinutesController.text = communityEvents
+          .communityEventsData.webinars![widget.index!].duration!;
+      communityEvents.priceController.text =
+          communityEvents.communityEventsData.webinars![widget.index!].price!;
+      communityEvents.priceDiscountController.text = communityEvents
+          .communityEventsData.webinars![widget.index!].discount!;
+    }
+    if (widget.isEdit && widget.isWebinar!) {
+      communityWebinars.titleController.text =
+          communityWebinars.communityWebinarsList[widget.index!].title!;
+      communityWebinars.dateController.text =
+          communityWebinars.communityWebinarsList[widget.index!].date!;
+      communityWebinars.durationMinutesController.text = communityWebinars
+          .communityWebinarsList[widget.index!].duration!
+          .toString();
+      communityWebinars.priceController.text = communityWebinars
+          .communityWebinarsList[widget.index!].price!
+          .toString();
+      communityWebinars.priceDiscountController.text = communityWebinars
+          .communityWebinarsList[widget.index!].discount!
+          .toString();
+    }
     super.initState();
 
     _tabController = TabController(
@@ -124,8 +225,8 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const TextWidget(
-                  text: "Add New Service",
+                TextWidget(
+                  text: widget.isEdit ? "Edit Service" : "Add New Service",
                   textSize: 20,
                   fontWeight: FontWeight.w500,
                 ),
@@ -184,36 +285,16 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
               ],
             ),
           ),
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
-            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Expanded(
-                child: AppButton.outlineButton(
-                    borderColor: GetStoreData.getStore.read('isInvestor')
-                        ? AppColors.primaryInvestor
-                        : AppColors.primary,
-                    onButtonPressed: () {},
-                    title: "Cancel"),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: AppButton.primaryButton(
-                    onButtonPressed: () {
-                      splitTopics();
-                      // communityPriorityDMs.createCommunityPriorityDM(topics);
-                      // communityMeetings.createCommunityMeeting(topics);
-                      // communityPriorityDMs.updateCommunityPriorityDM(topics,widget.priorityDMId.toString());
-                      communityMeetings.updateCommunityMeeting(
-                          topics, widget.meetingId);
-                    },
-                    title: "Create Service"),
-              ),
-            ]),
-          ),
         ));
   }
 
   priorityDMTab() {
+    addDescription() async {
+      await communityPriorityDMs.descriptionController.insertText(
+          communityPriorityDMs
+              .communityPriorityDMsList[widget.index!].description!);
+    }
+
     return SingleChildScrollView(
       child: Column(children: [
         MyCustomTextField.textField(
@@ -227,6 +308,11 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           hintText: "Enter service description",
           controller: communityPriorityDMs.descriptionController,
           lableText: "Description",
+          onEditorCreated: () async {
+            if (widget.isEdit) {
+              addDescription();
+            }
+          },
         ),
         const SizedBox(
           height: 16,
@@ -273,11 +359,45 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             hintText: "Enter topics, seperated by commas",
             controller: communityPriorityDMs.topicsController,
             lableText: "Topics (comma-seperated)"),
+        const SizedBox(
+          height: 20,
+        ),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Expanded(
+            child: AppButton.outlineButton(
+                borderColor: GetStoreData.getStore.read('isInvestor')
+                    ? AppColors.primaryInvestor
+                    : AppColors.primary,
+                onButtonPressed: () {},
+                title: "Cancel"),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: AppButton.primaryButton(
+                onButtonPressed: () {
+                  splitTopics();
+                  if (widget.isEdit && widget.isPriorityDM) {
+                    communityPriorityDMs.updateCommunityPriorityDM(
+                        topics, widget.priorityDMId.toString());
+                  } else {
+                    communityPriorityDMs.createCommunityPriorityDM(topics);
+                  }
+                },
+                title: widget.isEdit && widget.isPriorityDM
+                    ? "Update Service"
+                    : "Create Service"),
+          ),
+        ]),
       ]),
     );
   }
 
   meetingTab() {
+    addDescription() async {
+      await communityMeetings.descriptionController.insertText(
+          communityMeetings.communityMeetingsList[widget.index!].description!);
+    }
+
     return SingleChildScrollView(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         MyCustomTextField.textField(
@@ -291,6 +411,11 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           hintText: "Enter service description",
           controller: communityMeetings.descriptionController,
           lableText: "Description",
+          onEditorCreated: () async {
+            if (widget.isEdit) {
+              addDescription();
+            }
+          },
         ),
         const SizedBox(
           height: 16,
@@ -338,11 +463,12 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
               final selectedDate = await selectDate(context, DateTime.now());
 
               if (selectedDate != null) {
-                input.text = Helper.formatDatePost(selectedDate.toString());
+                communityMeetings.dateController.text =
+                    Helper.formatDatePost(selectedDate.toString());
                 setState(() {});
               }
             },
-            controller: input),
+            controller: communityMeetings.dateController),
         const SizedBox(
           height: 16,
         ),
@@ -355,32 +481,34 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             Expanded(
               child: MyCustomTextField.textField(
                 hintText: "Select Start Time",
-                readonly: true,
+                readonly: false,
                 lableText: "Start Time",
                 onTap: () async {
                   DateTime? selectedTime = await selectTime(context, false);
 
                   if (selectedTime != null) {
-                    input.text = DateFormat('hh:mm a').format(selectedTime);
+                    communityMeetings.startTimeController.text =
+                        DateFormat('hh:mm a').format(selectedTime);
 
                     _updateEndTime(selectedTime);
                   }
                 },
-                controller: input,
+                controller: communityMeetings.startTimeController,
               ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: MyCustomTextField.textField(
                 hintText: "Select End Time",
-                readonly: true,
+                readonly: false,
                 lableText: "End Time",
-                controller: output,
+                controller: communityMeetings.endTimeController,
                 onTap: () async {
                   DateTime? selectedTime = await selectTime(context, false);
 
                   if (selectedTime != null) {
-                    output.text = DateFormat('hh:mm a').format(selectedTime);
+                    communityMeetings.endTimeController.text =
+                        DateFormat('hh:mm a').format(selectedTime);
 
                     _updateStartTime(selectedTime);
                   }
@@ -397,7 +525,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
               border: Border.all(color: AppColors.white38),
               borderRadius: BorderRadius.circular(7)),
           child: DropDownWidget(
-              status: selectedMonth,
+              status: communityMeetings.memberEmail,
               statusList: const [
                 'Add a new member',
                 'dhairya.jan9@gmail.com',
@@ -408,27 +536,58 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
               ],
               onChanged: (val) {
                 setState(() {
-                  selectedMonth = val.toString();
-                  if (selectedMonth == "Add a new member") {
+                  communityMeetings.memberEmail = val.toString();
+                  if (communityMeetings.memberEmail == "Add a new member") {
                     isAddNewMemberFieldVisible = true;
                   }
                 });
               }),
         ),
         sizedTextfield,
-        if (isAddNewMemberFieldVisible)
+        if (isAddNewMemberFieldVisible) ...[
           MyCustomTextField.textField(
+              readonly: false,
               hintText: "Enter member's email",
-              controller: input,
+              controller: communityMeetings.memberEmailController,
               lableText: "Add Member"),
-        sizedTextfield,
-        AppButton.primaryButton(
-            onButtonPressed: () {
-              setState(() {
-                isAddNewMemberFieldVisible = false;
-              });
-            },
-            title: "Add Member"),
+          sizedTextfield,
+          AppButton.primaryButton(
+              onButtonPressed: () {
+                setState(() {
+                  isAddNewMemberFieldVisible = false;
+                });
+              },
+              title: "Add Member"),
+        ],
+        const SizedBox(
+          height: 20,
+        ),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Expanded(
+            child: AppButton.outlineButton(
+                borderColor: GetStoreData.getStore.read('isInvestor')
+                    ? AppColors.primaryInvestor
+                    : AppColors.primary,
+                onButtonPressed: () {},
+                title: "Cancel"),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: AppButton.primaryButton(
+                onButtonPressed: () {
+                  splitTopics();
+                  if (widget.isEdit && widget.isMeeting) {
+                    communityMeetings.updateCommunityMeeting(
+                        topics, widget.meetingId);
+                  } else {
+                    communityMeetings.createCommunityMeeting(topics);
+                  }
+                },
+                title: widget.isEdit && widget.isMeeting
+                    ? "Update Service"
+                    : "Create Service"),
+          ),
+        ]),
       ]),
     );
   }
@@ -437,30 +596,42 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
     final durationInMinutes =
         int.tryParse(durationMinutesController.text) ?? 30;
     final endTime = startTime.add(Duration(minutes: durationInMinutes));
-    output.text = DateFormat('hh:mm a').format(endTime);
+    communityMeetings.endTimeController.text =
+        DateFormat('hh:mm a').format(endTime);
   }
 
   void _updateStartTime(DateTime endTime) {
     final durationInMinutes =
         int.tryParse(durationMinutesController.text) ?? 30;
     final startTime = endTime.subtract(Duration(minutes: durationInMinutes));
-    input.text = DateFormat('hh:mm a').format(startTime);
+    communityMeetings.startTimeController.text =
+        DateFormat('hh:mm a').format(startTime);
   }
 
   eventTab() {
+    addDescription() async {
+      await communityEvents.descriptionController.insertText(communityEvents
+          .communityEventsData.webinars![widget.index!].description!);
+    }
+
     return SingleChildScrollView(
       child: Column(children: [
         MyCustomTextField.textField(
             hintText: "Enter service title",
-            controller: input,
+            controller: communityEvents.titleController,
             lableText: "Title"),
         const SizedBox(
           height: 16,
         ),
         MyCustomTextField.htmlTextField(
           hintText: "Enter service description",
-          controller: descriptionController,
+          controller: communityEvents.descriptionController,
           lableText: "Description",
+          onEditorCreated: () async {
+            if (widget.isEdit) {
+              addDescription();
+            }
+          },
         ),
         const SizedBox(
           height: 16,
@@ -469,16 +640,18 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           children: [
             Expanded(
                 child: MyCustomTextField.textField(
+                    textInputType: TextInputType.number,
                     hintText: "Enter amount",
-                    controller: input,
+                    controller: communityEvents.priceController,
                     lableText: "Amount (\u{20B9})")),
             const SizedBox(
               width: 8,
             ),
             Expanded(
                 child: MyCustomTextField.textField(
+                    textInputType: TextInputType.number,
                     hintText: "Enter duration",
-                    controller: input,
+                    controller: communityEvents.durationMinutesController,
                     lableText: "Duration (minutes)")),
           ],
         ),
@@ -486,14 +659,48 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           height: 16,
         ),
         MyCustomTextField.textField(
+            textInputType: TextInputType.number,
             hintText: "Enter discount (%)",
-            controller: input,
+            controller: communityEvents.priceDiscountController,
             lableText: "Discount (%)"),
+        const SizedBox(
+          height: 20,
+        ),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Expanded(
+            child: AppButton.outlineButton(
+                borderColor: GetStoreData.getStore.read('isInvestor')
+                    ? AppColors.primaryInvestor
+                    : AppColors.primary,
+                onButtonPressed: () {},
+                title: "Cancel"),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: AppButton.primaryButton(
+                onButtonPressed: () {
+                  splitTopics();
+                  if (widget.isEdit && widget.isEvent) {
+                    communityEvents.updateCommunityEvent(widget.eventId);
+                  } else {
+                    communityEvents.createCommunityEvent();
+                  }
+                },
+                title: widget.isEdit && widget.isEvent
+                    ? "Update Service"
+                    : "Create Service"),
+          ),
+        ]),
       ]),
     );
   }
 
   webinarTab() {
+    addDescription() async {
+      await communityWebinars.descriptionController.insertText(
+          communityWebinars.communityWebinarsList[widget.index!].description);
+    }
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -501,12 +708,17 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           MyCustomTextField.textField(
               lableText: "Title",
               hintText: "Enter service title",
-              controller: input),
+              controller: communityWebinars.titleController),
           sizedTextfield,
           MyCustomTextField.htmlTextField(
             hintText: "Enter service description",
-            controller: descriptionController,
+            controller: communityWebinars.descriptionController,
             lableText: "Description",
+            onEditorCreated: () async {
+              if (widget.isEdit) {
+                addDescription();
+              }
+            },
           ),
           sizedTextfield,
           base64 != ""
@@ -559,12 +771,12 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                           await selectDate(context, DateTime.now());
 
                       if (selectedDate != null) {
-                        input.text =
+                        communityWebinars.dateController.text =
                             Helper.formatDatePost(selectedDate.toString());
                         setState(() {});
                       }
                     },
-                    controller: input),
+                    controller: communityWebinars.dateController),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -573,7 +785,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                 lableText: "Duration (min.)",
                 textInputType: TextInputType.number,
                 onChange: (value) {},
-                controller: input,
+                controller: communityWebinars.durationMinutesController,
               )),
             ],
           ),
@@ -592,7 +804,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                       input.text = DateFormat('hh:mm a').format(selectedTime);
                     }
                   },
-                  controller: input,
+                  controller: communityWebinars.startTimeController,
                 ),
               ),
               const SizedBox(width: 12),
@@ -608,7 +820,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                       input.text = DateFormat('hh:mm a').format(selectedTime);
                     }
                   },
-                  controller: input,
+                  controller: communityWebinars.endTimeController,
                 ),
               ),
             ],
@@ -618,14 +830,41 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
               textInputType: TextInputType.number,
               lableText: "Price",
               hintText: "Enter price",
-              controller: input),
+              controller: communityWebinars.priceController),
           sizedTextfield,
           MyCustomTextField.textField(
               textInputType: TextInputType.number,
               lableText: "Discount (%)",
               hintText: "Enter discount (%)",
-              controller: input),
-          sizedTextfield,
+              controller: communityWebinars.priceDiscountController),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Expanded(
+              child: AppButton.outlineButton(
+                  borderColor: GetStoreData.getStore.read('isInvestor')
+                      ? AppColors.primaryInvestor
+                      : AppColors.primary,
+                  onButtonPressed: () {},
+                  title: "Cancel"),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: AppButton.primaryButton(
+                  onButtonPressed: () {
+                    if (widget.isEdit && widget.isWebinar) {
+                      communityWebinars.updateCommunityWebinar(
+                          base64, widget.webinarId);
+                    } else {
+                      communityWebinars.createCommunityWebinar(base64);
+                    }
+                  },
+                  title: widget.isEdit && widget.isWebinar
+                      ? "Update Service"
+                      : "Create Service"),
+            ),
+          ]),
         ],
       ),
     );

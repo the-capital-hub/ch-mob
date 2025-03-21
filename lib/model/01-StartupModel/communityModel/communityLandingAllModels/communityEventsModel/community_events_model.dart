@@ -33,10 +33,10 @@ class GetCommunityEventsModel {
 }
 
 class CommunityEvent {
-    List<Webinar> webinars;
+    List<Webinar>? webinars;
 
     CommunityEvent({
-        required this.webinars,
+        this.webinars,
     });
 
     factory CommunityEvent.fromJson(Map<String, dynamic> json) => CommunityEvent(
@@ -44,7 +44,7 @@ class CommunityEvent {
     );
 
     Map<String, dynamic> toJson() => {
-        "webinars": List<dynamic>.from(webinars.map((x) => x.toJson())),
+        "webinars": List<dynamic>.from(webinars!.map((x) => x.toJson())),
     };
 }
 

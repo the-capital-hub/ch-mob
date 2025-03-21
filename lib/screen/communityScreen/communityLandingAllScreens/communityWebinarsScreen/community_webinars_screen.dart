@@ -57,24 +57,24 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            height: 200,
-                            decoration: BoxDecoration(
-                                image: const DecorationImage(
-                                    image: NetworkImage(
-                                      "https://bettermeetings.expert/wp-content/uploads/engaging-interactive-webinar-best-practices-and-formats.jpg",
-                                    ),
-                                    fit: BoxFit.fill),
-                                borderRadius: BorderRadius.circular(10)),
-                          ),
-                          sizedTextfield,
+                          // Container(
+                          //   height: 200,
+                          //   decoration: BoxDecoration(
+                          //       image: const DecorationImage(
+                          //           image: NetworkImage(
+                          //             "https://bettermeetings.expert/wp-content/uploads/engaging-interactive-webinar-best-practices-and-formats.jpg",
+                          //           ),
+                          //           fit: BoxFit.fill),
+                          //       borderRadius: BorderRadius.circular(10)),
+                          // ),
+                          // sizedTextfield,
                           Row(
                             children: [
                               TextWidget(
                                 text: communityWebinars
                                     .communityWebinarsList[index].title,
                                 textSize: 20,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w500,
                               ),
                               const Spacer(),
                               if (isAdmin) ...[
@@ -87,8 +87,16 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                   ),
                                   onPressed: () {
                                     addServiceIndex = 3;
-                                    Get.to(() =>
-                                         CommunityAddServiceScreen(isEdit: true,));
+                                    Get.to(() => CommunityAddServiceScreen(
+                                          webinarId: communityWebinars
+                                              .communityWebinarsList[index].id,
+                                          index: index,
+                                          isEdit: true,
+                                          isPriorityDM: false,
+                                          isMeeting: false,
+                                          isEvent: false,
+                                          isWebinar: true,
+                                        ));
                                   },
                                 ),
                                 IconButton(
@@ -105,7 +113,12 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                           Get.back();
                                         },
                                         onButton2Pressed: () {
-                                          Get.back();
+                                          communityWebinars
+                                              .deleteCommunityWebinar(
+                                                  communityWebinars
+                                                      .communityWebinarsList[
+                                                          index]
+                                                      .id);
                                         },
                                       );
                                     },
@@ -182,9 +195,8 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                 width: 8,
                               ),
                               TextWidget(
-                                  text: communityWebinars
-                                      .communityWebinarsList[index].duration
-                                      .toString(),
+                                  text:
+                                      "${communityWebinars.communityWebinarsList[index].duration} mins",
                                   textSize: 16)
                             ],
                           ),
@@ -202,11 +214,8 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                 width: 8,
                               ),
                               TextWidget(
-                                  text: communityWebinars
-                                      .communityWebinarsList[index]
-                                      .bookings
-                                      .length
-                                      .toString(),
+                                  text:
+                                      "${communityWebinars.communityWebinarsList[index].joined} joined",
                                   textSize: 16)
                             ],
                           ),
