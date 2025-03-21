@@ -46,7 +46,6 @@ class CreatePostController extends GetxController {
       // log(documentBase64);
     }
     await addPost(postId);
-    Get.back();
   }
 
   Future addPost(String? postId) async {
@@ -56,14 +55,18 @@ class CreatePostController extends GetxController {
       "video": videoBase64,
       "documentUrl": documentBase64,
       "pollOptions": pollOptions,
-      "postType": isCommunityPost?"community":isPublicPost ? "public" : "company",
+      "postType": isCommunityPost
+          ? "community"
+          : isPublicPost
+              ? "public"
+              : "company",
       "resharedPostId": postId ?? "",
     };
-    log(body.toString());
     var response = await ApiBase.postRequest(
         body: body, extendedURL: ApiUrl.addPost, withToken: true);
 
     var data = json.decode(response.body);
+    Get.back();
     if (data["status"]) {
       titleController.clear();
       base64ImageList.clear();
@@ -73,6 +76,7 @@ class CreatePostController extends GetxController {
       isPublicPost = true;
       isCommunityPost = false;
 
+      HelperSnackBar.snackBar("Success", data["message"]);
 
       return true;
     } else {

@@ -13,21 +13,21 @@ import '../../../utils/constant/app_var.dart';
 import '../../../widget/buttons/button.dart';
 import '../../../widget/textwidget/text_widget.dart';
 
-class BioScreen extends StatefulWidget {
+class PhilosophyScreen extends StatefulWidget {
   bool? isEdit;
-  BioScreen({super.key, this.isEdit});
+  PhilosophyScreen({super.key, this.isEdit});
 
   @override
-  State<BioScreen> createState() => _BioScreenState();
+  State<PhilosophyScreen> createState() => _PhilosophyScreenState();
 }
 
-class _BioScreenState extends State<BioScreen> {
-  LoginController loginController = Get.put(LoginController());
+class _PhilosophyScreenState extends State<PhilosophyScreen> {
   ProfileController profileController = Get.put(ProfileController());
   @override
   void initState() {
     if (widget.isEdit == true) {
-      loginController.bioController.text = profileController.profileData.user!.bio??"";
+      profileController.philosophyController.text =
+          profileController.profileData.user!.investmentPhilosophy ?? "";
     }
     super.initState();
   }
@@ -46,43 +46,22 @@ class _BioScreenState extends State<BioScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const TextWidget(
-                    text: "Add a Bio",
+                    text: "Philosophy",
                     textSize: 22,
                     fontWeight: FontWeight.w500,
                   ),
                   sizedTextfield,
-                  const TextWidget(
-                    text: "Write something about you!",
-                    textSize: 14,
-                    maxLine: 3,
-                  ),
-                  sizedTextfield,
-                  sizedTextfield,
                   MyCustomTextField.textField(
-                      hintText: "Write a bio here",
+                      hintText: "Write a philosophy",
                       maxLine: 12,
-                      controller: loginController.bioController),
+                      controller: profileController.philosophyController),
                   sizedTextfield,
                   sizedTextfield,
                   AppButton.primaryButton(
                       onButtonPressed: () {
-                        if (widget.isEdit == true) {
-                          profileController.updateBio(
-                              context, loginController.bioController.text);
-                        } else {
-                          loginController.updateFounder(context).then((val) {
-                            if (val) {
-                              if (GetStoreData.getStore
-                                  .read('isInvestor')) {
-                                Get.offAll(LandingScreenInvestor());
-                              } else {
-                                Get.offAll(LandingScreen());
-                              }
-                            }
-                          });
-                        }
+                        profileController.updatePhilosophy(context);
                       },
-                      title: "Next")
+                      title: "Update")
                 ],
               ),
             ),

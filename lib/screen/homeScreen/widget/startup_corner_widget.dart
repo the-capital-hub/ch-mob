@@ -152,7 +152,7 @@ class _AutoScrollListViewState extends State<AutoScrollListView> {
                                     text:
                                         "${homeController.startUpNewsList[index].content}",
                                     textSize: 11,
-                                    maxLine: 5,
+                                    maxLine: 4,
                                     color: AppColors.grey3Color),
                                 const SizedBox(height: 6),
                                 const Spacer(),

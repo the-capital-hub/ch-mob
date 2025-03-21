@@ -1,10 +1,14 @@
+import 'package:capitalhub_crm/controller/profileController/profile_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
+import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dropdownWidget/drop_down_widget.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProfessionalInfoScreen extends StatefulWidget {
   const ProfessionalInfoScreen({super.key});
@@ -14,8 +18,7 @@ class ProfessionalInfoScreen extends StatefulWidget {
 }
 
 class _ProfessionalInfoScreenState extends State<ProfessionalInfoScreen> {
-  String selectExperience = "Select Experience";
-  TextEditingController firstNameController = TextEditingController();
+  ProfileController profileController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,17 +33,17 @@ class _ProfessionalInfoScreenState extends State<ProfessionalInfoScreen> {
               MyCustomTextField.textField(
                   lableText: "Company",
                   hintText: "Enter your company",
-                  controller: firstNameController),
+                  controller: profileController.companyController),
               sizedTextfield,
               MyCustomTextField.textField(
                   lableText: "Designation",
                   hintText: "Enter your designation",
-                  controller: firstNameController),
+                  controller: profileController.designationController),
               sizedTextfield,
               MyCustomTextField.textField(
                   lableText: "Industry",
                   hintText: "Enter your industry",
-                  controller: firstNameController),
+                  controller: profileController.industryController),
               sizedTextfield,
               const Row(
                 children: [
@@ -53,9 +56,9 @@ class _ProfessionalInfoScreenState extends State<ProfessionalInfoScreen> {
               ),
               sizedTextfield,
               DropDownWidget(
-                  status: selectExperience,
+                  status: profileController.selectExperience,
                   statusList: const [
-                    '0',
+                    '0 Year',
                     '1 Year',
                     '2 Years',
                     '3 Years',
@@ -79,11 +82,20 @@ class _ProfessionalInfoScreenState extends State<ProfessionalInfoScreen> {
                   ],
                   onChanged: (val) {
                     setState(() {
-                      selectExperience = val.toString();
+                      profileController.selectExperience = val.toString();
                     });
                   }),
             ],
           ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(12),
+          child: AppButton.primaryButton(
+              onButtonPressed: () {
+                Helper.loader(context);
+                profileController.updateProffesionalInfo();
+              },
+              title: "Update"),
         ),
       ),
     );

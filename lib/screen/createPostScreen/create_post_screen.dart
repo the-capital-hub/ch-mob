@@ -22,8 +22,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker_plus/multi_image_picker_plus.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:video_player/video_player.dart';
+import '../../widget/imagePickerWidget/image_picker_widget.dart';
 import '../profileScreen/polls_widget_profile.dart';
 import 'polladd_dilogue.dart';
+import 'package:path_provider/path_provider.dart';
 
 class CreatePostScreen extends StatefulWidget {
   String? postid;
@@ -37,22 +39,20 @@ class CreatePostScreen extends StatefulWidget {
 class _CreatePostScreenState extends State<CreatePostScreen> {
   CreatePostController createPostController = Get.put(CreatePostController());
   var isLoading = false.obs;
-  
+
   @override
   void initState() {
     super.initState();
     if (widget.postid != null) {
       isLoading.value = true;
-      
+
       createPostController.getPostDetail(widget.postid!).then((value) {
         isLoading.value = false;
         log("Hi");
         createPostController.isPublicPost = widget.isPublicPost!;
         setState(() {});
       });
-      
     }
-    
   }
 
   @override
@@ -85,54 +85,76 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                 textSize: 16,
                                 fontWeight: FontWeight.w500),
                             const SizedBox(height: 4),
-                            if(!createPostController.isCommunityPost)
-                            Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    createPostController.isPublicPost =
-                                        !createPostController.isPublicPost;
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: createPostController.isPublicPost
-                                            ? AppColors.primary
-                                            : AppColors.transparent,
-                                        borderRadius: BorderRadius.circular(4)),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 6, vertical: 2),
-                                    child: const TextWidget(
-                                        text: "Public",
-                                        textSize: 13,
-                                        fontWeight: FontWeight.w300),
+                            if (!createPostController.isCommunityPost)
+                              Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      createPostController.isPublicPost =
+                                          !createPostController.isPublicPost;
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: createPostController
+                                                  .isPublicPost
+                                              ? GetStoreData.getStore
+                                                      .read('isInvestor')
+                                                  ? AppColors.primaryInvestor
+                                                  : AppColors.primary
+                                              : AppColors.transparent,
+                                          borderRadius:
+                                              BorderRadius.circular(4)),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 6, vertical: 2),
+                                      child: TextWidget(
+                                          text: "Public",
+                                          color: GetStoreData.getStore
+                                                  .read('isInvestor')
+                                              ? createPostController
+                                                      .isPublicPost
+                                                  ? AppColors.black
+                                                  : AppColors.white
+                                              : AppColors.white,
+                                          textSize: 13,
+                                          fontWeight: FontWeight.w300),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 6),
-                                InkWell(
-                                  onTap: () {
-                                    createPostController.isPublicPost =
-                                        !createPostController.isPublicPost;
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: createPostController.isPublicPost
-                                            ? AppColors.transparent
-                                            : AppColors.primary,
-                                        borderRadius: BorderRadius.circular(4)),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 6, vertical: 2),
-                                    child: const TextWidget(
-                                        text: "Company",
-                                        textSize: 13,
-                                        fontWeight: FontWeight.w300),
+                                  const SizedBox(width: 6),
+                                  InkWell(
+                                    onTap: () {
+                                      createPostController.isPublicPost =
+                                          !createPostController.isPublicPost;
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: createPostController
+                                                  .isPublicPost
+                                              ? AppColors.transparent
+                                              : GetStoreData.getStore
+                                                      .read('isInvestor')
+                                                  ? AppColors.primaryInvestor
+                                                  : AppColors.primary,
+                                          borderRadius:
+                                              BorderRadius.circular(4)),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 6, vertical: 2),
+                                      child: TextWidget(
+                                          text: "Company",
+                                          textSize: 13,
+                                          color: GetStoreData.getStore
+                                                  .read('isInvestor')
+                                              ? createPostController
+                                                      .isPublicPost
+                                                  ? AppColors.white
+                                                  : AppColors.black
+                                              : AppColors.white,
+                                          fontWeight: FontWeight.w300),
+                                    ),
                                   ),
-                                ),
-                                
-                              ],
-                            ),
-                            
+                                ],
+                              ),
                           ],
                         )
                       ],
@@ -227,12 +249,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           Expanded(
                             child: AppButton.primaryButton(
                                 onButtonPressed: () {
-                                  createPostController.base64Convert(
-                                      context,
-                                      selectedImages,
-                                      selectedVideo,
-                                      selectedDocument,
-                                      widget.postid ?? "");
+                                  createPostController
+                                      .base64Convert(
+                                          context,
+                                          selectedImages,
+                                          selectedVideo,
+                                          selectedDocument,
+                                          widget.postid ?? "")
+                                      .th;
                                 },
                                 title: "Post"),
                           ),
@@ -262,13 +286,38 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         selectedAssets: selectedImages,
       );
       // Pre-load images into memory for efficient display
+      // for (var asset in selectedImages) {
+      //   final byteData = await _getImageByteData(asset);
+      //   imageByteData.add(byteData);
+      // }
+      List<File> croppedFiles = [];
+
       for (var asset in selectedImages) {
         final byteData = await _getImageByteData(asset);
-        imageByteData.add(byteData);
+        final tempFile = await _writeToTempFile(byteData);
+
+        final croppedFilePath =
+            await ImagePickerWidget().imgCropper(tempFile.path);
+
+        if (croppedFilePath != null && croppedFilePath.isNotEmpty) {
+          File croppedFile = File(croppedFilePath); // Convert path to File
+          croppedFiles.add(croppedFile);
+
+          final croppedBytes = await croppedFile.readAsBytes();
+          imageByteData.add(croppedBytes);
+        }
       }
     } catch (e) {
       print("Error picking images: $e");
     }
+  }
+
+  Future<File> _writeToTempFile(Uint8List bytes) async {
+    final tempDir = await getTemporaryDirectory();
+    final file =
+        File('${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg');
+    await file.writeAsBytes(bytes);
+    return file;
   }
 
   Future<void> _pickVideo() async {
@@ -331,7 +380,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   const TextWidget(text: "Images", textSize: 14),
                   const SizedBox(height: 4),
                   SizedBox(
-                    height: selectedImages.isEmpty ? 0 : 200,
+                    height: selectedImages.isEmpty ? 0 : 150,
                     width: Get.width,
                     child: ListView.separated(
                         shrinkWrap: true,
@@ -341,7 +390,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         itemCount: selectedImages.length,
                         itemBuilder: (context, index) {
                           return SizedBox(
-                            height: 200,
+                            height: 150,
                             width: 150,
                             child: Stack(
                               clipBehavior: Clip.none,
@@ -351,7 +400,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                     child: Image.memory(
                                       imageByteData[index],
                                       width: 150,
-                                      height: 200,
+                                      height: 150,
                                       fit: BoxFit.cover,
                                     )),
                                 Positioned(

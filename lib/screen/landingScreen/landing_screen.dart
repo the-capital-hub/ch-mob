@@ -90,7 +90,7 @@ class _LandingScreenState extends State<LandingScreen> {
                 setState(() {});
               },
               child: SizedBox(
-                width: 60,
+                width: Get.width/5-6,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,

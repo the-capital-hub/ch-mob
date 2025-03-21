@@ -171,7 +171,9 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 18, vertical: 8),
                       child: AppButton.primaryButton(
-                          onButtonPressed: () {},
+                          onButtonPressed: () {
+                            Get.to(CreatePostScreen());
+                          },
                           height: 42,
                           title: "Create Post"),
                     ),

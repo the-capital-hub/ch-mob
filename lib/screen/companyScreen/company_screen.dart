@@ -172,7 +172,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                   ),
                                 ),
                               ),
-                              if (companyController.companyData.isOwnCompany!)
+                              if (companyController.companyData.isOwnCompany??false)
                                 InkWell(
                                   onTap: () {
                                     Get.to(AddCompanyScreen(

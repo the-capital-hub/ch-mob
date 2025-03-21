@@ -182,9 +182,9 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                                                 TextWidget(
                                                     text:
                                                         "${allCommunities.allCommunitiesDetails[index].members.length.toString()} Members",
-                                                    textSize: 9),
+                                                    textSize: 5),
                                                 const SizedBox(
-                                                  width: 8,
+                                                  width: 4,
                                                 ),
                                                 Align(
                                                   alignment:
@@ -200,14 +200,14 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                                                               AppColors.white)),
                                                 ),
                                                 const SizedBox(
-                                                  width: 8,
+                                                  width: 4,
                                                 ),
                                                 TextWidget(
                                                     text: allCommunities
                                                         .allCommunitiesDetails[
                                                             index]
                                                         .createdAtTimeAgo,
-                                                    textSize: 9),
+                                                    textSize: 5),
                                               ],
                                             ),
                                             const SizedBox(

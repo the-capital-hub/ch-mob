@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerItem extends StatefulWidget {
@@ -68,7 +69,7 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: SizedBox(
-          height: 200,
+          height: 200,width: Get.width,
           child: Stack(
             alignment: Alignment.center,
             children: [

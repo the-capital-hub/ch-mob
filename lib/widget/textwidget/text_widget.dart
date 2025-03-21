@@ -1,3 +1,4 @@
+
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
@@ -31,6 +32,9 @@ class TextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double scaleFactor = screenWidth / 375.0; 
+    double scaledTextSize = textSize * scaleFactor;
     return Text(text.tr,
         overflow: TextOverflow.ellipsis,
         maxLines: maxLine,
@@ -39,7 +43,7 @@ class TextWidget extends StatelessWidget {
         googleFont==null||googleFont==true?
          GoogleFonts.outfit(
             textStyle: TextStyle(
-          fontSize: textSize ,
+          fontSize: scaledTextSize.clamp(12, 24) ,
           decoration: textDecoration,
           fontWeight: fontWeight ?? FontWeight.normal,
           color: color ?? AppColors.white,
@@ -48,7 +52,7 @@ class TextWidget extends StatelessWidget {
         googleStyle ??
             Theme.of(context).textTheme.displayLarge!.copyWith(
                   decoration: textDecoration,
-                  fontSize: textSize,
+                  fontSize: scaledTextSize.clamp(12, 24),
                   fontWeight: fontWeight ?? FontWeight.normal,
                   color: color??AppColors.white,
                 ),

@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:capitalhub_crm/controller/profileController/profile_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
@@ -10,21 +13,53 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AddNewStartupScreen extends StatefulWidget {
-  const AddNewStartupScreen({super.key});
+  bool isEdit;
+  int? index;
+  AddNewStartupScreen({super.key, required this.isEdit, this.index});
 
   @override
   State<AddNewStartupScreen> createState() => _AddNewStartupScreenState();
 }
 
 class _AddNewStartupScreenState extends State<AddNewStartupScreen> {
-  TextEditingController firstNameController = TextEditingController();
+  ProfileController profileController = Get.find();
+  @override
+  void initState() {
+    if (!widget.isEdit) {
+      profileController.startupBase64 = null;
+      profileController.startupCompanyNameController.clear();
+      profileController.startupCompanyDescriptionController.clear();
+      profileController.startupEquityController.clear();
+    } else {
+      profileController.startupCompanyNameController.text = profileController
+          .profileData.user!.startupsInvested![widget.index!].name!;
+      profileController.startupCompanyDescriptionController.text =
+          profileController
+              .profileData.user!.startupsInvested![widget.index!].name!;
+      profileController.startupEquityController.text = profileController
+          .profileData.user!.startupsInvested![widget.index!].name!;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: bgDec,
       child: Scaffold(
-        appBar: HelperAppBar.appbarHelper(
-            title: "Add New Startup",),
+        appBar: HelperAppBar.appbarHelper(title: "Add New Startup", action: [
+          if (widget.isEdit)
+            IconButton(
+                onPressed: () {
+                  Helper.loader(context);
+                  profileController.delMyInvestment(profileController
+                      .profileData.user!.startupsInvested![widget.index!].id);
+                },
+                icon: const Icon(
+                  Icons.delete,
+                  color: AppColors.redColor,
+                ))
+        ]),
         backgroundColor: AppColors.transparent,
         body: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -32,45 +67,52 @@ class _AddNewStartupScreenState extends State<AddNewStartupScreen> {
             child: Column(
               children: [
                 sizedTextfield,
-                CircleAvatar(
-                                    radius: 60,
-                                    // backgroundImage:
-                                    //      NetworkImage(widget.isMyInvestment
-                                    //         ? myStartupsController.startupData
-                                    //             .myInvestments![widget.index!].logo!
-                                    //         : myStartupsController.startupData
-                                    //             .pastInvestments![widget.index!].logo!),
-                                    //   )
-                                    // : myStartupsController.base64 != null
-                                    //     ? CircleAvatar(
-                                    //         radius: 60,
-                                    //         backgroundImage: MemoryImage(
-                                    //             base64Decode(myStartupsController.base64!)),
-                                    //       )
-                                    //     : const CircleAvatar(
-                                    //         radius: 60,
-                                    //         child: Icon(Icons.add_photo_alternate_outlined,
-                                    //             size: 40)),
-                                  ),
+                InkWell(
+                  splashColor: AppColors.transparent,
+                  highlightColor: AppColors.transparent,
+                  onTap: () {
+                    uploadBottomSheet();
+                  },
+                  child: Center(
+                    child: widget.isEdit &&
+                            profileController.startupBase64 == null
+                        ? CircleAvatar(
+                            radius: 60,
+                            backgroundImage: NetworkImage(profileController
+                                .profileData
+                                .user!
+                                .startupsInvested![widget.index!]
+                                .logo!),
+                          )
+                        : profileController.startupBase64 != null
+                            ? CircleAvatar(
+                                radius: 60,
+                                backgroundImage: MemoryImage(base64Decode(
+                                    profileController.startupBase64!)),
+                              )
+                            : const CircleAvatar(
+                                radius: 60,
+                                child: Icon(Icons.add_photo_alternate_outlined,
+                                    size: 40)),
+                  ),
+                ),
                 sizedTextfield,
                 MyCustomTextField.textField(
                     hintText: "Enter Company Name",
                     lableText: "Company Name",
-                    textInputType: TextInputType.number,
-                    controller: firstNameController),
-sizedTextfield,
-                // if (widget.isMyInvestment) sizedTextfield,
-                 MyCustomTextField.textField(
+                    controller: profileController.startupCompanyNameController),
+                sizedTextfield,
+                MyCustomTextField.textField(
                     hintText: "Enter Company Description",
                     lableText: "Company Description",
-                    textInputType: TextInputType.number,
-                    controller: firstNameController),
-sizedTextfield,
-                     MyCustomTextField.textField(
+                    controller:
+                        profileController.startupCompanyDescriptionController),
+                sizedTextfield,
+                MyCustomTextField.textField(
                     hintText: "Enter Company Equity",
                     lableText: "Company Equity",
                     textInputType: TextInputType.number,
-                    controller: firstNameController),
+                    controller: profileController.startupEquityController),
               ],
             ),
           ),
@@ -79,23 +121,13 @@ sizedTextfield,
           padding: const EdgeInsets.all(12),
           child: AppButton.primaryButton(
               onButtonPressed: () {
-                // if (widget.isMyInvestment) {
-                //   Helper.loader(context);
-                // myStartupsController.addEditMyInvestment(
-                //     userId: widget.isEdit
-                //         ? myStartupsController
-                //             .startupData.myInvestments![widget.index!].id
-                //         : null,
-                //     isEdit: widget.isEdit);
-                // } else {
-                //   Helper.loader(context);
-                // myStartupsController.addPastInvestment(
-                //     userId: widget.isEdit
-                //         ? myStartupsController.startupData
-                //             .pastInvestments![widget.index!].investmentId
-                //         : null,
-                //     isEdit: widget.isEdit);
-                // }
+                Helper.loader(context);
+                profileController.addEditMyInvestment(
+                    isEdit: widget.isEdit,
+                    userId: widget.isEdit
+                        ? profileController.profileData.user!
+                            .startupsInvested![widget.index!].id
+                        : null);
               },
               title: "Done"),
         ),
@@ -134,7 +166,7 @@ sizedTextfield,
                   ImagePickerWidget imagePickerWidget = ImagePickerWidget();
                   imagePickerWidget.getImage(false).then((value) {
                     Get.back();
-                    // myStartupsController.base64 = value;
+                    profileController.startupBase64 = value;
                     setState(() {});
                   });
                 },

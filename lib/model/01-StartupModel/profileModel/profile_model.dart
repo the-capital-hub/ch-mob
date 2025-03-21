@@ -403,50 +403,56 @@ class Banner {
 }
 
 class User {
-  String profilePicture;
-  String firstName;
-  String lastName;
-  String userName;
-  String designation;
-  String companyName;
-  String location;
-  String bio;
+  String? profilePicture;
+  String? firstName;
+  String? lastName;
+  String? userName;
+  String? designation;
+  String? companyName;
+  String? location;
+  String? bio;
   List<Education>? education;
   List<Experience>? experience;
-  int connectionsCount;
-  int followersCount;
-  bool isSubscribed;
+  int? connectionsCount;
+  int? followersCount;
+  bool? isSubscribed;
   List<RecentConnection>? recentConnections;
-  Milestone milestoneProfile;
-  Milestone milestoneCompany;
-  Milestone milestoneOnelink;
-  Milestone milestoneDocuments;
-  Milestone milestonePosts;
-  CompanyData companyData;
-  TopVoice topVoice;
-
-  User(
-      {required this.profilePicture,
-      required this.firstName,
-      required this.lastName,
-      required this.userName,
-      required this.designation,
-      required this.companyName,
-      required this.location,
-      required this.bio,
-      this.education,
-      this.experience,
-      required this.connectionsCount,
-      required this.followersCount,
-      required this.isSubscribed,
-      required this.recentConnections,
-      required this.milestoneProfile,
-      required this.milestoneCompany,
-      required this.milestoneOnelink,
-      required this.milestoneDocuments,
-      required this.milestonePosts,
-      required this.companyData,
-      required this.topVoice});
+  Milestone? milestoneProfile;
+  Milestone? milestoneCompany;
+  Milestone? milestoneOnelink;
+  Milestone? milestoneDocuments;
+  Milestone? milestonePosts;
+  CompanyData? companyData;
+  TopVoice? topVoice;
+  String? investmentPhilosophy;
+  List<StartupsInvested>? startupsInvested;
+  ProfessionalInfo? professionalInfo;
+  User({
+    this.profilePicture,
+    this.firstName,
+    this.lastName,
+    this.userName,
+    this.designation,
+    this.companyName,
+    this.location,
+    this.bio,
+    this.education,
+    this.experience,
+    this.connectionsCount,
+    this.followersCount,
+    this.isSubscribed,
+    this.recentConnections,
+    this.milestoneProfile,
+    this.milestoneCompany,
+    this.milestoneOnelink,
+    this.milestoneDocuments,
+    this.milestonePosts,
+    this.companyData,
+    this.topVoice,
+    this.investmentPhilosophy,
+    this.startupsInvested,
+    this.professionalInfo,
+  });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         profilePicture: json["profilePicture"],
@@ -473,6 +479,14 @@ class User {
         milestonePosts: Milestone.fromJson(json["milestone_posts"]),
         companyData: CompanyData.fromJson(json["companyData"]),
         topVoice: TopVoice.fromJson(json["topVoice"]),
+        investmentPhilosophy: json["investmentPhilosophy"],
+        startupsInvested: json["startupsInvested"] == null
+            ? []
+            : List<StartupsInvested>.from(json["startupsInvested"]!
+                .map((x) => StartupsInvested.fromJson(x))),
+        professionalInfo: json["professionalInfo"] == null
+            ? null
+            : ProfessionalInfo.fromJson(json["professionalInfo"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -491,13 +505,75 @@ class User {
         "isSubscribed": isSubscribed,
         "recentConnections":
             List<dynamic>.from(recentConnections!.map((x) => x)),
-        "milestone_profile": milestoneProfile.toJson(),
-        "milestone_company": milestoneCompany.toJson(),
-        "milestone_onelink": milestoneOnelink.toJson(),
-        "milestone_documents": milestoneDocuments.toJson(),
-        "milestone_posts": milestonePosts.toJson(),
-        "companyData": companyData.toJson(),
-        "topVoice": topVoice.toJson(),
+        "milestone_profile": milestoneProfile!.toJson(),
+        "milestone_company": milestoneCompany!.toJson(),
+        "milestone_onelink": milestoneOnelink!.toJson(),
+        "milestone_documents": milestoneDocuments!.toJson(),
+        "milestone_posts": milestonePosts!.toJson(),
+        "companyData": companyData!.toJson(),
+        "topVoice": topVoice!.toJson(),
+      };
+}
+
+class ProfessionalInfo {
+  String? companyName;
+  String? industry;
+  String? designation;
+  String? experience;
+
+  ProfessionalInfo({
+    this.companyName,
+    this.industry,
+    this.designation,
+    this.experience,
+  });
+
+  factory ProfessionalInfo.fromJson(Map<String, dynamic> json) =>
+      ProfessionalInfo(
+        companyName: json["companyName"],
+        industry: json["industry"],
+        designation: json["designation"],
+        experience: json["experience"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "companyName": companyName,
+        "industry": industry,
+        "designation": designation,
+        "experience": experience,
+      };
+}
+
+class StartupsInvested {
+  String? id;
+  String? name;
+  String? logo;
+  String? description;
+  String? investedEquity;
+
+  StartupsInvested({
+    this.id,
+    this.name,
+    this.logo,
+    this.description,
+    this.investedEquity,
+  });
+
+  factory StartupsInvested.fromJson(Map<String, dynamic> json) =>
+      StartupsInvested(
+        id: json["id"],
+        name: json["name"],
+        logo: json["logo"],
+        description: json["description"],
+        investedEquity: json["investedEquity"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "logo": logo,
+        "description": description,
+        "investedEquity": investedEquity,
       };
 }
 
@@ -539,7 +615,7 @@ class CompanyData {
         socialLinks: List<dynamic>.from(json["socialLinks"].map((x) => x)),
         stage: json["stage"],
         age: json["age"],
-        lastFunding: json["lastFunding"]??'',
+        lastFunding: json["lastFunding"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {

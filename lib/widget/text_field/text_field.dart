@@ -34,7 +34,7 @@ class MyCustomTextField {
       children: [
         if (lableText != null)
           TextWidget(
-              text: lableText, textSize: 12, fontWeight: FontWeight.w500),
+              text: lableText, textSize: 14, fontWeight: FontWeight.w500),
         if (lableText != null) const SizedBox(height: 8),
         TextFormField(
           readOnly: readonly,
@@ -111,7 +111,7 @@ class MyCustomTextField {
     required QuillEditorController controller,
     Function()? onEditorCreated,
     String? lableText,
-    bool isEnable=true,
+    bool isEnable = true,
   }) {
     Future<void> requestStoragePermission() async {
       if (await Permission.photos.isDenied) {
@@ -128,7 +128,7 @@ class MyCustomTextField {
       children: [
         if (lableText != null)
           TextWidget(
-              text: lableText, textSize: 12, fontWeight: FontWeight.w500),
+              text: lableText, textSize: 14, fontWeight: FontWeight.w500),
         if (lableText != null) const SizedBox(height: 8),
         Container(
           padding: const EdgeInsets.all(8),

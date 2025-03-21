@@ -32,7 +32,7 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
     PngAssetPath.infoIcon,
     PngAssetPath.exploreIcon
   ];
-  List title = ["Home", "Products & Services", "People", "About", "Settings"];
+  List title = ["Home", "Products", "People", "About", "Settings"];
   List screen = [
     const CommunityHomeScreen(),
     const CommunityProductsAndServicesScreen(),

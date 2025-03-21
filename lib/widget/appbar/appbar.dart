@@ -46,12 +46,12 @@ class HelperAppBar {
                                       .notificationCount.value !=
                                   "0")
                                 CircleAvatar(
-                                  radius: 7,
+                                  radius: 8,
                                   backgroundColor: AppColors.redColor,
                                   child: TextWidget(
                                       text: notificaitonController
                                           .notificationCount.value,
-                                      textSize: 9),
+                                      textSize: 8),
                                 )
                             ],
                           ))),

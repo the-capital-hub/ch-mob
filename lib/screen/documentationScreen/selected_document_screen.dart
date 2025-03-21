@@ -79,132 +79,140 @@ class _SelectedDocumentScreenState extends State<SelectedDocumentScreen> {
         appBar: HelperAppBar.appbarHelper(title: widget.title),
         body: Obx(() => documentController.isLoading.value
             ? Helper.pageLoading()
-            : SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GridView.builder(
-                        itemCount: documentController.docList.length,
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          childAspectRatio: 1,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                        ),
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              _previewDocument(
-                                  true,
-                                  documentController.docList[index],
-                                  PlatformFile(name: "", size: 0));
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.blackCard,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    documentController
-                                                .docList[index].extension ==
-                                            'pdf'
-                                        ? Icons.picture_as_pdf_outlined
-                                        : Icons.image_outlined,
-                                    color: AppColors.redColor,
-                                    size: 45,
-                                  ),
-                                  const SizedBox(height: 3),
-                                  TextWidget(
-                                    text: documentController
-                                        .docList[index].fileName!,
-                                    textSize: 10,
-                                  ),
-                                  const SizedBox(height: 3),
-                                  InkWell(
-                                      onTap: () {
-                                        documentController.deleteDocument(
-                                            postFolderName,
-                                            documentController
-                                                .docList[index].id!);
-                                      },
-                                      child: const Icon(
-                                          Icons.delete_outline_outlined,
-                                          color: AppColors.redColor)),
-                                ],
-                              ),
+            : documentController.docList.isEmpty &&
+                    documentController.selectedFiles.isEmpty
+                ? const Center(
+                    child: TextWidget(
+                        text: "No Data Found",
+                        fontWeight: FontWeight.w500,
+                        textSize: 16))
+                : SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GridView.builder(
+                            itemCount: documentController.docList.length,
+                            shrinkWrap: true,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              childAspectRatio: 1,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
                             ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                      if (documentController.selectedFiles.isNotEmpty)
-                        const TextWidget(text: "New added", textSize: 12),
-                      const SizedBox(height: 12),
-                      GridView.builder(
-                        itemCount: documentController.selectedFiles.length,
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          childAspectRatio: 1,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                        ),
-                        itemBuilder: (context, index) {
-                          final file = documentController.selectedFiles[index];
-                          return InkWell(
-                            onTap: () {
-                              _previewDocument(false, DocData(), file);
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  _previewDocument(
+                                      true,
+                                      documentController.docList[index],
+                                      PlatformFile(name: "", size: 0));
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: AppColors.blackCard,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        documentController
+                                                    .docList[index].extension ==
+                                                'pdf'
+                                            ? Icons.picture_as_pdf_outlined
+                                            : Icons.image_outlined,
+                                        color: AppColors.redColor,
+                                        size: 45,
+                                      ),
+                                      const SizedBox(height: 3),
+                                      TextWidget(
+                                        text: documentController
+                                            .docList[index].fileName!,
+                                        textSize: 10,
+                                      ),
+                                      const SizedBox(height: 3),
+                                      InkWell(
+                                          onTap: () {
+                                            documentController.deleteDocument(
+                                                postFolderName,
+                                                documentController
+                                                    .docList[index].id!);
+                                          },
+                                          child: const Icon(
+                                              Icons.delete_outline_outlined,
+                                              color: AppColors.redColor)),
+                                    ],
+                                  ),
+                                ),
+                              );
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.blackCard,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    file.extension == 'pdf'
-                                        ? Icons.picture_as_pdf_outlined
-                                        : Icons.image_outlined,
-                                    color: AppColors.redColor,
-                                    size: 45,
-                                  ),
-                                  const SizedBox(height: 3),
-                                  TextWidget(
-                                    text: file.name,
-                                    textSize: 10,
-                                  ),
-                                  const SizedBox(height: 3),
-                                  InkWell(
-                                      onTap: () {
-                                        _removeDocument(index);
-                                      },
-                                      child: const Icon(
-                                          Icons.delete_outline_outlined,
-                                          color: AppColors.redColor)),
-                                ],
-                              ),
+                          ),
+                          const SizedBox(height: 12),
+                          if (documentController.selectedFiles.isNotEmpty)
+                            const TextWidget(text: "New added", textSize: 12),
+                          const SizedBox(height: 12),
+                          GridView.builder(
+                            itemCount: documentController.selectedFiles.length,
+                            shrinkWrap: true,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              childAspectRatio: 1,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
                             ),
-                          );
-                        },
+                            itemBuilder: (context, index) {
+                              final file =
+                                  documentController.selectedFiles[index];
+                              return InkWell(
+                                onTap: () {
+                                  _previewDocument(false, DocData(), file);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: AppColors.blackCard,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        file.extension == 'pdf'
+                                            ? Icons.picture_as_pdf_outlined
+                                            : Icons.image_outlined,
+                                        color: AppColors.redColor,
+                                        size: 45,
+                                      ),
+                                      const SizedBox(height: 3),
+                                      TextWidget(
+                                        text: file.name,
+                                        textSize: 10,
+                                      ),
+                                      const SizedBox(height: 3),
+                                      InkWell(
+                                          onTap: () {
+                                            _removeDocument(index);
+                                          },
+                                          child: const Icon(
+                                              Icons.delete_outline_outlined,
+                                              color: AppColors.redColor)),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-              )),
+                    ),
+                  )),
         floatingActionButton: FloatingActionButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
@@ -251,7 +259,10 @@ class _SelectedDocumentScreenState extends State<SelectedDocumentScreen> {
       "folder_name": folderName,
       "files": files,
     };
-    documentController.uploadDocument(uploadObject);
+    documentController.uploadDocument(uploadObject).then((v) {
+      documentController.selectedFiles.clear();
+      setState(() {});
+    });
   }
 
   void _previewDocument(bool isNetwork, DocData docdata, PlatformFile file) {

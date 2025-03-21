@@ -151,6 +151,7 @@ class HomeController extends GetxController {
     var data = json.decode(response.body);
     if (data["status"] == true) {
       Get.back();
+      await getPublicPost(1, true);
       HelperSnackBar.snackBar("Success", data["message"]);
       return true;
     } else {

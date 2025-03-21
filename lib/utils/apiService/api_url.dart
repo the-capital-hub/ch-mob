@@ -78,6 +78,8 @@ class ApiUrl {
   static const String getDocument = "documentation/getDocumentsByUser";
   static const String deleteDocument = "documentation/deleteDocument";
   static const String uploadDocument = "documentation/uploadDocument";
+  static const String createFolderName = "documentation/uploadDocument";
+  static const String getFolderByUser = "documentation/getFolderByUser";
 
   static const String getSavedPostFolderList =
       "api/posts/getSavedPostCollectionsProfile";

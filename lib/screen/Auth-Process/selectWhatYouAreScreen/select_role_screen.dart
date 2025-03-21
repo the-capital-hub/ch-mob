@@ -105,7 +105,7 @@ class _SelectRoleScreenState extends State<SelectRoleScreen> {
                                 text:
                                     "Lorem ipsum dolor sit amet consectetur. Maecenas ac elementum lacus vel vitae sed nisi aliquam aliquet. Vel adipiscing placerat tellus faucibus diam mauris ipsum vitae.",
                                 textSize: 10,
-                                maxLine: 10,
+                                maxLine: 4,
                               )
                             ],
                           ),

@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:capitalhub_crm/screen/profileScreen/personal_info_screen.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,7 +18,6 @@ class ProfileController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isTabLoading = false.obs;
   ProfileData profileData = ProfileData();
-  
 
   Future getProfile() async {
     try {
@@ -30,12 +30,18 @@ class ProfileController extends GetxController {
       if (data['status'] == true) {
         ProfileModel profileModel = ProfileModel.fromJson(data);
         profileData = profileModel.data;
-        firstNameController.text = profileData.user!.firstName;
-        lastNameController.text = profileData.user!.lastName;
-        userNameController.text = profileData.user!.userName;
-        print("PROFILECOMPLETED"+profileData.banner!.isProfileCompleted.toString());
-
-
+        firstNameController.text = profileData.user!.firstName!;
+        lastNameController.text = profileData.user!.lastName!;
+        userNameController.text = profileData.user!.userName!;
+        if (GetStoreData.getStore.read('isInvestor')) {
+          companyController.text =
+              profileData.user!.professionalInfo!.companyName!;
+          designationController.text =
+              profileData.user!.professionalInfo!.designation!;
+          industryController.text =
+              profileData.user!.professionalInfo!.industry!;
+          selectExperience = profileData.user!.professionalInfo!.experience!;
+        }
       }
     } catch (e) {
       log("getProfileddd $e");
@@ -85,29 +91,14 @@ class ProfileController extends GetxController {
       "userName": userNameController.text,
       "experiences": experienceJsonList,
       "educations": educationJsonList
-
-      // "companyName": companyNameController.text,
-      // "companyLocation": companyLocationController.text,
-      // "companyRole": companyRoleController.text,
-      // "companyStartDate": companyStartDateController.text,
-      // "companyEndDate": companyEndDateController.text,
-      // "companyDescription": companyDescriptionController.text,
-      // "companyLogo": "",
-      // "educationSchool": eduSchoolNameController.text,
-      // "educationLocation": eduLocationController.text,
-      // "educationCource": eduCourceController.text,
-      // "educationPassoutDate": eduPassOutDateController.text,
-      // "educationDescription": eduDescriptionController.text,
-      // "educationLogo": "",
     };
     var response = await ApiBase.pachRequest(
-        body: body, extendedURL: "${ApiUrl.updateProfile}", withToken: true);
+        body: body, extendedURL: ApiUrl.updateProfile, withToken: true);
     log(response.body);
-
     var data = json.decode(response.body);
     if (data['status'] == true) {
       ProfileModel profileModel = ProfileModel.fromJson(data);
-      profileData = profileModel.data!;
+      profileData = profileModel.data;
       Get.back();
       Get.back();
     } else {
@@ -116,11 +107,113 @@ class ProfileController extends GetxController {
     isLoading.value = false;
   }
 
+  String selectExperience = "Select Experience";
+  TextEditingController companyController = TextEditingController();
+  TextEditingController designationController = TextEditingController();
+  TextEditingController industryController = TextEditingController();
+  Future updateProffesionalInfo() async {
+    isLoading.value = true;
+    var body = {
+      "companyName": companyController.text,
+      "designation": designationController.text,
+      "industry": industryController.text,
+      "experience": selectExperience
+    };
+    var response = await ApiBase.pachRequest(
+        body: body, extendedURL: ApiUrl.updateProfile, withToken: true);
+    var data = json.decode(response.body);
+    if (data['status'] == true) {
+      ProfileModel profileModel = ProfileModel.fromJson(data);
+      profileData = profileModel.data;
+      Get.back();
+      Get.back();
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+    }
+    isLoading.value = false;
+  }
+
+  String? startupBase64;
+  TextEditingController startupCompanyNameController = TextEditingController();
+  TextEditingController startupCompanyDescriptionController =
+      TextEditingController();
+  TextEditingController startupEquityController = TextEditingController();
+
+  Future<bool> addEditMyInvestment({
+    String? userId,
+    required bool isEdit,
+  }) async {
+    var body = {
+      if (startupBase64 != null) "logo": startupBase64,
+      "name": startupCompanyNameController.text,
+      "description": startupCompanyDescriptionController.text,
+      "investedEquity": startupEquityController.text
+    };
+    var response = isEdit
+        ? await ApiBase.pachRequest(
+            body: body,
+            extendedURL: "${ApiUrl.addMyInvestment}/$userId",
+            withToken: true)
+        : await ApiBase.postRequest(
+            body: body, extendedURL: ApiUrl.addMyInvestment, withToken: true);
+    log(response.body);
+    Get.back(closeOverlays: true);
+    Get.back();
+    var data = json.decode(response.body);
+    if (data["status"] == true) {
+      getProfile();
+      HelperSnackBar.snackBar("Success", data["message"]);
+      return true;
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
+  }
+
+  Future<bool> delMyInvestment(id) async {
+    var response = await ApiBase.deleteRequest(
+      extendedURL: "${ApiUrl.addMyInvestment}/$id",
+    );
+    log(response.body);
+    var data = json.decode(response.body);
+    if (data["status"] == true) {
+      Get.back(closeOverlays: true);
+      Get.back();
+      getProfile();
+      HelperSnackBar.snackBar("Success", data["message"]);
+      return true;
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
+  }
+
   Future updateBio(BuildContext context, String bio) async {
     Helper.loader(context);
     isLoading.value = true;
 
     var body = {"bio": bio};
+    var response = await ApiBase.pachRequest(
+        body: body, extendedURL: ApiUrl.updateProfile, withToken: true);
+    log(response.body);
+
+    var data = json.decode(response.body);
+    if (data['status'] == true) {
+      ProfileModel profileModel = ProfileModel.fromJson(data);
+      profileData = profileModel.data;
+      Get.back();
+      Get.back();
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+    }
+    isLoading.value = false;
+  }
+
+  TextEditingController philosophyController = TextEditingController();
+  Future updatePhilosophy(BuildContext context) async {
+    Helper.loader(context);
+    isLoading.value = true;
+    var body = {"investmentPhilosophy": philosophyController.text};
     var response = await ApiBase.pachRequest(
         body: body, extendedURL: ApiUrl.updateProfile, withToken: true);
     log(response.body);

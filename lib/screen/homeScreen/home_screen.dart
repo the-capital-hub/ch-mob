@@ -152,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     Future.delayed(const Duration(milliseconds: 1000), () {
       _animationController.reverse();
     });
-    
+
     setState(() {});
   }
 
@@ -461,7 +461,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         const SizedBox(width: 12),
                         InkWell(
                           onTap: () {
-                            feedBottomSheet(index);
+                            feedBottomSheet(index).then((v) {
+                              setState(() {});
+                            });
                           },
                           child: Icon(
                             Icons.more_vert_rounded,
@@ -1046,7 +1048,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   // bool isLiked = false;
-  feedBottomSheet(index) {
+  Future feedBottomSheet(index) {
     String reportReason = "";
     bool isExpanded = false;
     return Get.bottomSheet(backgroundColor: AppColors.blackCard,
@@ -1094,8 +1096,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 postID: homeController.postList[index].postId!)
                             .then((val) {
                           if (val) {
-                            Get.back();
-                            homeController.getPublicPost(1, true);
+                            Get.back(closeOverlays: true);
                           }
                         });
                       },

@@ -64,6 +64,7 @@ dependencies:
   google_sign_in: ^6.2.2
   quill_html_editor: ^2.2.8
   permission_handler: ^11.3.1
+  youtube_player_flutter: ^8.1.2
   # firebase_auth: 
   # firebase_core: 
 
