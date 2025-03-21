@@ -229,12 +229,14 @@ class BookingSlot {
   String? startTime;
   String? endTime;
   String? meetingLink;
+  String? bookedAt;
 
   BookingSlot({
     this.day,
     this.startTime,
     this.endTime,
     this.meetingLink,
+    this.bookedAt
   });
 
   factory BookingSlot.fromJson(Map<String, dynamic> json) => BookingSlot(
@@ -242,6 +244,7 @@ class BookingSlot {
         startTime: json["startTime"] ?? null,
         endTime: json["endTime"] ?? null,
         meetingLink: json["meeting_link"] ?? null,
+        bookedAt: json["bookedAt"] ?? null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -249,6 +252,7 @@ class BookingSlot {
         "startTime": startTime,
         "endTime": endTime,
         "meeting_link": meetingLink,
+        "bookedAt":bookedAt
       };
 }
 

@@ -97,7 +97,7 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                             children: [
                               TextWidget(
                                   text:
-                                      "Duration : ${communityMeetings.communityMeetingsList[index].duration}",
+                                      "Duration : ${communityMeetings.communityMeetingsList[index].duration} minutes",
                                   textSize: 16),
                               Card(
                                 shape: RoundedRectangleBorder(
@@ -159,7 +159,8 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                                   child: AppButton.primaryButton(
                                     onButtonPressed: () {
                                       Get.to(() =>
-                                          const CommunityMeetingBookingsScreen());
+                                          CommunityMeetingBookingsScreen(
+                                              index: index));
                                     },
                                     title:
                                         "View Bookings (${communityMeetings.communityMeetingsList[index].bookings!.length})",
@@ -173,6 +174,11 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                                       addServiceIndex = 1;
                                       Get.to(() => CommunityAddServiceScreen(
                                             isEdit: true,
+                                            index: index,
+                                            isPriorityDM: false,
+                                            isMeeting: true,
+                                            isEvent: false,
+                                            isWebinar: false,
                                             meetingId: communityMeetings
                                                 .communityMeetingsList[index]
                                                 .id,

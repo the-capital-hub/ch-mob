@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityPriorityDMsModel/community_priority_dms_model.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/publicProfileModel/public_profile_model.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
@@ -44,10 +43,13 @@ class CommunityPriorityDMsController extends GetxController {
   TextEditingController topicsController = TextEditingController();
 
   Future createCommunityPriorityDM(topics) async {
-    String descriptionText = await descriptionController.getText();
+    String description = "";
+    await descriptionController
+        .getText()
+        .then((val) => description = val);
     var bod = {
       "title": titleController.text,
-      "description": descriptionText,
+      "description": description,
       "amount": amountController.text.isEmpty
           ? null
           : int.tryParse(amountController.text),
@@ -60,7 +62,7 @@ class CommunityPriorityDMsController extends GetxController {
     var response = await ApiBase.postRequest(
       body: {
         "title": titleController.text,
-        "description": descriptionText,
+        "description": description,
         "amount": amountController.text.isEmpty
             ? null
             : int.tryParse(amountController.text),
@@ -78,6 +80,7 @@ class CommunityPriorityDMsController extends GetxController {
     if (data["status"]) {
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
+      getCommunityPriorityDMs();
       return true;
     } else {
       Get.back();
@@ -87,11 +90,14 @@ class CommunityPriorityDMsController extends GetxController {
   }
 
   Future updateCommunityPriorityDM(topics, priorityDMId) async {
-    String descriptionText = await descriptionController.getText();
+   String description = "";
+    await descriptionController
+        .getText()
+        .then((val) => description = val);
     var response = await ApiBase.pachRequest(
         body: {
           "title": titleController.text,
-          "description": descriptionText,
+          "description": description,
           "amount": amountController.text.isEmpty
               ? null
               : int.tryParse(amountController.text),
@@ -108,6 +114,7 @@ class CommunityPriorityDMsController extends GetxController {
     if (data["status"]) {
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
+      getCommunityPriorityDMs();
       return true;
     } else {
       Get.back();

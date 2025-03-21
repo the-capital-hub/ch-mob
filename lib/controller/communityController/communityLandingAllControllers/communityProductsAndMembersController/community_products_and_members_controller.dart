@@ -9,6 +9,7 @@ import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:get/get.dart';
 
 class CommunityProductsAndMembersController extends GetxController {
+  String productId = "";
   var isLoading = false.obs;
   RxList<CommunityProductsAndMembers> communityProductsAndMembersList =
       <CommunityProductsAndMembers>[].obs;
