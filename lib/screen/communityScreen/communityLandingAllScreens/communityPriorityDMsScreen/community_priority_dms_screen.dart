@@ -178,6 +178,11 @@ class _CommunityPriorityDMScreenState
 
                                       Get.to(() => CommunityAddServiceScreen(
                                           isEdit: true,
+                                          index: index,
+                                          isPriorityDM: true,
+                                          isMeeting: false,
+                                          isEvent: false,
+                                          isWebinar: false,
                                           priorityDMId: communityPriorityDMs
                                               .communityPriorityDMsList[index]
                                               .id

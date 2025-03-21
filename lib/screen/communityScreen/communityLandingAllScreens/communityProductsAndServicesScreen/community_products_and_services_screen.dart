@@ -58,7 +58,7 @@ class _CommunityProductsAndServicesScreenState
                     Expanded(
                       child: AppButton.primaryButton(
                           onButtonPressed: () {
-                            Get.to(() => const AddNewProductScreen());
+                            Get.to(() => AddNewProductScreen(isEdit: false));
                           },
                           title: "Add New Product"),
                     ),
@@ -69,7 +69,13 @@ class _CommunityProductsAndServicesScreenState
                       child: AppButton.primaryButton(
                           onButtonPressed: () {
                             addServiceIndex = 0;
-                            Get.to(() =>  CommunityAddServiceScreen(isEdit: false,));
+                            Get.to(() => CommunityAddServiceScreen(
+                                  isEdit: false,
+                                  isPriorityDM: false,
+                                  isMeeting: false,
+                                  isEvent: false,
+                                  isWebinar: false,
+                                ));
                           },
                           title: "Add New Service"),
                     ),
@@ -91,8 +97,7 @@ class _CommunityProductsAndServicesScreenState
                         color: GetStoreData.getStore.read('isInvestor')
                             ? AppColors.primaryInvestor
                             : AppColors.primary,
-                        borderRadius:
-                            BorderRadius.circular(5), // Rounded corners
+                        borderRadius: BorderRadius.circular(5),
                       ),
                       labelPadding: const EdgeInsets.symmetric(horizontal: 6),
                       indicatorPadding: const EdgeInsets.symmetric(

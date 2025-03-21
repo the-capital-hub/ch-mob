@@ -115,6 +115,7 @@ class ApiUrl {
   static const String getAvailability = "meetings/getAvailability";
   static const String updateAvailability = "meetings/updateAvailability";
   static const String createEvent = "meetings/createEvent";
+  static const String updateEvent = "meetings/updateEvent/";
   static const String getEvents = 'meetings/getEvents';
   static const String disableEvent = "meetings/disableEvent/";
   static const String getALLScheduledMeetings =
@@ -122,6 +123,7 @@ class ApiUrl {
   static String cancelScheduledMeeting = "meetings/cancelScheduledMeeting/";
   static String getWebinars = "webinars/getWebinars";
   static String createWebinar = "webinars/createWebinar";
+  static String updateWebinar = "webinars/updateWebinar/";
   static String disableWebinar = "webinars/disableWebinar/";
   static String getPriorityDMForUser = "priorityDM/getPriority-DMForUser";
   static String getPriorityDMForFounder = "priorityDM/getPriority-DMForFounder";
@@ -137,8 +139,7 @@ class ApiUrl {
   static const String updateCommunity = "Communities/updateCommunity/";
   static const String addProductToCommunity =
       "Communities/addProductToCommunity/";
-  static const String updateCommunityProduct =
-      "Communities/updateProduct/";
+  static const String updateCommunityProduct = "Communities/updateProduct/";
   static const String createCommunityPriorityDM =
       "Communities/createPriorityDM/";
   static const String updateCommunityPriorityDM =
@@ -158,6 +159,7 @@ class ApiUrl {
   static const String getCommunityPriorityDMs =
       "communities/services/priorityDMs/";
   static const String getCommunityWebinars = "communities/services/webinars/";
+  static const String deleteCommunityWebinar = "webinars/deleteWebinar/";
   static const String getCommunityMeetings = "communities/services/meetings/";
   static const String sendJoinRequest = "Communities/sendJoinRequest";
   static const String getCommunityPosts = "api/posts/getCommunityPosts/";

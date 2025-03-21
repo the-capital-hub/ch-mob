@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityAddNewProductController/community_add_new_product_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityProductsAndMembersController/community_products_and_members_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/homeScreen/home_screen.dart';
@@ -13,11 +14,15 @@ import 'package:capitalhub_crm/widget/imagePickerWidget/image_picker_widget.dart
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 
 class AddNewProductScreen extends StatefulWidget {
-  const AddNewProductScreen({super.key});
-
+  int? index;
+  bool isEdit;
+  String? productId;
+  AddNewProductScreen(
+      {required this.isEdit, this.productId, this.index, super.key});
   @override
   State<AddNewProductScreen> createState() => _AddNewProductScreenState();
 }
@@ -29,17 +34,80 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
   bool isChecked = false;
   String base64 = "";
   List<TextEditingController> controllers = [TextEditingController()];
-  void addNewTextField() {
+  CommunityProductsAndMembersController communityProducts = Get.find();
+
+  @override
+  void initState() {
+    if (!widget.isEdit) {
+      isChecked = false;
+      base64 = "";
+      addNewProduct.productNameController.clear();
+      addNewProduct.productDescriptionController.clear();
+      addNewProduct.productAmountController.clear();
+    } else {
+      addNewProduct.productNameController.text =
+          communityProducts.communityProductsList[widget.index!].name;
+      addNewProduct.productAmountController.text = communityProducts
+          .communityProductsList[widget.index!].amount
+          .toString();
+      addNewProduct.urls =
+          communityProducts.communityProductsList[widget.index!].urls;
+      setState(() {
+        isChecked =
+            communityProducts.communityProductsList[widget.index!].isFree;
+        base64 = communityProducts.communityProductsList[widget.index!].image;
+      });
+      initializeControllers();
+    }
+    super.initState();
+  }
+
+  void initializeControllers() {
     setState(() {
-      controllers.add(TextEditingController());
+      controllers = [];
+      for (int i = 0; i < addNewProduct.urls.length; i++) {
+        TextEditingController controller =
+            TextEditingController(text: addNewProduct.urls[i]);
+
+        controller.addListener(() {
+          addNewProduct.urls[i] = controller.text;
+        });
+        controllers.add(controller);
+      }
     });
   }
 
+  void addNewTextField() {
+    setState(() {
+      controllers.add(TextEditingController());
+      addNewProduct.urls.add("");
+
+      controllers.last.addListener(() {
+        int index = controllers.length - 1;
+        addNewProduct.urls[index] = controllers[index].text;
+      });
+    });
+  }
+  // void addNewTextField() {
+  //   setState(() {
+  //     controllers.add(TextEditingController());
+  //   });
+  // }
+
+  // void removeTextField(int index) {
+  //   if (controllers.length > 1) {
+  //     setState(() {
+  //       controllers[index].dispose();
+  //       controllers.removeAt(index);
+  //     });
+  //   }
+  // }
   void removeTextField(int index) {
-    if (controllers.length > 1) {
+    if (controllers.isNotEmpty) {
       setState(() {
         controllers[index].dispose();
         controllers.removeAt(index);
+        addNewProduct.urls.removeAt(index);
       });
     }
   }
@@ -50,6 +118,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
       controller.dispose();
     }
     super.dispose();
+  }
+
+  addDescription() async {
+    await addNewProduct.productDescriptionController.insertText(
+        communityProducts.communityProductsList[widget.index!].description);
   }
 
   @override
@@ -103,23 +176,30 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                 const SizedBox(
                   height: 12,
                 ),
-                const TextWidget(
-                  text: "Add New Product",
+                TextWidget(
+                  text:
+                      widget.isEdit ? "Update the Product" : "Add New Product",
                   textSize: 20,
                   fontWeight: FontWeight.w500,
                 ),
                 const SizedBox(
                   height: 12,
                 ),
-                base64 != ""
+                widget.isEdit
                     ? CircleAvatar(
                         radius: 60,
-                        backgroundImage: MemoryImage(base64Decode(base64)),
+                        foregroundImage: NetworkImage(communityProducts
+                            .communityProductsList[widget.index!].image),
                       )
-                    : const CircleAvatar(
-                        radius: 60,
-                        child:
-                            Icon(Icons.add_photo_alternate_outlined, size: 40)),
+                    : base64 != ""
+                        ? CircleAvatar(
+                            radius: 60,
+                            backgroundImage: MemoryImage(base64Decode(base64)),
+                          )
+                        : const CircleAvatar(
+                            radius: 60,
+                            child: Icon(Icons.add_photo_alternate_outlined,
+                                size: 40)),
                 const SizedBox(
                   height: 12,
                 ),
@@ -134,11 +214,14 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       decoration: BoxDecoration(
                           color: AppColors.white12,
                           borderRadius: BorderRadius.circular(20)),
-                      child: const Padding(
+                      child: Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 12),
                         child: TextWidget(
-                            text: "Upload Product Image", textSize: 13),
+                            text: widget.isEdit!
+                                ? "Change Product Image"
+                                : "Upload Product Image",
+                            textSize: 13),
                       ),
                     ),
                   ]),
@@ -153,6 +236,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                   hintText: "Enter description",
                   controller: addNewProduct.productDescriptionController,
                   lableText: "Description",
+                  onEditorCreated: () async {
+                    if (widget.isEdit) {
+                      addDescription();
+                    }
+                  },
                 ),
                 const SizedBox(
                   height: 12,
@@ -196,13 +284,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                         hintText: "Enter resource URL",
                         controller: controllers[index],
                         lableText: "Resource URLs",
-                        suffixIcon: index > 0
-                            ? IconButton(
-                                icon: const Icon(Icons.delete),
-                                color: AppColors.primary,
-                                onPressed: () => removeTextField(index),
-                              )
-                            : const SizedBox.shrink());
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.delete),
+                          color: AppColors.primary,
+                          onPressed: () => removeTextField(index),
+                        ));
                   },
                 ),
                 const SizedBox(
@@ -245,10 +331,15 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             .map((controller) => controller.text)
                             .toList();
                         Helper.loader(context);
-                        addNewProduct.addProductToCommunity(base64, urls);
+                        if (!widget.isEdit) {
+                          addNewProduct.addProductToCommunity(base64, urls);
+                        } else {
+                          addNewProduct.updateCommunityProduct(
+                              base64, widget.productId!);
+                        }
                       }
                     },
-                    title: "+ Add Product"),
+                    title: widget.isEdit ? "Update Product" : "+ Add Product"),
               ),
             ]),
           ),

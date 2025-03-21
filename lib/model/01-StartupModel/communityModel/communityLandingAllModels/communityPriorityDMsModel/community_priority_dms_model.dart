@@ -87,6 +87,7 @@ class Question {
   final bool? isAnswered;
   final Payment? payment;
   final String? createdAt;
+  final String? timeAgo;
 
   Question({
     this.id,
@@ -96,6 +97,7 @@ class Question {
     this.isAnswered,
     this.payment,
     this.createdAt,
+    this.timeAgo
   });
 
   factory Question.fromJson(Map<String, dynamic> json) => Question(
@@ -106,6 +108,7 @@ class Question {
         isAnswered: json["isAnswered"],
         payment: json["payment"] != null ? Payment.fromJson(json["payment"]) : null,
         createdAt: json["createdAt"],
+        timeAgo: json["timeAgo"]
       );
 
   Map<String, dynamic> toJson() => {
@@ -116,6 +119,7 @@ class Question {
         "isAnswered": isAnswered,
         "payment": payment?.toJson(),
         "createdAt": createdAt,
+        "timeAgo": timeAgo
       };
 }
 

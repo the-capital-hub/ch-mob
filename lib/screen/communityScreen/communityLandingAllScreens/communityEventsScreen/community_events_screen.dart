@@ -45,7 +45,7 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
   Widget build(BuildContext context) {
     return Obx(() => communityEvents.isLoading.value
         ? Helper.pageLoading()
-        : communityEvents.communityEventsList[0].webinars.isEmpty
+        : communityEvents.communityEventsData.webinars!.isEmpty
             ? const Center(
                 child: TextWidget(
                     text: "No Community Events Available", textSize: 16))
@@ -53,8 +53,8 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                 children: [
                   Expanded(
                     child: ListView.builder(
-                      itemCount: communityEvents
-                          .communityEventsList[0].webinars.length,
+                      itemCount:
+                          communityEvents.communityEventsData.webinars!.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         Color containerColor =
@@ -74,8 +74,8 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                     children: [
                                       TextWidget(
                                           text: communityEvents
-                                              .communityEventsList[0]
-                                              .webinars[index]
+                                              .communityEventsData
+                                              .webinars![index]
                                               .title,
                                           textSize: 20),
                                       const Spacer(),
@@ -89,8 +89,19 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                           ),
                                           onPressed: () {
                                             addServiceIndex = 2;
-                                            Get.to(() =>
-                                                 CommunityAddServiceScreen(isEdit: true,));
+                                            Get.to(
+                                                () => CommunityAddServiceScreen(
+                                                      eventId: communityEvents
+                                                          .communityEventsData
+                                                          .webinars![index]
+                                                          .id,
+                                                      index: index,
+                                                      isEdit: true,
+                                                      isPriorityDM: false,
+                                                      isMeeting: false,
+                                                      isEvent: true,
+                                                      isWebinar: false,
+                                                    ));
                                           },
                                         ),
                                         IconButton(
@@ -107,7 +118,12 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                                   Get.back();
                                                 },
                                                 onButton2Pressed: () {
-                                                  Get.back();
+                                                  communityEvents
+                                                      .disableCommunityEvent(
+                                                          communityEvents
+                                                              .communityEventsData
+                                                              .webinars![index]
+                                                              .id);
                                                 },
                                               );
                                             },
@@ -141,8 +157,8 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                       ),
                                     ],
                                   ),
-                                communityEvents.communityEventsList[0]
-                                        .webinars[index].isActive
+                                communityEvents.communityEventsData
+                                        .webinars![index].isActive
                                     ? const SizedBox()
                                     : TextWidget(
                                         text: "This meeting is cancelled.",
@@ -180,8 +196,8 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                           children: [
                                             TextWidget(
                                                 text: communityEvents
-                                                    .communityEventsList[0]
-                                                    .webinars[index]
+                                                    .communityEventsData
+                                                    .webinars![index]
                                                     .duration
                                                     .toString(),
                                                 textSize: 15),
@@ -207,7 +223,7 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                             children: [
                                               TextWidget(
                                                   text:
-                                                      "Rs ${communityEvents.communityEventsList[0].webinars[index].price} +",
+                                                      "Rs ${communityEvents.communityEventsData.webinars![index].price} +",
                                                   textSize: 12),
                                               const SizedBox(width: 5),
                                               Icon(Icons.arrow_forward,

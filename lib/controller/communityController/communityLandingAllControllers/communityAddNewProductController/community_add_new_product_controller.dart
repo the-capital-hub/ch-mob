@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityProductsAndMembersController/community_products_and_members_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
@@ -9,15 +10,22 @@ import 'package:get/get.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 
 class CommunityAddNewProductController extends GetxController {
+  CommunityProductsAndMembersController communityProducts =
+      Get.put(CommunityProductsAndMembersController());
   TextEditingController productNameController = TextEditingController();
   QuillEditorController productDescriptionController = QuillEditorController();
   TextEditingController productAmountController = TextEditingController();
   bool isFree = false;
+  List<String> urls = [];
   Future addProductToCommunity(base64, urls) async {
+    String description = "";
+    await productDescriptionController
+        .getText()
+        .then((val) => description = val);
     var response = await ApiBase.postRequest(
       body: {
         "name": productNameController.text,
-        "description": productDescriptionController..getText(),
+        "description": description,
         "amount": productAmountController.text.isEmpty
             ? null
             : int.tryParse(productAmountController.text),
@@ -32,9 +40,9 @@ class CommunityAddNewProductController extends GetxController {
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"]) {
-      
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
+      communityProducts.getCommunityProductsandMembers();
       return true;
     } else {
       Get.back();
@@ -43,11 +51,15 @@ class CommunityAddNewProductController extends GetxController {
     }
   }
 
-  Future updateCommunityProduct(base64, urls, productId) async {
-    var response = await ApiBase.postRequest(
+  Future updateCommunityProduct(base64, productId) async {
+    String description = "";
+    await productDescriptionController
+        .getText()
+        .then((val) => description = val);
+    var response = await ApiBase.pachRequest(
         body: {
           "name": productNameController.text,
-          "description": productDescriptionController..getText(),
+          "description": description,
           "amount": productAmountController.text.isEmpty
               ? null
               : int.tryParse(productAmountController.text),
@@ -62,9 +74,9 @@ class CommunityAddNewProductController extends GetxController {
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"]) {
-      
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
+      communityProducts.getCommunityProductsandMembers();
       return true;
     } else {
       Get.back();

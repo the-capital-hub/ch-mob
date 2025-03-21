@@ -109,151 +109,184 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                   child: TabBarView(
                                       controller: _tabController,
                                       children: [
-                                    ListView.builder(
-                                      itemCount: unansweredQuestions.length,
-                                      itemBuilder: (context, index) {
-                                        return Card(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          color: AppColors.blackCard,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(12.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    const CircleAvatar(
-                                                      radius: 18,
-                                                      backgroundImage:
-                                                          AssetImage(
-                                                              PngAssetPath
-                                                                  .accountImg),
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    TextWidget(
-                                                      text:
-                                                          "${unansweredQuestions[index].question}",
-                                                      textSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 12,
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      children: [
-                                                        TextWidget(
+                                    unansweredQuestions.isEmpty
+                                        ? const Center(
+                                            child: TextWidget(
+                                                text:
+                                                    "No Unanswered PriorityDMs Questions Available",
+                                                textSize: 16))
+                                        : ListView.builder(
+                                            itemCount:
+                                                unansweredQuestions.length,
+                                            itemBuilder: (context, index) {
+                                              return Card(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
+                                                color: AppColors.blackCard,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      12.0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          CircleAvatar(
+                                                            radius: 18,
+                                                            foregroundImage:
+                                                                NetworkImage(
+                                                              unansweredQuestions[
+                                                                      index]
+                                                                  .userId!
+                                                                  .profilePicture
+                                                                  .toString(),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 12,
+                                                          ),
+                                                          TextWidget(
                                                             text:
-                                                                "${unansweredQuestions[index].createdAt}",
-                                                            textSize: 13),
-                                                        const SizedBox(
-                                                          height: 8,
-                                                        ),
-                                                        const TextWidget(
-                                                          text:
-                                                              "Time to answer:Time expired",
-                                                          textSize: 13,
-                                                          color:
-                                                              AppColors.primary,
-                                                        ),
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                                sizedTextfield,
-                                                const TextWidget(
-                                                  text: "Question",
-                                                  textSize: 16,
-                                                  maxLine: 2,
-                                                ),
-                                                sizedTextfield,
-                                                MyCustomTextField.textField(
-                                                    hintText:
-                                                        "Type your answer...",
-                                                    controller: urlController,
-                                                    borderClr:
-                                                        AppColors.white12),
-                                                sizedTextfield,
-                                                AppButton.primaryButton(
-                                                    onButtonPressed: () {},
-                                                    title: "Submit Answer")
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    ListView.builder(
-                                      itemCount: 5,
-                                      itemBuilder: (context, index) {
-                                        return Card(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          color: AppColors.blackCard,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(12.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Row(
-                                                  children: [
-                                                    CircleAvatar(
-                                                      radius: 18,
-                                                      backgroundImage:
-                                                          AssetImage(
-                                                              PngAssetPath
-                                                                  .accountImg),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    TextWidget(
-                                                      text: "Name",
-                                                      textSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 12,
-                                                    ),
-                                                    Spacer(),
-                                                    TextWidget(
+                                                                "${unansweredQuestions[index].userId!.firstName} ${unansweredQuestions[index].userId!.lastName}",
+                                                            textSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                          Spacer(),
+                                                          Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              TextWidget(
+                                                                  text: unansweredQuestions[
+                                                                          index]
+                                                                      .timeAgo!,
+                                                                  textSize: 13),
+                                                              const SizedBox(
+                                                                height: 8,
+                                                              ),
+                                                              const TextWidget(
+                                                                text:
+                                                                    "Time to answer :\nTime expired",
+                                                                textSize: 13,
+                                                                color: AppColors
+                                                                    .primary,
+                                                              ),
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                      sizedTextfield,
+                                                      TextWidget(
                                                         text:
-                                                            "Asked 16 days ago",
-                                                        textSize: 13),
-                                                  ],
+                                                            "${unansweredQuestions[index].question}",
+                                                        textSize: 16,
+                                                        maxLine: 2,
+                                                      ),
+                                                      sizedTextfield,
+                                                      MyCustomTextField.textField(
+                                                          hintText:
+                                                              "Type your answer...",
+                                                          controller:
+                                                              urlController,
+                                                          borderClr: AppColors
+                                                              .white12),
+                                                      sizedTextfield,
+                                                      AppButton.primaryButton(
+                                                          onButtonPressed:
+                                                              () {},
+                                                          title:
+                                                              "Submit Answer")
+                                                    ],
+                                                  ),
                                                 ),
-                                                sizedTextfield,
-                                                TextWidget(
-                                                  text:
-                                                      "${answeredQuestions[index].question}",
-                                                  textSize: 16,
-                                                  maxLine: 2,
-                                                ),
-                                                sizedTextfield,
-                                                const TextWidget(
-                                                    text: "Answer:",
-                                                    textSize: 16),
-                                                TextWidget(
-                                                    text:
-                                                        "${answeredQuestions[index].answer}",
-                                                    textSize: 16),
-                                              ],
-                                            ),
+                                              );
+                                            },
                                           ),
-                                        );
-                                      },
-                                    ),
+                                    answeredQuestions.isEmpty
+                                        ? const Center(
+                                            child: TextWidget(
+                                                text:
+                                                    "No Answered PriorityDMs Questions Available",
+                                                textSize: 16))
+                                        : ListView.builder(
+                                            itemCount: answeredQuestions.length,
+                                            itemBuilder: (context, index) {
+                                              return Card(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
+                                                color: AppColors.blackCard,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      12.0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          CircleAvatar(
+                                                            radius: 18,
+                                                            foregroundImage:
+                                                                NetworkImage(
+                                                              answeredQuestions[
+                                                                      index]
+                                                                  .userId!
+                                                                  .profilePicture
+                                                                  .toString(),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 12,
+                                                          ),
+                                                          TextWidget(
+                                                            text:
+                                                                "${answeredQuestions[index].userId!.firstName} ${answeredQuestions[index].userId!.lastName}",
+                                                            textSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 12,
+                                                          ),
+                                                          Spacer(),
+                                                          TextWidget(
+                                                              text:
+                                                                  answeredQuestions[
+                                                                          index]
+                                                                      .timeAgo!,
+                                                              textSize: 13),
+                                                        ],
+                                                      ),
+                                                      sizedTextfield,
+                                                      TextWidget(
+                                                        text:
+                                                            "${answeredQuestions[index].question}",
+                                                        textSize: 16,
+                                                        maxLine: 2,
+                                                      ),
+                                                      sizedTextfield,
+                                                      const TextWidget(
+                                                          text: "Answer:",
+                                                          textSize: 16),
+                                                      TextWidget(
+                                                          text:
+                                                              "${answeredQuestions[index].answer}",
+                                                          textSize: 16),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
                                   ]))
                             ])),
           ),

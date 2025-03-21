@@ -132,8 +132,14 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                             color: AppColors.whiteCard,
                                           ),
                                           onPressed: () {
-                                            Get.to(() =>
-                                                const AddNewProductScreen());
+                                            Get.to(() => AddNewProductScreen(
+                                                  isEdit: true,
+                                                  productId: communityProducts
+                                                      .communityProductsList[
+                                                          index]
+                                                      .id,
+                                                  index: index,
+                                                ));
                                           },
                                         ),
                                       ),
