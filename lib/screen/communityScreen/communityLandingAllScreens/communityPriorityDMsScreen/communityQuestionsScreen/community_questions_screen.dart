@@ -26,9 +26,12 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
   CommunityPriorityDMsController communityPriorityDMs = Get.find();
   List<Question> answeredQuestions = [];
   List<Question> unansweredQuestions = [];
+  List<TextEditingController> answerControllers = [];
+  
   @override
   void initState() {
     super.initState();
+    
     _tabController = TabController(length: 2, vsync: this);
     for (int i = 0;
         i <
@@ -47,7 +50,7 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
   }
 
   late final TabController _tabController;
-  TextEditingController urlController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -156,7 +159,7 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                           ),
-                                                          Spacer(),
+                                                          const Spacer(),
                                                           Column(
                                                             crossAxisAlignment:
                                                                 CrossAxisAlignment
@@ -170,9 +173,9 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                                               const SizedBox(
                                                                 height: 8,
                                                               ),
-                                                              const TextWidget(
+                                                              TextWidget(
                                                                 text:
-                                                                    "Time to answer :\nTime expired",
+                                                                    "Time to answer :\n${unansweredQuestions[index].timeToAnswer}",
                                                                 textSize: 13,
                                                                 color: AppColors
                                                                     .primary,
@@ -193,13 +196,26 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                                           hintText:
                                                               "Type your answer...",
                                                           controller:
-                                                              urlController,
+                                                              communityPriorityDMs
+                                                                  .answerController,
                                                           borderClr: AppColors
                                                               .white12),
                                                       sizedTextfield,
                                                       AppButton.primaryButton(
-                                                          onButtonPressed:
-                                                              () {},
+                                                          onButtonPressed: () {
+                                                            Helper.loader(context);
+                                                            communityPriorityDMs.communityAnswerPriorityDM(
+                                                                communityPriorityDMs
+                                                                    .communityPriorityDMsList[
+                                                                        widget
+                                                                            .index!]
+                                                                    .id
+                                                                    .toString(),
+                                                                unansweredQuestions[
+                                                                        index]
+                                                                    .id
+                                                                    .toString());
+                                                          },
                                                           title:
                                                               "Submit Answer")
                                                     ],
@@ -254,10 +270,10 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                           ),
-                                                          SizedBox(
+                                                          const SizedBox(
                                                             width: 12,
                                                           ),
-                                                          Spacer(),
+                                                          const Spacer(),
                                                           TextWidget(
                                                               text:
                                                                   answeredQuestions[

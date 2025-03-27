@@ -1,3 +1,4 @@
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityEventsController/community_events_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityWebinarsController/community_webinars_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddServiceScreen/community_add_service_screen.dart';
@@ -24,12 +25,15 @@ class CommunityWebinarsScreen extends StatefulWidget {
 }
 
 class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
+  CommunityEventsController communityEvents =
+      Get.put(CommunityEventsController());
   CommunityWebinarsController communityWebinars =
       Get.put(CommunityWebinarsController());
+
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      communityWebinars.getCommunityWebinars().then((v) {
+      communityEvents.getCommunityEvents().then((v) {
         WidgetsBinding.instance.addPostFrameCallback((_) {});
       });
     });
@@ -39,14 +43,14 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
   bool isWebinarEnded = false;
   @override
   Widget build(BuildContext context) {
-    return Obx(() => communityWebinars.isLoading.value
+    return Obx(() => communityEvents.isLoading.value
         ? Helper.pageLoading()
-        : communityWebinars.communityWebinarsList.isEmpty
+        : communityEvents.communityEventsData.webinars!.isEmpty
             ? const Center(
                 child: TextWidget(text: "No Webinars Available", textSize: 16))
             : ListView.builder(
                 padding: EdgeInsets.zero,
-                itemCount: communityWebinars.communityWebinarsList.length,
+                itemCount: communityEvents.communityEventsData.webinars!.length,
                 itemBuilder: (context, index) {
                   return Card(
                     shape: RoundedRectangleBorder(
@@ -71,8 +75,8 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                           Row(
                             children: [
                               TextWidget(
-                                text: communityWebinars
-                                    .communityWebinarsList[index].title,
+                                text: communityEvents
+                                    .communityEventsData.webinars![index].title,
                                 textSize: 20,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -88,8 +92,10 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                   onPressed: () {
                                     addServiceIndex = 3;
                                     Get.to(() => CommunityAddServiceScreen(
-                                          webinarId: communityWebinars
-                                              .communityWebinarsList[index].id,
+                                          webinarId: communityEvents
+                                              .communityEventsData
+                                              .webinars![index]
+                                              .id,
                                           index: index,
                                           isEdit: true,
                                           isPriorityDM: false,
@@ -113,11 +119,13 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                           Get.back();
                                         },
                                         onButton2Pressed: () {
+                                          Get.back();
+                                          Helper.loader(context);
                                           communityWebinars
                                               .deleteCommunityWebinar(
-                                                  communityWebinars
-                                                      .communityWebinarsList[
-                                                          index]
+                                                  communityEvents
+                                                      .communityEventsData
+                                                      .webinars![index]
                                                       .id);
                                         },
                                       );
@@ -126,43 +134,53 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                       Icons.delete,
                                       color: AppColors.white,
                                     )),
-                                IconButton(
-                                  padding: EdgeInsets.zero,
-                                  icon: Icon(
-                                    Icons.mobile_screen_share_rounded,
-                                    color: AppColors.whiteCard,
-                                  ),
-                                  onPressed: () {
-                                    sharePostPopup(
-                                        context, "", "share webinar detail");
-                                  },
-                                ),
+                                // IconButton(
+                                //   padding: EdgeInsets.zero,
+                                //   icon: Icon(
+                                //     Icons.mobile_screen_share_rounded,
+                                //     color: AppColors.whiteCard,
+                                //   ),
+                                //   onPressed: () {
+                                //     sharePostPopup(
+                                //         context, "", "share webinar detail");
+                                //   },
+                                // ),
                               ],
-                              if (!isAdmin)
-                                IconButton(
-                                  padding: EdgeInsets.zero,
-                                  icon: Icon(
-                                    Icons.mobile_screen_share_rounded,
-                                    color: AppColors.whiteCard,
-                                  ),
-                                  onPressed: () {
-                                    sharePostPopup(
-                                        context, "", "share webinar detail");
-                                  },
-                                ),
+                              // if (!isAdmin)
+                              //   IconButton(
+                              //     padding: EdgeInsets.zero,
+                              //     icon: Icon(
+                              //       Icons.mobile_screen_share_rounded,
+                              //       color: AppColors.whiteCard,
+                              //     ),
+                              //     onPressed: () {
+                              //       sharePostPopup(
+                              //           context, "", "share webinar detail");
+                              //     },
+                              //   ),
                             ],
                           ),
                           sizedTextfield,
+
+                          if (!communityEvents.communityEventsData
+                              .webinars![index].isActive) ...[
+                            TextWidget(
+                              text: "This webinar is cancelled.",
+                              textSize: 16,
+                              color: AppColors.grey,
+                            ),
+                            sizedTextfield
+                          ],
                           HtmlWidget(
-                            communityWebinars
-                                .communityWebinarsList[index].description,
+                            communityEvents.communityEventsData.webinars![index]
+                                .description,
                             textStyle: TextStyle(
                               fontSize: 15,
                               color: AppColors.white,
                             ),
                           ),
                           // TextWidget(
-                          //   text: communityWebinars
+                          //   text: communityEvents
                           //       .communityWebinarsList[index].description,
                           //   textSize: 16,
                           // ),
@@ -178,8 +196,8 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                 width: 5,
                               ),
                               TextWidget(
-                                  text: communityWebinars
-                                      .communityWebinarsList[index].date,
+                                  text: communityEvents.communityEventsData
+                                      .webinars![index].date,
                                   textSize: 16)
                             ],
                           ),
@@ -195,8 +213,8 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                 width: 8,
                               ),
                               TextWidget(
-                                  text:
-                                      "${communityWebinars.communityWebinarsList[index].duration} mins",
+                                  text: communityEvents.communityEventsData
+                                      .webinars![index].duration,
                                   textSize: 16)
                             ],
                           ),
@@ -215,7 +233,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                               ),
                               TextWidget(
                                   text:
-                                      "${communityWebinars.communityWebinarsList[index].joined} joined",
+                                      "${communityEvents.communityEventsData.webinars![index].joinedUsers.length} joined",
                                   textSize: 16)
                             ],
                           ),
@@ -233,8 +251,11 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                 width: 8,
                               ),
                               TextWidget(
-                                  text:
-                                      "\u{20B9} ${communityWebinars.communityWebinarsList[index].price}",
+                                  text: communityEvents.communityEventsData
+                                              .webinars![index].price ==
+                                          "0"
+                                      ? "Free"
+                                      : "\u{20B9}${communityEvents.communityEventsData.webinars![index].price}",
                                   textSize: 16)
                             ],
                           ),
@@ -242,15 +263,15 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                           if (isAdmin)
                             AppButton.primaryButton(
                                 onButtonPressed: () {
-                                  Get.to(() =>
-                                      const CommunityRegisteredUsersScreen());
+                                  Get.to(() => CommunityRegisteredUsersScreen(
+                                      index: index));
                                 },
                                 title: "View Guests"),
                           if (!isAdmin)
                             AppButton.primaryButton(
                                 onButtonPressed: () {
-                                  Get.to(
-                                      () => const CommunityRegisterNowScreen());
+                                  Get.to(() =>
+                                      CommunityRegisterNowScreen(index: index));
                                 },
                                 title: "+ Register Now"),
                           if (!isAdmin && isWebinarEnded)

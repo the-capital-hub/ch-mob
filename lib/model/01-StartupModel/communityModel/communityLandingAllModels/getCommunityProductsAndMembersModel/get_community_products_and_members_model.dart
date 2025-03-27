@@ -121,6 +121,7 @@ class PurchasedBy {
 }
 
 class Member {
+  String id;
   String firstName;
   String lastName;
   String profilePicture;
@@ -130,6 +131,7 @@ class Member {
   String joinedDate;
 
   Member({
+    required this.id,
     required this.firstName,
     required this.lastName,
     required this.profilePicture,
@@ -140,6 +142,7 @@ class Member {
   });
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
+        id: json["_id"],
         firstName: json["firstName"],
         lastName: json["lastName"],
         profilePicture: json["profilePicture"],
@@ -150,6 +153,7 @@ class Member {
       );
 
   Map<String, dynamic> toJson() => {
+        "_id":id,
         "firstName": firstName,
         "lastName": lastName,
         "profilePicture": profilePicture,

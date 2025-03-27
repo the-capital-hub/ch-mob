@@ -7,6 +7,7 @@ import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
+import 'package:capitalhub_crm/widget/dilogue/custom_dialogue.dart';
 import 'package:capitalhub_crm/widget/dilogue/share_dilogue.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -55,438 +56,448 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                   shrinkWrap: true,
                   itemCount: communityProducts.communityProductsList.length,
                   itemBuilder: (context, index) {
-                    return Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      color: AppColors.navyBlue,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Stack(children: [
-                              Container(
-                                height: 200,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: NetworkImage(
-                                          communityProducts
-                                              .communityProductsList[index]
-                                              .image,
-                                        ),
-                                        fit: BoxFit.fill),
-                                    borderRadius: BorderRadius.circular(15)),
-                              ),
-                              Positioned(
-                                top: -4,
-                                left: -4,
-                                child: Card(
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                        bottomRight: Radius.circular(12),
-                                        topLeft: Radius.circular(12)),
-                                  ),
-                                  color: AppColors.primary,
-                                  child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 4),
-                                      child: TextWidget(
-                                          text: communityProducts
-                                                  .communityProductsList[index]
-                                                  .isFree
-                                              ? "Free"
-                                              : "\u{20B9}${communityProducts.communityProductsList[index].amount}/-",
-                                          textSize: 16)),
+                    return InkWell(
+                      onTap: () {
+                        Get.to(() => PurchaseScreen(index: index));
+                      },
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        color: AppColors.navyBlue,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Stack(children: [
+                                Container(
+                                  height: 200,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                            communityProducts
+                                                .communityProductsList[index]
+                                                .image,
+                                          ),
+                                          fit: BoxFit.fill),
+                                      borderRadius: BorderRadius.circular(15)),
                                 ),
-                              ),
-                              if (!isAdmin)
                                 Positioned(
                                   top: -4,
-                                  right: -4,
-                                  child: IconButton(
-                                    padding: EdgeInsets.zero,
-                                    icon: Icon(
-                                      Icons.mobile_screen_share_rounded,
-                                      color: AppColors.whiteCard,
+                                  left: -4,
+                                  child: Card(
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                          bottomRight: Radius.circular(12),
+                                          topLeft: Radius.circular(12)),
                                     ),
-                                    onPressed: () {
-                                      sharePostPopup(
-                                          context, "", "share product detail");
-                                    },
+                                    color: AppColors.primary,
+                                    child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 4),
+                                        child: TextWidget(
+                                            text: communityProducts
+                                                    .communityProductsList[
+                                                        index]
+                                                    .isFree
+                                                ? "Free"
+                                                : "\u{20B9}${communityProducts.communityProductsList[index].amount}/-",
+                                            textSize: 16)),
                                   ),
                                 ),
-                              if (isAdmin)
-                                Positioned(
-                                  top: 8,
-                                  right: 8,
-                                  child: Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 16,
-                                        backgroundColor: AppColors.black,
-                                        child: IconButton(
-                                          iconSize: 17,
-                                          padding: EdgeInsets.zero,
-                                          icon: Icon(
-                                            Icons.edit,
-                                            color: AppColors.whiteCard,
+                                // if (!isAdmin)
+                                //   Positioned(
+                                //     top: -4,
+                                //     right: -4,
+                                //     child: IconButton(
+                                //       padding: EdgeInsets.zero,
+                                //       icon: Icon(
+                                //         Icons.mobile_screen_share_rounded,
+                                //         color: AppColors.whiteCard,
+                                //       ),
+                                //       onPressed: () {
+                                //         sharePostPopup(
+                                //             context, "", "share product detail");
+                                //       },
+                                //     ),
+                                //   ),
+                                if (isAdmin)
+                                  Positioned(
+                                    top: 8,
+                                    right: 8,
+                                    child: Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 16,
+                                          backgroundColor: AppColors.black,
+                                          child: IconButton(
+                                            iconSize: 17,
+                                            padding: EdgeInsets.zero,
+                                            icon: Icon(
+                                              Icons.edit,
+                                              color: AppColors.whiteCard,
+                                            ),
+                                            onPressed: () {
+                                              Get.to(() => AddNewProductScreen(
+                                                    isEdit: true,
+                                                    productId: communityProducts
+                                                        .communityProductsList[
+                                                            index]
+                                                        .id,
+                                                    index: index,
+                                                  ));
+                                            },
                                           ),
-                                          onPressed: () {
-                                            Get.to(() => AddNewProductScreen(
-                                                  isEdit: true,
-                                                  productId: communityProducts
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        CircleAvatar(
+                                          radius: 16,
+                                          backgroundColor: AppColors.black,
+                                          child: IconButton(
+                                            iconSize: 17,
+                                            padding: EdgeInsets.zero,
+                                            icon: Icon(
+                                              Icons.delete,
+                                              color: AppColors.whiteCard,
+                                            ),
+                                            onPressed: () {
+                                              showCustomPopup(
+                                                context: context,
+                                                title: "Delete this Product",
+                                                message:
+                                                    "Are you sure you\nwant to delete this Product?",
+                                                button1Text: "Cancel",
+                                                button2Text: "OK",
+                                                icon: Icons.delete,
+                                                onButton1Pressed: () {
+                                                  Get.back();
+                                                },
+                                                onButton2Pressed: () {
+                                                  Get.back();
+                                                  Helper.loader(context);
+                                                  communityProducts
+                                                      .deleteCommunityProduct(
+                                                          communityProducts
+                                                              .communityProductsList[
+                                                                  index]
+                                                              .id);
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        // const SizedBox(
+                                        //   width: 8,
+                                        // ),
+                                        // CircleAvatar(
+                                        //   radius: 16,
+                                        //   backgroundColor: AppColors.black,
+                                        //   child: IconButton(
+                                        //     iconSize: 17,
+                                        //     padding: EdgeInsets.zero,
+                                        //     icon: Icon(
+                                        //       Icons.mobile_screen_share_rounded,
+                                        //       color: AppColors.whiteCard,
+                                        //     ),
+                                        //     onPressed: () {
+                                        //       sharePostPopup(context, "",
+                                        //           "share product detail");
+                                        //     },
+                                        //   ),
+                                        // ),
+                                      ],
+                                    ),
+                                  ),
+                              ]),
+                              if (isAdmin) sizedTextfield,
+                              TextWidget(
+                                text: communityProducts
+                                    .communityProductsList[index].name,
+                                textSize: 18,
+                                maxLine: 2,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              HtmlWidget(
+                                communityProducts
+                                    .communityProductsList[index].description,
+                                textStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: AppColors.white,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 50),
+                                  child: AppButton.primaryButton(
+                                      onButtonPressed: () {
+                                        if (isAdmin ||
+                                            communityProducts
+                                                .communityProductsList[index]
+                                                .isProductPurchased) {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                backgroundColor:
+                                                    AppColors.blackCard,
+                                                content: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Image.asset(
+                                                      PngAssetPath
+                                                          .resourceUrlImg,
+                                                      height: 200,
+                                                    ),
+                                                    const SizedBox(height: 20),
+                                                    const TextWidget(
+                                                      text: 'Resource URLs',
+                                                      textSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                    for (var i = 0;
+                                                        i <
+                                                            communityProducts
+                                                                .communityProductsList[
+                                                                    index]
+                                                                .urls
+                                                                .length;
+                                                        i++)
+                                                      Card(
+                                                        color:
+                                                            AppColors.white12,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Expanded(
+                                                                child:
+                                                                    TextWidget(
+                                                                  text: communityProducts
+                                                                      .communityProductsList[
+                                                                          index]
+                                                                      .urls[i],
+                                                                  textSize: 16,
+                                                                  color:
+                                                                      AppColors
+                                                                          .white,
+                                                                  maxLine: 4,
+                                                                ),
+                                                              ),
+                                                              InkWell(
+                                                                onTap: () {
+                                                                  Helper.launchUrl(communityProducts
+                                                                      .communityProductsList[
+                                                                          index]
+                                                                      .urls[i]);
+                                                                },
+                                                                child:
+                                                                    const Card(
+                                                                  color: AppColors
+                                                                      .primary,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        EdgeInsets
+                                                                            .all(8),
+                                                                    child: TextWidget(
+                                                                        text:
+                                                                            "Open",
+                                                                        textSize:
+                                                                            10),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                  ],
+                                                ),
+                                                actions: [
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 50),
+                                                    child:
+                                                        AppButton.primaryButton(
+                                                      bgColor:
+                                                          AppColors.primary,
+                                                      title: 'Close',
+                                                      onButtonPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        } else if (communityProducts
+                                                .communityProductsList[index]
+                                                .isFree &&
+                                            !communityProducts
+                                                .communityProductsList[index]
+                                                .isProductPurchased) {
+                                          communityProducts.buyProduct(
+                                              context,
+                                              communityProducts
+                                                  .communityProductsList[index]
+                                                  .id);
+
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                backgroundColor:
+                                                    AppColors.blackCard,
+                                                content: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Image.asset(
+                                                      PngAssetPath
+                                                          .resourceUrlImg,
+                                                      height: 200,
+                                                    ),
+                                                    const SizedBox(height: 20),
+                                                    const TextWidget(
+                                                      text: 'Resource URLs',
+                                                      textSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                    for (var i = 0;
+                                                        i <
+                                                            communityProducts
+                                                                .communityProductsList[
+                                                                    index]
+                                                                .urls
+                                                                .length;
+                                                        i++)
+                                                      Card(
+                                                        color:
+                                                            AppColors.white12,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Expanded(
+                                                                child:
+                                                                    TextWidget(
+                                                                  text: communityProducts
+                                                                      .communityProductsList[
+                                                                          index]
+                                                                      .urls[i],
+                                                                  textSize: 16,
+                                                                  color:
+                                                                      AppColors
+                                                                          .white,
+                                                                  maxLine: 4,
+                                                                ),
+                                                              ),
+                                                              InkWell(
+                                                                onTap: () {
+                                                                  Helper.launchUrl(communityProducts
+                                                                      .communityProductsList[
+                                                                          index]
+                                                                      .urls[i]);
+                                                                },
+                                                                child:
+                                                                    const Card(
+                                                                  color: AppColors
+                                                                      .primary,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        EdgeInsets
+                                                                            .all(8),
+                                                                    child: TextWidget(
+                                                                        text:
+                                                                            "Open",
+                                                                        textSize:
+                                                                            10),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                  ],
+                                                ),
+                                                actions: [
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 50),
+                                                    child:
+                                                        AppButton.primaryButton(
+                                                      bgColor:
+                                                          AppColors.primary,
+                                                      title: 'Close',
+                                                      onButtonPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        } else {
+                                          Get.to(() =>
+                                              PurchaseScreen(index: index));
+                                        }
+                                      },
+                                      title: isAdmin
+                                          ? "Access Resource"
+                                          : communityProducts
                                                       .communityProductsList[
                                                           index]
-                                                      .id,
-                                                  index: index,
-                                                ));
-                                          },
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      CircleAvatar(
-                                        radius: 16,
-                                        backgroundColor: AppColors.black,
-                                        child: IconButton(
-                                          iconSize: 17,
-                                          padding: EdgeInsets.zero,
-                                          icon: Icon(
-                                            Icons.delete,
-                                            color: AppColors.whiteCard,
-                                          ),
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  backgroundColor:
-                                                      AppColors.blackCard,
-                                                  title: const TextWidget(
-                                                    text:
-                                                        'Are you sure you want to delete product ?',
-                                                    textSize: 20,
-                                                    fontWeight: FontWeight.bold,
-                                                    maxLine: 2,
-                                                  ),
-                                                  actions: [
-                                                    Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: AppButton
-                                                              .outlineButton(
-                                                            borderColor:
-                                                                AppColors
-                                                                    .primary,
-                                                            title: 'Cancel',
-                                                            onButtonPressed:
-                                                                () {
-                                                              Get.back();
-                                                            },
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                            width: 12),
-                                                        Expanded(
-                                                          child: AppButton
-                                                              .primaryButton(
-                                                            bgColor: AppColors
-                                                                .primary,
-                                                            title:
-                                                                'Delete Product',
-                                                            onButtonPressed:
-                                                                () {
-                                                              communityProducts
-                                                                  .deleteCommunityProduct(
-                                                                      communityProducts
-                                                                          .communityProductsList[
-                                                                              index]
-                                                                          .id);
-                                                            },
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    )
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      CircleAvatar(
-                                        radius: 16,
-                                        backgroundColor: AppColors.black,
-                                        child: IconButton(
-                                          iconSize: 17,
-                                          padding: EdgeInsets.zero,
-                                          icon: Icon(
-                                            Icons.mobile_screen_share_rounded,
-                                            color: AppColors.whiteCard,
-                                          ),
-                                          onPressed: () {
-                                            sharePostPopup(context, "",
-                                                "share product detail");
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                            ]),
-                            if (isAdmin) sizedTextfield,
-                            TextWidget(
-                              text: communityProducts
-                                  .communityProductsList[index].name,
-                              textSize: 18,
-                              maxLine: 2,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            HtmlWidget(
-                              communityProducts
-                                  .communityProductsList[index].description,
-                              textStyle: TextStyle(
-                                fontSize: 14,
-                                color: AppColors.white,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 12,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 50),
-                              child: AppButton.primaryButton(
-                                  onButtonPressed: () {
-                                    if (isAdmin) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            backgroundColor:
-                                                AppColors.blackCard,
-                                            content: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Image.asset(
-                                                  PngAssetPath.resourceUrlImg,
-                                                  height: 200,
-                                                ),
-                                                const SizedBox(height: 20),
-                                                const TextWidget(
-                                                  text: 'Resource URLs',
-                                                  textSize: 20,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                                for (var i = 0;
-                                                    i <
-                                                        communityProducts
-                                                            .communityProductsList[
-                                                                index]
-                                                            .urls
-                                                            .length;
-                                                    i++)
-                                                  Card(
-                                                    color: AppColors.white12,
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Expanded(
-                                                            child: TextWidget(
-                                                              text: communityProducts
-                                                                  .communityProductsList[
-                                                                      index]
-                                                                  .urls[i],
-                                                              textSize: 16,
-                                                              color: AppColors
-                                                                  .white,
-                                                              maxLine: 4,
-                                                            ),
-                                                          ),
-                                                          InkWell(
-                                                            onTap: () {
-                                                              Helper.launchUrl(
-                                                                  communityProducts
-                                                                      .communityProductsList[
-                                                                          index]
-                                                                      .urls[i]);
-                                                            },
-                                                            child: const Card(
-                                                              color: AppColors
-                                                                  .primary,
-                                                              child: Padding(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(8),
-                                                                child: TextWidget(
-                                                                    text:
-                                                                        "Open",
-                                                                    textSize:
-                                                                        10),
-                                                              ),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                              ],
-                                            ),
-                                            actions: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 50),
-                                                child: AppButton.primaryButton(
-                                                  bgColor: AppColors.primary,
-                                                  title: 'Close',
-                                                  onButtonPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    } else if (communityProducts
-                                            .communityProductsList[index]
-                                            .isFree &&
-                                        !communityProducts
-                                            .communityProductsList[index]
-                                            .isProductPurchased) {
-                                      communityProducts.buyProduct(
-                                          context,
-                                          communityProducts
-                                              .communityProductsList[index].id);
-
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            backgroundColor:
-                                                AppColors.blackCard,
-                                            content: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Image.asset(
-                                                  PngAssetPath.resourceUrlImg,
-                                                  height: 200,
-                                                ),
-                                                const SizedBox(height: 20),
-                                                const TextWidget(
-                                                  text: 'Resource URLs',
-                                                  textSize: 20,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                                for (var i = 0;
-                                                    i <
-                                                        communityProducts
-                                                            .communityProductsList[
-                                                                index]
-                                                            .urls
-                                                            .length;
-                                                    i++)
-                                                  Card(
-                                                    color: AppColors.white12,
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Expanded(
-                                                            child: TextWidget(
-                                                              text: communityProducts
-                                                                  .communityProductsList[
-                                                                      index]
-                                                                  .urls[i],
-                                                              textSize: 16,
-                                                              color: AppColors
-                                                                  .white,
-                                                              maxLine: 4,
-                                                            ),
-                                                          ),
-                                                          InkWell(
-                                                            onTap: () {
-                                                              Helper.launchUrl(
-                                                                  communityProducts
-                                                                      .communityProductsList[
-                                                                          index]
-                                                                      .urls[i]);
-                                                            },
-                                                            child: const Card(
-                                                              color: AppColors
-                                                                  .primary,
-                                                              child: Padding(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(8),
-                                                                child: TextWidget(
-                                                                    text:
-                                                                        "Open",
-                                                                    textSize:
-                                                                        10),
-                                                              ),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                              ],
-                                            ),
-                                            actions: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 50),
-                                                child: AppButton.primaryButton(
-                                                  bgColor: AppColors.primary,
-                                                  title: 'Close',
-                                                  onButtonPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    } else {
-                                      Get.to(
-                                          () => PurchaseScreen(index: index));
-                                    }
-                                  },
-                                  title: isAdmin
-                                      ? "Access Resource"
-                                      : communityProducts
-                                              .communityProductsList[index]
-                                              .isFree
-                                          ? "Buy for free"
-                                          : "Buy \u{20B9} ${communityProducts.communityProductsList[index].amount} "),
-                            ),
-                          ],
+                                                      .isFree &&
+                                                  !communityProducts
+                                                      .communityProductsList[
+                                                          index]
+                                                      .isProductPurchased
+                                              ? "Buy for free"
+                                              : !communityProducts
+                                                          .communityProductsList[
+                                                              index]
+                                                          .isFree &&
+                                                      !communityProducts
+                                                          .communityProductsList[
+                                                              index]
+                                                          .isProductPurchased
+                                                  ? "Buy \u{20B9} ${communityProducts.communityProductsList[index].amount}"
+                                                  : "Access Resource")),
+                            ],
+                          ),
                         ),
                       ),
                     );

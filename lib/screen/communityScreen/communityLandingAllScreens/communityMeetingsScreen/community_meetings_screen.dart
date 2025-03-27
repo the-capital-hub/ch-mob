@@ -1,7 +1,9 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityMeetingsController/community_meetings_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddServiceScreen/community_add_service_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityMeetingsScreen/communityBookAMeetingScreen/community_book_a_meeting_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityMeetingsScreen/communityMeetingBookingsScreen/community_meeting_bookings_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityMeetingsScreen/communitySelectTimeSlotScreen/community_select_time_slot_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
@@ -66,16 +68,16 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                                 textSize: 20,
                                 fontWeight: FontWeight.w500,
                               ),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.mobile_screen_share_rounded,
-                                  color: AppColors.white,
-                                ),
-                                onPressed: () {
-                                  sharePostPopup(
-                                      context, "", "share meeting details");
-                                },
-                              )
+                              // IconButton(
+                              //   icon: Icon(
+                              //     Icons.mobile_screen_share_rounded,
+                              //     color: AppColors.white,
+                              //   ),
+                              //   onPressed: () {
+                              //     sharePostPopup(
+                              //         context, "", "share meeting details");
+                              //   },
+                              // )
                             ],
                           ),
                           sizedTextfield,
@@ -203,6 +205,8 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                                           Get.back();
                                         },
                                         onButton2Pressed: () {
+                                          Get.back();
+                                          Helper.loader(context);
                                           communityMeetings
                                               .deleteCommunityMeeting(
                                                   communityMeetings
@@ -222,8 +226,9 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                           if (!isAdmin)
                             AppButton.primaryButton(
                               onButtonPressed: () {
-                                DateTime customDate = DateTime(2023, 12, 31);
-                                selectDate(context, customDate);
+                                Get.to(() => CommunitySelectTimeSlotScreen(
+                                      index: index,
+                                    ));
                               },
                               title: "Book Meeting",
                             ),

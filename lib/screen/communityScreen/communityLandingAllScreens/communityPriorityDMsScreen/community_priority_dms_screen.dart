@@ -2,6 +2,7 @@ import 'package:capitalhub_crm/controller/communityController/communityLandingAl
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddServiceScreen/community_add_service_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPriorityDMsScreen/communityAskAQuestionScreen/community_ask_a_question_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPriorityDMsScreen/communityQuestionsScreen/community_questions_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPriorityDMsScreen/communityYourQuestionsScreen/community_your_questions_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
@@ -29,6 +30,7 @@ class _CommunityPriorityDMScreenState
     extends State<CommunityPriorityDMsScreen> {
   CommunityPriorityDMsController communityPriorityDMs =
       Get.put(CommunityPriorityDMsController());
+  Map<int, bool> questionFieldVisibility = {};
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
@@ -54,6 +56,10 @@ class _CommunityPriorityDMScreenState
                 padding: EdgeInsets.zero,
                 itemCount: communityPriorityDMs.communityPriorityDMsList.length,
                 itemBuilder: (context, index) {
+                  if (!questionFieldVisibility.containsKey(index)) {
+                    questionFieldVisibility[index] = false;
+                  }
+
                   return Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -72,16 +78,16 @@ class _CommunityPriorityDMScreenState
                                 textSize: 20,
                                 fontWeight: FontWeight.w500,
                               ),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.mobile_screen_share_rounded,
-                                  color: AppColors.white,
-                                ),
-                                onPressed: () {
-                                  sharePostPopup(
-                                      context, "", "share priorityDMs detail");
-                                },
-                              )
+                              // IconButton(
+                              //   icon: Icon(
+                              //     Icons.mobile_screen_share_rounded,
+                              //     color: AppColors.white,
+                              //   ),
+                              //   onPressed: () {
+                              //     sharePostPopup(
+                              //         context, "", "share priorityDMs detail");
+                              //   },
+                              // )
                             ],
                           ),
                           sizedTextfield,
@@ -105,14 +111,14 @@ class _CommunityPriorityDMScreenState
                                     borderRadius: BorderRadius.circular(15)),
                                 color: AppColors.white,
                                 child: Padding(
-                                  padding: EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(8.0),
                                   child: TextWidget(
                                     text: communityPriorityDMs
                                                 .communityPriorityDMsList[index]
                                                 .amount ==
                                             0
                                         ? "Free"
-                                        : "\u{20B9} ${communityPriorityDMs.communityPriorityDMsList[index].amount}",
+                                        : "\u{20B9}${communityPriorityDMs.communityPriorityDMsList[index].amount}",
                                     textSize: 10,
                                     color: AppColors.primary,
                                   ),
@@ -207,6 +213,8 @@ class _CommunityPriorityDMScreenState
                                           Get.back();
                                         },
                                         onButton2Pressed: () {
+                                          Get.back();
+                                          Helper.loader(context);
                                           communityPriorityDMs
                                               .deleteCommunityPriorityDM(
                                                   communityPriorityDMs
@@ -224,23 +232,27 @@ class _CommunityPriorityDMScreenState
                               ],
                             ),
                           if (!isAdmin)
-                            if (noQuestions)
+                            if (communityPriorityDMs
+                                .communityPriorityDMsList[index]
+                                .questions!
+                                .isEmpty)
                               Column(
                                 children: [
                                   AppButton.primaryButton(
                                     onButtonPressed: () {
                                       setState(() {
-                                        isQuestionFieldVisible =
-                                            !isQuestionFieldVisible;
+                                        questionFieldVisibility[index] =
+                                            !questionFieldVisibility[index]!;
                                       });
                                     },
                                     title: "Ask Question",
                                   ),
-                                  if (isQuestionFieldVisible) ...[
+                                  if (questionFieldVisibility[index]!) ...[
                                     sizedTextfield,
                                     MyCustomTextField.textField(
                                       hintText: "Type your question here...",
-                                      controller: urlController,
+                                      controller: communityPriorityDMs
+                                          .questionController,
                                       maxLine: 3,
                                       borderClr: AppColors.white12,
                                     ),
@@ -248,9 +260,36 @@ class _CommunityPriorityDMScreenState
                                     AppButton.primaryButton(
                                       onButtonPressed: () {
                                         setState(() {
-                                          noQuestions = false;
-                                          isQuestionFieldVisible = false;
+                                          questionFieldVisibility[index] =
+                                              false;
                                         });
+                                        if (communityPriorityDMs
+                                                .communityPriorityDMsList[index]
+                                                .amount !=
+                                            0) {
+                                          Get.to(() =>
+                                              CommunityAskAQuestionScreen(
+                                                  index: index));
+                                        } else {
+                                          Helper.loader(context);
+                                          communityPriorityDMs
+                                              .communityPriorityDMyAskQuestion(
+                                                  communityPriorityDMs
+                                                      .communityPriorityDMsList[
+                                                          index]
+                                                      .id
+                                                      .toString())
+                                              .then((_) {
+                                            communityPriorityDMs
+                                                .questionController
+                                                .clear();
+                                            setState(() {
+                                              questionFieldVisibility[index] =
+                                                  !questionFieldVisibility[
+                                                      index]!;
+                                            });
+                                          });
+                                        }
                                       },
                                       title: "Submit",
                                     ),
@@ -266,8 +305,9 @@ class _CommunityPriorityDMScreenState
                                         child: AppButton.primaryButton(
                                           onButtonPressed: () {
                                             setState(() {
-                                              isQuestionFieldVisible =
-                                                  !isQuestionFieldVisible;
+                                              questionFieldVisibility[index] =
+                                                  !questionFieldVisibility[
+                                                      index]!;
                                             });
                                           },
                                           title: "Ask Question",
@@ -278,24 +318,58 @@ class _CommunityPriorityDMScreenState
                                         child: AppButton.primaryButton(
                                           onButtonPressed: () {
                                             Get.to(() =>
-                                                const CommunityYourQuestionsScreen());
+                                                CommunityYourQuestionsScreen(
+                                                    priorityDMId:
+                                                        communityPriorityDMs
+                                                            .communityPriorityDMsList[
+                                                                index]
+                                                            .id
+                                                            .toString()));
                                           },
-                                          title: "View Your\nQuestions (3)",
+                                          title:
+                                              "View Your\nQuestions (${communityPriorityDMs.communityPriorityDMsList[index].questions!.length}) ",
                                         ),
                                       ),
                                     ],
                                   ),
-                                  if (isQuestionFieldVisible) ...[
+                                  if (questionFieldVisibility[index]!) ...[
                                     sizedTextfield,
                                     MyCustomTextField.textField(
                                       hintText: "Type your question here...",
-                                      controller: urlController,
+                                      controller: communityPriorityDMs
+                                          .questionController,
                                       maxLine: 3,
                                       borderClr: AppColors.white12,
                                     ),
                                     sizedTextfield,
                                     AppButton.primaryButton(
-                                      onButtonPressed: () {},
+                                      onButtonPressed: () {
+                                        if (communityPriorityDMs
+                                                .communityPriorityDMsList[index]
+                                                .amount !=
+                                            0) {
+                                          Get.to(() =>
+                                              CommunityAskAQuestionScreen(
+                                                  index: index));
+                                        } else {
+                                          Helper.loader(context);
+                                          communityPriorityDMs
+                                              .communityPriorityDMyAskQuestion(
+                                                  communityPriorityDMs
+                                                      .communityPriorityDMsList[
+                                                          index]
+                                                      .id
+                                                      .toString())
+                                              .then((_) {
+                                            communityPriorityDMs
+                                                .questionController
+                                                .clear();
+                                            questionFieldVisibility[index] =
+                                                !questionFieldVisibility[
+                                                    index]!;
+                                          });
+                                        }
+                                      },
                                       title: "Submit",
                                     ),
                                   ],

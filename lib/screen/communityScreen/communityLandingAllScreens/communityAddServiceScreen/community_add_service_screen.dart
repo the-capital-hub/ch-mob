@@ -22,6 +22,7 @@ import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:capitalhub_crm/widget/timePicker/timePicker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
@@ -63,7 +64,6 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
   TextEditingController durationMinutesController = TextEditingController();
   QuillEditorController descriptionController = QuillEditorController();
 
-  String selectedTimeline = "Hours";
   String base64 = "";
 
   bool isAddNewMemberFieldVisible = false;
@@ -75,6 +75,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
       Get.put(CommunityEventsController());
   CommunityWebinarsController communityWebinars =
       Get.put(CommunityWebinarsController());
+
   @override
   void initState() {
     if (!widget.isEdit) {
@@ -128,30 +129,27 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           .communityMeetingsList[widget.index!].topics!
           .join(", ");
     }
-    if (widget.isEdit && widget.isEvent!) {
+    if (widget.isEdit && widget.isEvent) {
       communityEvents.titleController.text =
-          communityEvents.communityEventsData.webinars![widget.index!].title!;
-      communityEvents.durationMinutesController.text = communityEvents
-          .communityEventsData.webinars![widget.index!].duration!;
-      communityEvents.priceController.text =
-          communityEvents.communityEventsData.webinars![widget.index!].price!;
-      communityEvents.priceDiscountController.text = communityEvents
-          .communityEventsData.webinars![widget.index!].discount!;
-    }
-    if (widget.isEdit && widget.isWebinar!) {
-      communityWebinars.titleController.text =
           communityWebinars.communityWebinarsList[widget.index!].title!;
+      communityEvents.durationMinutesController.text =
+          "${communityWebinars.communityWebinarsList[widget.index!].duration}";
+      communityEvents.priceController.text =
+          "${communityWebinars.communityWebinarsList[widget.index!].price}";
+      communityEvents.priceDiscountController.text =
+          "${communityWebinars.communityWebinarsList[widget.index!].discount}";
+    }
+    if (widget.isEdit && widget.isWebinar) {
+      communityWebinars.titleController.text =
+          communityEvents.communityEventsData.webinars![widget.index!].title;
       communityWebinars.dateController.text =
-          communityWebinars.communityWebinarsList[widget.index!].date!;
-      communityWebinars.durationMinutesController.text = communityWebinars
-          .communityWebinarsList[widget.index!].duration!
-          .toString();
-      communityWebinars.priceController.text = communityWebinars
-          .communityWebinarsList[widget.index!].price!
-          .toString();
-      communityWebinars.priceDiscountController.text = communityWebinars
-          .communityWebinarsList[widget.index!].discount!
-          .toString();
+          communityEvents.communityEventsData.webinars![widget.index!].date;
+      communityWebinars.durationMinutesController.text =
+          communityEvents.communityEventsData.webinars![widget.index!].duration;
+      communityWebinars.priceController.text =
+          communityEvents.communityEventsData.webinars![widget.index!].price;
+      communityWebinars.priceDiscountController.text =
+          communityEvents.communityEventsData.webinars![widget.index!].discount;
     }
     super.initState();
 
@@ -169,12 +167,22 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
   }
 
   List<String> topics = [];
+  bool isPriorityDMTopics = false;
+  bool isMeetingsTopics = false;
   void splitTopics() {
     setState(() {
-      String text = communityPriorityDMs.topicsController.text;
-      topics = text.isEmpty
-          ? []
-          : text.split(',').map((topic) => topic.trim()).toList();
+      if (isPriorityDMTopics) {
+        String text = communityPriorityDMs.topicsController.text;
+        topics = text.isEmpty
+            ? []
+            : text.split(',').map((topic) => topic.trim()).toList();
+      }
+      if (isMeetingsTopics) {
+        String text = communityMeetings.topicsController.text;
+        topics = text.isEmpty
+            ? []
+            : text.split(',').map((topic) => topic.trim()).toList();
+      }
     });
   }
 
@@ -318,6 +326,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           height: 16,
         ),
         MyCustomTextField.textField(
+            textInputType: TextInputType.number,
             hintText: "Enter amount",
             controller: communityPriorityDMs.amountController,
             lableText: "Amount (\u{20B9})"),
@@ -328,6 +337,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           children: [
             Expanded(
                 child: MyCustomTextField.textField(
+                    textInputType: TextInputType.number,
                     hintText: "Enter Response Timeline",
                     controller: communityPriorityDMs.responseTimelineController,
                     lableText: "Response Timeline")),
@@ -338,14 +348,14 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
               child: Padding(
                 padding: const EdgeInsets.only(top: 25),
                 child: DropDownWidget(
-                    status: selectedTimeline,
+                    status: communityPriorityDMs.selectedTimeLine,
                     statusList: const [
                       'Hours',
                       'Days',
                     ],
                     onChanged: (val) {
                       setState(() {
-                        selectedTimeline = val.toString();
+                        communityPriorityDMs.selectedTimeLine = val.toString();
                       });
                     }),
               ),
@@ -368,18 +378,25 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                 borderColor: GetStoreData.getStore.read('isInvestor')
                     ? AppColors.primaryInvestor
                     : AppColors.primary,
-                onButtonPressed: () {},
+                onButtonPressed: () {
+                  Get.back();
+                },
                 title: "Cancel"),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: AppButton.primaryButton(
                 onButtonPressed: () {
+                  setState(() {
+                    isPriorityDMTopics = true;
+                  });
                   splitTopics();
                   if (widget.isEdit && widget.isPriorityDM) {
+                    Helper.loader(context);
                     communityPriorityDMs.updateCommunityPriorityDM(
                         topics, widget.priorityDMId.toString());
                   } else {
+                    Helper.loader(context);
                     communityPriorityDMs.createCommunityPriorityDM(topics);
                   }
                 },
@@ -424,6 +441,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           children: [
             Expanded(
                 child: MyCustomTextField.textField(
+                    textInputType: TextInputType.number,
                     hintText: "Enter amount",
                     controller: communityMeetings.amountController,
                     lableText: "Amount (\u{20B9})")),
@@ -432,6 +450,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             ),
             Expanded(
                 child: MyCustomTextField.textField(
+                    textInputType: TextInputType.number,
                     hintText: "Enter duration",
                     controller: communityMeetings.durationController,
                     lableText: "Duration (minutes)")),
@@ -465,6 +484,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
               if (selectedDate != null) {
                 communityMeetings.dateController.text =
                     Helper.formatDatePost(selectedDate.toString());
+                print(communityMeetings.dateController.text);
                 setState(() {});
               }
             },
@@ -481,16 +501,17 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             Expanded(
               child: MyCustomTextField.textField(
                 hintText: "Select Start Time",
-                readonly: false,
+                readonly: true,
                 lableText: "Start Time",
                 onTap: () async {
                   DateTime? selectedTime = await selectTime(context, false);
+                  print(selectedTime);
 
                   if (selectedTime != null) {
                     communityMeetings.startTimeController.text =
                         DateFormat('hh:mm a').format(selectedTime);
-
-                    _updateEndTime(selectedTime);
+                    print(selectedTime);
+                    _updateEndTime(selectedTime, true);
                   }
                 },
                 controller: communityMeetings.startTimeController,
@@ -500,7 +521,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             Expanded(
               child: MyCustomTextField.textField(
                 hintText: "Select End Time",
-                readonly: false,
+                readonly: true,
                 lableText: "End Time",
                 controller: communityMeetings.endTimeController,
                 onTap: () async {
@@ -510,7 +531,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                     communityMeetings.endTimeController.text =
                         DateFormat('hh:mm a').format(selectedTime);
 
-                    _updateStartTime(selectedTime);
+                    _updateStartTime(selectedTime, true);
                   }
                 },
               ),
@@ -526,14 +547,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
               borderRadius: BorderRadius.circular(7)),
           child: DropDownWidget(
               status: communityMeetings.memberEmail,
-              statusList: const [
-                'Add a new member',
-                'dhairya.jan9@gmail.com',
-                'dhairya.jan9@gmail.com',
-                'dhairya.jan9@gmail.com',
-                'dhairya.jan9@gmail.com',
-                'dhairya.jan9@gmail.com',
-              ],
+              statusList: communityMeetings.communityMemberEmails,
               onChanged: (val) {
                 setState(() {
                   communityMeetings.memberEmail = val.toString();
@@ -546,7 +560,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
         sizedTextfield,
         if (isAddNewMemberFieldVisible) ...[
           MyCustomTextField.textField(
-              readonly: false,
+              readonly: true,
               hintText: "Enter member's email",
               controller: communityMeetings.memberEmailController,
               lableText: "Add Member"),
@@ -568,18 +582,25 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                 borderColor: GetStoreData.getStore.read('isInvestor')
                     ? AppColors.primaryInvestor
                     : AppColors.primary,
-                onButtonPressed: () {},
+                onButtonPressed: () {
+                  Get.back();
+                },
                 title: "Cancel"),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: AppButton.primaryButton(
                 onButtonPressed: () {
+                  setState(() {
+                    isMeetingsTopics = true;
+                  });
                   splitTopics();
                   if (widget.isEdit && widget.isMeeting) {
+                    Helper.loader(context);
                     communityMeetings.updateCommunityMeeting(
                         topics, widget.meetingId);
                   } else {
+                    Helper.loader(context);
                     communityMeetings.createCommunityMeeting(topics);
                   }
                 },
@@ -592,26 +613,42 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
     );
   }
 
-  void _updateEndTime(DateTime startTime) {
-    final durationInMinutes =
-        int.tryParse(durationMinutesController.text) ?? 30;
-    final endTime = startTime.add(Duration(minutes: durationInMinutes));
-    communityMeetings.endTimeController.text =
-        DateFormat('hh:mm a').format(endTime);
+  void _updateEndTime(DateTime startTime, bool isMeeting) {
+    if (isMeeting) {
+      final durationInMinutes =
+          int.tryParse(communityMeetings.durationController.text) ?? 30;
+      final endTime = startTime.add(Duration(minutes: durationInMinutes));
+      communityMeetings.endTimeController.text =
+          DateFormat('hh:mm a').format(endTime);
+    } else {
+      final durationInMinutes =
+          int.tryParse(communityWebinars.durationMinutesController.text) ?? 30;
+      final endTime = startTime.add(Duration(minutes: durationInMinutes));
+      communityWebinars.endTimeController.text =
+          DateFormat('hh:mm a').format(endTime);
+    }
   }
 
-  void _updateStartTime(DateTime endTime) {
-    final durationInMinutes =
-        int.tryParse(durationMinutesController.text) ?? 30;
-    final startTime = endTime.subtract(Duration(minutes: durationInMinutes));
-    communityMeetings.startTimeController.text =
-        DateFormat('hh:mm a').format(startTime);
+  void _updateStartTime(DateTime endTime, bool isMeeting) {
+    if (isMeeting) {
+      final durationInMinutes =
+          int.tryParse(communityMeetings.durationController.text) ?? 30;
+      final startTime = endTime.subtract(Duration(minutes: durationInMinutes));
+      communityMeetings.startTimeController.text =
+          DateFormat('hh:mm a').format(startTime);
+    } else {
+      final durationInMinutes =
+          int.tryParse(communityWebinars.durationMinutesController.text) ?? 30;
+      final startTime = endTime.subtract(Duration(minutes: durationInMinutes));
+      communityWebinars.startTimeController.text =
+          DateFormat('hh:mm a').format(startTime);
+    }
   }
 
   eventTab() {
     addDescription() async {
-      await communityEvents.descriptionController.insertText(communityEvents
-          .communityEventsData.webinars![widget.index!].description!);
+      await communityEvents.descriptionController.insertText(
+          communityWebinars.communityWebinarsList[widget.index!].description!);
     }
 
     return SingleChildScrollView(
@@ -672,7 +709,9 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                 borderColor: GetStoreData.getStore.read('isInvestor')
                     ? AppColors.primaryInvestor
                     : AppColors.primary,
-                onButtonPressed: () {},
+                onButtonPressed: () {
+                  Get.back();
+                },
                 title: "Cancel"),
           ),
           const SizedBox(width: 12),
@@ -681,8 +720,10 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                 onButtonPressed: () {
                   splitTopics();
                   if (widget.isEdit && widget.isEvent) {
+                    Helper.loader(context);
                     communityEvents.updateCommunityEvent(widget.eventId);
                   } else {
+                    Helper.loader(context);
                     communityEvents.createCommunityEvent();
                   }
                 },
@@ -697,8 +738,8 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
 
   webinarTab() {
     addDescription() async {
-      await communityWebinars.descriptionController.insertText(
-          communityWebinars.communityWebinarsList[widget.index!].description);
+      await communityWebinars.descriptionController.insertText(communityEvents
+          .communityEventsData.webinars![widget.index!].description);
     }
 
     return SingleChildScrollView(
@@ -764,8 +805,8 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                       ),
                     ),
                     hintText: "Select date",
-                    readonly: true,
                     lableText: "Date",
+                    readonly: true,
                     onTap: () async {
                       final selectedDate =
                           await selectDate(context, DateTime.now());
@@ -801,7 +842,9 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                     DateTime? selectedTime = await selectTime(context, false);
 
                     if (selectedTime != null) {
-                      input.text = DateFormat('hh:mm a').format(selectedTime);
+                      communityWebinars.startTimeController.text =
+                          DateFormat('hh:mm a').format(selectedTime);
+                      _updateEndTime(selectedTime, false);
                     }
                   },
                   controller: communityWebinars.startTimeController,
@@ -815,9 +858,10 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                   lableText: "End Time",
                   onTap: () async {
                     DateTime? selectedTime = await selectTime(context, false);
-
                     if (selectedTime != null) {
-                      input.text = DateFormat('hh:mm a').format(selectedTime);
+                      communityWebinars.endTimeController.text =
+                          DateFormat('hh:mm a').format(selectedTime);
+                      _updateStartTime(selectedTime, false);
                     }
                   },
                   controller: communityWebinars.endTimeController,
@@ -846,7 +890,9 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                   borderColor: GetStoreData.getStore.read('isInvestor')
                       ? AppColors.primaryInvestor
                       : AppColors.primary,
-                  onButtonPressed: () {},
+                  onButtonPressed: () {
+                    Get.back();
+                  },
                   title: "Cancel"),
             ),
             const SizedBox(width: 12),
@@ -854,9 +900,11 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
               child: AppButton.primaryButton(
                   onButtonPressed: () {
                     if (widget.isEdit && widget.isWebinar) {
+                      Helper.loader(context);
                       communityWebinars.updateCommunityWebinar(
                           base64, widget.webinarId);
                     } else {
+                      Helper.loader(context);
                       communityWebinars.createCommunityWebinar(base64);
                     }
                   },

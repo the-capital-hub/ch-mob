@@ -34,10 +34,13 @@ class CommunityUpdateSettingsController extends GetxController {
   List<String> termsAndConditions = [];
 
   Future updateCommunity(base64) async {
+    String about = "";
+    await aboutCommunityController.getText().then((val) => about = val);
     var response = await ApiBase.pachRequest(
       body: {
         "name": communityNameController.text,
         "size": communitySize,
+        "about": about,
         "subscription": subscriptionType.toLowerCase(),
         "amount": subscriptionAmountController.text.isEmpty
             ? null

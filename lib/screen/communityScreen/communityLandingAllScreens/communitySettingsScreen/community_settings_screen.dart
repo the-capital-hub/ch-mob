@@ -126,7 +126,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   title: const TextWidget(text: "About Us", textSize: 16),
                   trailing: IconButton(
                       onPressed: () {
-                        Get.to(() => const CommunityAboutScreen());
+                        Get.to(() =>  CommunityAboutScreen(isPublic: false, index: 0));
                       },
                       icon: Icon(
                         Icons.chevron_right,

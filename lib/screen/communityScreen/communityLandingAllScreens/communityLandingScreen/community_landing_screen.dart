@@ -1,4 +1,5 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityAboutController/community_about_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityMeetingsController/community_meetings_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAboutScreen/communities_about_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityHomeScreen/community_home_screen.dart';
@@ -23,26 +24,48 @@ class CommunityLandingScreen extends StatefulWidget {
 
 class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
   CommunityAboutController aboutCommunity = Get.put(CommunityAboutController());
+  CommunityMeetingsController communityMeetings =
+      Get.put(CommunityMeetingsController());
   int selectIndex = 0;
 
-  List icons = [
+  List adminIcons = [
     PngAssetPath.homeIcon,
     PngAssetPath.categoryIcon,
     PngAssetPath.teamIcon,
     PngAssetPath.infoIcon,
     PngAssetPath.exploreIcon
   ];
-  List title = ["Home", "Products", "People", "About", "Settings"];
-  List screen = [
+  List memberIcons = [
+    PngAssetPath.homeIcon,
+    PngAssetPath.categoryIcon,
+    PngAssetPath.teamIcon,
+    PngAssetPath.infoIcon,
+  ];
+  List adminTitle = ["Home", "Products", "People", "About", "Settings"];
+  List memberTitle = ["Home", "Products", "People", "About"];
+  List adminScreen = [
     const CommunityHomeScreen(),
     const CommunityProductsAndServicesScreen(),
     const CommunityPeopleScreen(),
-    const CommunityAboutScreen(),
+    CommunityAboutScreen(
+      isPublic: false,
+      index: 0,
+    ),
     const CommunityUpdateSettingsScreen()
+  ];
+  List memberScreen = [
+    const CommunityHomeScreen(),
+    const CommunityProductsAndServicesScreen(),
+    const CommunityPeopleScreen(),
+    CommunityAboutScreen(
+      isPublic: false,
+      index: 0,
+    ),
   ];
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      communityMeetings.getMemberEmails();
       aboutCommunity.getAboutCommunity().then((v) {
         WidgetsBinding.instance.addPostFrameCallback((_) {});
       });
@@ -99,7 +122,7 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(
-                icons.length,
+                isAdmin ? adminIcons.length : memberIcons.length,
                 (index) => InkWell(
                   onTap: () {
                     selectIndex = index;
@@ -112,7 +135,7 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          icons[index],
+                          isAdmin ? adminIcons[index] : memberIcons[index],
                           color: selectIndex == index
                               ? AppColors.primary
                               : AppColors.whiteCard,
@@ -120,7 +143,8 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
                         ),
                         const SizedBox(height: 2),
                         TextWidget(
-                          text: title[index],
+                          text:
+                              isAdmin ? adminTitle[index] : memberTitle[index],
                           textSize: 10,
                           color: selectIndex == index
                               ? AppColors.primary
@@ -135,7 +159,7 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
               ),
             ),
           ),
-          body: screen[selectIndex],
+          body: isAdmin ? adminScreen[selectIndex] : memberScreen[selectIndex],
         ));
   }
 }

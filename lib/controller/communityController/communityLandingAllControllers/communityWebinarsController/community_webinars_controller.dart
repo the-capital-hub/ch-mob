@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityEventsController/community_events_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityWebinarsModel/community_webinars_model.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
@@ -10,8 +11,12 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 
+CommunityEventsController communityEvents =
+    Get.put(CommunityEventsController());
+
 class CommunityWebinarsController extends GetxController {
   var isLoading = false.obs;
+  DateTime selectDate = DateTime.now();
   RxList<CommunityWebinars> communityWebinarsList = <CommunityWebinars>[].obs;
 
   Future<void> getCommunityWebinars() async {
@@ -25,7 +30,7 @@ class CommunityWebinarsController extends GetxController {
       if (data["status"]) {
         GetCommunityWebinarsModel communityWebinarsModel =
             GetCommunityWebinarsModel.fromJson(data);
-        communityWebinarsList.assignAll(communityWebinarsModel.data);
+        communityWebinarsList.assignAll(communityWebinarsModel.data!);
       }
     } catch (e) {
       log("getCommunityWebinars $e");
@@ -75,8 +80,9 @@ class CommunityWebinarsController extends GetxController {
         "duration": int.tryParse(durationMinutesController.text),
         "discount": int.tryParse(priceDiscountController.text),
         "price": int.tryParse(priceController.text),
-        "communityId": createdCommunityId,
-        "image": base64
+        "community": createdCommunityId,
+        "image": base64,
+        "webinarType": "Private",
       },
       withToken: true,
       extendedURL: ApiUrl.createWebinar,
@@ -85,10 +91,12 @@ class CommunityWebinarsController extends GetxController {
     var data = json.decode(response.body);
     if (data["status"]) {
       Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
-      getCommunityWebinars();
+      communityEvents.getCommunityEvents();
       return true;
     } else {
+      Get.back();
       Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
@@ -102,7 +110,20 @@ class CommunityWebinarsController extends GetxController {
     String? dateIso = "${date?.toIso8601String() ?? ""}Z";
     String startTime = convertToIsoFormat(startTimeController.text, date);
     String endTime = convertToIsoFormat(endTimeController.text, date);
-
+    var bod = {
+      "date": dateIso,
+      "title": titleController.text,
+      "description": description,
+      "startTime": startTime,
+      "endTime": endTime,
+      "duration": int.tryParse(durationMinutesController.text),
+      "discount": int.tryParse(priceDiscountController.text),
+      "price": int.tryParse(priceController.text),
+      "community": createdCommunityId,
+      "image": base64,
+      "webinarType": "Private",
+    };
+    log(bod.toString());
     var response = await ApiBase.pachRequest(
       body: {
         "date": dateIso,
@@ -113,8 +134,9 @@ class CommunityWebinarsController extends GetxController {
         "duration": int.tryParse(durationMinutesController.text),
         "discount": int.tryParse(priceDiscountController.text),
         "price": int.tryParse(priceController.text),
-        "communityId": createdCommunityId,
-        "image": base64
+        "community": createdCommunityId,
+        "image": base64,
+        "webinarType": "Private",
       },
       withToken: true,
       extendedURL: ApiUrl.updateWebinar + webinarId,
@@ -123,10 +145,12 @@ class CommunityWebinarsController extends GetxController {
     var data = json.decode(response.body);
     if (data["status"]) {
       Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
-      getCommunityWebinars();
+      communityEvents.getCommunityEvents();
       return true;
     } else {
+      Get.back();
       Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
@@ -141,9 +165,43 @@ class CommunityWebinarsController extends GetxController {
     var data = json.decode(response.body);
     if (data["status"]) {
       communityWebinarsList.removeWhere((webinar) => webinar.id == webinarId);
+      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
+      communityEvents.getCommunityEvents();
       return true;
     } else {
+      Get.back();
+      HelperSnackBar.snackBar("Error", data["message"]);
+
+      return false;
+    }
+  }
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController infoController = TextEditingController();
+
+  Future communityScheduleEvent(webinarId) async {
+    var response = await ApiBase.postRequest(
+      body: {
+        "name": nameController.text,
+        "email": emailController.text,
+        "additionalInfo": infoController.text
+      },
+      withToken: true,
+      extendedURL: ApiUrl.scheduleEvent + webinarId,
+    );
+    log(response.body);
+    var data = json.decode(response.body);
+    if (data["status"]) {
+      Get.back();
+      Get.back();
+      HelperSnackBar.snackBar("Success", data["message"]);
+      communityEvents.getCommunityEvents();
+      return true;
+    } else {
+      Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
     }
