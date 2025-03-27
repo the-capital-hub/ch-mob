@@ -74,7 +74,7 @@ class CommunityMeetingsController extends GetxController {
     var bod = {
       "title": titleController.text,
       "description": description,
-      "amount": amountController.text.isEmpty
+      "price": amountController.text.isEmpty
           ? null
           : int.tryParse(amountController.text),
       "duration": durationController.text.isEmpty
@@ -88,8 +88,6 @@ class CommunityMeetingsController extends GetxController {
             {
               "startTime": startTime,
               "endTime": endTime,
-              // "isBooked": true,
-              // "meeting_link": "https://example.com/meeting1",
               "memberEmail": memberEmailController.text
             },
           ]
@@ -101,7 +99,7 @@ class CommunityMeetingsController extends GetxController {
       body: {
         "title": titleController.text,
         "description": description,
-        "amount": amountController.text.isEmpty
+        "price": amountController.text.isEmpty
             ? null
             : int.tryParse(amountController.text),
         "duration": durationController.text.isEmpty
@@ -115,8 +113,6 @@ class CommunityMeetingsController extends GetxController {
               {
                 "startTime": startTime,
                 "endTime": endTime,
-                // "isBooked": true,
-                // "meeting_link": "https://example.com/meeting1",
                 "memberEmail": memberEmailController.text
               },
             ]
@@ -156,7 +152,7 @@ class CommunityMeetingsController extends GetxController {
       body: {
         "title": titleController.text,
         "description": description,
-        "amount": amountController.text.isEmpty
+        "price": amountController.text.isEmpty
             ? null
             : int.tryParse(amountController.text),
         "duration": durationController.text.isEmpty
@@ -170,8 +166,6 @@ class CommunityMeetingsController extends GetxController {
               {
                 "startTime": startTime,
                 "endTime": endTime,
-                // "isBooked": true,
-                // "meeting_link": "https://example.com/meeting1",
                 "memberEmail": memberEmailController.text
               },
             ]
@@ -246,28 +240,28 @@ class CommunityMeetingsController extends GetxController {
     }
   }
 
-  List<String> communityMemberEmails = [];
+  List<String> communityMemberEmails = ["Add a new member"];
 
-Future<void> getMemberEmails() async {
-  try {
-    isLoading.value = true;
-    var response = await ApiBase.getRequest(
-        extendedURL: ApiUrl.getMemberEmails + createdCommunityId);
-    log(response.body);
-    var data = json.decode(response.body);
-    if (data["status"]) {
-      GetMemberEmailModel communityMemberEmailModel =
-          GetMemberEmailModel.fromJson(data);
-      
-      // Populate communityMemberEmails with formatted strings
-      communityMemberEmails = communityMemberEmailModel.data
-          .map((member) => "${member.memberName} ${member.memberEmail}")
-          .toList();
+  Future<void> getMemberEmails() async {
+    try {
+      isLoading.value = true;
+      var response = await ApiBase.getRequest(
+          extendedURL: ApiUrl.getMemberEmails + createdCommunityId);
+      log(response.body);
+      var data = json.decode(response.body);
+      if (data["status"]) {
+        GetMemberEmailModel communityMemberEmailModel =
+            GetMemberEmailModel.fromJson(data);
+
+        communityMemberEmails = ["Add a new member"] +
+            communityMemberEmailModel.data
+                .map((member) => "${member.memberName} ${member.memberEmail}")
+                .toList();
+      }
+    } catch (e) {
+      log("getMemberEmails $e");
+    } finally {
+      isLoading.value = false;
     }
-  } catch (e) {
-    log("getMemberEmails $e");
-  } finally {
-    isLoading.value = false;
   }
-}
 }
