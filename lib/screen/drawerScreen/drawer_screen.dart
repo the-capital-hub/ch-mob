@@ -30,6 +30,7 @@ import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../controller/homeController/home_controller.dart';
@@ -210,49 +211,68 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       ),
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
-                      
-                        if (index == 11 || index == 12) {
-                          return _buildExpansionTile(index);
-                        } else {
-                          return InkWell(
-                            onTap: () {
-                              if (index == 0) {
-                                homeController.selectIndex = 0;
-                              }
-                              Get.to(page[index]);
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(right: 10),
-                              decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(100),
-                                      bottomRight: Radius.circular(100))),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    bottom: 10, top: 10, left: 20),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Image.asset(
-                                      icons[index],
-                                      color: AppColors.white,
-                                      height: 22,
-                                    ),
-                                    const SizedBox(
-                                      width: 12,
-                                    ),
-                                    TextWidget(
-                                        text: items[index],
-                                        textSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        maxLine: 1,
-                                        align: TextAlign.center),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        }
+                        return AnimationConfiguration.staggeredList(
+                            position: index,
+                            delay: const Duration(milliseconds: 50),
+                            duration: const Duration(
+                                milliseconds: 300), // Smooth animation
+                            child: SlideAnimation(
+                                horizontalOffset: -250,
+                                verticalOffset: -20,
+                                curve:
+                                    Curves.easeOutBack, // Adds a bounce effect
+                                child: FadeInAnimation(
+                                    child: (index == 11 || index == 12)
+                                        ? _buildExpansionTile(index)
+                                        : InkWell(
+                                            onTap: () {
+                                              if (index == 0) {
+                                                homeController.selectIndex = 0;
+                                              }
+                                              Get.to(page[index]);
+                                            },
+                                            child: Container(
+                                              margin: const EdgeInsets.only(
+                                                  right: 10),
+                                              decoration: const BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  100),
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                  100))),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 10,
+                                                    top: 10,
+                                                    left: 20),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Image.asset(
+                                                      icons[index],
+                                                      color: AppColors.white,
+                                                      height: 22,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 12,
+                                                    ),
+                                                    TextWidget(
+                                                        text: items[index],
+                                                        textSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        maxLine: 1,
+                                                        align:
+                                                            TextAlign.center),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ))));
                       },
                       separatorBuilder: (BuildContext context, int index) {
                         return const SizedBox(height: 0);
@@ -355,46 +375,52 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ? communitySubItems.map((communitySubItemsTitle) {
                 int communitySubItemsIndex =
                     communitySubItems.indexOf(communitySubItemsTitle);
-                return SizedBox(
-                  height: 30,
-                  child: ListTile(
-                    dense: true,
-                    visualDensity: VisualDensity.compact,
-                    contentPadding:
-                        const EdgeInsets.only(left: 55, top: 0, bottom: 0),
-                    title: TextWidget(
-                      text: communitySubItemsTitle,
-                      textSize: 16,
-                      fontWeight: FontWeight.w500,
-                      maxLine: 1,
-                      color: AppColors.white,
+                return InkWell(
+                  onTap: () {
+                    Get.to(communitySubPages[communitySubItemsIndex]);
+                  },
+                  splashColor: AppColors.transparent,
+                  child: SizedBox(
+                    height: 35,
+                    child: ListTile(
+                      dense: true,
+                      visualDensity: VisualDensity.compact,
+                      contentPadding:
+                          const EdgeInsets.only(left: 55, top: 0, bottom: 0),
+                      title: TextWidget(
+                        text: communitySubItemsTitle,
+                        textSize: 15,
+                        fontWeight: FontWeight.w500,
+                        maxLine: 1,
+                        color: AppColors.white,
+                      ),
                     ),
-                    onTap: () {
-                      Get.to(communitySubPages[communitySubItemsIndex]);
-                    },
                   ),
                 );
               }).toList()
             : meetingsSubItems.map((meetingsSubItemsTitle) {
                 int meetingsSubItemsIndex =
                     meetingsSubItems.indexOf(meetingsSubItemsTitle);
-                return SizedBox(
-                  height: 30,
-                  child: ListTile(
-                    dense: true,
-                    visualDensity: VisualDensity.compact,
-                    contentPadding:
-                        const EdgeInsets.only(left: 55, top: 0, bottom: 0),
-                    title: TextWidget(
-                      text: meetingsSubItemsTitle,
-                      textSize: 16,
-                      fontWeight: FontWeight.w500,
-                      maxLine: 1,
-                      color: AppColors.white,
+                return InkWell(
+                  onTap: () {
+                    Get.to(meetingsSubPages[meetingsSubItemsIndex]);
+                  },
+                  splashColor: AppColors.transparent,
+                  child: SizedBox(
+                    height: 35,
+                    child: ListTile(
+                      dense: true,
+                      visualDensity: VisualDensity.compact,
+                      contentPadding:
+                          const EdgeInsets.only(left: 55, top: 0, bottom: 0),
+                      title: TextWidget(
+                        text: meetingsSubItemsTitle,
+                        textSize: 15,
+                        fontWeight: FontWeight.w500,
+                        maxLine: 1,
+                        color: AppColors.white,
+                      ),
                     ),
-                    onTap: () {
-                      Get.to(meetingsSubPages[meetingsSubItemsIndex]);
-                    },
                   ),
                 );
               }).toList(),

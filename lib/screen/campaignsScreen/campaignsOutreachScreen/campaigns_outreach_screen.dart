@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 
 import '../../../model/01-StartupModel/campaignModel/outreach_list_model.dart';
 import '../../../utils/appcolors/app_colors.dart';
+import '../../../utils/helper/placeholder.dart';
 import '../../../widget/textwidget/text_widget.dart';
 
 class CampaignsOutreachScreen extends StatefulWidget {
@@ -33,95 +34,105 @@ class _CampaignsOutreachScreenState extends State<CampaignsOutreachScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Dark background
+      backgroundColor: AppColors.transparent, // Dark background
       body: Obx(
         () => campaignsController.isOutreachLoading.value
-            ? Helper.pageLoading()
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 8),
-                  const TextWidget(
-                    text: "Your Email Campaigns",
-                    textSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  const SizedBox(height: 8),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 80),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: DataTable(
-                                columnSpacing: 25,
-                                headingRowHeight: 50,
-                                dataRowHeight: 45,
-                                dividerThickness: 0.4,
-                                horizontalMargin: 20,
-                                border: TableBorder.all(
-                                    color: AppColors.white38,
-                                    width: 1,
-                                    borderRadius: BorderRadius.circular(12)),
-                                headingRowColor:
-                                    MaterialStateProperty.resolveWith<Color?>(
-                                  (Set<MaterialState> states) {
-                                    return AppColors.white12;
-                                  },
+            ? ShimmerLoader.buildShimmerTable()
+            : campaignsController.outreachList.isEmpty
+                ? const Center(
+                    child: TextWidget(
+                        text: "No Data Found",
+                        textSize: 15,
+                        fontWeight: FontWeight.w500),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
+                      const TextWidget(
+                        text: "Your Email Campaigns",
+                        textSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      const SizedBox(height: 8),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 80),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: DataTable(
+                                    columnSpacing: 25,
+                                    headingRowHeight: 50,
+                                    dataRowHeight: 45,
+                                    dividerThickness: 0.4,
+                                    horizontalMargin: 20,
+                                    border: TableBorder.all(
+                                        color: AppColors.white38,
+                                        width: 1,
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    headingRowColor: MaterialStateProperty
+                                        .resolveWith<Color?>(
+                                      (Set<MaterialState> states) {
+                                        return AppColors.white12;
+                                      },
+                                    ),
+                                    columns: const [
+                                      DataColumn(
+                                          label: TextWidget(
+                                              text: "Status", textSize: 15)),
+                                      DataColumn(
+                                          label: SizedBox(
+                                              width: 140,
+                                              child: TextWidget(
+                                                  text: "Campaign name",
+                                                  align: TextAlign.center,
+                                                  textSize: 15))),
+                                      DataColumn(
+                                          label: TextWidget(
+                                              text: "Emails", textSize: 15)),
+                                      DataColumn(
+                                          label: TextWidget(
+                                              text: "Recipients",
+                                              textSize: 15)),
+                                      DataColumn(
+                                          label: TextWidget(
+                                              text: "Open rate", textSize: 15)),
+                                      DataColumn(
+                                          label: TextWidget(
+                                              text: "Reply rate",
+                                              textSize: 15)),
+                                      DataColumn(
+                                          label: SizedBox(
+                                              width: 194,
+                                              child: TextWidget(
+                                                  text: "Actions",
+                                                  align: TextAlign.center,
+                                                  textSize: 15))),
+                                    ],
+                                    rows: List.generate(
+                                        campaignsController.outreachList.length,
+                                        (index) {
+                                      return _buildDataRow(
+                                        context,
+                                        index,
+                                        campaignsController.outreachList[index],
+                                      );
+                                    }),
+                                  ),
                                 ),
-                                columns: const [
-                                  DataColumn(
-                                      label: TextWidget(
-                                          text: "Status", textSize: 15)),
-                                  DataColumn(
-                                      label: SizedBox(
-                                          width: 140,
-                                          child: TextWidget(
-                                              text: "Campaign name",
-                                              align: TextAlign.center,
-                                              textSize: 15))),
-                                  DataColumn(
-                                      label: TextWidget(
-                                          text: "Emails", textSize: 15)),
-                                  DataColumn(
-                                      label: TextWidget(
-                                          text: "Recipients", textSize: 15)),
-                                  DataColumn(
-                                      label: TextWidget(
-                                          text: "Open rate", textSize: 15)),
-                                  DataColumn(
-                                      label: TextWidget(
-                                          text: "Reply rate", textSize: 15)),
-                                  DataColumn(
-                                      label: SizedBox(
-                                          width: 194,
-                                          child: TextWidget(
-                                              text: "Actions",
-                                              align: TextAlign.center,
-                                              textSize: 15))),
-                                ],
-                                rows: List.generate(
-                                    campaignsController.outreachList.length,
-                                    (index) {
-                                  return _buildDataRow(
-                                    context,
-                                    index,
-                                    campaignsController.outreachList[index],
-                                  );
-                                }),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
       ),
     );
   }

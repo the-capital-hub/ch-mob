@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:capitalhub_crm/screen/01-Investor-Section/landingScreen/landing_screen_inv.dart';
 import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -8,7 +9,6 @@ import 'package:get_storage/get_storage.dart';
 class GetStoreData {
   static final getStore = GetStorage();
 
-  // Storing user data in the old format
   static void storeUserData({
     required String id,
     required String name,
@@ -17,6 +17,7 @@ class GetStoreData {
     required String phone,
     required String authToken,
     required bool isInvestor,
+    required bool isSubscribe,
   }) {
     getStore.write('access_token', authToken);
     getStore.write('id', id);
@@ -25,6 +26,7 @@ class GetStoreData {
     getStore.write('phone', phone);
     getStore.write('email', email);
     getStore.write('isInvestor', isInvestor);
+    getStore.write('isSubscribed', isSubscribe);
   }
 }
 
@@ -75,18 +77,21 @@ class AccountManager {
 
     if (selectedUser != null) {
       GetStoreData.storeUserData(
-        id: selectedUser.id,
-        name: selectedUser.name,
-        email: selectedUser.email,
-        profileImage: selectedUser.profileImage,
-        phone: selectedUser.phone,
-        authToken: selectedUser.authToken,
-        isInvestor: selectedUser.isInvestor,
-      );
+          id: selectedUser.id,
+          name: selectedUser.name,
+          email: selectedUser.email,
+          profileImage: selectedUser.profileImage,
+          phone: selectedUser.phone,
+          authToken: selectedUser.authToken,
+          isInvestor: selectedUser.isInvestor,
+          isSubscribe: selectedUser.isSubscribe);
 
       log("Switched to user: ${selectedUser.name}");
-
-      Get.offAll(LandingScreen());
+      if (GetStoreData.getStore.read('isInvestor')) {
+        Get.offAll(() => const LandingScreenInvestor());
+      } else {
+        Get.offAll(() => const LandingScreen());
+      }
     } else {
       print("User not found!");
     }
@@ -101,6 +106,7 @@ class UserModel {
   final String phone;
   final String authToken;
   final bool isInvestor;
+  final bool isSubscribe;
 
   UserModel({
     required this.id,
@@ -110,6 +116,7 @@ class UserModel {
     required this.phone,
     required this.authToken,
     required this.isInvestor,
+    required this.isSubscribe,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -121,6 +128,7 @@ class UserModel {
       phone: json['phone'],
       authToken: json['authToken'],
       isInvestor: json['isInvestor'],
+      isSubscribe: json['isSubscribe'],
     );
   }
 
@@ -133,6 +141,7 @@ class UserModel {
       'phone': phone,
       'authToken': authToken,
       'isInvestor': isInvestor,
+      'isSubscribe': isSubscribe
     };
   }
 }

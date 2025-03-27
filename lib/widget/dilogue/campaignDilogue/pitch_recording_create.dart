@@ -85,7 +85,7 @@ Future<bool> createPitchRecording(
                       ),
                       MyCustomTextField.textField(
                           hintText: "Enter Video Url",
-                          controller: documentController.folderNameController,
+                          controller: documentController.videoUrlController,
                           borderClr: AppColors.white38,
                           lableText: "Url"),
                       const SizedBox(height: 16),

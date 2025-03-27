@@ -52,6 +52,10 @@ package="com.capitalhub.app">
             
             android:name="com.google.android.gms.auth.api.signin"
             android:value="556993160670-o4cv647m8768qdoqp9od19egqgaq9rcb.apps.googleusercontent.com" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="high_importance_channel"/>
+
     </application>
     <queries>
         <intent>

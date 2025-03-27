@@ -7,7 +7,7 @@ import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+// import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../utils/appcolors/app_colors.dart';
 import '../../../utils/constant/app_var.dart';
@@ -150,34 +150,34 @@ class _MyStartupScreenInvestorState extends State<MyStartupScreenInvestor> {
                         clipBehavior: Clip.none,
                         alignment: Alignment.center,
                         children: [
-                          SfCircularChart(
-                            margin: const EdgeInsets.all(0),
-                            series: <DoughnutSeries<_ChartData, String>>[
-                              DoughnutSeries<_ChartData, String>(
-                                dataSource: getChartData(),
-                                radius: "115",
-                                innerRadius: "70",
-                                xValueMapper: (_ChartData data, _) =>
-                                    data.category,
-                                yValueMapper: (_ChartData data, _) =>
-                                    data.value,
-                                dataLabelMapper: (_ChartData data, _) =>
-                                    '${data.value}%',
-                                strokeColor: AppColors.blackCard,
-                                pointColorMapper: (_ChartData data, _) =>
-                                    data.color,
-                                dataLabelSettings: const DataLabelSettings(
-                                  isVisible: true,
-                                  // labelPosition: ChartDataLabelPosition
-                                  //     .outside, // Position the labels outside
-                                  // connectorLineSettings: ConnectorLineSettings(
-                                  //   type: ConnectorType
-                                  //       .curve, // Curve the connector lines
-                                  // ),
-                                ),
-                              ),
-                            ],
-                          ),
+                          // SfCircularChart(
+                          //   margin: const EdgeInsets.all(0),
+                          //   series: <DoughnutSeries<_ChartData, String>>[
+                          //     DoughnutSeries<_ChartData, String>(
+                          //       dataSource: getChartData(),
+                          //       radius: "115",
+                          //       innerRadius: "70",
+                          //       xValueMapper: (_ChartData data, _) =>
+                          //           data.category,
+                          //       yValueMapper: (_ChartData data, _) =>
+                          //           data.value,
+                          //       dataLabelMapper: (_ChartData data, _) =>
+                          //           '${data.value}%',
+                          //       strokeColor: AppColors.blackCard,
+                          //       pointColorMapper: (_ChartData data, _) =>
+                          //           data.color,
+                          //       dataLabelSettings: const DataLabelSettings(
+                          //         isVisible: true,
+                          //         // labelPosition: ChartDataLabelPosition
+                          //         //     .outside, // Position the labels outside
+                          //         // connectorLineSettings: ConnectorLineSettings(
+                          //         //   type: ConnectorType
+                          //         //       .curve, // Curve the connector lines
+                          //         // ),
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                           const TextWidget(
                               text: "Total Investment\n50 Lakhs",
                               align: TextAlign.center,

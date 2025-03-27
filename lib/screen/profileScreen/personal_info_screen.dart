@@ -262,6 +262,17 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return Column(
                               children: [
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: InkWell(
+                                    onTap: () {
+                                      educationInfo.removeAt(index);
+                                      setState(() {});
+                                    },
+                                    child: const Icon(Icons.remove_circle,
+                                        color: AppColors.redColor),
+                                  ),
+                                ),
                                 MyCustomTextField.textField(
                                     lableText: "School",
                                     hintText: "Enter School Name",
@@ -496,9 +507,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   imgCropper(img) async {
     croppedFile = await ImageCropper().cropImage(
       sourcePath: img,
-     aspectRatioPresets: [
-        CropAspectRatioPreset.square,
-      ],
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
       uiSettings: [
         AndroidUiSettings(
             toolbarTitle: 'Crop your image',
@@ -518,7 +527,9 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   List<CompanyInfo> companyInfo = [];
   List<EducationInfo> educationInfo = [];
   populateData() {
-    for (var i = 0; i < profileController.profileData.user!.education!.length; i++) {
+    for (var i = 0;
+        i < profileController.profileData.user!.education!.length;
+        i++) {
       educationInfo.add(EducationInfo(
           educationSchool: TextEditingController(
               text: profileController
@@ -527,8 +538,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
               text: profileController
                   .profileData.user!.education![i].educationLocation),
           educationCourse: TextEditingController(
-              text:
-                  profileController.profileData.user!.education![i].educationCourse),
+              text: profileController
+                  .profileData.user!.education![i].educationCourse),
           educationPassoutDate: TextEditingController(
               text: profileController
                   .profileData.user!.education![i].educationPassYear),
@@ -538,20 +549,26 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
           educationLogo:
               profileController.profileData.user!.education![i].educationLogo));
     }
-    for (var i = 0; i < profileController.profileData.user!.experience!.length; i++) {
+    for (var i = 0;
+        i < profileController.profileData.user!.experience!.length;
+        i++) {
       companyInfo.add(CompanyInfo(
           companyName: TextEditingController(
-              text: profileController.profileData.user!.experience![i].companyName),
+              text: profileController
+                  .profileData.user!.experience![i].companyName),
           companyLocation: TextEditingController(
-              text: profileController.profileData.user!.experience![i].location),
+              text:
+                  profileController.profileData.user!.experience![i].location),
           companyRole: TextEditingController(
               text: profileController.profileData.user!.experience![i].role),
           companyStartDate: TextEditingController(
-              text: profileController.profileData.user!.experience![i].startYear),
+              text:
+                  profileController.profileData.user!.experience![i].startYear),
           companyEndDate: TextEditingController(
               text: profileController.profileData.user!.experience![i].endYear),
           companyDescription: TextEditingController(
-              text: profileController.profileData.user!.experience![i].description),
+              text: profileController
+                  .profileData.user!.experience![i].description),
           companyLogo:
               profileController.profileData.user!.experience![i].companyLogo));
     }

@@ -16,10 +16,12 @@ import 'package:capitalhub_crm/widget/dilogue/campaignDilogue/add_list_investor_
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../../utils/getStore/get_store.dart';
+import '../../utils/helper/placeholder.dart';
 import '../01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 
 class ExploreScreen extends StatefulWidget {
@@ -39,7 +41,9 @@ class _ExploreScreenState extends State<ExploreScreen>
     super.initState();
     exploreController.selectedType = "startup";
     exploreController.tabController = TabController(length: 4, vsync: this);
-    exploreController.getExploreCollection();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      exploreController.getExploreCollection();
+    });
   }
 
   @override
@@ -155,7 +159,7 @@ class _ExploreScreenState extends State<ExploreScreen>
                     // ),
                     Expanded(
                       child: exploreController.isLoading.value
-                          ? Helper.pageLoading()
+                          ? ShimmerLoader.shimmerLoadingExplore()
                           : TabBarView(
                               controller: exploreController.tabController,
                               physics: const NeverScrollableScrollPhysics(),

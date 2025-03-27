@@ -17,6 +17,7 @@ import 'package:capitalhub_crm/screen/publicProfileScreen/public_profile_screen.
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
+import 'package:capitalhub_crm/utils/paymentService/payment_service.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dilogue/create_collection.dart';
 import 'package:capitalhub_crm/widget/dilogue/share_dilogue.dart';
@@ -32,6 +33,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../controller/resourceController/resource_controller.dart';
 import '../../utils/constant/app_var.dart';
 import '../../utils/constant/asset_constant.dart';
+import '../../utils/helper/placeholder.dart';
 import '../Auth-Process/authScreen/signup_info_page.dart';
 import '../chatScreen/chat_member_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -39,6 +41,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../notificationScreen/notification_screen.dart';
 import '../profileScreen/polls_widget_profile.dart';
 import '../resourceScreen/resource_template.dart';
+import '../subscriptionScreen/subscription_screen.dart';
 import 'widget/video_player.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -183,6 +186,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ],
             ),
             actions: [
+              if (!GetStoreData.getStore.read('isSubscribed'))
+                InkWell(
+                    onTap: () {
+                      Get.to(SubscriptionScreen(fromCampaign: false));
+                    },
+                    child: Image.asset(
+                      PngAssetPath.subscribeImg,
+                      height: 35,
+                    )),
+              const SizedBox(width: 12),
               InkWell(
                   onTap: () {
                     Get.to(const NotificationScreen())!.whenComplete(() {
@@ -195,12 +208,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           if (notificaitonController.notificationCount.value !=
                               "0")
                             CircleAvatar(
-                              radius: 7,
+                              radius: 8,
                               backgroundColor: AppColors.redColor,
                               child: TextWidget(
                                   text: notificaitonController
                                       .notificationCount.value,
-                                  textSize: 9),
+                                  textSize: 8),
                             )
                         ],
                       ))),
@@ -216,8 +229,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               const SizedBox(width: 10),
             ],
           ),
+        
           body: Obx(() => isLoading.value
-              ? Helper.pageLoading()
+              ? ShimmerLoader.shimmerLoading()
               : Stack(
                   alignment: Alignment.bottomCenter,
                   children: [
@@ -446,15 +460,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   )
                                 ],
                               ),
-                              // const SizedBox(height: 1),
                               TextWidget(
                                 text:
                                     "${homeController.postList[index].userDesignation}  ${homeController.postList[index].userCompany}",
                                 textSize: 12,
+                                maxLine: 2,
                                 color: AppColors.whiteCard,
                               ),
-                              // const SizedBox(height: 1),
-                              const TextWidget(text: "Bangalore", textSize: 12),
                             ],
                           ),
                         ),
@@ -491,8 +503,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           onTapUrl: (url) async {
                             return await launch(url);
                           },
-                          textStyle:
-                              TextStyle(fontSize: 12, color: AppColors.white),
+                          textStyle: TextStyle(
+                              fontSize:
+                                  (MediaQuery.of(context).size.width / 375) *
+                                      12,
+                              color: AppColors.white),
                         ),
                         if (homeController.postList[index].description!.length >
                             200)

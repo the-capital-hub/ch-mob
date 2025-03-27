@@ -47,9 +47,7 @@ class ImagePickerWidget {
   imgCropper(img) async {
     croppedFile = await ImageCropper().cropImage(
       sourcePath: img,
-      aspectRatioPresets: [
-        CropAspectRatioPreset.square,
-      ],
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
       uiSettings: [
         AndroidUiSettings(
             toolbarTitle: 'Crop your image',

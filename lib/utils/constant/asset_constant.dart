@@ -15,6 +15,7 @@ class PngAssetPath {
   static const String otpImg = 'assets/img/onboarding&auth/otp.png';
   static const String bgImg = 'assets/img/bg1.png';
   static const String investedImg = 'assets/img/invested.png';
+  static const String subscribeImg = 'assets/img/subscribe.png';
   static const String verifyImg = 'assets/img/verify.png';
   static const String loginSuccessImg =
       'assets/img/onboarding&auth/loginSuccess.png';

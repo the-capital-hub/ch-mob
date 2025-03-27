@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 
 import '../../utils/constant/app_var.dart';
 import '../../utils/getStore/get_store.dart';
+import '../../utils/helper/placeholder.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -48,7 +49,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ]),
           body: Obx(
             () => notificaitonController.isLoading.value
-                ? Helper.pageLoading()
+                ? ShimmerLoader.shimmerTile()
                 : notificaitonController.notificationList.isEmpty
                     ? const Center(
                         child: TextWidget(

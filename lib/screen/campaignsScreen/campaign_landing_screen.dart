@@ -24,6 +24,7 @@ class _CampaignLandingScreenState extends State<CampaignLandingScreen>
   void initState() {
     super.initState();
     campaignsController.tabController = TabController(length: 3, vsync: this);
+    campaignsController.getSubscriptionStatus();
   }
 
   @override
@@ -70,7 +71,7 @@ class _CampaignLandingScreenState extends State<CampaignLandingScreen>
               ),
               Expanded(
                 child: TabBarView(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   controller: campaignsController.tabController,
                   children: const [
                     CampaignsListScreen(),

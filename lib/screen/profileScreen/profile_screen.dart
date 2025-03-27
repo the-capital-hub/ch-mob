@@ -25,6 +25,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:get/get.dart';
 
 import '../../utils/constant/app_var.dart';
+import '../../utils/helper/placeholder.dart';
 import '../chatScreen/chat_member_screen.dart';
 import 'add_edit_philosophy.dart';
 
@@ -93,7 +94,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                 title: "Profile", hideBack: true, autoAction: true),
             body: Obx(() {
               if (profileController.isLoading.value) {
-                return Helper.pageLoading();
+                return ShimmerLoader.shimmerProfile();
               }
               if (profileController.profileData.banner == null) {
                 return const SizedBox();
@@ -166,62 +167,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 ? AppColors.primaryInvestor
                                 : AppColors.primary,
                             textSize: 14),
-                        const SizedBox(height: 8),
-                        Card(
-                          margin: const EdgeInsets.all(4),
-                          color: AppColors.blackCard,
-                          surfaceTintColor: AppColors.blackCard,
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    const TextWidget(
-                                        text: "Top Voice ",
-                                        textSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                    Icon(
-                                      Icons.shield,
-                                      size: 20,
-                                      color: AppColors.white,
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                TextWidget(
-                                  text: profileController
-                                      .profileData.user!.topVoice!.description
-                                      .toString(),
-                                  textSize: 14,
-                                  maxLine: 2,
-                                ),
-                                const Divider(),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                LinearProgressIndicator(
-                                  value: profileController
-                                      .profileData.user!.topVoice!.postsCount,
-                                  backgroundColor: AppColors.grey700,
-                                  valueColor: AlwaysStoppedAnimation<
-                                      Color>(GetStoreData.getStore
-                                          .read('isInvestor')
-                                      ? AppColors.primaryInvestor
-                                      : AppColors
-                                          .primary), // color of the progress bar
-                                  borderRadius: BorderRadius.circular(20),
-                                  minHeight: 5,
-                                  semanticsLabel: "Post",
-                                ),
-                                const SizedBox(height: 12),
-                              ],
-                            ),
-                          ),
-                        ),
                         const SizedBox(height: 8),
                         if (GetStoreData.getStore.read('isInvestor'))
                           Card(
@@ -411,7 +356,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                 padding:
                                                     const EdgeInsets.all(8),
                                                 decoration: BoxDecoration(
-                                                  color: AppColors.white12,
+                                                  color: AppColors.blackCard,
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                   border: Border.all(
@@ -488,9 +433,15 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                                         index]
                                                                     .startYear,
                                                             textSize: 12),
-                                                        const TextWidget(
-                                                            text: "To",
-                                                            textSize: 12),
+                                                        if (profileController
+                                                            .profileData
+                                                            .user!
+                                                            .experience![index]
+                                                            .endYear
+                                                            .isNotEmpty)
+                                                          const TextWidget(
+                                                              text: "To",
+                                                              textSize: 12),
                                                         TextWidget(
                                                             text:
                                                                 profileController
@@ -539,7 +490,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                 padding:
                                                     const EdgeInsets.all(8),
                                                 decoration: BoxDecoration(
-                                                  color: AppColors.white12,
+                                                  color: AppColors.blackCard,
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                   border: Border.all(
@@ -684,6 +635,62 @@ class _ProfileScreenState extends State<ProfileScreen>
                             ],
                           ),
                         ),
+                        sizedTextfield,
+                        Card(
+                          margin: const EdgeInsets.all(4),
+                          color: AppColors.blackCard,
+                          surfaceTintColor: AppColors.blackCard,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const TextWidget(
+                                        text: "Top Voice ",
+                                        textSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                    Icon(
+                                      Icons.shield,
+                                      size: 20,
+                                      color: AppColors.white,
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                TextWidget(
+                                  text: profileController
+                                      .profileData.user!.topVoice!.description
+                                      .toString(),
+                                  textSize: 14,
+                                  maxLine: 2,
+                                ),
+                                const Divider(),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                LinearProgressIndicator(
+                                  value: profileController
+                                      .profileData.user!.topVoice!.postsCount,
+                                  backgroundColor: AppColors.grey700,
+                                  valueColor: AlwaysStoppedAnimation<
+                                      Color>(GetStoreData.getStore
+                                          .read('isInvestor')
+                                      ? AppColors.primaryInvestor
+                                      : AppColors
+                                          .primary), // color of the progress bar
+                                  borderRadius: BorderRadius.circular(20),
+                                  minHeight: 5,
+                                  semanticsLabel: "Post",
+                                ),
+                                const SizedBox(height: 12),
+                              ],
+                            ),
+                          ),
+                        ),
                         if (profileController.profileData.user!.companyData!
                             .companyName!.isNotEmpty)
                           sizedTextfield,
@@ -717,33 +724,39 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                         ""))),
                                       ),
                                       const SizedBox(width: 8),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          TextWidget(
-                                            text: profileController.profileData
-                                                .user!.companyData!.companyName,
-                                            textSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                          const SizedBox(height: 4),
-                                          TextWidget(
-                                            text:
-                                                "${profileController.profileData.user!.companyData!.location} - Founded in ${profileController.profileData.user!.companyData!.startedAtDate}",
-                                            textSize: 11,
-                                          ),
-                                          TextWidget(
-                                            text:
-                                                "Last funding ${profileController.profileData.user!.companyData!.lastFunding} - Sector ${profileController.profileData.user!.companyData!.sector}",
-                                            textSize: 11,
-                                          ),
-                                          TextWidget(
-                                            text:
-                                                "Stage ${profileController.profileData.user!.companyData!.stage}",
-                                            textSize: 11,
-                                          ),
-                                        ],
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            TextWidget(
+                                              text: profileController
+                                                  .profileData
+                                                  .user!
+                                                  .companyData!
+                                                  .companyName,
+                                              textSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            const SizedBox(height: 4),
+                                            TextWidget(
+                                              text:
+                                                  "${profileController.profileData.user!.companyData!.location} - Founded in ${profileController.profileData.user!.companyData!.startedAtDate}",
+                                              textSize: 11,
+                                            ),
+                                            TextWidget(
+                                              text:
+                                                  "Last funding ${profileController.profileData.user!.companyData!.lastFunding} - Sector ${profileController.profileData.user!.companyData!.sector}",
+                                              textSize: 11,
+                                              maxLine: 2,
+                                            ),
+                                            TextWidget(
+                                              text:
+                                                  "Stage ${profileController.profileData.user!.companyData!.stage}",
+                                              textSize: 11,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -754,11 +767,20 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       color: AppColors.white12,
                                       child: Padding(
                                         padding: const EdgeInsets.all(12.0),
-                                        child: TextWidget(
-                                            text: profileController.profileData
-                                                .user!.companyData!.description,
-                                            maxLine: 12,
-                                            textSize: 13),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: TextWidget(
+                                                  text: profileController
+                                                      .profileData
+                                                      .user!
+                                                      .companyData!
+                                                      .description,
+                                                  maxLine: 12,
+                                                  textSize: 13),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                 ],

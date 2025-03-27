@@ -10,6 +10,8 @@ import 'package:get/get.dart';
 
 import '../../model/01-StartupModel/profileModel/profile_model.dart';
 import '../../model/01-StartupModel/profileModel/profile_post_model.dart';
+import '../../model/01-StartupModel/profileModel/subscription_model.dart';
+import '../../screen/Auth-Process/selectWhatYouAreScreen/select_role_screen.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import '../../utils/helper/helper_sncksbar.dart';
@@ -256,7 +258,79 @@ class ProfileController extends GetxController {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
 
-  // TextEditingController designationController = TextEditingController();
-  // TextEditingController educationController = TextEditingController();
-  // TextEditingController experienceController = TextEditingController();
+  Future setPassword(String pass, String oldPass) async {
+    var body = {
+      "oldPassword": oldPass,
+      "newPassword": pass,
+    };
+    var response = await ApiBase.pachRequest(
+        body: body, extendedURL: ApiUrl.changePassword, withToken: true);
+    var data = json.decode(response.body);
+    Get.back();
+    Get.back();
+    if (data['status'] == true) {
+      HelperSnackBar.snackBar("Success", data["message"]);
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+    }
+    isLoading.value = false;
+  }
+
+  Future<bool> delAccount() async {
+    var response = await ApiBase.deleteRequest(
+      extendedURL: ApiUrl.deleteAccount,
+    );
+    log(response.body);
+    var data = json.decode(response.body);
+    if (data["status"] == true) {
+      Get.back(closeOverlays: true);
+      Get.offAll(() => const SelectRoleScreen());
+      HelperSnackBar.snackBar("Success", data["message"]);
+      return true;
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
+  }
+
+  List<SubscriptionData> subscriptionList = [];
+  Future getSubscriptionList(bool fromCampaign) async {
+    try {
+      isLoading.value = true;
+      subscriptionList.clear();
+      var response = await ApiBase.getRequest(
+          extendedURL: ApiUrl.getSubscriptionList + (fromCampaign.toString()));
+      log(response.body);
+      var data = jsonDecode(response.body);
+      if (data['status'] == true) {
+        SubscriptionModel subscriptionModel = SubscriptionModel.fromJson(data);
+        subscriptionList.addAll(subscriptionModel.data!);
+      }
+    } catch (e) {
+      log("getProfileddd $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  String cfOrderId = "";
+  String cfPaymentSessionId = "";
+  Future<bool> createSubscription(String subscriptionType) async {
+    var body = {
+      "subscriptionType": subscriptionType,
+    };
+    var response = await ApiBase.postRequest(
+        body: body, extendedURL: ApiUrl.createSubscription, withToken: true);
+    var data = json.decode(response.body);
+    Get.back();
+    log(response.body.toString());
+    if (data['status'] == true) {
+      cfOrderId = data['data']['order_id'];
+      cfPaymentSessionId = data['data']['payment_session_id'];
+      return true;
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
+  }
 }

@@ -53,9 +53,14 @@ class ApiUrl {
   static String getProfileUrl = "users/getUserById/";
   static String getProfilePost = "users/getProfilePosts/";
   static String updateProfile = "users/updateFounder";
+  static String changePassword = "users/changePassword";
+  static String deleteAccount = "users/deleteAccount";
   static String deleteFeaturePost = "api/posts/removeFromFeaturedPost/";
   static String deleteCompanyPost = "api/posts/removeCompanyUpdatePost/";
   static String deleteMyPost = "api/posts/deletePost/";
+  static String getSubscriptionList = "subscription/get_subscription_plans?from_campaign=";
+  static String createSubscription = "subscription/create_subscription";
+
 
   static const String searchCompany = "startup/searchStartUps/";
   static const String addCompanyUser = "users/addStartUpToUser";
@@ -80,6 +85,7 @@ class ApiUrl {
   static const String uploadDocument = "documentation/uploadDocument";
   static const String createFolderName = "documentation/uploadDocument";
   static const String getFolderByUser = "documentation/getFolderByUser";
+  static const String uploadPitchRecording = "documentation/uploadPitchRecording";
 
   static const String getSavedPostFolderList =
       "api/posts/getSavedPostCollectionsProfile";
@@ -222,4 +228,5 @@ class ApiUrl {
   static const String deleteCampaign = "campaign/deleteCampaign/";
   static const String preCreatedDate = "campaign/getPreCreatedData";
   static const String createCampaign = "campaign/createCampaign";
+  static const String subscription = "users/getUserSubscriptionDetails";
 }

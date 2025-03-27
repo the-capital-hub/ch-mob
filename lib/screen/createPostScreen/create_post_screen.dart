@@ -43,16 +43,20 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   @override
   void initState() {
     super.initState();
+    createPostController.isPublicPost = widget.isPublicPost ?? true;
     if (widget.postid != null) {
       isLoading.value = true;
-
       createPostController.getPostDetail(widget.postid!).then((value) {
         isLoading.value = false;
-        log("Hi");
-        createPostController.isPublicPost = widget.isPublicPost!;
         setState(() {});
       });
     }
+  }
+
+  @override
+  void dispose() {
+    createPostController.isCommunityPost = false;
+    super.dispose();
   }
 
   @override

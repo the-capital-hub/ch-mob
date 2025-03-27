@@ -10,6 +10,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/campaignsController/campaigns_controller.dart';
+import '../../../utils/helper/placeholder.dart';
 
 class CampaignsListScreen extends StatefulWidget {
   const CampaignsListScreen({super.key});
@@ -34,7 +35,7 @@ class _CampaignsListScreenState extends State<CampaignsListScreen> {
   Widget build(BuildContext context) {
     return Obx(
       () => campaignsController.isLoading.value
-          ? Helper.pageLoading()
+          ? ShimmerLoader.buildShimmerTable()
           : Scaffold(
               backgroundColor: AppColors.transparent,
               floatingActionButton: FloatingActionButton(
@@ -46,113 +47,124 @@ class _CampaignsListScreenState extends State<CampaignsListScreen> {
                 backgroundColor: AppColors.primary,
                 child: Icon(Icons.add, color: AppColors.white, size: 25),
               ),
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Checkbox(
-                        value: isAllChecked,
-                        onChanged: (value) {
-                          setState(() {
-                            isAllChecked = value!;
-                            campaignsController.listIds.clear();
+              body: campaignsController.campaignList.isEmpty
+                  ? const Center(
+                    child: TextWidget(
+                        text: "No Data Found",
+                        textSize: 15,
+                        fontWeight: FontWeight.w500),
+                  )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Checkbox(
+                              value: isAllChecked,
+                              onChanged: (value) {
+                                setState(() {
+                                  isAllChecked = value!;
+                                  campaignsController.listIds.clear();
 
-                            for (var campaignList
-                                in campaignsController.campaignList) {
-                              campaignList.isSelected = isAllChecked;
-                              if (isAllChecked) {
-                                campaignsController.listIds
-                                    .add(campaignList.listId!);
-                              }
-                            }
-                          });
-                        },
-                        side: BorderSide(color: AppColors.grey, width: 1.5),
-                        activeColor: AppColors.primary,
-                        checkColor: AppColors.white,
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        visualDensity: VisualDensity.compact,
-                      ),
-                      const TextWidget(
-                        text: "Select All",
-                        textSize: 12,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 80),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: DataTable(
-                              columnSpacing: 25,
-                              headingRowHeight: 50,
-                              dataRowHeight: 45,
-                              dividerThickness: 0.4,
-                              horizontalMargin: 20,
-                              border: TableBorder.all(
-                                  color: AppColors.white38,
-                                  width: 1,
-                                  borderRadius: BorderRadius.circular(12)),
-                              headingRowColor:
-                                  MaterialStateProperty.resolveWith<Color?>(
-                                (Set<MaterialState> states) {
-                                  return AppColors.white12;
-                                },
+                                  for (var campaignList
+                                      in campaignsController.campaignList) {
+                                    campaignList.isSelected = isAllChecked;
+                                    if (isAllChecked) {
+                                      campaignsController.listIds
+                                          .add(campaignList.listId!);
+                                    }
+                                  }
+                                });
+                              },
+                              side:
+                                  BorderSide(color: AppColors.grey, width: 1.5),
+                              activeColor: AppColors.primary,
+                              checkColor: AppColors.white,
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              visualDensity: VisualDensity.compact,
+                            ),
+                            const TextWidget(
+                              text: "Select All",
+                              textSize: 12,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 80),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: DataTable(
+                                    columnSpacing: 25,
+                                    headingRowHeight: 50,
+                                    dataRowHeight: 45,
+                                    dividerThickness: 0.4,
+                                    horizontalMargin: 20,
+                                    border: TableBorder.all(
+                                        color: AppColors.white38,
+                                        width: 1,
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    headingRowColor: MaterialStateProperty
+                                        .resolveWith<Color?>(
+                                      (Set<MaterialState> states) {
+                                        return AppColors.white12;
+                                      },
+                                    ),
+                                    columns: const [
+                                      DataColumn(
+                                          label: TextWidget(
+                                              text: "Select", textSize: 15)),
+                                      DataColumn(
+                                          label: SizedBox(
+                                              width: 120,
+                                              child: TextWidget(
+                                                  text: "List Name",
+                                                  align: TextAlign.center,
+                                                  textSize: 15))),
+                                      DataColumn(
+                                          label: TextWidget(
+                                              text: "Investors", textSize: 15)),
+                                      DataColumn(
+                                          label: TextWidget(
+                                              text: "VCs", textSize: 15)),
+                                      DataColumn(
+                                          label: TextWidget(
+                                              text: "Created By",
+                                              textSize: 15)),
+                                      DataColumn(
+                                          label: TextWidget(
+                                              text: "Sharing", textSize: 15)),
+                                      DataColumn(
+                                          label: SizedBox(
+                                              width: 105,
+                                              child: TextWidget(
+                                                  text: "Actions",
+                                                  align: TextAlign.center,
+                                                  textSize: 15))),
+                                    ],
+                                    rows: List.generate(
+                                        campaignsController.campaignList.length,
+                                        (index) {
+                                      return _buildDataRow(
+                                        context,
+                                        index,
+                                      );
+                                    }),
+                                  ),
+                                ),
                               ),
-                              columns: const [
-                                DataColumn(
-                                    label: TextWidget(
-                                        text: "Select", textSize: 15)),
-                                DataColumn(
-                                    label: SizedBox(
-                                        width: 120,
-                                        child: TextWidget(
-                                            text: "List Name",
-                                            align: TextAlign.center,
-                                            textSize: 15))),
-                                DataColumn(
-                                    label: TextWidget(
-                                        text: "Investors", textSize: 15)),
-                                DataColumn(
-                                    label:
-                                        TextWidget(text: "VCs", textSize: 15)),
-                                DataColumn(
-                                    label: TextWidget(
-                                        text: "Created By", textSize: 15)),
-                                DataColumn(
-                                    label: TextWidget(
-                                        text: "Sharing", textSize: 15)),
-                                DataColumn(
-                                    label: SizedBox(
-                                        width: 110,
-                                        child: TextWidget(
-                                            text: "Actions",
-                                            align: TextAlign.center,
-                                            textSize: 15))),
-                              ],
-                              rows: List.generate(
-                                  campaignsController.campaignList.length,
-                                  (index) {
-                                return _buildDataRow(
-                                  context,
-                                  index,
-                                );
-                              }),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
               bottomNavigationBar: campaignsController.listIds.isNotEmpty
                   ? Padding(
                       padding: const EdgeInsets.symmetric(
@@ -229,7 +241,7 @@ class _CampaignsListScreenState extends State<CampaignsListScreen> {
                 textSize: 14))),
         DataCell(
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               _buildActionIcon(
                   context, Icons.remove_red_eye, AppColors.blue, "View", index),

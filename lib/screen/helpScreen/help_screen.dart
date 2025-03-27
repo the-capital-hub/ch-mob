@@ -48,8 +48,8 @@ class _HelpScreenState extends State<HelpScreen> {
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                     ),
-                    itemCount: 4,
-                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 2,
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
                       return Card(
@@ -140,14 +140,14 @@ class _HelpScreenState extends State<HelpScreen> {
   var imageList = [
     PngAssetPath.contactusImg,
     PngAssetPath.mailImg,
-    PngAssetPath.accountImg,
-    PngAssetPath.helpImg
+    // PngAssetPath.accountImg,
+    // PngAssetPath.helpImg
   ];
   var titleList = [
     "Contact us",
     "Mail us",
-    "Account, Profile and Network",
-    "Get Help"
+    // "Account, Profile and Network",
+    // "Get Help"
   ];
   List<Map<String, String>> questions = [
     {

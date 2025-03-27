@@ -1,5 +1,6 @@
 plugins {
     id "com.android.application"
+    id 'com.google.gms.google-services'
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
@@ -90,7 +91,8 @@ flutter {
 
 dependencies {
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
-    
+    implementation platform('com.google.firebase:firebase-bom:33.11.0')
+    implementation 'com.google.firebase:firebase-messaging'
     
 }
 

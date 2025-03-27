@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:capitalhub_crm/screen/subscriptionScreen/subscription_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -119,9 +120,11 @@ class CampaignsController extends GetxController {
   }
 
   Future removeInvFromViewList(
-      {required List<String> invIds,required bool isInv, required String listId}) async {
+      {required List<String> invIds,
+      required bool isInv,
+      required String listId}) async {
     try {
-      var body = {isInv?"investorIds":"vcIds": invIds};
+      var body = {isInv ? "investorIds" : "vcIds": invIds};
       var response = await ApiBase.postRequest(
           body: body,
           extendedURL: ApiUrl.removeInvFromList + listId,
@@ -263,6 +266,7 @@ class CampaignsController extends GetxController {
     } finally {}
   }
 
+//OUTREACH SECTIONS
   List<OutreachData> outreachList = [];
   var isOutreachLoading = false.obs;
   Future getOutrechList({bool? isload}) async {
@@ -306,22 +310,29 @@ class CampaignsController extends GetxController {
 
   Future runOutreachCampaign(id, bool fromViewScreen) async {
     try {
-      var body = {};
-      var response = await ApiBase.postRequest(
-          body: body, extendedURL: ApiUrl.runCampaign + id, withToken: true);
-      log(response.body);
-      var data = json.decode(response.body);
-      if (data["status"] == true) {
-        if (fromViewScreen) {
-          await getOutrechView(id, isload: false);
+      if (isSubscribed == true && subscriptionType == "Pro") {
+        var body = {};
+        var response = await ApiBase.postRequest(
+            body: body, extendedURL: ApiUrl.runCampaign + id, withToken: true);
+        log(response.body);
+        var data = json.decode(response.body);
+        if (data["status"] == true) {
+          if (fromViewScreen) {
+            await getOutrechView(id, isload: false);
+          }
+          await getOutrechList(isload: false);
+          Get.back(closeOverlays: true);
+          HelperSnackBar.snackBar("Success", data["message"]);
+          return true;
+        } else {
+          HelperSnackBar.snackBar("Error", data["message"]);
+          return false;
         }
-        await getOutrechList(isload: false);
-        Get.back(closeOverlays: true);
-        HelperSnackBar.snackBar("Success", data["message"]);
-        return true;
       } else {
-        HelperSnackBar.snackBar("Error", data["message"]);
-        return false;
+        Get.back();
+        Get.to(SubscriptionScreen(fromCampaign: true))!.whenComplete(() {
+          getSubscriptionStatus();
+        });
       }
     } catch (e) {
       log("message $e");
@@ -338,33 +349,40 @@ class CampaignsController extends GetxController {
     required bool fromViewScreen,
   }) async {
     try {
-      var body = isCancel
-          ? {"scheduledAt": null}
-          : {
-              "scheduledAt":
-                  "${scheduleDateController.text} ${scheduleTimeController.text}"
-            };
-      var response = await ApiBase.postRequest(
-          body: body,
-          extendedURL: ApiUrl.scheduleCampaign + id,
-          withToken: true);
-      log(response.body);
-      var data = json.decode(response.body);
-      if (data["status"] == true) {
-        if (fromViewScreen) {
-          await getOutrechView(id, isload: false);
-        }
-        await getOutrechList(isload: false);
+      if (isSubscribed == true && subscriptionType == "Pro") {
+        var body = isCancel
+            ? {"scheduledAt": null}
+            : {
+                "scheduledAt":
+                    "${scheduleDateController.text} ${scheduleTimeController.text}"
+              };
+        var response = await ApiBase.postRequest(
+            body: body,
+            extendedURL: ApiUrl.scheduleCampaign + id,
+            withToken: true);
+        log(response.body);
+        var data = json.decode(response.body);
+        if (data["status"] == true) {
+          if (fromViewScreen) {
+            await getOutrechView(id, isload: false);
+          }
+          await getOutrechList(isload: false);
 
-        Get.back(closeOverlays: true);
-        if (isCancel == false) {
-          Get.back();
+          Get.back(closeOverlays: true);
+          if (isCancel == false) {
+            Get.back();
+          }
+          HelperSnackBar.snackBar("Success", data["message"]);
+          return true;
+        } else {
+          HelperSnackBar.snackBar("Error", data["message"]);
+          return false;
         }
-        HelperSnackBar.snackBar("Success", data["message"]);
-        return true;
       } else {
-        HelperSnackBar.snackBar("Error", data["message"]);
-        return false;
+        Get.back();
+        Get.to(SubscriptionScreen(fromCampaign: true))!.whenComplete(() {
+          getSubscriptionStatus();
+        });
       }
     } catch (e) {
       log("message $e");
@@ -468,6 +486,22 @@ class CampaignsController extends GetxController {
       }
     } catch (e) {
       log("message $e");
+    } finally {}
+  }
+
+  String subscriptionType = "";
+  bool isSubscribed = false;
+  Future getSubscriptionStatus() async {
+    try {
+      var response = await ApiBase.getRequest(extendedURL: ApiUrl.subscription);
+      log(response.body);
+      var data = jsonDecode(response.body);
+      if (data['status'] == true) {
+        isSubscribed = data['data']['isSubscribed'] ?? false;
+        subscriptionType = data['data']['subscriptionType'] ?? "";
+      }
+    } catch (e) {
+      log("getsubscription View $e");
     } finally {}
   }
 }

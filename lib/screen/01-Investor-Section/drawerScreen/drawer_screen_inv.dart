@@ -17,12 +17,14 @@ import 'package:capitalhub_crm/screen/meetingsScreen/priority_dm_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/webinars_screen.dart';
 import 'package:capitalhub_crm/screen/myStartupsScreen/my_startup_screen.dart';
 import 'package:capitalhub_crm/screen/oneLinkScreen/one_link_screen.dart';
+import 'package:capitalhub_crm/screen/profileScreen/profile_screen.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import '../../../controller/homeController/home_controller.dart';
 import '../../../utils/appcolors/app_colors.dart';
@@ -30,6 +32,7 @@ import '../../../utils/getStore/get_store.dart';
 import '../../../widget/textwidget/text_widget.dart';
 import '../../connectionScreen/connection_screen.dart';
 import '../../liveDealsScreen/live_deal_screen.dart';
+import '../../manageAccountScreen/manage_account_Screen.dart';
 import '../../newsScreen/news_screen.dart';
 import '../../savedPostScreen/saved_post_screen.dart';
 
@@ -187,52 +190,72 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
                           left: 0,
                         ),
                         separatorBuilder: (context, index) {
-                          return SizedBox(height: 6);
+                          return const SizedBox(height: 6);
                         },
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
-                          if (index == 6 || index == 7) {
-                            return _buildExpansionTile(index);
-                          } else {
-                            return InkWell(
-                              onTap: () {
-                                if (index == 0) {
-                                  homeController.selectIndex = 0;
-                                }
-                                Get.to(page[index]);
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.only(right: 10),
-                                decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(100),
-                                        bottomRight: Radius.circular(100))),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 10, top: 10, left: 20),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Image.asset(
-                                        icons[index],
-                                        color: AppColors.white,
-                                        height: 22,
-                                      ),
-                                      const SizedBox(
-                                        width: 12,
-                                      ),
-                                      TextWidget(
-                                          text: items[index],
-                                          textSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                          maxLine: 1,
-                                          align: TextAlign.center),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
+                          return AnimationConfiguration.staggeredList(
+                              position: index,
+                              delay: const Duration(milliseconds: 50),
+                              duration: const Duration(milliseconds: 300),
+                              child: SlideAnimation(
+                                  horizontalOffset: -250,
+                                  verticalOffset: -20,
+                                  curve: Curves.easeOutBack,
+                                  child: FadeInAnimation(
+                                      child: (index == 6 || index == 7)
+                                          ? _buildExpansionTile(index)
+                                          : InkWell(
+                                              onTap: () {
+                                                if (index == 0) {
+                                                  homeController.selectIndex =
+                                                      0;
+                                                }
+                                                Get.to(page[index]);
+                                              },
+                                              child: Container(
+                                                margin: const EdgeInsets.only(
+                                                    right: 10),
+                                                decoration: const BoxDecoration(
+                                                    borderRadius: BorderRadius
+                                                        .only(
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    100),
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    100))),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 10,
+                                                          top: 10,
+                                                          left: 20),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Image.asset(
+                                                        icons[index],
+                                                        color: AppColors.white,
+                                                        height: 22,
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 12,
+                                                      ),
+                                                      TextWidget(
+                                                          text: items[index],
+                                                          textSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          maxLine: 1,
+                                                          align:
+                                                              TextAlign.center),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ))));
                         }),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -261,13 +284,17 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
                                   textSize: 12),
                               const SizedBox(height: 3),
                               AppButton.primaryButton(
-                                  onButtonPressed: () {},
-                                  height: 38,
+                                  onButtonPressed: () {
+                                    Get.to(() => const ProfileScreen());
+                                  },
+                                  height: 40,
                                   title: "View Profile"),
                               const SizedBox(height: 8),
                               AppButton.primaryButton(
-                                  onButtonPressed: () {},
-                                  height: 38,
+                                  onButtonPressed: () {
+                                    Get.to(() => const ManageAccountScreen());
+                                  },
+                                  height: 40,
                                   bgColor: AppColors.white12,
                                   textColor: AppColors.white,
                                   title: "Manage Account"),
@@ -331,46 +358,52 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
             ? communitySubItems.map((communitySubItemsTitle) {
                 int communitySubItemsIndex =
                     communitySubItems.indexOf(communitySubItemsTitle);
-                return SizedBox(
-                  height: 30,
-                  child: ListTile(
-                    dense: true,
-                    visualDensity: VisualDensity.compact,
-                    contentPadding:
-                        const EdgeInsets.only(left: 55, top: 0, bottom: 0),
-                    title: TextWidget(
-                      text: communitySubItemsTitle,
-                      textSize: 16,
-                      fontWeight: FontWeight.w500,
-                      maxLine: 1,
-                      color: AppColors.white,
+                return InkWell(
+                  splashColor: AppColors.transparent,
+                  onTap: () {
+                    Get.to(communitySubPages[communitySubItemsIndex]);
+                  },
+                  child: SizedBox(
+                    height: 35,
+                    child: ListTile(
+                      dense: true,
+                      visualDensity: VisualDensity.compact,
+                      contentPadding:
+                          const EdgeInsets.only(left: 55, bottom: 10),
+                      title: TextWidget(
+                        text: communitySubItemsTitle,
+                        textSize: 15,
+                        fontWeight: FontWeight.w500,
+                        maxLine: 1,
+                        color: AppColors.white,
+                      ),
                     ),
-                    onTap: () {
-                      Get.to(communitySubPages[communitySubItemsIndex]);
-                    },
                   ),
                 );
               }).toList()
             : meetingsSubItems.map((meetingsSubItemsTitle) {
                 int meetingsSubItemsIndex =
                     meetingsSubItems.indexOf(meetingsSubItemsTitle);
-                return SizedBox(
-                  height: 30,
-                  child: ListTile(
-                    dense: true,
-                    visualDensity: VisualDensity.compact,
-                    contentPadding:
-                        const EdgeInsets.only(left: 55, top: 0, bottom: 0),
-                    title: TextWidget(
-                      text: meetingsSubItemsTitle,
-                      textSize: 16,
-                      fontWeight: FontWeight.w500,
-                      maxLine: 1,
-                      color: AppColors.white,
+                return InkWell(
+                  onTap: () {
+                    Get.to(meetingsSubPages[meetingsSubItemsIndex]);
+                  },
+                  splashColor: AppColors.transparent,
+                  child: SizedBox(
+                    height: 35,
+                    child: ListTile(
+                      dense: true,
+                      visualDensity: VisualDensity.compact,
+                      contentPadding:
+                          const EdgeInsets.only(left: 55, bottom: 10),
+                      title: TextWidget(
+                        text: meetingsSubItemsTitle,
+                        textSize: 15,
+                        fontWeight: FontWeight.w500,
+                        maxLine: 1,
+                        color: AppColors.white,
+                      ),
                     ),
-                    onTap: () {
-                      Get.to(meetingsSubPages[meetingsSubItemsIndex]);
-                    },
                   ),
                 );
               }).toList(),

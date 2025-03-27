@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../model/01-StartupModel/documentationModel/documentation_model.dart';
+import '../../model/01-StartupModel/documentationModel/pitch_recording_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import '../../utils/helper/helper_sncksbar.dart';
@@ -91,5 +92,68 @@ class DocumentController extends GetxController {
       HelperSnackBar.snackBar("Error", data["message"]);
     }
     isLoadingFolder.value = false;
+  }
+
+  TextEditingController videoUrlController = TextEditingController();
+
+  Future createPitchRecording() async {
+    var body = {
+      if (base64Image != null)
+        "file": {"name": "${DateTime.now()}", "base64": "$base64Image"},
+      "videoUrl": videoUrlController.text
+    };
+    log(body.toString());
+    var response = await ApiBase.postRequest(
+        body: body, extendedURL: ApiUrl.uploadPitchRecording, withToken: true);
+    var data = json.decode(response.body);
+    log(response.body.toString());
+    Get.back();
+    Get.back();
+    if (data['status'] == true) {
+      await fetchPitchRecord();
+      HelperSnackBar.snackBar("Success", data["message"]);
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+    }
+  }
+
+  var isLoadingPitch = false.obs;
+  List<PitchRecord> pitchRecordList = [];
+  Future fetchPitchRecord() async {
+    isLoadingPitch.value = true;
+    pitchRecordList.clear();
+    var response = await ApiBase.postRequest(
+        body: {"folder_name": "onelinkpitch"},
+        withToken: true,
+        extendedURL: ApiUrl.getDocument);
+    log(response.body);
+    var data = json.decode(response.body);
+    if (data['status'] == true) {
+      PitchRecordModel pitchRecordModel = PitchRecordModel.fromJson(data);
+      pitchRecordList.addAll(pitchRecordModel.data!);
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+    }
+    isLoadingPitch.value = false;
+  }
+
+  Future<bool> deletePitch(String folderName, String docID) async {
+    var body = {
+      "folder_name": folderName,
+      "documentId": docID,
+    };
+    var response = await ApiBase.postRequest(
+        body: body, extendedURL: ApiUrl.deleteDocument, withToken: true);
+    log(response.body);
+    var data = json.decode(response.body);
+    Get.back(closeOverlays: true);
+    Get.back();
+    if (data['status'] == true) {
+      HelperSnackBar.snackBar("Success", data["message"]);
+      return true;
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
   }
 }

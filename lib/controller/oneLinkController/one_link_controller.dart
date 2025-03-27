@@ -82,7 +82,7 @@ class OneLinkController extends GetxController {
       genratedIntroMessage = data['data'].toString();
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
-
+      getOneLinkDetails();
       return true;
     } else {
       Get.back();

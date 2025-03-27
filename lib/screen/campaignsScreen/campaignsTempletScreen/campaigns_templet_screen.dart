@@ -1,6 +1,7 @@
 import 'package:capitalhub_crm/controller/campaignsController/campaigns_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/helper/placeholder.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dilogue/campaignDilogue/delete_campaign_dilogue.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
@@ -37,7 +38,7 @@ class _CampaignsTempletScreenState extends State<CampaignsTempletScreen> {
   Widget build(BuildContext context) {
     return Obx(
       () => campaignsController.isTemplateLoading.value
-          ? Helper.pageLoading()
+          ? ShimmerLoader.shimmerTile()
           : Scaffold(
               floatingActionButton: FloatingActionButton(
                 shape: RoundedRectangleBorder(
@@ -49,102 +50,118 @@ class _CampaignsTempletScreenState extends State<CampaignsTempletScreen> {
                 child: Icon(Icons.add, color: AppColors.white, size: 25),
               ),
               backgroundColor: AppColors.transparent,
-              body: Column(
-                children: [
-                  sizedTextfield,
-                  Expanded(
-                    child: ListView.separated(
-                      itemCount: campaignsController.templateList.length,
-                      padding: const EdgeInsets.only(bottom: 80),
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 12),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        final isSelected = selectedTemp ==
-                            campaignsController.templateList[index].templateId!;
-                        return InkWell(
-                          onTap: () => toggleSelection(campaignsController
-                              .templateList[index].templateId!),
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[850],
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: isSelected
-                                    ? AppColors.primary
-                                    : AppColors.transparent,
-                                width: 2,
-                              ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TextWidget(
-                                    text: campaignsController
-                                        .templateList[index].templateName!,
-                                    textSize: 14,
-                                    maxLine: 2),
-                                const SizedBox(height: 2),
-                                TextWidget(
-                                  text:
-                                      "Subject: ${campaignsController.templateList[index].templateSubject!}",
-                                  textSize: 13,
-                                  maxLine: 2,
-                                ),
-                                const SizedBox(height: 2),
-                                TextWidget(
-                                    text:
-                                        "Created by: ${campaignsController.templateList[index].createdBy!}",
-                                    textSize: 12),
-                                const SizedBox(height: 8),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 8),
-                                      decoration: BoxDecoration(
-                                        color: isSelected
-                                            ? AppColors.primary
-                                            : AppColors.grey700,
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                      ),
-                                      child: TextWidget(
-                                        text:
-                                            isSelected ? 'Selected' : 'Select',
-                                        textSize: 12,
-                                      ),
+              body: campaignsController.templateList.isEmpty
+                  ? const Center(
+                      child: TextWidget(
+                          text: "No Data Found",
+                          textSize: 15,
+                          fontWeight: FontWeight.w500),
+                    )
+                  : Column(
+                      children: [
+                        sizedTextfield,
+                        Expanded(
+                          child: ListView.separated(
+                            itemCount: campaignsController.templateList.length,
+                            padding: const EdgeInsets.only(bottom: 80),
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 12),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              final isSelected = selectedTemp ==
+                                  campaignsController
+                                      .templateList[index].templateId!;
+                              return InkWell(
+                                onTap: () => toggleSelection(campaignsController
+                                    .templateList[index].templateId!),
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[850],
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: isSelected
+                                          ? AppColors.primary
+                                          : AppColors.transparent,
+                                      width: 2,
                                     ),
-                                    if (campaignsController
-                                            .templateList[index].createdBy ==
-                                        "You")
-                                      Row(
-                                        children: [
-                                          _buildActionIcon(context, Icons.edit,
-                                              AppColors.primary, "Edit", index),
-                                          const SizedBox(width: 8),
-                                          _buildActionIcon(
-                                              context,
-                                              Icons.delete,
-                                              AppColors.redColor,
-                                              "Delete",
-                                              index),
-                                        ],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      TextWidget(
+                                          text: campaignsController
+                                              .templateList[index]
+                                              .templateName!,
+                                          textSize: 14,
+                                          maxLine: 2),
+                                      const SizedBox(height: 2),
+                                      TextWidget(
+                                        text:
+                                            "Subject: ${campaignsController.templateList[index].templateSubject!}",
+                                        textSize: 13,
+                                        maxLine: 2,
                                       ),
-                                  ],
-                                )
-                              ],
-                            ),
+                                      const SizedBox(height: 2),
+                                      TextWidget(
+                                          text:
+                                              "Created by: ${campaignsController.templateList[index].createdBy!}",
+                                          textSize: 12),
+                                      const SizedBox(height: 8),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 15, vertical: 8),
+                                            decoration: BoxDecoration(
+                                              color: isSelected
+                                                  ? AppColors.primary
+                                                  : AppColors.grey700,
+                                              borderRadius:
+                                                  BorderRadius.circular(100),
+                                            ),
+                                            child: TextWidget(
+                                              text: isSelected
+                                                  ? 'Selected'
+                                                  : 'Select',
+                                              textSize: 12,
+                                            ),
+                                          ),
+                                          if (campaignsController
+                                                  .templateList[index]
+                                                  .createdBy ==
+                                              "You")
+                                            Row(
+                                              children: [
+                                                _buildActionIcon(
+                                                    context,
+                                                    Icons.edit,
+                                                    AppColors.primary,
+                                                    "Edit",
+                                                    index),
+                                                const SizedBox(width: 8),
+                                                _buildActionIcon(
+                                                    context,
+                                                    Icons.delete,
+                                                    AppColors.redColor,
+                                                    "Delete",
+                                                    index),
+                                              ],
+                                            ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
               bottomNavigationBar: selectedTemp != null
                   ? Padding(
                       padding: const EdgeInsets.all(12.0),

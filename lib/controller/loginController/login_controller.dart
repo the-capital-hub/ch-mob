@@ -1,17 +1,12 @@
 import 'dart:convert';
 import 'dart:developer' as log;
-// import 'dart:io';
 import 'package:capitalhub_crm/screen/01-Investor-Section/landingScreen/landing_screen_inv.dart';
 import 'package:capitalhub_crm/screen/Auth-Process/authScreen/signup_otp_page.dart';
 import 'package:capitalhub_crm/screen/Auth-Process/userDetailsScreen/username_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/myCommunityScreen/my_community_screen.dart';
-import 'package:capitalhub_crm/utils/apiService/google_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../screen/Auth-Process/authScreen/otp_page.dart';
-
-import '../../screen/Auth-Process/selectWhatYouAreScreen/select_role_screen.dart';
 import '../../screen/landingScreen/landing_screen.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
@@ -19,8 +14,11 @@ import '../../utils/constant/app_var.dart';
 import '../../utils/getStore/get_store.dart';
 import '../../utils/helper/helper.dart';
 import '../../utils/helper/helper_sncksbar.dart';
+import '../../utils/notificationService/notification_service.dart';
 
 class LoginController extends GetxController {
+   final FirebaseNotificationService _firebaseNotificationService = Get.find();
+
   TextEditingController loginPhoneController = TextEditingController();
   TextEditingController loginEmailController = TextEditingController();
   TextEditingController loginPassController = TextEditingController();
@@ -46,6 +44,8 @@ class LoginController extends GetxController {
     context,
   ) async {
     Helper.loader(context);
+    String? fcmToken = await _firebaseNotificationService.getFcmToken();
+    print("FCM Token in LoginController: $fcmToken");
     var body = {
       "phoneNumber": loginEmailController.text,
       "password": loginPassController.text
@@ -65,6 +65,7 @@ class LoginController extends GetxController {
           email: data['data']['user']['email'],
           profileImage: data['data']['user']['profilePicture'],
           phone: data['data']['user']['phoneNumber'],
+          isSubscribe: data['data']['user']['isSubscribed'],
           authToken: data['data']['token'],
           isInvestor: bool.parse(data['data']['user']['isInvestor']));
       await GetStoreDataList.storeUserList(
@@ -76,6 +77,7 @@ class LoginController extends GetxController {
           email: data['data']['user']['email'],
           profileImage: data['data']['user']['profilePicture'],
           phone: data['data']['user']['phoneNumber'],
+          isSubscribe: data['data']['user']['isSubscribed'],
           authToken: data['data']['token'],
           isInvestor: bool.parse(data['data']['user']['isInvestor']),
         ),
@@ -190,6 +192,7 @@ class LoginController extends GetxController {
               data['data']['user']['lastName'],
           email: data['data']['user']['email'],
           profileImage: data['data']['user']['profilePicture'],
+          isSubscribe: data['data']['user']['isSubscribed'],
           phone: data['data']['user']['phoneNumber'],
           authToken: data['data']['token'],
           isInvestor: bool.parse(data['data']['user']['isInvestor']));
@@ -203,6 +206,7 @@ class LoginController extends GetxController {
           profileImage: data['data']['user']['profilePicture'],
           phone: data['data']['user']['phoneNumber'],
           authToken: data['data']['token'],
+          isSubscribe: data['data']['user']['isSubscribed'],
           isInvestor: bool.parse(data['data']['user']['isInvestor']),
         ),
       );
@@ -254,6 +258,7 @@ class LoginController extends GetxController {
           profileImage: data['data']['user']['profilePicture'],
           phone: data['data']['user']['phoneNumber'],
           authToken: data['data']['token'],
+          isSubscribe: data['data']['user']['isSubscribed'],
           isInvestor: bool.parse(data['data']['user']['isInvestor']));
       await GetStoreDataList.storeUserList(
         UserModel(
@@ -263,10 +268,10 @@ class LoginController extends GetxController {
           profileImage: data['data']['user']['profilePicture'],
           phone: data['data']['user']['phoneNumber'],
           authToken: data['data']['token'],
+          isSubscribe: data['data']['user']['isSubscribed'],
           isInvestor: bool.parse(data['data']['user']['isInvestor']),
         ),
       );
-
 
       if (GetStoreData.getStore.read('isInvestor') == false &&
           selectedRoleIndex == 0) {
@@ -389,6 +394,7 @@ class LoginController extends GetxController {
           profileImage: data['data']['user']['profilePicture'],
           phone: data['data']['user']['phoneNumber'],
           authToken: data['data']['token'],
+          isSubscribe: data['data']['user']['isSubscribed'],
           isInvestor: bool.parse(data['data']['user']['isInvestor']));
       await GetStoreDataList.storeUserList(
         UserModel(
@@ -400,6 +406,7 @@ class LoginController extends GetxController {
           profileImage: data['data']['user']['profilePicture'],
           phone: data['data']['user']['phoneNumber'],
           authToken: data['data']['token'],
+          isSubscribe: data['data']['user']['isSubscribed'],
           isInvestor: bool.parse(data['data']['user']['isInvestor']),
         ),
       );
@@ -432,7 +439,7 @@ class LoginController extends GetxController {
     var data = json.decode(response.body);
     if (data["status"] == true) {
       suggestions = List.from(data["suggestions"]);
-     return true;
+      return true;
     } else {
       suggestions = List.from(data["suggestions"]);
 
@@ -453,12 +460,13 @@ class LoginController extends GetxController {
     log.log(body.toString());
     var response = await ApiBase.postRequest(
         body: body, extendedURL: ApiUrl.saveRequiredData, withToken: true);
-   var data = json.decode(response.body);
+    var data = json.decode(response.body);
     if (data["status"] == true) {
       GetStoreData.storeUserData(
           id: data['data']['_id'],
           name: data['data']['firstName'] + " " + data['data']['lastName'],
           email: data['data']['email'],
+          isSubscribe: GetStoreData.getStore.read('isSubscribed'),
           profileImage: GetStoreData.getStore.read('profile_image'),
           phone: GetStoreData.getStore.read('phone'),
           authToken: GetStoreData.getStore.read('access_token'),
@@ -468,13 +476,14 @@ class LoginController extends GetxController {
             id: data['data']['_id'],
             name: data['data']['firstName'] + " " + data['data']['lastName'],
             email: data['data']['email'],
+            isSubscribe: GetStoreData.getStore.read('isSubscribed'),
             profileImage: GetStoreData.getStore.read('profile_image'),
             phone: GetStoreData.getStore.read('phone'),
             authToken: GetStoreData.getStore.read('access_token'),
             isInvestor: GetStoreData.getStore.read('isInvestor')),
       );
 
-   if (GetStoreData.getStore.read('isInvestor') == false) {
+      if (GetStoreData.getStore.read('isInvestor') == false) {
         Get.offAll(const LandingScreen());
       } else if (GetStoreData.getStore.read('isInvestor') == true) {
         Get.offAll(const LandingScreenInvestor(),
