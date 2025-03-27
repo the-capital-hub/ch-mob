@@ -161,6 +161,16 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                             ],
                           ),
                           sizedTextfield,
+
+                          if (!communityEvents.communityEventsData
+                              .webinars![index].isActive) ...[
+                            TextWidget(
+                              text: "This webinar is cancelled.",
+                              textSize: 16,
+                              color: AppColors.grey,
+                            ),
+                            sizedTextfield
+                          ],
                           HtmlWidget(
                             communityEvents.communityEventsData.webinars![index]
                                 .description,

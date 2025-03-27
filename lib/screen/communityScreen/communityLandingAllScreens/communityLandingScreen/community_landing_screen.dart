@@ -1,4 +1,5 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityAboutController/community_about_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityMeetingsController/community_meetings_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAboutScreen/communities_about_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityHomeScreen/community_home_screen.dart';
@@ -23,6 +24,8 @@ class CommunityLandingScreen extends StatefulWidget {
 
 class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
   CommunityAboutController aboutCommunity = Get.put(CommunityAboutController());
+  CommunityMeetingsController communityMeetings =
+      Get.put(CommunityMeetingsController());
   int selectIndex = 0;
 
   List adminIcons = [
@@ -62,6 +65,7 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      communityMeetings.getMemberEmails();
       aboutCommunity.getAboutCommunity().then((v) {
         WidgetsBinding.instance.addPostFrameCallback((_) {});
       });

@@ -52,9 +52,9 @@ class CommunityEventsController extends GetxController {
       body: {
         "title": titleController.text,
         "description": description,
-        "duration": durationMinutesController.text,
-        "price": priceController.text,
-        "discount": priceDiscountController.text,
+        "duration": int.tryParse(durationMinutesController.text),
+        "price": int.tryParse(priceController.text),
+        "discount": int.tryParse(priceDiscountController.text),
         "communityId": createdCommunityId,
         "eventType": "Private"
 // googleLogin
@@ -83,9 +83,9 @@ class CommunityEventsController extends GetxController {
       body: {
         "title": titleController.text,
         "description": description,
-        "duration": durationMinutesController.text,
-        "price": priceController.text,
-        "discount": priceDiscountController.text,
+        "duration": int.tryParse(durationMinutesController.text),
+        "price": int.tryParse(priceController.text),
+        "discount": int.tryParse(priceDiscountController.text),
         "communityId": createdCommunityId,
         "eventType": "Private"
       },

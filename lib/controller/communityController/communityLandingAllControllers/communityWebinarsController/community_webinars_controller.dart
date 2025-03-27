@@ -80,8 +80,9 @@ class CommunityWebinarsController extends GetxController {
         "duration": int.tryParse(durationMinutesController.text),
         "discount": int.tryParse(priceDiscountController.text),
         "price": int.tryParse(priceController.text),
-        "communityId": createdCommunityId,
-        "image": base64
+        "community": createdCommunityId,
+        "image": base64,
+        "webinarType": "Private",
       },
       withToken: true,
       extendedURL: ApiUrl.createWebinar,
@@ -118,8 +119,9 @@ class CommunityWebinarsController extends GetxController {
       "duration": int.tryParse(durationMinutesController.text),
       "discount": int.tryParse(priceDiscountController.text),
       "price": int.tryParse(priceController.text),
-      "communityId": createdCommunityId,
-      "image": base64
+      "community": createdCommunityId,
+      "image": base64,
+      "webinarType": "Private",
     };
     log(bod.toString());
     var response = await ApiBase.pachRequest(
@@ -132,8 +134,9 @@ class CommunityWebinarsController extends GetxController {
         "duration": int.tryParse(durationMinutesController.text),
         "discount": int.tryParse(priceDiscountController.text),
         "price": int.tryParse(priceController.text),
-        "communityId": createdCommunityId,
-        "image": base64
+        "community": createdCommunityId,
+        "image": base64,
+        "webinarType": "Private",
       },
       withToken: true,
       extendedURL: ApiUrl.updateWebinar + webinarId,

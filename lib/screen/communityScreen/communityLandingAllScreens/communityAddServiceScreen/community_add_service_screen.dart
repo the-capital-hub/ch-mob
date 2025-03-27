@@ -22,6 +22,7 @@ import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:capitalhub_crm/widget/timePicker/timePicker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
@@ -74,6 +75,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
       Get.put(CommunityEventsController());
   CommunityWebinarsController communityWebinars =
       Get.put(CommunityWebinarsController());
+
   @override
   void initState() {
     if (!widget.isEdit) {
