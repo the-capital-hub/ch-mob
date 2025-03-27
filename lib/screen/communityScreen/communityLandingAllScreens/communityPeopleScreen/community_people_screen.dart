@@ -143,9 +143,17 @@ class _CommunityPeopleScreenState extends State<CommunityPeopleScreen> {
                                                     ],
                                                   ),
                                                   const Spacer(),
-                                                  if (isAdmin)
+                                                  if (isAdmin && index != 0)
                                                     IconButton(
-                                                        onPressed: () {},
+                                                        onPressed: () {
+                                                          Helper.loader(context);
+                                                          communityMembers
+                                                              .removeCommunityMember(
+                                                                  communityMembers
+                                                                      .communityMembersList[
+                                                                          index]
+                                                                      .id);
+                                                        },
                                                         icon: const Icon(
                                                           Icons.person_remove,
                                                           color: AppColors

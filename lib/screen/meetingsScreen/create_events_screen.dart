@@ -1,4 +1,5 @@
 import 'package:capitalhub_crm/controller/meetingController/meeting_controller.dart';
+import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/events_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
@@ -47,7 +48,9 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
     return Container(
       decoration: bgDec,
       child: Scaffold(
-        drawer: const DrawerWidget(),
+        drawer: GetStoreData.getStore.read('isInvestor')
+              ? const DrawerWidgetInvestor()
+              : const DrawerWidget(),
         backgroundColor: AppColors.transparent,
         appBar: HelperAppBar.appbarHelper(
             title: "Create Event", hideBack: false, autoAction: true),

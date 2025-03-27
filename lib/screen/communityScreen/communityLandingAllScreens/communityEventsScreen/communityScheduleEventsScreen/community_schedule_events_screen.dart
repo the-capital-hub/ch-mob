@@ -1,17 +1,22 @@
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityEventsController/community_events_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityWebinarsController/community_webinars_controller.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityMeetingsScreen/communityBookAMeetingScreen/community_book_a_meeting_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
+import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/calendar/calendar.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 
 class CommunityScheduleEventsScreen extends StatefulWidget {
-  const CommunityScheduleEventsScreen({super.key});
+  int index;
+  CommunityScheduleEventsScreen({required this.index, super.key});
 
   @override
   State<CommunityScheduleEventsScreen> createState() =>
@@ -20,6 +25,7 @@ class CommunityScheduleEventsScreen extends StatefulWidget {
 
 class _CommunityScheduleEventsScreenState
     extends State<CommunityScheduleEventsScreen> {
+  CommunityWebinarsController communityWebinars = Get.find();
   TextEditingController urlController = TextEditingController();
   int? _selectedIndex;
   List<String> data = [
@@ -37,6 +43,14 @@ class _CommunityScheduleEventsScreenState
     "16:00",
     "17:00",
   ];
+  bool isDaySelected = false;
+  bool isSlotSelected = false;
+  int availabilityIndex = 0;
+  int? selectedDayIndex;
+  String day = "";
+  String slot = "";
+  String startTime = "";
+  String endTime = "";
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -60,22 +74,32 @@ class _CommunityScheduleEventsScreenState
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const CircleAvatar(
-                        radius: 30,
-                        backgroundImage: AssetImage(PngAssetPath.accountImg),
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      const TextWidget(text: "Title", textSize: 20),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      const TextWidget(
-                          text: "nitinjajoria97@gmail.com", textSize: 16),
-                      sizedTextfield,
-                      Divider(
-                        color: AppColors.white38,
+                      // const CircleAvatar(
+                      //   radius: 30,
+                      //   backgroundImage: AssetImage(PngAssetPath.accountImg),
+                      // ),
+                      // const SizedBox(
+                      //   height: 8,
+                      // ),
+                      // TextWidget(text: "Title", textSize: 20),
+                      // const SizedBox(
+                      //   height: 8,
+                      // ),
+                      // const TextWidget(
+                      //     text: "nitinjajoria97@gmail.com", textSize: 16),
+                      // sizedTextfield,
+                      // Divider(
+                      //   color: AppColors.white38,
+                      // ),
+                      // sizedTextfield,
+
+                      Row(
+                        children: [
+                          TextWidget(
+                              text: communityWebinars
+                                  .communityWebinarsList[widget.index].title!,
+                              textSize: 20),
+                        ],
                       ),
                       sizedTextfield,
                       Row(
@@ -88,7 +112,11 @@ class _CommunityScheduleEventsScreenState
                           const SizedBox(
                             width: 8,
                           ),
-                          const TextWidget(text: "30 mins", textSize: 16)
+                          TextWidget(
+                              text: communityWebinars
+                                  .communityWebinarsList[widget.index].duration
+                                  .toString(),
+                              textSize: 16)
                         ],
                       ),
                       sizedTextfield,
@@ -116,7 +144,14 @@ class _CommunityScheduleEventsScreenState
                           const SizedBox(
                             width: 5,
                           ),
-                          const TextWidget(text: "Free", textSize: 16)
+                          TextWidget(
+                              text: communityWebinars
+                                          .communityWebinarsList[widget.index]
+                                          .price! ==
+                                      0
+                                  ? "Free"
+                                  : "\u{20B9}${communityWebinars.communityWebinarsList[widget.index].price!}",
+                              textSize: 16)
                         ],
                       ),
                       const SizedBox(height: 20),
@@ -124,15 +159,23 @@ class _CommunityScheduleEventsScreenState
                         children: [
                           TextWidget(
                             text: "About this meeting",
-                            textSize: 20,
-                            fontWeight: FontWeight.bold,
+                            textSize: 16,
+                            fontWeight: FontWeight.w500,
                           ),
                         ],
                       ),
                       sizedTextfield,
-                      const Row(
+                      Row(
                         children: [
-                          TextWidget(text: "Description", textSize: 16),
+                          HtmlWidget(
+                            communityWebinars
+                                .communityWebinarsList[widget.index]
+                                .description!,
+                            textStyle: TextStyle(
+                              fontSize: 16,
+                              color: AppColors.white,
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -147,93 +190,99 @@ class _CommunityScheduleEventsScreenState
                     padding: const EdgeInsets.all(8),
                     child: Column(
                       children: [
-                        EventCalendar(),
-                        sizedTextfield,
-                        const TextWidget(
-                          text: "Available Time Slots",
-                          textSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        sizedTextfield,
-                        Wrap(
-                          spacing: 4.0,
-                          runSpacing: 4.0,
-                          children: List.generate(
-                            data.length,
-                            (index) {
-                              bool isSelected = _selectedIndex == index;
+                        // EventCalendar(),
+                        // sizedTextfield,
+                        // const TextWidget(
+                        //   text: "Available Time Slots",
+                        //   textSize: 20,
+                        //   fontWeight: FontWeight.w500,
+                        // ),
+                        // sizedTextfield,
+                        // Wrap(
+                        //   spacing: 4.0,
+                        //   runSpacing: 4.0,
+                        //   children: List.generate(
+                        //     data.length,
+                        //     (index) {
+                        //       bool isSelected = _selectedIndex == index;
 
-                              return InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    if (_selectedIndex == index) {
-                                      _selectedIndex = null;
-                                    } else {
-                                      _selectedIndex = index;
-                                    }
-                                  });
-                                },
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  color: isSelected
-                                      ? AppColors.primary
-                                      : AppColors.white12,
-                                  surfaceTintColor: AppColors.white12,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 4),
-                                    child: TextWidget(
-                                      text: data[index],
-                                      textSize: 14,
-                                      color: isSelected
-                                          ? AppColors.white
-                                          : AppColors.black,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        sizedTextfield,
-                        AppButton.primaryButton(
-                            onButtonPressed: () {
-                              Get.to(() => const CommunityBookAMeetingScreen());
-                            },
-                            title: "Proceed to Payment"),
-                        sizedTextfield,
-                        AppButton.primaryButton(
-                            onButtonPressed: () {}, title: "Enter Details"),
-                        sizedTextfield,
-                        const TextWidget(
-                          text: "Additional Details",
-                          textSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        sizedTextfield,
+                        //       return InkWell(
+                        //         onTap: () {
+                        //           setState(() {
+                        //             if (_selectedIndex == index) {
+                        //               _selectedIndex = null;
+                        //             } else {
+                        //               _selectedIndex = index;
+                        //             }
+                        //           });
+                        //         },
+                        //         child: Card(
+                        //           shape: RoundedRectangleBorder(
+                        //             borderRadius: BorderRadius.circular(4),
+                        //           ),
+                        //           color: isSelected
+                        //               ? AppColors.primary
+                        //               : AppColors.white12,
+                        //           surfaceTintColor: AppColors.white12,
+                        //           child: Padding(
+                        //             padding: const EdgeInsets.symmetric(
+                        //                 horizontal: 12, vertical: 4),
+                        //             child: TextWidget(
+                        //               text: data[index],
+                        //               textSize: 14,
+                        //               color: isSelected
+                        //                   ? AppColors.white
+                        //                   : AppColors.black,
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       );
+                        //     },
+                        //   ),
+                        // ),
+                        // sizedTextfield,
+                        // AppButton.primaryButton(
+                        //     onButtonPressed: () {
+                        //       // Get.to(() => const CommunityBookAMeetingScreen());
+                        //     },
+                        //     title: "Proceed to Payment"),
+                        // sizedTextfield,
+                        // AppButton.primaryButton(
+                        //     onButtonPressed: () {}, title: "Enter Details"),
+                        // sizedTextfield,
+                        // const TextWidget(
+                        //   text: "Additional Details",
+                        //   textSize: 20,
+                        //   fontWeight: FontWeight.bold,
+                        // ),
+                        // sizedTextfield,
                         MyCustomTextField.textField(
                             hintText: "Enter your name",
-                            controller: urlController,
+                            controller: communityWebinars.nameController,
                             lableText: "Name",
                             borderClr: AppColors.white12),
                         const SizedBox(height: 12),
                         MyCustomTextField.textField(
                             hintText: "Enter your email",
-                            controller: urlController,
+                            controller: communityWebinars.emailController,
                             lableText: "Email",
                             borderClr: AppColors.white12),
                         const SizedBox(height: 12),
                         MyCustomTextField.textField(
                             hintText: "Enter additional information",
-                            controller: urlController,
+                            controller: communityWebinars.infoController,
                             lableText: "Additional Information",
                             borderClr: AppColors.white12,
                             maxLine: 3),
                         const SizedBox(height: 12),
                         AppButton.primaryButton(
-                            onButtonPressed: () {}, title: "Schedule Event"),
+                            onButtonPressed: () {
+                              Helper.loader(context);
+                              communityWebinars.communityScheduleEvent(
+                                  communityWebinars
+                                      .communityWebinarsList[widget.index].id);
+                            },
+                            title: "Schedule Event"),
                         const SizedBox(height: 12),
                       ],
                     )),

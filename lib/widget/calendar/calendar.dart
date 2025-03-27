@@ -1,3 +1,4 @@
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityWebinarsController/community_webinars_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
@@ -12,6 +13,7 @@ class EventCalendar extends StatefulWidget {
 }
 
 class _EventCalendarState extends State<EventCalendar> {
+  CommunityWebinarsController communityWebinars = Get.find();
   // late List<DateTime> _events;
   late DateTime _selectedDay;
   late DateTime _focusedDay;
@@ -118,7 +120,7 @@ class _EventCalendarState extends State<EventCalendar> {
               child: AppButton.primaryButton(
                 onButtonPressed: () {
                   Get.back(result: true);
-                  // recordController.selectedDate.value = _selectedDay;
+                  communityWebinars.selectDate = _selectedDay;
                 },
                 height: 40,
                 title: "Done",

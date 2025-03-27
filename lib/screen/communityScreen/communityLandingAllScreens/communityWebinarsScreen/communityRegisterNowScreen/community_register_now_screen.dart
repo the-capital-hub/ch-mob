@@ -1,3 +1,6 @@
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityAboutController/community_about_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityEventsController/community_events_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityWebinarsController/community_webinars_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
@@ -5,9 +8,13 @@ import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:get/get.dart';
 
 class CommunityRegisterNowScreen extends StatefulWidget {
-  const CommunityRegisterNowScreen({super.key});
+  int index;
+  CommunityRegisterNowScreen({required this.index, super.key});
 
   @override
   State<CommunityRegisterNowScreen> createState() =>
@@ -16,7 +23,25 @@ class CommunityRegisterNowScreen extends StatefulWidget {
 
 class _CommunityRegisterNowScreenState
     extends State<CommunityRegisterNowScreen> {
+  CommunityEventsController communityEvents = Get.find();
   TextEditingController urlController = TextEditingController();
+  CommunityAboutController aboutCommunity = Get.put(CommunityAboutController());
+  String communityAdminName = "";
+  @override
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      Future.wait([aboutCommunity.getAboutCommunity()]).then((values) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          setState(() {
+            communityAdminName =
+                "${aboutCommunity.aboutCommunityList[0].admin.firstName} ${aboutCommunity.aboutCommunityList[0].admin.lastName}";
+          });
+        });
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,39 +57,39 @@ class _CommunityRegisterNowScreenState
               child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Column(children: [
-                    Card(
-                      margin: EdgeInsets.zero,
-                      color: AppColors.blackCard,
-                      child: const Padding(
-                        padding: EdgeInsets.all(12.0),
-                        child: Row(
-                          children: [
-                            TextWidget(
-                              text: "Nitin Kumar",
-                              textSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            TextWidget(
-                              text: " invites you to join!",
-                              textSize: 16,
-                              color: AppColors.primary,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    sizedTextfield,
-                    Container(
-                      height: 200,
-                      decoration: BoxDecoration(
-                          image: const DecorationImage(
-                              image: NetworkImage(
-                                "https://bettermeetings.expert/wp-content/uploads/engaging-interactive-webinar-best-practices-and-formats.jpg",
-                              ),
-                              fit: BoxFit.fill),
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
-                    const SizedBox(height: 12),
+                    // Card(
+                    //   margin: EdgeInsets.zero,
+                    //   color: AppColors.blackCard,
+                    //   child: Padding(
+                    //     padding: EdgeInsets.all(12.0),
+                    //     child: Row(
+                    //       children: [
+                    //         TextWidget(
+                    //           text: communityAdminName,
+                    //           textSize: 16,
+                    //           fontWeight: FontWeight.bold,
+                    //         ),
+                    //         TextWidget(
+                    //           text: " invites you to join!",
+                    //           textSize: 16,
+                    //           color: AppColors.primary,
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    // sizedTextfield,
+                    // Container(
+                    //   height: 200,
+                    //   decoration: BoxDecoration(
+                    //       image: const DecorationImage(
+                    //           image: NetworkImage(
+                    //             "https://bettermeetings.expert/wp-content/uploads/engaging-interactive-webinar-best-practices-and-formats.jpg",
+                    //           ),
+                    //           fit: BoxFit.fill),
+                    //       borderRadius: BorderRadius.circular(10)),
+                    // ),
+                    // const SizedBox(height: 12),
                     Card(
                         margin: EdgeInsets.zero,
                         color: AppColors.blackCard,
@@ -73,8 +98,9 @@ class _CommunityRegisterNowScreenState
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const TextWidget(
-                                text: "Title",
+                              TextWidget(
+                                text: communityEvents.communityEventsData
+                                    .webinars![widget.index].title,
                                 textSize: 20,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -90,26 +116,28 @@ class _CommunityRegisterNowScreenState
                                   const SizedBox(
                                     width: 5,
                                   ),
-                                  const TextWidget(
-                                      text: "7 March 2024", textSize: 16)
+                                  TextWidget(
+                                      text: communityEvents.communityEventsData
+                                          .webinars![widget.index].date,
+                                      textSize: 16)
                                 ],
                               ),
                               sizedTextfield,
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.schedule,
-                                    color: AppColors.white,
-                                    size: 22,
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  const TextWidget(
-                                      text: "10:15AM - 10:45AM", textSize: 16)
-                                ],
-                              ),
-                              sizedTextfield,
+                              // Row(
+                              //   children: [
+                              //     Icon(
+                              //       Icons.schedule,
+                              //       color: AppColors.white,
+                              //       size: 22,
+                              //     ),
+                              //     const SizedBox(
+                              //       width: 5,
+                              //     ),
+                              //      TextWidget(
+                              //         text: "${communityEvents.communityEventsData[widget.index].duration} - ${communityEvents.communityEventsData[widget.index].duration}", textSize: 16)
+                              //   ],
+                              // ),
+                              // sizedTextfield,
                               Row(
                                 children: [
                                   Icon(
@@ -120,8 +148,10 @@ class _CommunityRegisterNowScreenState
                                   const SizedBox(
                                     width: 5,
                                   ),
-                                  const TextWidget(
-                                      text: "30 minutes", textSize: 16)
+                                  TextWidget(
+                                      text:
+                                          communityEvents.communityEventsData.webinars![widget.index].duration,
+                                      textSize: 16)
                                 ],
                               ),
                               sizedTextfield,
@@ -135,7 +165,15 @@ class _CommunityRegisterNowScreenState
                                   const SizedBox(
                                     width: 5,
                                   ),
-                                  const TextWidget(text: "Free", textSize: 16)
+                                  TextWidget(
+                                      text: communityEvents
+                                                  .communityEventsData
+                                                  .webinars![widget.index]
+                                                  .price ==
+                                              "0"
+                                          ? "Free"
+                                          : "\u{20B9}${communityEvents.communityEventsData.webinars![widget.index].price}",
+                                      textSize: 16)
                                 ],
                               ),
                               sizedTextfield,
@@ -154,13 +192,16 @@ class _CommunityRegisterNowScreenState
                                 ],
                               ),
                               sizedTextfield,
-                              const TextWidget(
-                                  text: "Description",
-                                  textSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              // SizedBox(height: 8),
-                              // // HtmlWidget(communityProducts.communityProductsList[widget.index].description, textStyle: TextStyle(fontSize: 13,color: AppColors.white),),
-                              // SizedBox(height: 8),
+
+                              HtmlWidget(
+                                communityEvents.communityEventsData
+                                    .webinars![widget.index].description,
+                                textStyle: TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.white,
+                                ),
+                              ),
+
                               sizedTextfield,
                             ],
                           ),
@@ -194,24 +235,30 @@ class _CommunityRegisterNowScreenState
                             sizedTextfield,
                             MyCustomTextField.textField(
                                 hintText: "Enter Name",
-                                controller: urlController,
+                                controller: communityEvents.nameController,
                                 lableText: "Name",
                                 borderClr: AppColors.white12),
                             const SizedBox(height: 12),
                             MyCustomTextField.textField(
                                 hintText: "Enter Email",
-                                controller: urlController,
+                                controller: communityEvents.emailController,
                                 lableText: "Email",
                                 borderClr: AppColors.white12),
                             const SizedBox(height: 12),
                             MyCustomTextField.textField(
                                 hintText: "Enter Mobile Number",
-                                controller: urlController,
+                                controller: communityEvents.mobileController,
                                 lableText: "Mobile Number",
                                 borderClr: AppColors.white12),
                             const SizedBox(height: 12),
                             AppButton.primaryButton(
-                                onButtonPressed: () {}, title: "Register Now"),
+                                onButtonPressed: () {
+                                  communityEvents.registerCommunityWebinar(
+                                     communityEvents.communityEventsData
+                                    .webinars![widget.index].id
+                                          .toString());
+                                },
+                                title: "Register Now"),
                             sizedTextfield,
                           ],
                         ),

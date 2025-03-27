@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityMeetingsModel/community_member_emails_model.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/getAllCommunitiesModel/get_all_communities_model.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/getCreatedCommunityModel/get_created_community_model.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/myCommunitiesModel/my_communities_model.dart';
@@ -16,6 +17,7 @@ String communityLogo = "";
 String communityName = "";
 bool isAdmin = false;
 int addServiceIndex = 0;
+CommunityController allCommunities = Get.put(CommunityController());
 
 class CommunityController extends GetxController {
   var isLoading = false.obs;
@@ -146,6 +148,7 @@ class CommunityController extends GetxController {
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       Get.to(() => const CommunityLandingScreen());
+      allCommunities.getAllCommunities();
       return true;
     } else {
       Get.back();

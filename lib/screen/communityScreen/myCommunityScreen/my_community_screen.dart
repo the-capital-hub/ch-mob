@@ -1,4 +1,5 @@
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityLandingScreen/create_community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
@@ -38,7 +39,9 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
     return Container(
         decoration: bgDec,
         child: Scaffold(
-          drawer: const DrawerWidget(),
+          drawer: GetStoreData.getStore.read('isInvestor')
+              ? const DrawerWidgetInvestor()
+              : const DrawerWidget(),
           backgroundColor: AppColors.transparent,
           appBar: HelperAppBar.appbarHelper(
             title: "My Community",
@@ -213,6 +216,7 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
                                                   ? AppColors.primaryInvestor
                                                   : AppColors.primary,
                                               onPressed: () {
+                                                Helper.loader(context);
                                                 myCommunities.leaveCommunity(
                                                     context,
                                                     myCommunities

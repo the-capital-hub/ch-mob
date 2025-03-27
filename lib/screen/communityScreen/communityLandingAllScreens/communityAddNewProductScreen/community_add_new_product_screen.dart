@@ -215,8 +215,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           color: AppColors.white12,
                           borderRadius: BorderRadius.circular(20)),
                       child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 12),
                         child: TextWidget(
                             text: widget.isEdit!
                                 ? "Change Product Image"
@@ -265,6 +265,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                 ),
                 if (!addNewProduct.isFree)
                   MyCustomTextField.textField(
+                      textInputType: TextInputType.number,
                       hintText: "Enter amount",
                       controller: addNewProduct.productAmountController,
                       lableText: "Amount"),
@@ -277,6 +278,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     height: 12,
                   ),
                   shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.zero,
                   itemCount: controllers.length,
                   itemBuilder: (context, index) {
@@ -316,7 +318,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               Expanded(
                 child: AppButton.outlineButton(
                     borderColor: AppColors.primary,
-                    onButtonPressed: () {},
+                    onButtonPressed: () {
+                      Get.back();
+                    },
                     title: "Cancel"),
               ),
               const SizedBox(width: 12),
@@ -326,14 +330,21 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       if (base64 == "") {
                         HelperSnackBar.snackBar(
                             "Error", "Upload an Image for the Product.");
+                      } else if (addNewProduct
+                              .productAmountController.text.isEmpty ||
+                          addNewProduct.productAmountController.text == "0") {
+                        HelperSnackBar.snackBar(
+                            "Error", "Enter a valid Product Price Amount");
                       } else {
                         List<String> urls = controllers
                             .map((controller) => controller.text)
                             .toList();
-                        Helper.loader(context);
+
                         if (!widget.isEdit) {
+                          Helper.loader(context);
                           addNewProduct.addProductToCommunity(base64, urls);
                         } else {
+                          Helper.loader(context);
                           addNewProduct.updateCommunityProduct(
                               base64, widget.productId!);
                         }

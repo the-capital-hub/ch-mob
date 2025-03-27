@@ -52,6 +52,7 @@ class CommunityProductsAndMembersController extends GetxController {
     if (data["status"]) {
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
+      getCommunityProductsandMembers();
       return true;
     } else {
       Get.back();
@@ -69,9 +70,34 @@ class CommunityProductsAndMembersController extends GetxController {
     var data = json.decode(response.body);
     if (data["status"]) {
       communityProductsList.removeWhere((product) => product.id == productId);
+      Get.back();
+      HelperSnackBar.snackBar("Success", data["message"]);
+
+      return true;
+    } else {
+      Get.back();
+      HelperSnackBar.snackBar("Error", data["message"]);
+
+      return false;
+    }
+  }
+
+  Future removeCommunityMember(memberId) async {
+    var response = await ApiBase.pachRequest(
+      withToken: true,
+      body: {"reason": "Exit"},
+      extendedURL:
+          "${ApiUrl.removeCommunityMember}$createdCommunityId/$memberId",
+    );
+    log(response.body);
+    var data = json.decode(response.body);
+    if (data["status"]) {
+      communityMembersList.removeWhere((member) => member.id == memberId);
+      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       return true;
     } else {
+      Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
     }

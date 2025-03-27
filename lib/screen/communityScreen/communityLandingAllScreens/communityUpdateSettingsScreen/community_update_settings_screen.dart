@@ -38,8 +38,8 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
               aboutCommunity.aboutCommunityList[0].community.shareLink;
           updateSettings.communityNameController.text =
               aboutCommunity.aboutCommunityList[0].community.name;
-          updateSettings.aboutCommunityController
-              .setText(aboutCommunity.aboutCommunityList[0].community.about);
+
+          addAbout();
 
           updateSettings.subscriptionAmountController.text =
               aboutCommunity.aboutCommunityList[0].community.amount.toString();
@@ -61,6 +61,11 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
       });
     });
     super.initState();
+  }
+
+  addAbout() async {
+    await updateSettings.aboutCommunityController
+        .insertText(aboutCommunity.aboutCommunityList[0].community.about);
   }
 
   TextEditingController urlController = TextEditingController();
@@ -264,6 +269,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                               separatorBuilder: (context, index) =>
                                   const SizedBox(height: 12),
                               shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
                               padding: EdgeInsets.zero,
                               itemCount: controllers.length,
                               itemBuilder: (context, index) {
@@ -369,17 +375,17 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                         ),
                       ),
                     )),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Get.to(() => const CommunityAboutScreen());
-            },
-            backgroundColor: AppColors.primary,
-            child: Icon(
-              Icons.info,
-              size: 30,
-              color: AppColors.white,
-            ),
-          ),
+          // floatingActionButton: FloatingActionButton(
+          //   onPressed: () {
+          //     Get.to(() => const CommunityAboutScreen());
+          //   },
+          //   backgroundColor: AppColors.primary,
+          //   child: Icon(
+          //     Icons.info,
+          //     size: 30,
+          //     color: AppColors.white,
+          //   ),
+          // ),
         ));
   }
 
