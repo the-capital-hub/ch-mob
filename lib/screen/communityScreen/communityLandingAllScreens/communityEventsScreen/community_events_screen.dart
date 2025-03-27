@@ -1,4 +1,5 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityEventsController/community_events_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityWebinarsController/community_webinars_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddServiceScreen/community_add_service_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityEventsScreen/communityBookingDetailsScreen/community_booking_details_screen.dart';
@@ -13,6 +14,7 @@ import 'package:capitalhub_crm/widget/dilogue/share_dilogue.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 
 class CommunityEventsScreen extends StatefulWidget {
@@ -23,13 +25,15 @@ class CommunityEventsScreen extends StatefulWidget {
 }
 
 class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
+  CommunityWebinarsController communityWebinars =
+      Get.put(CommunityWebinarsController());
   CommunityEventsController communityEvents =
       Get.put(CommunityEventsController());
 
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      communityEvents.getCommunityEvents().then((v) {
+      communityWebinars.getCommunityWebinars().then((v) {
         WidgetsBinding.instance.addPostFrameCallback((_) {});
       });
     });
@@ -43,9 +47,9 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Obx(() => communityEvents.isLoading.value
+    return Obx(() => communityWebinars.isLoading.value
         ? Helper.pageLoading()
-        : communityEvents.communityEventsData.webinars!.isEmpty
+        : communityWebinars.communityWebinarsList.isEmpty
             ? const Center(
                 child: TextWidget(
                     text: "No Community Events Available", textSize: 16))
@@ -53,8 +57,7 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                 children: [
                   Expanded(
                     child: ListView.builder(
-                      itemCount:
-                          communityEvents.communityEventsData.webinars!.length,
+                      itemCount: communityWebinars.communityWebinarsList.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         Color containerColor =
@@ -69,105 +72,111 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                if (isAdmin)
-                                  Row(
-                                    children: [
-                                      TextWidget(
-                                          text: communityEvents
-                                              .communityEventsData
-                                              .webinars![index]
-                                              .title,
-                                          textSize: 20),
-                                      const Spacer(),
-                                      if (isAdmin) ...[
-                                        IconButton(
-                                          padding: EdgeInsets.zero,
-                                          icon: Icon(
-                                            Icons.edit,
-                                            color: AppColors.whiteCard,
-                                            size: 20,
-                                          ),
-                                          onPressed: () {
-                                            addServiceIndex = 2;
-                                            Get.to(
-                                                () => CommunityAddServiceScreen(
-                                                      eventId: communityEvents
-                                                          .communityEventsData
-                                                          .webinars![index]
-                                                          .id,
-                                                      index: index,
-                                                      isEdit: true,
-                                                      isPriorityDM: false,
-                                                      isMeeting: false,
-                                                      isEvent: true,
-                                                      isWebinar: false,
-                                                    ));
-                                          },
-                                        ),
-                                        IconButton(
-                                            onPressed: () {
-                                              showCustomPopup(
-                                                context: context,
-                                                title: "Disable this event",
-                                                message:
-                                                    "Are you sure you\nwant to disable this event?",
-                                                button1Text: "Cancel",
-                                                button2Text: "OK",
-                                                icon: Icons.delete,
-                                                onButton1Pressed: () {
-                                                  Get.back();
-                                                },
-                                                onButton2Pressed: () {
-                                                  communityEvents
-                                                      .disableCommunityEvent(
-                                                          communityEvents
-                                                              .communityEventsData
-                                                              .webinars![index]
-                                                              .id);
-                                                },
-                                              );
-                                            },
-                                            icon: Icon(
-                                              Icons.delete,
-                                              color: AppColors.white,
-                                            )),
-                                        if (!isAdmin)
-                                          IconButton(
-                                            padding: EdgeInsets.zero,
-                                            icon: Icon(
-                                              Icons.mobile_screen_share_rounded,
-                                              color: AppColors.whiteCard,
-                                            ),
-                                            onPressed: () {
-                                              sharePostPopup(context, "",
-                                                  "share event detail");
-                                            },
-                                          ),
-                                      ],
+                                Row(
+                                  children: [
+                                    TextWidget(
+                                        text: communityWebinars
+                                            .communityWebinarsList[index]
+                                            .title!,
+                                        textSize: 20),
+                                    const Spacer(),
+                                    if (isAdmin) ...[
                                       IconButton(
                                         padding: EdgeInsets.zero,
                                         icon: Icon(
-                                          Icons.mobile_screen_share_rounded,
+                                          Icons.edit,
                                           color: AppColors.whiteCard,
+                                          size: 20,
                                         ),
                                         onPressed: () {
-                                          sharePostPopup(context, "",
-                                              "share event detail");
+                                          addServiceIndex = 2;
+                                          Get.to(
+                                              () => CommunityAddServiceScreen(
+                                                    eventId: communityWebinars
+                                                        .communityWebinarsList[
+                                                            index]
+                                                        .id,
+                                                    index: index,
+                                                    isEdit: true,
+                                                    isPriorityDM: false,
+                                                    isMeeting: false,
+                                                    isEvent: true,
+                                                    isWebinar: false,
+                                                  ));
                                         },
                                       ),
+                                      IconButton(
+                                          onPressed: () {
+                                            showCustomPopup(
+                                              context: context,
+                                              title: "Disable this event",
+                                              message:
+                                                  "Are you sure you\nwant to disable this event?",
+                                              button1Text: "Cancel",
+                                              button2Text: "OK",
+                                              icon: Icons.delete,
+                                              onButton1Pressed: () {
+                                                Get.back();
+                                              },
+                                              onButton2Pressed: () {
+                                                Get.back();
+                                                Helper.loader(context);
+                                                communityEvents
+                                                    .disableCommunityEvent(
+                                                        communityWebinars
+                                                            .communityWebinarsList[
+                                                                index]
+                                                            .eventId);
+                                              },
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Icons.delete,
+                                            color: AppColors.white,
+                                          )),
+                                      // if (!isAdmin)
+                                      //   IconButton(
+                                      //     padding: EdgeInsets.zero,
+                                      //     icon: Icon(
+                                      //       Icons.mobile_screen_share_rounded,
+                                      //       color: AppColors.whiteCard,
+                                      //     ),
+                                      //     onPressed: () {
+                                      //       sharePostPopup(context, "",
+                                      //           "share event detail");
+                                      //     },
+                                      //   ),
                                     ],
-                                  ),
-                                communityEvents.communityEventsData
-                                        .webinars![index].isActive
-                                    ? const SizedBox()
-                                    : TextWidget(
-                                        text: "This meeting is cancelled.",
-                                        textSize: 16,
-                                        color: AppColors.grey,
-                                      ),
+                                    // IconButton(
+                                    //   padding: EdgeInsets.zero,
+                                    //   icon: Icon(
+                                    //     Icons.mobile_screen_share_rounded,
+                                    //     color: AppColors.whiteCard,
+                                    //   ),
+                                    //   onPressed: () {
+                                    //     sharePostPopup(context, "",
+                                    //         "share event detail");
+                                    //   },
+                                    // ),
+                                  ],
+                                ),
+                                // communityWebinars.communityWebinarsList
+                                //         [index].isActive
+                                //     ? const SizedBox()
+                                //     : TextWidget(
+                                //         text: "This meeting is cancelled.",
+                                //         textSize: 16,
+                                //         color: AppColors.grey,
+                                //       ),
                                 const SizedBox(height: 8),
-                                const TextWidget(
-                                    text: "Description", textSize: 16),
+                                HtmlWidget(
+                                  communityWebinars.communityWebinarsList[index]
+                                      .description!,
+                                  textStyle: TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.white,
+                                  ),
+                                ),
                                 sizedTextfield,
                                 Card(
                                   color: AppColors.white38,
@@ -195,14 +204,12 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             TextWidget(
-                                                text: communityEvents
-                                                    .communityEventsData
-                                                    .webinars![index]
-                                                    .duration
-                                                    .toString(),
+                                                text:
+                                                    "${communityWebinars.communityWebinarsList[index].duration} Minutes",
                                                 textSize: 15),
-                                            const TextWidget(
-                                                text: "0 Bookings",
+                                            TextWidget(
+                                                text:
+                                                    "${communityWebinars.communityWebinarsList[index].bookings!.length} Bookings",
                                                 textSize: 15),
                                           ],
                                         ),
@@ -222,8 +229,13 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               TextWidget(
-                                                  text:
-                                                      "Rs ${communityEvents.communityEventsData.webinars![index].price} +",
+                                                  text: communityWebinars
+                                                              .communityWebinarsList[
+                                                                  index]
+                                                              .price ==
+                                                          0
+                                                      ? "Free"
+                                                      : "\u{20B9}${communityWebinars.communityWebinarsList[index].price} +",
                                                   textSize: 12),
                                               const SizedBox(width: 5),
                                               Icon(Icons.arrow_forward,
@@ -241,14 +253,16 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                   AppButton.primaryButton(
                                       onButtonPressed: () {
                                         Get.to(() =>
-                                            const CommunityBookingDetailsScreen());
+                                            CommunityBookingDetailsScreen(
+                                                index: index));
                                       },
                                       title: "View All Bookings"),
                                 if (!isAdmin)
                                   AppButton.primaryButton(
                                       onButtonPressed: () {
                                         Get.to(() =>
-                                            const CommunityScheduleEventsScreen());
+                                            CommunityScheduleEventsScreen(
+                                                index: index));
                                       },
                                       title: "Book Now")
                               ],

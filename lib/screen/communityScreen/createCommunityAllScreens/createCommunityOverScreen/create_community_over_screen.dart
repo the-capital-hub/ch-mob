@@ -1,9 +1,11 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityAboutController/community_about_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
@@ -31,14 +33,14 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       Future.wait([
-        // communityProducts.getCommunityProductsandMembers(),
-        // communityEvents.getCommunityEvents(),
-        createdCommunity.getCommunityById(),
+        // createdCommunity.getCommunityById(),
         aboutCommunity.getAboutCommunity()
       ]).then((values) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          urlController.text =
-              createdCommunity.createdCommunityDetails[0].community.shareLink;
+          setState(() {
+            urlController.text =
+                createdCommunity.createdCommunityDetails[0].community.shareLink;
+          });
         });
       });
     });
@@ -50,7 +52,9 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
     return Container(
       decoration: bgDec,
       child: Scaffold(
-        drawer: const DrawerWidget(),
+        drawer: GetStoreData.getStore.read('isInvestor')
+            ? const DrawerWidgetInvestor()
+            : const DrawerWidget(),
         backgroundColor: AppColors.transparent,
         appBar: HelperAppBar.appbarHelper(
           title: "Create Community",
@@ -58,75 +62,71 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
           autoAction: true,
         ),
         body: Obx(
-          () => createdCommunity.isLoading.value
+          () => aboutCommunity.isLoading.value
               ? Helper.pageLoading()
-              : createdCommunity.createdCommunityDetails.isEmpty
-                  ? const Center(
-                      child: TextWidget(
-                          text: "No Community Available", textSize: 16))
-                  : Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          TextWidget(
-                              text:
-                                  "Congrats! ${createdCommunity.createdCommunityDetails[0].community.name} is live!",
-                              textSize: 20),
-                          sizedTextfield,
-                          sizedTextfield,
-                          CircleAvatar(
-                            radius: 60,
-                            foregroundImage: NetworkImage(
-                              createdCommunity
-                                  .createdCommunityDetails[0].community.image,
-                            ),
-                          ),
-                          sizedTextfield,
-                          TextWidget(
-                            text: createdCommunity
-                                .createdCommunityDetails[0].community.name,
-                            textSize: 20,
-                          ),
-                          sizedTextfield,
-                          aboutCommunity.aboutCommunityList[0].community
-                                      .subscription ==
-                                  "free"
-                              ? const TextWidget(
-                                  text: "Any one can join for free",
-                                  textSize: 13)
-                              : TextWidget(
-                                  text:
-                                      "Subscription Amount : \u{20B9} ${aboutCommunity.aboutCommunityList[0].community.amount}",
-                                  textSize: 13),
-                          sizedTextfield,
-                          Divider(
-                            thickness: 1,
-                            color: AppColors.white54,
-                          ),
-                          const SizedBox(
-                            height: 12,
-                          ),
-                          Expanded(
-                            child: MyCustomTextField.textField(
-                                lableText: "Community Page URL",
-                                hintText: "Capitalhub/Community",
-                                controller: urlController,
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    Icons.mobile_screen_share_rounded,
-                                    color: AppColors.whiteCard,
-                                    size: 22,
-                                  ),
-                                  onPressed: () {
-                                    sharePostPopup(
-                                        context, "", urlController.text);
-                                  },
-                                )),
-                          ),
-                        ],
+              // : createdCommunity.createdCommunityDetails.isEmpty
+              //     ? const Center(
+              //         child: TextWidget(
+              //             text: "No Community Available", textSize: 16))
+              : Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      TextWidget(
+                          text:
+                              "Congrats! ${aboutCommunity.aboutCommunityDetailsList[0].name} is live!",
+                          textSize: 20),
+                      sizedTextfield,
+                      sizedTextfield,
+                      CircleAvatar(
+                        radius: 60,
+                        foregroundImage: NetworkImage(
+                          aboutCommunity.aboutCommunityDetailsList[0].image,
+                        ),
                       ),
-                    ),
+                      sizedTextfield,
+                      TextWidget(
+                        text: aboutCommunity.aboutCommunityDetailsList[0].name,
+                        textSize: 20,
+                      ),
+                      sizedTextfield,
+                      aboutCommunity.aboutCommunityList[0].community
+                                  .subscription ==
+                              "free"
+                          ? const TextWidget(
+                              text: "Any one can join for free", textSize: 13)
+                          : TextWidget(
+                              text:
+                                  "Subscription Amount : \u{20B9}${aboutCommunity.aboutCommunityList[0].community.amount}",
+                              textSize: 13),
+                      sizedTextfield,
+                      Divider(
+                        thickness: 1,
+                        color: AppColors.white54,
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Expanded(
+                        child: MyCustomTextField.textField(
+                            lableText: "Community Page URL",
+                            hintText: "Capitalhub/Community",
+                            controller: urlController,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                Icons.mobile_screen_share_rounded,
+                                color: AppColors.whiteCard,
+                                size: 22,
+                              ),
+                              onPressed: () {
+                                sharePostPopup(context, "", urlController.text);
+                              },
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
         ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.only(

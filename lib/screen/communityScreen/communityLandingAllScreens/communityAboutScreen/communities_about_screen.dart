@@ -1,6 +1,8 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityAboutController/community_about_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityEventsController/community_events_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityProductsAndMembersController/community_products_and_members_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPurchaseScreen/community_purchase_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
@@ -14,13 +16,17 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:get/get.dart';
 
 class CommunityAboutScreen extends StatefulWidget {
-  const CommunityAboutScreen({super.key});
+  bool isPublic;
+  int index;
+  CommunityAboutScreen(
+      {required this.isPublic, required this.index, super.key});
 
   @override
   State<CommunityAboutScreen> createState() => _CommunityAboutScreenState();
 }
 
 class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
+  CommunityController allCommunities = Get.find();
   List<String> postsFilter = ['All Posts', 'Admin Posts', 'Member Posts'];
   CommunityProductsAndMembersController communityProducts =
       Get.put(CommunityProductsAndMembersController());
@@ -47,6 +53,9 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
     AppColors.navyBlue,
     AppColors.oliveGreen
   ];
+  bool isPostsVisible = false;
+  bool isProductsVisible = false;
+  bool isEventsVisible = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -151,14 +160,37 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(
-                                height: 12,
+                                height: 8,
                               ),
-                              AppButton.primaryButton(
-                                  onButtonPressed: () {},
-                                  title: "Join Community"),
-                              const SizedBox(
-                                height: 12,
-                              ),
+                              if (widget.isPublic) ...[
+                                AppButton.primaryButton(
+                                    onButtonPressed: () async {
+                                      Helper.loader(context);
+                                      createdCommunityId = allCommunities
+                                          .allCommunitiesDetails[widget.index!]
+                                          .id;
+                                      await allCommunities.joinCommunity();
+                                      communityLogo = allCommunities
+                                          .allCommunitiesDetails[widget.index!]
+                                          .image;
+                                      communityName = allCommunities
+                                          .allCommunitiesDetails[widget.index!]
+                                          .community;
+                                      isAdmin = allCommunities
+                                                  .allCommunitiesDetails[
+                                                      widget.index!]
+                                                  .role ==
+                                              "Admin"
+                                          ? true
+                                          : false;
+                                      Get.to(
+                                          () => const CommunityLandingScreen());
+                                    },
+                                    title: "Join Community"),
+                                const SizedBox(
+                                  height: 12,
+                                ),
+                              ],
                               const TextWidget(
                                 text: "About Community",
                                 textSize: 20,
@@ -257,29 +289,54 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                               const SizedBox(
                                 height: 12,
                               ),
-                              const TextWidget(
-                                text: "Recent Posts From Admin",
-                                textSize: 20,
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w500,
+                              Row(
+                                children: [
+                                  const TextWidget(
+                                    text: "Recent Posts From Admin",
+                                    textSize: 20,
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  Spacer(),
+                                  IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isPostsVisible = !isPostsVisible;
+                                        });
+                                      },
+                                      icon: 
+                                      isPostsVisible?
+                                      Icon(
+                                        Icons.keyboard_arrow_up,
+                                        color: AppColors.primary,
+                                      )
+                                      :
+                                      Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: AppColors.primary,
+                                      )
+                                      )
+                                ],
                               ),
+                              if(isPostsVisible)
                               const SizedBox(
                                 height: 12,
                               ),
-                              aboutCommunity.aboutCommunityPostsList.isEmpty
-                                  ? const SizedBox(
-                                      height: 100,
-                                      child: TextWidget(
-                                          text: "No Community Posts Available",
-                                          textSize: 16))
-                                  : SizedBox(
-                                      height: 300,
-                                      child: ListView.separated(
+                              if (isPostsVisible)
+                                aboutCommunity.aboutCommunityPostsList.isEmpty
+                                    ? const SizedBox(
+                                        height: 100,
+                                        child: TextWidget(
+                                            text:
+                                                "No Community Posts Available",
+                                            textSize: 16))
+                                    : ListView.separated(
                                         separatorBuilder: (context, index) {
                                           return const SizedBox(
                                             height: 12,
                                           );
                                         },
+                                        physics: NeverScrollableScrollPhysics(),
                                         padding: EdgeInsets.zero,
                                         shrinkWrap: true,
                                         itemCount: aboutCommunity
@@ -370,34 +427,57 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                           );
                                         },
                                       ),
-                                    ),
                               const SizedBox(
                                 height: 12,
                               ),
-                              const TextWidget(
-                                text: "Community Products",
-                                textSize: 20,
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w500,
+                              Row(
+                                children: [
+                                  const TextWidget(
+                                    text: "Community Products",
+                                    textSize: 20,
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  Spacer(),
+                                  IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isProductsVisible =
+                                              !isProductsVisible;
+                                        });
+                                      },
+                                      icon: isProductsVisible?
+                                      Icon(
+                                        Icons.keyboard_arrow_up,
+                                        color: AppColors.primary,
+                                      )
+                                      :
+                                      Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: AppColors.primary,
+                                      ))
+                                ],
                               ),
-                              const SizedBox(
-                                height: 12,
-                              ),
-                              aboutCommunity.aboutCommunityProductsList.isEmpty
-                                  ? const SizedBox(
-                                      height: 100,
-                                      child: TextWidget(
-                                          text:
-                                              "No Community Products Available",
-                                          textSize: 16))
-                                  : SizedBox(
-                                      height: 300,
-                                      child: ListView.separated(
+                              if (isProductsVisible)
+                                const SizedBox(
+                                  height: 12,
+                                ),
+                              if (isProductsVisible)
+                                aboutCommunity
+                                        .aboutCommunityProductsList.isEmpty
+                                    ? const SizedBox(
+                                        height: 100,
+                                        child: TextWidget(
+                                            text:
+                                                "No Community Products Available",
+                                            textSize: 16))
+                                    : ListView.separated(
                                         separatorBuilder: (context, index) {
                                           return const SizedBox(
                                             height: 12,
                                           );
                                         },
+                                        physics: NeverScrollableScrollPhysics(),
                                         padding: EdgeInsets.zero,
                                         shrinkWrap: true,
                                         itemCount: aboutCommunity
@@ -592,33 +672,55 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                           );
                                         },
                                       ),
-                                    ),
                               const SizedBox(
                                 height: 12,
                               ),
-                              const TextWidget(
-                                text: "Upcoming Events",
-                                textSize: 20,
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w500,
+                              Row(
+                                children: [
+                                  const TextWidget(
+                                    text: "Upcoming Events",
+                                    textSize: 20,
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  Spacer(),
+                                  IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isEventsVisible = !isEventsVisible;
+                                        });
+                                      },
+                                      icon: isEventsVisible?
+                                      Icon(
+                                        Icons.keyboard_arrow_up,
+                                        color: AppColors.primary,
+                                      )
+                                      :
+                                      Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: AppColors.primary,
+                                      ))
+                                ],
                               ),
-                              const SizedBox(
-                                height: 12,
-                              ),
-                              aboutCommunity.aboutCommunityEventsList.isEmpty
-                                  ? const SizedBox(
-                                      height: 100,
-                                      child: TextWidget(
-                                          text: "No Community Events Available",
-                                          textSize: 16))
-                                  : SizedBox(
-                                      height: 300,
-                                      child: ListView.separated(
+                              if (isEventsVisible)
+                                const SizedBox(
+                                  height: 12,
+                                ),
+                              if (isEventsVisible)
+                                aboutCommunity.aboutCommunityEventsList.isEmpty
+                                    ? const SizedBox(
+                                        height: 100,
+                                        child: TextWidget(
+                                            text:
+                                                "No Community Events Available",
+                                            textSize: 16))
+                                    : ListView.separated(
                                         separatorBuilder: (context, index) {
                                           return const SizedBox(
                                             height: 12,
                                           );
                                         },
+                                        physics: NeverScrollableScrollPhysics(),
                                         itemCount: aboutCommunity
                                             .aboutCommunityEventsList.length,
                                         shrinkWrap: true,
@@ -749,7 +851,6 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                           );
                                         },
                                       ),
-                                    ),
                             ],
                           ),
                         ),

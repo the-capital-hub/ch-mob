@@ -41,10 +41,12 @@ class CommunityAddNewProductController extends GetxController {
     var data = json.decode(response.body);
     if (data["status"]) {
       Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       communityProducts.getCommunityProductsandMembers();
       return true;
     } else {
+      Get.back();
       Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
@@ -75,12 +77,15 @@ class CommunityAddNewProductController extends GetxController {
     var data = json.decode(response.body);
     if (data["status"]) {
       Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       communityProducts.getCommunityProductsandMembers();
       return true;
     } else {
       Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
+      Get.back();
       return false;
     }
   }

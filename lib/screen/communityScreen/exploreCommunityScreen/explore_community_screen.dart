@@ -1,4 +1,6 @@
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAboutScreen/communities_about_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPublicScreen/community_public_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
@@ -39,7 +41,9 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
     return Container(
         decoration: bgDec,
         child: Scaffold(
-          drawer: const DrawerWidget(),
+          drawer: GetStoreData.getStore.read('isInvestor')
+              ? const DrawerWidgetInvestor()
+              : const DrawerWidget(),
           backgroundColor: AppColors.transparent,
           appBar: HelperAppBar.appbarHelper(
             title: "Explore Community",
@@ -78,7 +82,7 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 7,
                                 mainAxisSpacing: 7,
-                                childAspectRatio: 0.8,
+                                childAspectRatio: 0.7,
                               ),
                               itemBuilder: (context, index) {
                                 return InkWell(
@@ -102,8 +106,8 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                                               "Admin"
                                           ? true
                                           : false;
-                                      Get.to(
-                                          () => const CommunityPublicScreen());
+                                      Get.to(() => CommunityAboutScreen(
+                                          isPublic: true, index: index));
                                     } else if (!allCommunities
                                             .allCommunitiesDetails[index]
                                             .isCommunityMember &&
@@ -175,17 +179,14 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                                             const SizedBox(
                                               height: 3,
                                             ),
+                                            TextWidget(
+                                                text:
+                                                    "${allCommunities.allCommunitiesDetails[index].members.length.toString()} Members",
+                                                textSize: 5),
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                TextWidget(
-                                                    text:
-                                                        "${allCommunities.allCommunitiesDetails[index].members.length.toString()} Members",
-                                                    textSize: 5),
-                                                const SizedBox(
-                                                  width: 4,
-                                                ),
                                                 Align(
                                                   alignment:
                                                       Alignment.centerLeft,
@@ -248,13 +249,14 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                                                     .isOpen)
                                               InkWell(
                                                 onTap: () async {
-                                                  await allCommunities
-                                                      .joinCommunity();
+                                                  Helper.loader(context);
                                                   createdCommunityId =
                                                       allCommunities
                                                           .allCommunitiesDetails[
                                                               index]
                                                           .id;
+                                                  await allCommunities
+                                                      .joinCommunity();
                                                   communityLogo = allCommunities
                                                       .allCommunitiesDetails[
                                                           index]

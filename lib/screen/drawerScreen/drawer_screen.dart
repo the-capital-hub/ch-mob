@@ -68,7 +68,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     "Campaign",
     "Community",
     "Meetings",
-    "Investors",
+    // "Investors",
     "Help",
     "Log Out",
   ];
@@ -98,7 +98,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     PngAssetPath.campaignIcon,
     PngAssetPath.communityIcon,
     PngAssetPath.meetingIcon,
-    PngAssetPath.investorsIcon,
+    // PngAssetPath.investorsIcon,
     PngAssetPath.helpIcon,
     PngAssetPath.logoutIcon,
   ];
@@ -116,7 +116,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     const CampaignLandingScreen(),
     const EventsScreen(),
     const CommunityLandingScreen(),
-    const LandingScreen(),
+    // const LandingScreen(),
     const HelpScreen(),
     const LogoutScreen(),
   ];

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityWebinarsController/community_webinars_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityEventsModel/community_events_model.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
@@ -8,6 +9,9 @@ import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
+
+CommunityWebinarsController communityWebinars =
+    Get.put(CommunityWebinarsController());
 
 class CommunityEventsController extends GetxController {
   var isLoading = false.obs;
@@ -37,6 +41,9 @@ class CommunityEventsController extends GetxController {
   TextEditingController durationMinutesController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController priceDiscountController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController startTimeController = TextEditingController();
+  TextEditingController endTimeController = TextEditingController();
 
   Future createCommunityEvent() async {
     String description = "";
@@ -48,7 +55,9 @@ class CommunityEventsController extends GetxController {
         "duration": durationMinutesController.text,
         "price": priceController.text,
         "discount": priceDiscountController.text,
-        "communityId": createdCommunityId
+        "communityId": createdCommunityId,
+        "eventType": "Private"
+// googleLogin
       },
       withToken: true,
       extendedURL: ApiUrl.createEvent,
@@ -58,7 +67,7 @@ class CommunityEventsController extends GetxController {
     if (data["status"]) {
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
-      getCommunityEvents();
+      communityWebinars.getCommunityWebinars();
       return true;
     } else {
       Get.back();
@@ -77,7 +86,8 @@ class CommunityEventsController extends GetxController {
         "duration": durationMinutesController.text,
         "price": priceController.text,
         "discount": priceDiscountController.text,
-        "communityId": createdCommunityId
+        "communityId": createdCommunityId,
+        "eventType": "Private"
       },
       withToken: true,
       extendedURL: ApiUrl.updateEvent + id,
@@ -87,7 +97,7 @@ class CommunityEventsController extends GetxController {
     if (data["status"]) {
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
-      getCommunityEvents();
+      communityWebinars.getCommunityWebinars();
       return true;
     } else {
       Get.back();
@@ -105,9 +115,12 @@ class CommunityEventsController extends GetxController {
       log(response.body);
       var data = jsonDecode(response.body);
       if (data["status"]) {
+        Get.back();
         HelperSnackBar.snackBar("Success", data["message"]);
+        communityWebinars.getCommunityWebinars();
         return true;
       } else {
+        Get.back();
         HelperSnackBar.snackBar("Error", data["message"]);
         return false;
       }
@@ -115,6 +128,39 @@ class CommunityEventsController extends GetxController {
       log("disableEvent $e");
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+  Future registerCommunityWebinar(webinarId) async {
+    var bod = {
+      "name": nameController.text,
+      "email": emailController.text,
+      "mobile": mobileController.text
+    };
+    log(bod.toString());
+    var response = await ApiBase.postRequest(
+      body: {
+        "name": nameController.text,
+        "email": emailController.text,
+        "mobile": mobileController.text
+      },
+      withToken: true,
+      extendedURL: ApiUrl.registerWebinar + webinarId,
+    );
+    log(response.body);
+    var data = json.decode(response.body);
+    if (data["status"]) {
+      // Get.back();
+      HelperSnackBar.snackBar("Success", data["message"]);
+      communityWebinars.getCommunityWebinars();
+      return true;
+    } else {
+      // Get.back();
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
     }
   }
 }

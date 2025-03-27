@@ -1,8 +1,10 @@
+import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityStartScreen/create_community_start_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
@@ -23,7 +25,9 @@ class _CreateCommunityScreenState extends State<CreateCommunityLandingScreen> {
     return Container(
         decoration: bgDec,
         child: Scaffold(
-            drawer: const DrawerWidget(),
+            drawer: GetStoreData.getStore.read('isInvestor')
+              ? const DrawerWidgetInvestor()
+              : const DrawerWidget(),
             backgroundColor: AppColors.transparent,
             appBar: HelperAppBar.appbarHelper(
               title: "Create Community",

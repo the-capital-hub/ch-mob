@@ -1,7 +1,7 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityMeetingsController/community_meetings_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityPriorityDMsController/community_priority_dms_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
-import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
@@ -10,28 +10,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 
-class CommunityBookAMeetingScreen extends StatefulWidget {
+class CommunityAskAQuestionScreen extends StatefulWidget {
   int index;
-  String day;
-  String slot;
-  String startTime;
-  String endTime;
-  CommunityBookAMeetingScreen(
-      {required this.index,
-      required this.day,
-      required this.slot,
-      super.key,
-      required this.startTime,
-      required this.endTime});
+  CommunityAskAQuestionScreen({
+    required this.index,
+    super.key,
+  });
 
   @override
-  State<CommunityBookAMeetingScreen> createState() =>
+  State<CommunityAskAQuestionScreen> createState() =>
       _CommunityBookAMeetingScreenState();
 }
 
 class _CommunityBookAMeetingScreenState
-    extends State<CommunityBookAMeetingScreen> {
-  CommunityMeetingsController communityMeetings = Get.find();
+    extends State<CommunityAskAQuestionScreen> {
+  CommunityPriorityDMsController communityPriorityDMs = Get.find();
   TextEditingController urlController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -39,7 +32,7 @@ class _CommunityBookAMeetingScreenState
         decoration: bgDec,
         child: Scaffold(
           appBar: HelperAppBar.appbarHelper(
-            title: "Book a Meeting",
+            title: "Ask A Question",
             hideBack: false,
             autoAction: true,
           ),
@@ -58,17 +51,17 @@ class _CommunityBookAMeetingScreenState
                 const SizedBox(height: 12),
                 MyCustomTextField.textField(
                     hintText: "Enter Name",
-                    controller: urlController,
+                    controller: communityPriorityDMs.nameController,
                     lableText: "Name"),
                 const SizedBox(height: 12),
                 MyCustomTextField.textField(
                     hintText: "Enter Email",
-                    controller: urlController,
+                    controller: communityPriorityDMs.emailController,
                     lableText: "Email"),
                 const SizedBox(height: 12),
                 MyCustomTextField.textField(
                     hintText: "Enter Mobile Number",
-                    controller: urlController,
+                    controller: communityPriorityDMs.mobileController,
                     lableText: "Mobile Number"),
                 const SizedBox(height: 12),
                 const SizedBox(height: 12),
@@ -87,15 +80,15 @@ class _CommunityBookAMeetingScreenState
                         ),
                         const SizedBox(height: 12),
                         const TextWidget(
-                          text: "Meeting:",
+                          text: "Service:",
                           textSize: 16,
                           fontWeight: FontWeight.w500,
                           color: AppColors.primary,
                         ),
                         const SizedBox(height: 12),
                         TextWidget(
-                            text: communityMeetings
-                                .communityMeetingsList[widget.index].title!,
+                            text: communityPriorityDMs
+                                .communityPriorityDMsList[widget.index].title!,
                             textSize: 13),
                         const SizedBox(height: 12),
                         const TextWidget(
@@ -106,43 +99,31 @@ class _CommunityBookAMeetingScreenState
                         ),
                         SizedBox(height: 12),
                         HtmlWidget(
-                          communityMeetings
-                              .communityMeetingsList[widget.index].description!,
+                          communityPriorityDMs
+                              .communityPriorityDMsList[widget.index]
+                              .description!,
                           textStyle:
                               TextStyle(fontSize: 13, color: AppColors.white),
                         ),
                         SizedBox(height: 12),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 TextWidget(
-                                  text: "Selected Slot",
+                                  text: "Type",
                                   textSize: 16,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.primary,
                                 ),
                                 SizedBox(height: 8),
-                                TextWidget(
-                                    text: "${widget.day}\n${widget.slot}",
-                                    textSize: 13),
+                                TextWidget(text: "PriorityDM", textSize: 13),
                               ],
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TextWidget(
-                                  text:
-                                      "${communityMeetings.communityMeetingsList[widget.index].duration} minutes",
-                                  textSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.primary,
-                                ),
-                                SizedBox(height: 8),
-                                TextWidget(text: "30 minutes", textSize: 13),
-                              ],
+                            SizedBox(
+                              width: 100,
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,7 +137,7 @@ class _CommunityBookAMeetingScreenState
                                 SizedBox(height: 8),
                                 TextWidget(
                                     text:
-                                        "\u{20B9}${communityMeetings.communityMeetingsList[widget.index].amount}/-",
+                                        "\u{20B9}${communityPriorityDMs.communityPriorityDMsList[widget.index].amount!}",
                                     textSize: 13),
                               ],
                             ),
@@ -183,16 +164,7 @@ class _CommunityBookAMeetingScreenState
               const SizedBox(width: 12),
               Expanded(
                 child: AppButton.primaryButton(
-                    onButtonPressed: () {
-                      Helper.loader(context);
-                      communityMeetings.bookCommunityMeeting(
-                          communityMeetings
-                              .communityMeetingsList[widget.index].id.toString(),
-                          widget.day,
-                          widget.startTime,
-                          widget.endTime);
-                    },
-                    title: "Proceed to Payment"),
+                    onButtonPressed: () {}, title: "Proceed to Payment"),
               ),
             ]),
           ),
