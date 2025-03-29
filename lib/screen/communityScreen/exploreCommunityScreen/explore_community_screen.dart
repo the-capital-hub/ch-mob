@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAboutScreen/communities_about_screen.dart';
@@ -29,11 +31,20 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      allCommunities.getAllCommunities().then((v) {
+      allCommunities.getAllCommunities("").then((v) {
         WidgetsBinding.instance.addPostFrameCallback((_) {});
       });
     });
     super.initState();
+  }
+  
+  Timer? _debounce;
+  void onCommunityNameChanged(String name) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 1000), () async {
+      await allCommunities.getAllCommunities(name);
+      
+    });
   }
 
   @override
@@ -65,6 +76,9 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                                 Icons.search,
                                 color: AppColors.white54,
                               ),
+                              onChange: (String name){
+                                onCommunityNameChanged(name);
+                              },
                               fillColor: AppColors.white,
                               borderClr: AppColors.white54,
                               borderRadius: 8,

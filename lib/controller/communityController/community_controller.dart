@@ -4,7 +4,10 @@ import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLan
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/getAllCommunitiesModel/get_all_communities_model.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/getCreatedCommunityModel/get_created_community_model.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/myCommunitiesModel/my_communities_model.dart';
+import 'package:capitalhub_crm/screen/01-Investor-Section/landingScreen/landing_screen_inv.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
+import 'package:capitalhub_crm/screen/homeScreen/home_screen.dart';
+import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
@@ -75,11 +78,12 @@ class CommunityController extends GetxController {
   }
 
   RxList<AllCommunities> allCommunitiesDetails = <AllCommunities>[].obs;
-  Future<void> getAllCommunities() async {
+  Future<void> getAllCommunities(communityName) async {
     try {
       isLoading.value = true;
+      allCommunitiesDetails.clear();
       var response =
-          await ApiBase.getRequest(extendedURL: ApiUrl.getAllCommunities);
+          await ApiBase.getRequest(extendedURL: ApiUrl.getAllCommunities+communityName);
       log(response.body);
       var data = json.decode(response.body);
       if (data["status"]) {
@@ -113,8 +117,7 @@ class CommunityController extends GetxController {
     }
   }
 
-  Future leaveCommunity(context, id) async {
-    Helper.loader(context);
+  Future leaveCommunity(id) async {
     var response = await ApiBase.postRequest(
       body: {},
       withToken: true,
@@ -129,6 +132,7 @@ class CommunityController extends GetxController {
       return true;
     } else {
       Get.back();
+
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
     }
@@ -148,7 +152,7 @@ class CommunityController extends GetxController {
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       Get.to(() => const CommunityLandingScreen());
-      allCommunities.getAllCommunities();
+      allCommunities.getAllCommunities("");
       return true;
     } else {
       Get.back();

@@ -61,17 +61,22 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Container(
-                          //   height: 200,
-                          //   decoration: BoxDecoration(
-                          //       image: const DecorationImage(
-                          //           image: NetworkImage(
-                          //             "https://bettermeetings.expert/wp-content/uploads/engaging-interactive-webinar-best-practices-and-formats.jpg",
-                          //           ),
-                          //           fit: BoxFit.fill),
-                          //       borderRadius: BorderRadius.circular(10)),
-                          // ),
-                          // sizedTextfield,
+                          if (communityEvents.communityEventsData
+                              .webinars![index].image.isNotEmpty) ...[
+                            Container(
+                              height: 200,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                        // "https://bettermeetings.expert/wp-content/uploads/engaging-interactive-webinar-best-practices-and-formats.jpg",
+                                        communityEvents.communityEventsData
+                                            .webinars![index].image,
+                                      ),
+                                      fit: BoxFit.fill),
+                                  borderRadius: BorderRadius.circular(10)),
+                            ),
+                            sizedTextfield,
+                          ],
                           Row(
                             children: [
                               TextWidget(
@@ -260,21 +265,8 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                             ],
                           ),
                           sizedTextfield,
-                          if (isAdmin)
-                            AppButton.primaryButton(
-                                onButtonPressed: () {
-                                  Get.to(() => CommunityRegisteredUsersScreen(
-                                      index: index));
-                                },
-                                title: "View Guests"),
-                          if (!isAdmin)
-                            AppButton.primaryButton(
-                                onButtonPressed: () {
-                                  Get.to(() =>
-                                      CommunityRegisterNowScreen(index: index));
-                                },
-                                title: "+ Register Now"),
-                          if (!isAdmin && isWebinarEnded)
+                          if (communityEvents
+                              .communityEventsData.webinars![index].isExpired)
                             Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
@@ -287,12 +279,28 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                               child: const Padding(
                                 padding: EdgeInsets.all(12),
                                 child: TextWidget(
-                                  text: "Webinar Ended",
+                                  text: "Wbinar Time Expired",
                                   textSize: 16,
                                   color: AppColors.redColor,
                                 ),
                               ),
-                            )
+                            ),
+                          if (isAdmin)
+                            AppButton.primaryButton(
+                                onButtonPressed: () {
+                                  Get.to(() => CommunityRegisteredUsersScreen(
+                                      index: index));
+                                },
+                                title: "View Guests"),
+                          if (!isAdmin &&
+                              !communityEvents.communityEventsData
+                                  .webinars![index].isExpired)
+                            AppButton.primaryButton(
+                                onButtonPressed: () {
+                                  Get.to(() =>
+                                      CommunityRegisterNowScreen(index: index));
+                                },
+                                title: "+ Register Now"),
                         ],
                       ),
                     ),

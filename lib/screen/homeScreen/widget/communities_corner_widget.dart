@@ -21,7 +21,7 @@ class _CommunitiesCornerWidgetState extends State<CommunitiesCornerWidget> {
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      allCommunities.getAllCommunities().then((v) {
+      allCommunities.getAllCommunities("").then((v) {
         WidgetsBinding.instance.addPostFrameCallback((_) {});
       });
     });

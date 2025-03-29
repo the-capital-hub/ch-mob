@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/screen/01-Investor-Section/landingScreen/landing_screen_inv.dart';
+import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,8 +20,13 @@ class CommunityUpdateSettingsController extends GetxController {
     var data = json.decode(response.body);
     if (data["status"]) {
       HelperSnackBar.snackBar("Success", data["message"]);
+      GetStoreData.getStore.read('isInvestor')
+          ? Get.offAll(const LandingScreenInvestor())
+          : Get.offAll(const LandingScreen());
       return true;
     } else {
+      Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
     }

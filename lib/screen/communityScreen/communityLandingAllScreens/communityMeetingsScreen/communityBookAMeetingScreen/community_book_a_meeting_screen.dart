@@ -4,6 +4,7 @@ import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
+import 'package:capitalhub_crm/widget/calendar/calendar.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -12,17 +13,11 @@ import 'package:get/get.dart';
 
 class CommunityBookAMeetingScreen extends StatefulWidget {
   int index;
-  String day;
-  String slot;
-  String startTime;
-  String endTime;
-  CommunityBookAMeetingScreen(
-      {required this.index,
-      required this.day,
-      required this.slot,
-      super.key,
-      required this.startTime,
-      required this.endTime});
+
+  CommunityBookAMeetingScreen({
+    required this.index,
+    super.key,
+  });
 
   @override
   State<CommunityBookAMeetingScreen> createState() =>
@@ -33,6 +28,15 @@ class _CommunityBookAMeetingScreenState
     extends State<CommunityBookAMeetingScreen> {
   CommunityMeetingsController communityMeetings = Get.find();
   TextEditingController urlController = TextEditingController();
+  bool isDaySelected = false;
+  bool isSlotSelected = false;
+
+  int? _selectedIndex;
+  int? selectedDayIndex;
+  String day = "";
+  String slot = "";
+  String startTime = "";
+  String endTime = "";
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,20 +62,91 @@ class _CommunityBookAMeetingScreenState
                 const SizedBox(height: 12),
                 MyCustomTextField.textField(
                     hintText: "Enter Name",
-                    controller: urlController,
+                    controller: communityMeetings.nameController,
                     lableText: "Name"),
                 const SizedBox(height: 12),
                 MyCustomTextField.textField(
                     hintText: "Enter Email",
-                    controller: urlController,
+                    controller: communityMeetings.emailController,
                     lableText: "Email"),
                 const SizedBox(height: 12),
                 MyCustomTextField.textField(
+                    textInputType: TextInputType.number,
                     hintText: "Enter Mobile Number",
-                    controller: urlController,
+                    controller: communityMeetings.mobileController,
                     lableText: "Mobile Number"),
                 const SizedBox(height: 12),
                 const SizedBox(height: 12),
+                CommunityMeetingsCalendar(
+                    selectedDate: communityMeetings
+                        .communityMeetingsList[widget.index]
+                        .availability![0]
+                        .dayIsoString!),
+                Wrap(
+                  spacing: 4.0,
+                  runSpacing: 4.0,
+                  children: List.generate(
+                    communityMeetings.communityMeetingsList[widget.index]
+                        .availability![0].slots!.length,
+                    (index) {
+                      bool isSlotSelected = _selectedIndex == index;
+                      return !communityMeetings
+                              .communityMeetingsList[widget.index]
+                              .availability![0]
+                              .slots![index]
+                              .isBooked!
+                          ? InkWell(
+                              onTap: () {
+                                setState(() {
+                                  isSlotSelected = !isSlotSelected;
+                                  if (_selectedIndex == index) {
+                                    _selectedIndex = null;
+                                  } else {
+                                    _selectedIndex = index;
+                                  }
+
+                                  slot = isSlotSelected
+                                      ? "${communityMeetings.communityMeetingsList[widget.index].availability![0].slots![index].startTime} - ${communityMeetings.communityMeetingsList[widget.index].availability![0].slots![index].endTime}"
+                                      : "";
+                                  startTime = communityMeetings
+                                      .communityMeetingsList[widget.index]
+                                      .availability![0]
+                                      .slots![index]
+                                      .startTime!;
+                                  endTime = communityMeetings
+                                      .communityMeetingsList[widget.index]
+                                      .availability![0]
+                                      .slots![index]
+                                      .endTime!;
+                                });
+                              },
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                color: isSlotSelected
+                                    ? AppColors.primary
+                                    : AppColors.white12,
+                                surfaceTintColor: AppColors.white12,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 4),
+                                  child: TextWidget(
+                                    text:
+                                        "${communityMeetings.communityMeetingsList[widget.index].availability![0].slots![index].startTime} - ${communityMeetings.communityMeetingsList[widget.index].availability![0].slots![index].endTime}",
+                                    textSize: 14,
+                                    color: isSlotSelected
+                                        ? AppColors.white
+                                        : AppColors.white,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : const SizedBox.shrink();
+                    },
+                  ),
+                ),
+                sizedTextfield,
                 Card(
                   margin: EdgeInsets.zero,
                   color: AppColors.blackCard,
@@ -126,7 +201,8 @@ class _CommunityBookAMeetingScreenState
                                 ),
                                 SizedBox(height: 8),
                                 TextWidget(
-                                    text: "${widget.day}\n${widget.slot}",
+                                    text:
+                                        "${communityMeetings.communityMeetingsList[widget.index].availability![0].day}\n${communityMeetings.communityMeetingsList[widget.index].availability![0].slots![0].startTime} - ${communityMeetings.communityMeetingsList[widget.index].availability![0].slots![0].endTime}",
                                     textSize: 13),
                               ],
                             ),
@@ -187,10 +263,14 @@ class _CommunityBookAMeetingScreenState
                       Helper.loader(context);
                       communityMeetings.bookCommunityMeeting(
                           communityMeetings
-                              .communityMeetingsList[widget.index].id.toString(),
-                          widget.day,
-                          widget.startTime,
-                          widget.endTime);
+                              .communityMeetingsList[widget.index].id
+                              .toString(),
+                          communityMeetings.communityMeetingsList[widget.index]
+                              .availability![0].day,
+                          communityMeetings.communityMeetingsList[widget.index]
+                              .availability![0].slots![0].startTime,
+                          communityMeetings.communityMeetingsList[widget.index]
+                              .availability![0].slots![0].endTime);
                     },
                     title: "Proceed to Payment"),
               ),

@@ -6,6 +6,7 @@ import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
+import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dilogue/custom_dialogue.dart';
 import 'package:capitalhub_crm/widget/dilogue/share_dilogue.dart';
@@ -30,7 +31,7 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      communityProducts.getCommunityProductsandMembers().then((v) {
+      communityProducts.getCommunityProductsandMembers("").then((v) {
         WidgetsBinding.instance.addPostFrameCallback((_) {});
       });
     });
@@ -242,114 +243,128 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                             communityProducts
                                                 .communityProductsList[index]
                                                 .isProductPurchased) {
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                backgroundColor:
-                                                    AppColors.blackCard,
-                                                content: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Image.asset(
-                                                      PngAssetPath
-                                                          .resourceUrlImg,
-                                                      height: 200,
-                                                    ),
-                                                    const SizedBox(height: 20),
-                                                    const TextWidget(
-                                                      text: 'Resource URLs',
-                                                      textSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                    for (var i = 0;
-                                                        i <
-                                                            communityProducts
-                                                                .communityProductsList[
-                                                                    index]
-                                                                .urls
-                                                                .length;
-                                                        i++)
-                                                      Card(
-                                                        color:
-                                                            AppColors.white12,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Expanded(
-                                                                child:
-                                                                    TextWidget(
-                                                                  text: communityProducts
-                                                                      .communityProductsList[
-                                                                          index]
-                                                                      .urls[i],
-                                                                  textSize: 16,
-                                                                  color:
-                                                                      AppColors
-                                                                          .white,
-                                                                  maxLine: 4,
-                                                                ),
-                                                              ),
-                                                              InkWell(
-                                                                onTap: () {
-                                                                  Helper.launchUrl(communityProducts
-                                                                      .communityProductsList[
-                                                                          index]
-                                                                      .urls[i]);
-                                                                },
-                                                                child:
-                                                                    const Card(
-                                                                  color: AppColors
-                                                                      .primary,
+                                          if (communityProducts
+                                                  .communityProductsList[index]
+                                                  .urls
+                                                  .isEmpty ||
+                                              communityProducts
+                                                  .communityProductsList[index]
+                                                  .urls[0]
+                                                  .isEmpty) {
+                                            HelperSnackBar.snackBar("Info",
+                                                "No Resource available for this product");
+                                          } else {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  backgroundColor:
+                                                      AppColors.blackCard,
+                                                  content: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Image.asset(
+                                                        PngAssetPath
+                                                            .resourceUrlImg,
+                                                        height: 200,
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 20),
+                                                      const TextWidget(
+                                                        text: 'Resource URLs',
+                                                        textSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                      for (var i = 0;
+                                                          i <
+                                                              communityProducts
+                                                                  .communityProductsList[
+                                                                      index]
+                                                                  .urls
+                                                                  .length;
+                                                          i++)
+                                                        Card(
+                                                          color:
+                                                              AppColors.white12,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Expanded(
                                                                   child:
-                                                                      Padding(
-                                                                    padding:
-                                                                        EdgeInsets
-                                                                            .all(8),
-                                                                    child: TextWidget(
-                                                                        text:
-                                                                            "Open",
-                                                                        textSize:
-                                                                            10),
+                                                                      TextWidget(
+                                                                    text: communityProducts
+                                                                        .communityProductsList[
+                                                                            index]
+                                                                        .urls[i],
+                                                                    textSize:
+                                                                        16,
+                                                                    color: AppColors
+                                                                        .white,
+                                                                    maxLine: 4,
                                                                   ),
                                                                 ),
-                                                              )
-                                                            ],
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    Helper.launchUrl(communityProducts
+                                                                        .communityProductsList[
+                                                                            index]
+                                                                        .urls[i]);
+                                                                  },
+                                                                  child:
+                                                                      const Card(
+                                                                    color: AppColors
+                                                                        .primary,
+                                                                    child:
+                                                                        Padding(
+                                                                      padding:
+                                                                          EdgeInsets.all(
+                                                                              8),
+                                                                      child: TextWidget(
+                                                                          text:
+                                                                              "Open",
+                                                                          textSize:
+                                                                              10),
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                  ],
-                                                ),
-                                                actions: [
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 50),
-                                                    child:
-                                                        AppButton.primaryButton(
-                                                      bgColor:
-                                                          AppColors.primary,
-                                                      title: 'Close',
-                                                      onButtonPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
+                                                    ],
                                                   ),
-                                                ],
-                                              );
-                                            },
-                                          );
+                                                  actions: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 50),
+                                                      child: AppButton
+                                                          .primaryButton(
+                                                        bgColor:
+                                                            AppColors.primary,
+                                                        title: 'Close',
+                                                        onButtonPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          }
                                         } else if (communityProducts
                                                 .communityProductsList[index]
                                                 .isFree &&
@@ -357,119 +372,119 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                                 .communityProductsList[index]
                                                 .isProductPurchased) {
                                           communityProducts.buyProduct(
-                                              context,
+                                              true,
                                               communityProducts
                                                   .communityProductsList[index]
                                                   .id);
 
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                backgroundColor:
-                                                    AppColors.blackCard,
-                                                content: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Image.asset(
-                                                      PngAssetPath
-                                                          .resourceUrlImg,
-                                                      height: 200,
-                                                    ),
-                                                    const SizedBox(height: 20),
-                                                    const TextWidget(
-                                                      text: 'Resource URLs',
-                                                      textSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                    for (var i = 0;
-                                                        i <
-                                                            communityProducts
-                                                                .communityProductsList[
-                                                                    index]
-                                                                .urls
-                                                                .length;
-                                                        i++)
-                                                      Card(
-                                                        color:
-                                                            AppColors.white12,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Expanded(
-                                                                child:
-                                                                    TextWidget(
-                                                                  text: communityProducts
-                                                                      .communityProductsList[
-                                                                          index]
-                                                                      .urls[i],
-                                                                  textSize: 16,
-                                                                  color:
-                                                                      AppColors
-                                                                          .white,
-                                                                  maxLine: 4,
-                                                                ),
-                                                              ),
-                                                              InkWell(
-                                                                onTap: () {
-                                                                  Helper.launchUrl(communityProducts
-                                                                      .communityProductsList[
-                                                                          index]
-                                                                      .urls[i]);
-                                                                },
-                                                                child:
-                                                                    const Card(
-                                                                  color: AppColors
-                                                                      .primary,
-                                                                  child:
-                                                                      Padding(
-                                                                    padding:
-                                                                        EdgeInsets
-                                                                            .all(8),
-                                                                    child: TextWidget(
-                                                                        text:
-                                                                            "Open",
-                                                                        textSize:
-                                                                            10),
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                  ],
-                                                ),
-                                                actions: [
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 50),
-                                                    child:
-                                                        AppButton.primaryButton(
-                                                      bgColor:
-                                                          AppColors.primary,
-                                                      title: 'Close',
-                                                      onButtonPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
+                                          // showDialog(
+                                          //   context: context,
+                                          //   builder: (BuildContext context) {
+                                          //     return AlertDialog(
+                                          //       backgroundColor:
+                                          //           AppColors.blackCard,
+                                          //       content: Column(
+                                          //         crossAxisAlignment:
+                                          //             CrossAxisAlignment.center,
+                                          //         mainAxisSize:
+                                          //             MainAxisSize.min,
+                                          //         children: [
+                                          //           Image.asset(
+                                          //             PngAssetPath
+                                          //                 .resourceUrlImg,
+                                          //             height: 200,
+                                          //           ),
+                                          //           const SizedBox(height: 20),
+                                          //           const TextWidget(
+                                          //             text: 'Resource URLs',
+                                          //             textSize: 20,
+                                          //             fontWeight:
+                                          //                 FontWeight.w500,
+                                          //           ),
+                                          //           for (var i = 0;
+                                          //               i <
+                                          //                   communityProducts
+                                          //                       .communityProductsList[
+                                          //                           index]
+                                          //                       .urls
+                                          //                       .length;
+                                          //               i++)
+                                          //             Card(
+                                          //               color:
+                                          //                   AppColors.white12,
+                                          //               child: Padding(
+                                          //                 padding:
+                                          //                     const EdgeInsets
+                                          //                         .all(8.0),
+                                          //                 child: Row(
+                                          //                   mainAxisAlignment:
+                                          //                       MainAxisAlignment
+                                          //                           .spaceBetween,
+                                          //                   children: [
+                                          //                     Expanded(
+                                          //                       child:
+                                          //                           TextWidget(
+                                          //                         text: communityProducts
+                                          //                             .communityProductsList[
+                                          //                                 index]
+                                          //                             .urls[i],
+                                          //                         textSize: 16,
+                                          //                         color:
+                                          //                             AppColors
+                                          //                                 .white,
+                                          //                         maxLine: 4,
+                                          //                       ),
+                                          //                     ),
+                                          //                     InkWell(
+                                          //                       onTap: () {
+                                          //                         Helper.launchUrl(communityProducts
+                                          //                             .communityProductsList[
+                                          //                                 index]
+                                          //                             .urls[i]);
+                                          //                       },
+                                          //                       child:
+                                          //                           const Card(
+                                          //                         color: AppColors
+                                          //                             .primary,
+                                          //                         child:
+                                          //                             Padding(
+                                          //                           padding:
+                                          //                               EdgeInsets
+                                          //                                   .all(8),
+                                          //                           child: TextWidget(
+                                          //                               text:
+                                          //                                   "Open",
+                                          //                               textSize:
+                                          //                                   10),
+                                          //                         ),
+                                          //                       ),
+                                          //                     )
+                                          //                   ],
+                                          //                 ),
+                                          //               ),
+                                          //             ),
+                                          //         ],
+                                          //       ),
+                                          //       actions: [
+                                          //         Padding(
+                                          //           padding: const EdgeInsets
+                                          //               .symmetric(
+                                          //               horizontal: 50),
+                                          //           child:
+                                          //               AppButton.primaryButton(
+                                          //             bgColor:
+                                          //                 AppColors.primary,
+                                          //             title: 'Close',
+                                          //             onButtonPressed: () {
+                                          //               Navigator.of(context)
+                                          //                   .pop();
+                                          //             },
+                                          //           ),
+                                          //         ),
+                                          //       ],
+                                          //     );
+                                          //   },
+                                          // );
                                         } else {
                                           Get.to(() =>
                                               PurchaseScreen(index: index));

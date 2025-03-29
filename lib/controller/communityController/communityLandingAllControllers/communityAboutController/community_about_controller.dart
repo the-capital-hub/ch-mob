@@ -27,13 +27,14 @@ class CommunityAboutController extends GetxController {
         GetAboutCommunityModel communityAboutModel =
             GetAboutCommunityModel.fromJson(data);
 
-        aboutCommunityList.assignAll([communityAboutModel.data]);
+        aboutCommunityList.assignAll([communityAboutModel.data!]);
 
         aboutCommunityDetailsList
-            .assignAll([communityAboutModel.data.community]);
-        aboutCommunityPostsList.assignAll(communityAboutModel.data.posts);
-        aboutCommunityProductsList.assignAll(communityAboutModel.data.products);
-        aboutCommunityEventsList.assignAll(communityAboutModel.data.events);
+            .assignAll([communityAboutModel.data!.community!]);
+        aboutCommunityPostsList.assignAll(communityAboutModel.data!.posts!);
+        aboutCommunityProductsList
+            .assignAll(communityAboutModel.data!.products!);
+        aboutCommunityEventsList.assignAll(communityAboutModel.data!.events!);
       }
     } catch (e) {
       log("getAboutCommunity $e");

@@ -327,7 +327,7 @@ class _CommunityPriorityDMScreenState
                                                             .toString()));
                                           },
                                           title:
-                                              "View Your\nQuestions (${communityPriorityDMs.communityPriorityDMsList[index].questions!.length}) ",
+                                              "View Your\nQuestions",
                                         ),
                                       ),
                                     ],

@@ -46,15 +46,15 @@ class CommunityPriorityDMsController extends GetxController {
   int? timeLine = 0;
 
   Future createCommunityPriorityDM(topics) async {
-    if (selectedTimeLine == "Hours") {
-      timeLine = responseTimelineController.text.isEmpty
-          ? null
-          : int.tryParse(responseTimelineController.text)! * 60;
-    } else if (selectedTimeLine == "Days") {
-      timeLine = responseTimelineController.text.isEmpty
-          ? null
-          : int.tryParse(responseTimelineController.text)! * 60 * 24;
-    }
+    // if (selectedTimeLine == "Hours") {
+    //   timeLine = responseTimelineController.text.isEmpty
+    //       ? null
+    //       : int.tryParse(responseTimelineController.text)! * 60;
+    // } else if (selectedTimeLine == "Days") {
+    //   timeLine = responseTimelineController.text.isEmpty
+    //       ? null
+    //       : int.tryParse(responseTimelineController.text)! * 60 * 24;
+    // }
     String description = "";
     await descriptionController.getText().then((val) => description = val);
     var bod = {
@@ -63,7 +63,10 @@ class CommunityPriorityDMsController extends GetxController {
       "amount": amountController.text.isEmpty
           ? null
           : int.tryParse(amountController.text),
-      "timeline": timeLine,
+      "timeline": responseTimelineController.text.isEmpty
+          ? null
+          : int.tryParse(responseTimelineController.text),
+      "timeline_unit": selectedTimeLine,
       "topics": topics
     };
     log(bod.toString());
@@ -74,7 +77,10 @@ class CommunityPriorityDMsController extends GetxController {
         "amount": amountController.text.isEmpty
             ? null
             : int.tryParse(amountController.text),
-        "timeline": timeLine,
+        "timeline": responseTimelineController.text.isEmpty
+            ? null
+            : int.tryParse(responseTimelineController.text),
+        "timeline_unit": selectedTimeLine,
         "topics": topics
       },
       withToken: true,
@@ -98,15 +104,15 @@ class CommunityPriorityDMsController extends GetxController {
   }
 
   Future updateCommunityPriorityDM(topics, priorityDMId) async {
-    if (selectedTimeLine == "Hours") {
-      timeLine = responseTimelineController.text.isEmpty
-          ? null
-          : int.tryParse(responseTimelineController.text)! * 60;
-    } else if (selectedTimeLine == "Days") {
-      timeLine = responseTimelineController.text.isEmpty
-          ? null
-          : int.tryParse(responseTimelineController.text)! * 60 * 24;
-    }
+    // if (selectedTimeLine == "Hours") {
+    //   timeLine = responseTimelineController.text.isEmpty
+    //       ? null
+    //       : int.tryParse(responseTimelineController.text)! * 60;
+    // } else if (selectedTimeLine == "Days") {
+    //   timeLine = responseTimelineController.text.isEmpty
+    //       ? null
+    //       : int.tryParse(responseTimelineController.text)! * 60 * 24;
+    // }
     String description = "";
     await descriptionController.getText().then((val) => description = val);
     var response = await ApiBase.pachRequest(
@@ -116,7 +122,10 @@ class CommunityPriorityDMsController extends GetxController {
           "amount": amountController.text.isEmpty
               ? null
               : int.tryParse(amountController.text),
-          "timeline": timeLine,
+          "timeline": responseTimelineController.text.isEmpty
+              ? null
+              : int.tryParse(responseTimelineController.text),
+          "timeline_unit": selectedTimeLine,
           "topics": topics
         },
         withToken: true,
@@ -199,10 +208,12 @@ class CommunityPriorityDMsController extends GetxController {
     var data = json.decode(response.body);
     if (data["status"]) {
       Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       getCommunityPriorityDMs();
       return true;
     } else {
+      Get.back();
       Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;

@@ -218,7 +218,6 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
                                               onPressed: () {
                                                 Helper.loader(context);
                                                 myCommunities.leaveCommunity(
-                                                    context,
                                                     myCommunities
                                                         .myCommunitiesDetails[
                                                             index]

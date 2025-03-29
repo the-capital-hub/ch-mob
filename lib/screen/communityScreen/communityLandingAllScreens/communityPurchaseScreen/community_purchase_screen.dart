@@ -174,12 +174,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                   ),
                                   const SizedBox(height: 8),
                                   TextWidget(
-                                      text: communityProducts
-                                              .communityProductsList[
-                                                  widget.index]
-                                              .isFree
-                                          ? "Free"
-                                          : "\u{20B9}${communityProducts.communityProductsList[widget.index].amount}/-",
+                                      text:
+                                          "\u{20B9}${communityProducts.communityProductsList[widget.index].amount}/-",
                                       textSize: 13),
                                 ],
                               ),
@@ -202,9 +198,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                           Expanded(
                             child: AppButton.outlineButton(
                                 borderColor: AppColors.primary,
-                                onButtonPressed: () async {
-                                  await communityProducts
-                                      .getCommunityProductsandMembers();
+                                onButtonPressed: () {
                                   Get.back();
                                 },
                                 title: "Cancel"),
@@ -213,22 +207,14 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                           Expanded(
                             child: AppButton.primaryButton(
                                 onButtonPressed: () {
-                                  if (!communityProducts
-                                      .communityProductsList[widget.index]
-                                      .isProductPurchased) {
-                                        Helper.loader(context);
-                                    communityProducts.buyProduct(
-                                        context,
-                                        communityProducts
-                                            .communityProductsList[widget.index]
-                                            .id);
-                                  }
+                                  Helper.loader(context);
+                                  communityProducts.buyProduct(
+                                      false,
+                                      communityProducts
+                                          .communityProductsList[widget.index]
+                                          .id);
                                 },
-                                title: communityProducts
-                                        .communityProductsList[widget.index]
-                                        .isFree
-                                    ? "Buy for Free"
-                                    : "Proceed to Payment"),
+                                title: "Proceed to Payment"),
                           ),
                         ]),
                   )

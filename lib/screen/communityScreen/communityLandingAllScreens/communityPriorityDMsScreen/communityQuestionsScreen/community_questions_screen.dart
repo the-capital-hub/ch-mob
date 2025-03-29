@@ -27,11 +27,10 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
   List<Question> answeredQuestions = [];
   List<Question> unansweredQuestions = [];
   List<TextEditingController> answerControllers = [];
-  
+
   @override
   void initState() {
     super.initState();
-    
     _tabController = TabController(length: 2, vsync: this);
     for (int i = 0;
         i <
@@ -47,9 +46,19 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
             .communityPriorityDMsList[widget.index!].questions![i]);
       }
     }
+    for (int i = 0; i < unansweredQuestions.length; i++) {
+      answerControllers.add(TextEditingController());
+    }
   }
 
   late final TabController _tabController;
+  @override
+  void dispose() {
+    for (var controller in answerControllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -196,14 +205,26 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                                           hintText:
                                                               "Type your answer...",
                                                           controller:
-                                                              communityPriorityDMs
-                                                                  .answerController,
+                                                              answerControllers[
+                                                                  index],
                                                           borderClr: AppColors
                                                               .white12),
                                                       sizedTextfield,
                                                       AppButton.primaryButton(
                                                           onButtonPressed: () {
-                                                            Helper.loader(context);
+                                                            setState(() {
+                                                              communityPriorityDMs
+                                                                      .answerController
+                                                                      .text =
+                                                                  answerControllers[
+                                                                          index]
+                                                                      .text;
+                                                              answerControllers[
+                                                                      index]
+                                                                  .clear();
+                                                            });
+                                                            Helper.loader(
+                                                                context);
                                                             communityPriorityDMs.communityAnswerPriorityDM(
                                                                 communityPriorityDMs
                                                                     .communityPriorityDMsList[

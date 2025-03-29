@@ -13,6 +13,9 @@ import 'package:quill_html_editor/quill_html_editor.dart';
 
 class CommunityMeetingsController extends GetxController {
   var isLoading = false.obs;
+  int availabilityIndex = 0;
+  String day = "";
+  bool isDaySelected = false;
   RxList<CommunityMeetings> communityMeetingsList = <CommunityMeetings>[].obs;
 
   Future<void> getCommunityMeetings() async {
@@ -44,7 +47,8 @@ class CommunityMeetingsController extends GetxController {
   TextEditingController startTimeController = TextEditingController();
   TextEditingController endTimeController = TextEditingController();
   TextEditingController memberEmailController = TextEditingController();
-  String memberEmail = "Select From Community";
+  String memberEmail = "";
+  bool isNewEmail = false;
 
   String convertToIsoFormat(String timeString, DateTime? date) {
     DateFormat inputFormat = DateFormat('hh:mm a');
@@ -63,18 +67,17 @@ class CommunityMeetingsController extends GetxController {
   Future createCommunityMeeting(topics) async {
     DateTime? date = DateTime.tryParse(dateController.text);
     String? dateIso = "${date?.toIso8601String() ?? ""}Z";
-    String startTime = convertToIsoFormat(startTimeController.text, date);
-    String endTime = convertToIsoFormat(endTimeController.text, date);
+    String startTime =
+        startTimeController.text.replaceAll(RegExp(r"\sAM|\sPM"), "");
+    String endTime =
+        endTimeController.text.replaceAll(RegExp(r"\sAM|\sPM"), "");
     String description = "";
     await descriptionController.getText().then((val) => description = val);
-    if (memberEmailController.text.isEmpty &&
-        memberEmail != "Add a new member") {
-      memberEmailController.text = memberEmail;
-    }
+
     var bod = {
       "title": titleController.text,
       "description": description,
-      "price": amountController.text.isEmpty
+      "amount": amountController.text.isEmpty
           ? null
           : int.tryParse(amountController.text),
       "duration": durationController.text.isEmpty
@@ -99,7 +102,7 @@ class CommunityMeetingsController extends GetxController {
       body: {
         "title": titleController.text,
         "description": description,
-        "price": amountController.text.isEmpty
+        "amount": amountController.text.isEmpty
             ? null
             : int.tryParse(amountController.text),
         "duration": durationController.text.isEmpty
@@ -113,7 +116,8 @@ class CommunityMeetingsController extends GetxController {
               {
                 "startTime": startTime,
                 "endTime": endTime,
-                "memberEmail": memberEmailController.text
+                "memberEmail":
+                    isNewEmail ? memberEmailController.text : memberEmail
               },
             ]
           }
@@ -144,15 +148,42 @@ class CommunityMeetingsController extends GetxController {
   Future updateCommunityMeeting(topics, meetingId) async {
     DateTime? date = DateTime.tryParse(dateController.text);
     String? dateIso = "${date?.toIso8601String() ?? ""}Z";
-    String startTime = convertToIsoFormat(startTimeController.text, date);
-    String endTime = convertToIsoFormat(endTimeController.text, date);
+    String startTime =
+        startTimeController.text.replaceAll(RegExp(r"\sAM|\sPM"), "");
+    String endTime =
+        endTimeController.text.replaceAll(RegExp(r"\sAM|\sPM"), "");
     String description = "";
     await descriptionController.getText().then((val) => description = val);
+    var bod = {
+      "title": titleController.text,
+      "description": description,
+      "amount": amountController.text.isEmpty
+          ? null
+          : int.tryParse(amountController.text),
+      "duration": durationController.text.isEmpty
+          ? null
+          : int.tryParse(durationController.text),
+      "topics": topics,
+      "availability": [
+        {
+          "day": dateIso,
+          "slots": [
+            {
+              "startTime": startTime,
+              "endTime": endTime,
+              "memberEmail":
+                  isNewEmail ? memberEmailController.text : memberEmail
+            },
+          ]
+        }
+      ]
+    };
+    log(bod.toString());
     var response = await ApiBase.pachRequest(
       body: {
         "title": titleController.text,
         "description": description,
-        "price": amountController.text.isEmpty
+        "amount": amountController.text.isEmpty
             ? null
             : int.tryParse(amountController.text),
         "duration": durationController.text.isEmpty
@@ -166,7 +197,8 @@ class CommunityMeetingsController extends GetxController {
               {
                 "startTime": startTime,
                 "endTime": endTime,
-                "memberEmail": memberEmailController.text
+                "memberEmail":
+                    isNewEmail ? memberEmailController.text : memberEmail
               },
             ]
           }
@@ -211,6 +243,9 @@ class CommunityMeetingsController extends GetxController {
     }
   }
 
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
   Future bookCommunityMeeting(meetingId, day, startTime, endTime) async {
     var response = await ApiBase.postRequest(
       body: {
@@ -229,10 +264,12 @@ class CommunityMeetingsController extends GetxController {
     if (data["status"]) {
       Get.back();
       Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       getCommunityMeetings();
       return true;
     } else {
+      Get.back();
       Get.back();
       Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
@@ -255,7 +292,7 @@ class CommunityMeetingsController extends GetxController {
 
         communityMemberEmails = ["Add a new member"] +
             communityMemberEmailModel.data
-                .map((member) => "${member.memberName} ${member.memberEmail}")
+                .map((member) => member.memberEmail)
                 .toList();
       }
     } catch (e) {
