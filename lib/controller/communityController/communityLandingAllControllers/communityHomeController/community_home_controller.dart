@@ -8,27 +8,30 @@ import 'package:capitalhub_crm/utils/apiService/api_url.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CommunityHomeController extends GetxController {
   int selectIndex = 0;
   var isLoading = false.obs;
-  List<CommunityPost> communityPostList = [];
-  Future getCommunityPosts(int page, bool isLoadOn) async {
+  CommunityPost communityPostList = CommunityPost();
+  Future getCommunityPosts(int page, bool isLoadOn, filterValue) async {
     try {
       if (page == 1) {
-        communityPostList.clear();
+        // communityPostList.clear();
         isLoading.value = isLoadOn;
       }
       var response = await ApiBase.getRequest(
           extendedURL:
-              "${ApiUrl.getCommunityPosts}$createdCommunityId?page=$page");
+              "${ApiUrl.getCommunityPosts}$createdCommunityId?page=$page&filter=$filterValue");
+
       log(response.body);
       var data = jsonDecode(response.body);
       if (data['status'] == true) {
         CommunityPostModel communityPostModel =
             CommunityPostModel.fromJson(data);
-        communityPostList.addAll([communityPostModel.data!]);
+        // communityPostList.assignAll([communityPostModel.data!]);
+        communityPostList = communityPostModel.data!;
       } else {
         HelperSnackBar.snackBar("Info", data["message"]);
       }
@@ -39,27 +42,29 @@ class CommunityHomeController extends GetxController {
     }
   }
 
-  Future<bool> sendJoinRequest() async {
-    var wbody = {
-      "name": "${GetStoreData.getStore.read('name')}",
-      "email": "${GetStoreData.getStore.read('email')}",
-      "requestedNumber": "${GetStoreData.getStore.read('phone')}",
-      "adminEmail": "${GetStoreData.getStore.read('email')}",
-      "phoneNumber": "${GetStoreData.getStore.read('phone')}"
-    };
+  TextEditingController mobileController = TextEditingController();
 
+  Future<bool> sendJoinRequest() async {
     var response = await ApiBase.postRequest(
-      body: wbody,
+      body: {
+        "phoneNumber": mobileController.text,
+      },
       withToken: true,
-      extendedURL: ApiUrl.sendJoinRequest,
+      extendedURL: ApiUrl.sendJoinRequest + createdCommunityId,
     );
-    log(wbody.toString());
+
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"] == true) {
+      Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
+      Helper.launchUrl(data["data"]["communityWhatsappLink"]);
+
       return true;
     } else {
+      Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
     }

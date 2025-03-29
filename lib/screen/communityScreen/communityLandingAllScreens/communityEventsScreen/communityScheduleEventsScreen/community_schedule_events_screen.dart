@@ -16,7 +16,17 @@ import 'package:get/get.dart';
 
 class CommunityScheduleEventsScreen extends StatefulWidget {
   int index;
-  CommunityScheduleEventsScreen({required this.index, super.key});
+  String day;
+  String slot;
+  String startTime;
+  String endTime;
+  CommunityScheduleEventsScreen(
+      {required this.index,
+      required this.day,
+      required this.slot,
+      super.key,
+      required this.startTime,
+      required this.endTime});
 
   @override
   State<CommunityScheduleEventsScreen> createState() =>
@@ -249,13 +259,13 @@ class _CommunityScheduleEventsScreenState
                         // sizedTextfield,
                         // AppButton.primaryButton(
                         //     onButtonPressed: () {}, title: "Enter Details"),
-                        // sizedTextfield,
-                        // const TextWidget(
-                        //   text: "Additional Details",
-                        //   textSize: 20,
-                        //   fontWeight: FontWeight.bold,
-                        // ),
-                        // sizedTextfield,
+                        sizedTextfield,
+                        const TextWidget(
+                          text: "Additional Details",
+                          textSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        sizedTextfield,
                         MyCustomTextField.textField(
                             hintText: "Enter your name",
                             controller: communityWebinars.nameController,
@@ -280,7 +290,10 @@ class _CommunityScheduleEventsScreenState
                               Helper.loader(context);
                               communityWebinars.communityScheduleEvent(
                                   communityWebinars
-                                      .communityWebinarsList[widget.index].id);
+                                      .communityWebinarsList[widget.index].eventId,
+                                  widget.day,
+                                  widget.startTime,
+                                  widget.endTime);
                             },
                             title: "Schedule Event"),
                         const SizedBox(height: 12),

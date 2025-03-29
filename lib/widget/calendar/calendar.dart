@@ -1,34 +1,38 @@
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityMeetingsController/community_meetings_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityWebinarsController/community_webinars_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
+import 'package:capitalhub_crm/widget/datePicker/datePicker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class EventCalendar extends StatefulWidget {
+class CommunityMeetingsCalendar extends StatefulWidget {
+  String selectedDate;
+
+  CommunityMeetingsCalendar({required this.selectedDate});
+
   @override
   _EventCalendarState createState() => _EventCalendarState();
 }
 
-class _EventCalendarState extends State<EventCalendar> {
-  CommunityWebinarsController communityWebinars = Get.find();
+class _EventCalendarState extends State<CommunityMeetingsCalendar> {
+  CommunityMeetingsController communityMeetings = Get.find();
   // late List<DateTime> _events;
   late DateTime _selectedDay;
   late DateTime _focusedDay;
-  List<DateTime> dates = [
-    DateTime(2025, 3, 10),
-    DateTime(2025, 3, 12),
-    DateTime(2025, 3, 15),
-    DateTime(2025, 3, 18),
-    DateTime(2025, 3, 20),
-    DateTime(2025, 3, 25),
-  ];
-  
+
+  List dates = [];
+
   @override
   void initState() {
     super.initState();
+    DateTime parsedDate = DateTime.parse(widget.selectedDate);
+    dates.add(parsedDate);
+    print(dates);
     _selectedDay = _normalizeDate(DateTime.now());
     _focusedDay = _normalizeDate(DateTime.now());
   }
@@ -101,34 +105,7 @@ class _EventCalendarState extends State<EventCalendar> {
             ),
           ),
         ),
-        sizedTextfield,  // Replace with your actual widget if required
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            SizedBox(width: 12),
-            Expanded(
-              child: AppButton.outlineButton(
-                onButtonPressed: () {
-                  Get.back(result: false);
-                },
-                height: 40,
-                title: "Cancel",
-              ),
-            ),
-            SizedBox(width: 12),
-            Expanded(
-              child: AppButton.primaryButton(
-                onButtonPressed: () {
-                  Get.back(result: true);
-                  communityWebinars.selectDate = _selectedDay;
-                },
-                height: 40,
-                title: "Done",
-              ),
-            ),
-            SizedBox(width: 12),
-          ],
-        ),
+        sizedTextfield, // Replace with your actual widget if required
       ],
     );
   }

@@ -66,10 +66,12 @@ class CommunityEventsController extends GetxController {
     var data = json.decode(response.body);
     if (data["status"]) {
       Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       communityWebinars.getCommunityWebinars();
       return true;
     } else {
+      Get.back();
       Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
@@ -96,10 +98,12 @@ class CommunityEventsController extends GetxController {
     var data = json.decode(response.body);
     if (data["status"]) {
       Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       communityWebinars.getCommunityWebinars();
       return true;
     } else {
+      Get.back();
       Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
@@ -153,12 +157,14 @@ class CommunityEventsController extends GetxController {
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"]) {
-      // Get.back();
+      Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       communityWebinars.getCommunityWebinars();
       return true;
     } else {
-      // Get.back();
+      Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
     }

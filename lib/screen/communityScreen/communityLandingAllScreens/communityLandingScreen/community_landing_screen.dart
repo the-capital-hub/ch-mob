@@ -1,15 +1,18 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityAboutController/community_about_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityMeetingsController/community_meetings_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/screen/01-Investor-Section/landingScreen/landing_screen_inv.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAboutScreen/communities_about_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityHomeScreen/community_home_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPeopleScreen/community_people_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityProductsAndServicesScreen/community_products_and_services_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityUpdateSettingsScreen/community_update_settings_screen.dart';
 import 'package:capitalhub_crm/screen/homeScreen/home_screen.dart';
+import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -91,7 +94,9 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
             actions: [
               IconButton(
                   onPressed: () {
-                    Get.to(() => const HomeScreen());
+                    GetStoreData.getStore.read('isInvestor')
+                        ? Get.offAll(const LandingScreenInvestor())
+                        : Get.offAll(const LandingScreen());
                   },
                   icon: Icon(
                     Icons.swap_horizontal_circle_sharp,

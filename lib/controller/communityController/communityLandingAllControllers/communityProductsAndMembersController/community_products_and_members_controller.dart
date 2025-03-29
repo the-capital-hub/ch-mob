@@ -15,14 +15,14 @@ class CommunityProductsAndMembersController extends GetxController {
       <CommunityProductsAndMembers>[].obs;
   RxList<Product> communityProductsList = <Product>[].obs;
   RxList<Member> communityMembersList = <Member>[].obs;
-  Future<void> getCommunityProductsandMembers() async {
+  Future<void> getCommunityProductsandMembers(memberName) async {
     try {
       isLoading.value = true;
       communityProductsList.clear();
       communityMembersList.clear();
       var response = await ApiBase.getRequest(
           extendedURL:
-              ApiUrl.getCommunityProductsAndMembers + createdCommunityId);
+              "${ApiUrl.getCommunityProductsAndMembers}$createdCommunityId?name=$memberName");
       log(response.body);
       var data = json.decode(response.body);
       if (data["status"]) {
@@ -40,8 +40,7 @@ class CommunityProductsAndMembersController extends GetxController {
     }
   }
 
-  Future buyProduct(context, productId) async {
-    Helper.loader(context);
+  Future buyProduct(isFree, productId) async {
     var response = await ApiBase.postRequest(
       body: {},
       withToken: true,
@@ -50,13 +49,29 @@ class CommunityProductsAndMembersController extends GetxController {
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"]) {
-      Get.back();
-      HelperSnackBar.snackBar("Success", data["message"]);
-      getCommunityProductsandMembers();
+      if (isFree) {
+        Get.back();
+        HelperSnackBar.snackBar("Success", data["message"]);
+        getCommunityProductsandMembers("");
+      } else {
+        Get.back();
+        HelperSnackBar.snackBar("Success", data["message"]);
+        Get.back();
+
+        getCommunityProductsandMembers("");
+      }
+
       return true;
     } else {
-      Get.back();
-      HelperSnackBar.snackBar("Error", data["message"]);
+      if (isFree) {
+        Get.back();
+        HelperSnackBar.snackBar("Error", data["message"]);
+      } else {
+        Get.back();
+        HelperSnackBar.snackBar("Error", data["message"]);
+        Get.back();
+      }
+
       return false;
     }
   }

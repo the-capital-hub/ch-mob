@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityProductsAndMembersController/community_products_and_members_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
@@ -36,11 +38,19 @@ class _CommunityPeopleScreenState extends State<CommunityPeopleScreen> {
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      communityMembers.getCommunityProductsandMembers().then((v) {
+      communityMembers.getCommunityProductsandMembers("").then((v) {
         WidgetsBinding.instance.addPostFrameCallback((_) {});
       });
     });
     super.initState();
+  }
+
+  Timer? _debounce;
+  void onMemberNameChanged(String name) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 1000), () async {
+      await communityMembers.getCommunityProductsandMembers(name);
+    });
   }
 
   @override
@@ -70,6 +80,9 @@ class _CommunityPeopleScreenState extends State<CommunityPeopleScreen> {
                                   borderClr: AppColors.white54,
                                   borderRadius: 8,
                                   hintText: "Search",
+                                  onChange: (String name) {
+                                    onMemberNameChanged(name);
+                                  },
                                   controller: searchController),
                               const SizedBox(
                                 height: 12,
@@ -146,7 +159,8 @@ class _CommunityPeopleScreenState extends State<CommunityPeopleScreen> {
                                                   if (isAdmin && index != 0)
                                                     IconButton(
                                                         onPressed: () {
-                                                          Helper.loader(context);
+                                                          Helper.loader(
+                                                              context);
                                                           communityMembers
                                                               .removeCommunityMember(
                                                                   communityMembers

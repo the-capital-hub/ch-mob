@@ -35,28 +35,28 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
       Future.wait([aboutCommunity.getAboutCommunity()]).then((values) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           urlController.text =
-              aboutCommunity.aboutCommunityList[0].community.shareLink;
+              aboutCommunity.aboutCommunityList[0].community!.shareLink!;
           updateSettings.communityNameController.text =
-              aboutCommunity.aboutCommunityList[0].community.name;
-
-          addAbout();
+              aboutCommunity.aboutCommunityList[0].community!.name!;
 
           updateSettings.subscriptionAmountController.text =
-              aboutCommunity.aboutCommunityList[0].community.amount.toString();
-          updateSettings.whatsappGroupLinkController.text =
-              aboutCommunity.aboutCommunityList[0].community.whatsappGroupLink;
+              aboutCommunity.aboutCommunityList[0].community!.amount.toString();
+          updateSettings.whatsappGroupLinkController.text = aboutCommunity
+              .aboutCommunityList[0].community!.whatsappGroupLink!;
           updateSettings.isOpen =
-              aboutCommunity.aboutCommunityList[0].community.isOpen;
-          updateSettings.termsAndConditions =
-              aboutCommunity.aboutCommunityList[0].community.termsAndConditions;
-
+              aboutCommunity.aboutCommunityList[0].community!.isOpen!;
+          updateSettings.termsAndConditions = aboutCommunity
+              .aboutCommunityList[0].community!.termsAndConditions!;
+          // print(aboutCommunity.aboutCommunityList[0].community!.about!);
           setState(() {
             updateSettings.communitySize =
-                aboutCommunity.aboutCommunityList[0].community.communitySize;
+                aboutCommunity.aboutCommunityList[0].community!.communitySize!;
             updateSettings.subscriptionType =
-                aboutCommunity.aboutCommunityList[0].community.subscription;
+                aboutCommunity.aboutCommunityList[0].community!.subscription!;
           });
+
           initializeControllers();
+          addAbout();
         });
       });
     });
@@ -65,7 +65,8 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
 
   addAbout() async {
     await updateSettings.aboutCommunityController
-        .insertText(aboutCommunity.aboutCommunityList[0].community.about);
+        .insertText(aboutCommunity.aboutCommunityList[0].community!.about!);
+    print(aboutCommunity.aboutCommunityList[0].community!.about!);
   }
 
   TextEditingController urlController = TextEditingController();
@@ -150,7 +151,9 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                 : CircleAvatar(
                                     radius: 60,
                                     foregroundImage: NetworkImage(aboutCommunity
-                                        .aboutCommunityList[0].community.image),
+                                        .aboutCommunityList[0]
+                                        .community!
+                                        .image!),
                                   ),
                             const SizedBox(
                               height: 12,
@@ -327,8 +330,8 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                                 foregroundImage: NetworkImage(
                                                   aboutCommunity
                                                       .aboutCommunityList[0]
-                                                      .community
-                                                      .image,
+                                                      .community!
+                                                      .image!,
                                                 ),
                                               ),
                                               const SizedBox(
@@ -337,8 +340,8 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                               TextWidget(
                                                 text: aboutCommunity
                                                     .aboutCommunityList[0]
-                                                    .community
-                                                    .name,
+                                                    .community!
+                                                    .name!,
                                                 textSize: 20,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -356,8 +359,9 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                             AppButton.primaryButton(
                                               bgColor: AppColors.primary,
                                               title: 'Delete Community',
-                                              onButtonPressed: () async {
-                                                await updateSettings
+                                              onButtonPressed: () {
+                                                Helper.loader(context);
+                                                updateSettings
                                                     .deleteCommunity();
                                               },
                                             ),
