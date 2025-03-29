@@ -43,7 +43,7 @@ class CommunityAddNewProductController extends GetxController {
       Get.back();
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
-      communityProducts.getCommunityProductsandMembers();
+      communityProducts.getCommunityProductsandMembers("");
       return true;
     } else {
       Get.back();
@@ -79,7 +79,7 @@ class CommunityAddNewProductController extends GetxController {
       Get.back();
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
-      communityProducts.getCommunityProductsandMembers();
+      communityProducts.getCommunityProductsandMembers("");
       return true;
     } else {
       Get.back();

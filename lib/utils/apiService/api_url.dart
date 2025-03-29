@@ -140,7 +140,7 @@ class ApiUrl {
 
   static const String createCommunity = "Communities/createCommunity";
   static const String getCommunityById = "Communities/getCommunityById/";
-  static const String getAllCommunities = "Communities/getAllCommunities";
+  static const String getAllCommunities = "Communities/getAllCommunities?name=";
   static const String getMyCommunities =
       "Communities/getAllCommunitiesByUserId";
   static const String getMemberEmails =
@@ -178,10 +178,10 @@ class ApiUrl {
       "communities/services/priorityDMs/";
       static const String getCommunityPriorityDMYourQuestions =
       "communities/priorityDM/userQuestions/";
-  static const String getCommunityWebinars = "communities/services/webinars/";
+  static const String getCommunityWebinars = "communities/services/events/";
   static const String deleteCommunityWebinar = "webinars/deleteWebinar/";
   static const String getCommunityMeetings = "communities/services/meetings/";
-  static const String sendJoinRequest = "Communities/sendJoinRequest";
+  static const String sendJoinRequest = "Communities/sendJoinRequest/";
   static const String getCommunityPosts = "api/posts/getCommunityPosts/";
   static const String likeUnlikeCommunityPost =
       "api/posts/likeUnlikeCommunityPost/";

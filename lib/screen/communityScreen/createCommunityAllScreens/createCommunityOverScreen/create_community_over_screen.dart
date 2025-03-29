@@ -82,23 +82,23 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
                       CircleAvatar(
                         radius: 60,
                         foregroundImage: NetworkImage(
-                          aboutCommunity.aboutCommunityDetailsList[0].image,
+                          aboutCommunity.aboutCommunityDetailsList[0].image!,
                         ),
                       ),
                       sizedTextfield,
                       TextWidget(
-                        text: aboutCommunity.aboutCommunityDetailsList[0].name,
+                        text: aboutCommunity.aboutCommunityDetailsList[0].name!,
                         textSize: 20,
                       ),
                       sizedTextfield,
-                      aboutCommunity.aboutCommunityList[0].community
-                                  .subscription ==
+                      aboutCommunity.aboutCommunityList[0].community!
+                                  .subscription! ==
                               "free"
                           ? const TextWidget(
                               text: "Any one can join for free", textSize: 13)
                           : TextWidget(
                               text:
-                                  "Subscription Amount : \u{20B9}${aboutCommunity.aboutCommunityList[0].community.amount}",
+                                  "Subscription Amount : \u{20B9}${aboutCommunity.aboutCommunityList[0].community!.amount}",
                               textSize: 13),
                       sizedTextfield,
                       Divider(
@@ -137,9 +137,9 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
           child: AppButton.primaryButton(
               onButtonPressed: () {
                 communityLogo =
-                    aboutCommunity.aboutCommunityList[0].community.image;
+                    aboutCommunity.aboutCommunityList[0].community!.image!;
                 communityName =
-                    aboutCommunity.aboutCommunityList[0].community.name;
+                    aboutCommunity.aboutCommunityList[0].community!.name!;
                 isAdmin = true;
                 Get.to(() => const CommunityLandingScreen());
               },

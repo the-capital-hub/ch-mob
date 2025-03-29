@@ -15,6 +15,7 @@ CommunityEventsController communityEvents =
     Get.put(CommunityEventsController());
 
 class CommunityWebinarsController extends GetxController {
+  String formattedDate = "";
   var isLoading = false.obs;
   DateTime selectDate = DateTime.now();
   RxList<CommunityWebinars> communityWebinarsList = <CommunityWebinars>[].obs;
@@ -181,12 +182,15 @@ class CommunityWebinarsController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController infoController = TextEditingController();
 
-  Future communityScheduleEvent(webinarId) async {
+  Future communityScheduleEvent(webinarId, day, startTime, endTime) async {
     var response = await ApiBase.postRequest(
       body: {
         "name": nameController.text,
         "email": emailController.text,
-        "additionalInfo": infoController.text
+        "additionalInfo": infoController.text,
+        "date": formattedDate,
+        "startTime": startTime.replaceAll(RegExp(r"\sAM|\sPM"), ""),
+        "endTime": endTime.replaceAll(RegExp(r"\sAM|\sPM"), ""),
       },
       withToken: true,
       extendedURL: ApiUrl.scheduleEvent + webinarId,
@@ -196,10 +200,12 @@ class CommunityWebinarsController extends GetxController {
     if (data["status"]) {
       Get.back();
       Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
-      communityEvents.getCommunityEvents();
+      communityWebinars.getCommunityWebinars();
       return true;
     } else {
+      Get.back();
       Get.back();
       Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);

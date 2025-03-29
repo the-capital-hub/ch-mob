@@ -4,6 +4,7 @@ import 'package:capitalhub_crm/controller/communityController/community_controll
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAddServiceScreen/community_add_service_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityEventsScreen/communityBookingDetailsScreen/community_booking_details_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityEventsScreen/communityScheduleEventsScreen/community_schedule_events_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityEventsScreen/communitySelectAvailabilityScreen/community_select_availability_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
@@ -95,7 +96,7 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                                     eventId: communityWebinars
                                                         .communityWebinarsList[
                                                             index]
-                                                        .id,
+                                                        .eventId,
                                                     index: index,
                                                     isEdit: true,
                                                     isPriorityDM: false,
@@ -260,9 +261,11 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                 if (!isAdmin)
                                   AppButton.primaryButton(
                                       onButtonPressed: () {
-                                        Get.to(() =>
-                                            CommunityScheduleEventsScreen(
-                                                index: index));
+                                        Get.to(() => SelectAvailabilityScreen(
+                                            index: index));
+                                        //     Get.to(() =>
+                                        // CommunityScheduleEventsScreen(
+                                        //     index: index));
                                       },
                                       title: "Book Now")
                               ],

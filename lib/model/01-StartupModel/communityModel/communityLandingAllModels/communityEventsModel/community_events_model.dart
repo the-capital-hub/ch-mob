@@ -51,6 +51,7 @@ class CommunityEvent {
 class Webinar {
     String id;
     bool isActive;
+    bool isExpired;
     String date;
     String title;
     String description;
@@ -59,6 +60,7 @@ class Webinar {
     String duration;
     String discount;
     String price;
+    String image;
     String webinarLink;
     String creatorName;
     List<JoinedUser> joinedUsers;
@@ -67,6 +69,7 @@ class Webinar {
     Webinar({
         required this.id,
         required this.isActive,
+        required this.isExpired,
         required this.date,
         required this.title,
         required this.description,
@@ -79,11 +82,13 @@ class Webinar {
         required this.creatorName,
         required this.joinedUsers,
         required this.registerUrl,
+        required this.image,
     });
 
     factory Webinar.fromJson(Map<String, dynamic> json) => Webinar(
         id: json["_id"],
         isActive: json["isActive"],
+        isExpired: json["is_expired"],
         date: json["date"],
         title: json["title"],
         description: json["description"],
@@ -96,11 +101,13 @@ class Webinar {
         creatorName: json["creatorName"],
         joinedUsers: List<JoinedUser>.from(json["joinedUsers"].map((x) => JoinedUser.fromJson(x))),
         registerUrl: json["registerUrl"],
+        image: json["image"],
     );
 
     Map<String, dynamic> toJson() => {
         "_id": id,
         "isActive": isActive,
+        "is_expired": isExpired,
         "date": date,
         "title": title,
         "description": description,
@@ -113,6 +120,7 @@ class Webinar {
         "creatorName": creatorName,
         "joinedUsers": List<dynamic>.from(joinedUsers.map((x) => x.toJson())),
         "registerUrl": registerUrl,
+        "image": image,
     };
 }
 

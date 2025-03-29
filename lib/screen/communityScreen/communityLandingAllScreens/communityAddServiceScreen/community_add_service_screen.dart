@@ -14,6 +14,7 @@ import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
+import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/datePicker/datePicker.dart';
 import 'package:capitalhub_crm/widget/dropdownWidget/drop_down_widget.dart';
@@ -110,13 +111,34 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           .communityPriorityDMsList[widget.index!].amount!
           .toString();
       communityPriorityDMs.responseTimelineController.text =
-          communityPriorityDMs.communityPriorityDMsList[widget.index!].timeline!
+          communityPriorityDMs
+              .communityPriorityDMsList[widget.index!].timelineValue
               .toString();
+
       communityPriorityDMs.topicsController.text = communityPriorityDMs
           .communityPriorityDMsList[widget.index!].topics!
           .join(", ");
     }
     if (widget.isEdit && widget.isMeeting!) {
+      String inputDate = communityMeetings
+          .communityMeetingsList[widget.index!].availability![0].day!;
+
+      DateFormat inputFormat = DateFormat("dd-MMM-yyyy");
+      DateTime dateTime = inputFormat.parse(inputDate);
+
+      DateFormat outputFormat = DateFormat("yyyy-MM-dd");
+      String outputMeetingDate = outputFormat.format(dateTime);
+      communityMeetings.dateController.text = outputMeetingDate;
+      communityMeetings.startTimeController.text = communityMeetings
+          .communityMeetingsList[widget.index!]
+          .availability![0]
+          .slots![0]
+          .startTime!;
+      communityMeetings.endTimeController.text = communityMeetings
+          .communityMeetingsList[widget.index!]
+          .availability![0]
+          .slots![0]
+          .endTime!;
       communityMeetings.titleController.text =
           communityMeetings.communityMeetingsList[widget.index!].title!;
       communityMeetings.amountController.text = communityMeetings
@@ -140,12 +162,44 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           "${communityWebinars.communityWebinarsList[widget.index!].discount}";
     }
     if (widget.isEdit && widget.isWebinar) {
+      String numberString = "";
+      String inputString =
+          communityEvents.communityEventsData.webinars![widget.index!].duration;
+
+      // Use regex to capture the number from the string
+      RegExp regExp = RegExp(r'(\d+)');
+
+      // Find the match and extract the number as a string
+      Match? match = regExp.firstMatch(inputString);
+
+      if (match != null) {
+        // The first capturing group contains the number as a string
+        numberString = match.group(0)!;
+        print(numberString); // Output: "30"
+      } else {
+        print("No number found.");
+      }
+      String inputDate = communityEvents.communityEventsData
+          .webinars![widget.index!].date; // Original date format (DD-MM-YYYY)
+
+      // Parse the date in DD-MM-YYYY format
+      DateFormat inputFormat = DateFormat('dd-MM-yyyy');
+      DateTime date = inputFormat.parse(inputDate);
+
+      // Format the date into YYYY-MM-DD format
+      DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+      String formattedDate = outputFormat.format(date);
+
       communityWebinars.titleController.text =
           communityEvents.communityEventsData.webinars![widget.index!].title;
-      communityWebinars.dateController.text =
-          communityEvents.communityEventsData.webinars![widget.index!].date;
-      communityWebinars.durationMinutesController.text =
-          communityEvents.communityEventsData.webinars![widget.index!].duration;
+      communityWebinars.dateController.text = formattedDate;
+
+      communityWebinars.durationMinutesController.text = numberString;
+
+      communityWebinars.startTimeController.text = communityEvents
+          .communityEventsData.webinars![widget.index!].startTime;
+      communityWebinars.endTimeController.text =
+          communityEvents.communityEventsData.webinars![widget.index!].endTime;
       communityWebinars.priceController.text =
           communityEvents.communityEventsData.webinars![widget.index!].price;
       communityWebinars.priceDiscountController.text =
@@ -484,6 +538,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
               if (selectedDate != null) {
                 communityMeetings.dateController.text =
                     Helper.formatDatePost(selectedDate.toString());
+
                 print(communityMeetings.dateController.text);
                 setState(() {});
               }
@@ -526,7 +581,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                 controller: communityMeetings.endTimeController,
                 onTap: () async {
                   DateTime? selectedTime = await selectTime(context, false);
-
+                  print(selectedTime);
                   if (selectedTime != null) {
                     communityMeetings.endTimeController.text =
                         DateFormat('hh:mm a').format(selectedTime);
@@ -550,9 +605,14 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
               statusList: communityMeetings.communityMemberEmails,
               onChanged: (val) {
                 setState(() {
-                  communityMeetings.memberEmail = val.toString();
-                  if (communityMeetings.memberEmail == "Add a new member") {
+                  if (val.toString() == "Add a new member") {
                     isAddNewMemberFieldVisible = true;
+                    communityMeetings.memberEmail = val.toString();
+                    communityMeetings.isNewEmail = true;
+                  } else {
+                    communityMeetings.isNewEmail = false;
+                    isAddNewMemberFieldVisible = false;
+                    communityMeetings.memberEmail = val.toString();
                   }
                 });
               }),
@@ -560,16 +620,22 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
         sizedTextfield,
         if (isAddNewMemberFieldVisible) ...[
           MyCustomTextField.textField(
-              readonly: true,
+              readonly: false,
               hintText: "Enter member's email",
               controller: communityMeetings.memberEmailController,
               lableText: "Add Member"),
           sizedTextfield,
           AppButton.primaryButton(
               onButtonPressed: () {
-                setState(() {
-                  isAddNewMemberFieldVisible = false;
-                });
+                if (communityMeetings.memberEmailController.text.isEmpty) {
+                  HelperSnackBar.snackBar("Error", "Enter a valid email id");
+                } else {
+                  setState(() {
+                    isAddNewMemberFieldVisible = false;
+                    communityMeetings.memberEmail =
+                        communityMeetings.memberEmailController.text;
+                  });
+                }
               },
               title: "Add Member"),
         ],
@@ -722,9 +788,11 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                   if (widget.isEdit && widget.isEvent) {
                     Helper.loader(context);
                     communityEvents.updateCommunityEvent(widget.eventId);
+                    communityWebinars.getCommunityWebinars();
                   } else {
                     Helper.loader(context);
                     communityEvents.createCommunityEvent();
+                    communityWebinars.getCommunityWebinars();
                   }
                 },
                 title: widget.isEdit && widget.isEvent
@@ -762,14 +830,25 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             },
           ),
           sizedTextfield,
-          base64 != ""
-              ? CircleAvatar(
-                  radius: 60,
-                  backgroundImage: MemoryImage(base64Decode(base64)),
-                )
-              : const CircleAvatar(
-                  radius: 60,
-                  child: Icon(Icons.add_photo_alternate_outlined, size: 40)),
+          // widget.isEdit 
+          // &&
+          //         communityEvents.communityEventsData.webinars![widget.index!]
+          //             .image.isNotEmpty
+          //     ? CircleAvatar(
+          //         radius: 60,
+          //         foregroundImage: NetworkImage(communityEvents
+          //             .communityEventsData.webinars![widget.index!].image),
+          //       )
+          //     :
+               base64 != ""
+                  ? CircleAvatar(
+                      radius: 60,
+                      backgroundImage: MemoryImage(base64Decode(base64)),
+                    )
+                  : const CircleAvatar(
+                      radius: 60,
+                      child:
+                          Icon(Icons.add_photo_alternate_outlined, size: 40)),
           const SizedBox(
             height: 12,
           ),

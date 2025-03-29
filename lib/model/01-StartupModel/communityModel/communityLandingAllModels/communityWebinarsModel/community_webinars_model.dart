@@ -23,7 +23,8 @@ class GetCommunityWebinarsModel {
         message: json["message"],
         data: json["data"] == null
             ? null
-            : List<CommunityWebinars>.from(json["data"].map((x) => CommunityWebinars.fromJson(x))),
+            : List<CommunityWebinars>.from(
+                json["data"].map((x) => CommunityWebinars.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,6 +48,7 @@ class CommunityWebinars {
   int? duration;
   List<Booking>? bookings;
   int? joined;
+  List<Availability>? availability;
 
   CommunityWebinars({
     this.isAdmin,
@@ -60,9 +62,11 @@ class CommunityWebinars {
     this.duration,
     this.bookings,
     this.joined,
+    this.availability,
   });
 
-  factory CommunityWebinars.fromJson(Map<String, dynamic> json) => CommunityWebinars(
+  factory CommunityWebinars.fromJson(Map<String, dynamic> json) =>
+      CommunityWebinars(
         isAdmin: json["isAdmin"],
         id: json["_id"],
         eventId: json["eventId"],
@@ -74,8 +78,13 @@ class CommunityWebinars {
         duration: json["duration"],
         bookings: json["bookings"] == null
             ? null
-            : List<Booking>.from(json["bookings"].map((x) => Booking.fromJson(x))),
+            : List<Booking>.from(
+                json["bookings"].map((x) => Booking.fromJson(x))),
         joined: json["joined"],
+        availability: json["availability"] == null
+            ? null
+            : List<Availability>.from(
+                json["availability"].map((x) => Availability.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -136,5 +145,49 @@ class Booking {
         "endTime": endTime,
         "meeting_link": meetingLink,
         "bookedAt": bookedAt,
+      };
+}
+
+class Availability {
+  String? day;
+  List<Slot>? slots;
+
+  Availability({
+    required this.day,
+    required this.slots,
+  });
+
+  factory Availability.fromJson(Map<String, dynamic> json) => Availability(
+        day: json["day"],
+        slots: List<Slot>.from(json["slots"].map((x) => Slot.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "day": day,
+        "slots": List<dynamic>.from(slots!.map((x) => x.toJson())),
+      };
+}
+
+class Slot {
+  String? startTime;
+  String? endTime;
+  bool? isAvailable;
+
+  Slot({
+    this.startTime,
+    this.endTime,
+    this.isAvailable,
+  });
+
+  factory Slot.fromJson(Map<String, dynamic> json) => Slot(
+        startTime: json["startTime"],
+        endTime: json["endTime"],
+        isAvailable: json["isAvailable"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "startTime": startTime,
+        "endTime": endTime,
+        "isAvailable": isAvailable,
       };
 }

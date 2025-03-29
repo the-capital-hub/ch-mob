@@ -26,14 +26,17 @@ class GetCommunityPriorityDMsModel {
         status: json["status"],
         message: json["message"],
         data: json["data"] != null
-            ? List<CommunityPriorityDMs>.from(json["data"].map((x) => CommunityPriorityDMs.fromJson(x)))
+            ? List<CommunityPriorityDMs>.from(
+                json["data"].map((x) => CommunityPriorityDMs.fromJson(x)))
             : null,
       );
 
   Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
-        "data": data != null ? List<dynamic>.from(data!.map((x) => x.toJson())) : null,
+        "data": data != null
+            ? List<dynamic>.from(data!.map((x) => x.toJson()))
+            : null,
       };
 }
 
@@ -42,7 +45,8 @@ class CommunityPriorityDMs {
   final String? title;
   final String? description;
   final int? amount;
-  final int? timeline;
+  final String? timeline;
+  final int? timelineValue;
   final List<String>? topics;
   final List<Question>? questions;
 
@@ -52,19 +56,25 @@ class CommunityPriorityDMs {
     this.description,
     this.amount,
     this.timeline,
+    this.timelineValue,
     this.topics,
     this.questions,
   });
 
-  factory CommunityPriorityDMs.fromJson(Map<String, dynamic> json) => CommunityPriorityDMs(
+  factory CommunityPriorityDMs.fromJson(Map<String, dynamic> json) =>
+      CommunityPriorityDMs(
         id: json["_id"],
         title: json["title"],
         description: json["description"],
         amount: json["amount"],
         timeline: json["timeline"],
-        topics: json["topics"] != null ? List<String>.from(json["topics"].map((x) => x)) : null,
+        timelineValue: json["timelineValue"],
+        topics: json["topics"] != null
+            ? List<String>.from(json["topics"].map((x) => x))
+            : null,
         questions: json["questions"] != null
-            ? List<Question>.from(json["questions"].map((x) => Question.fromJson(x)))
+            ? List<Question>.from(
+                json["questions"].map((x) => Question.fromJson(x)))
             : null,
       );
 
@@ -74,8 +84,12 @@ class CommunityPriorityDMs {
         "description": description,
         "amount": amount,
         "timeline": timeline,
-        "topics": topics != null ? List<dynamic>.from(topics!.map((x) => x)) : null,
-        "questions": questions != null ? List<dynamic>.from(questions!.map((x) => x.toJson())) : null,
+        "timelineValue": timelineValue,
+        "topics":
+            topics != null ? List<dynamic>.from(topics!.map((x) => x)) : null,
+        "questions": questions != null
+            ? List<dynamic>.from(questions!.map((x) => x.toJson()))
+            : null,
       };
 }
 
@@ -90,29 +104,28 @@ class Question {
   final String? timeAgo;
   final String? timeToAnswer;
 
-  Question({
-    this.id,
-    this.userId,
-    this.question,
-    this.answer,
-    this.isAnswered,
-    this.payment,
-    this.createdAt,
-    this.timeAgo,
-    this.timeToAnswer
-  });
+  Question(
+      {this.id,
+      this.userId,
+      this.question,
+      this.answer,
+      this.isAnswered,
+      this.payment,
+      this.createdAt,
+      this.timeAgo,
+      this.timeToAnswer});
 
   factory Question.fromJson(Map<String, dynamic> json) => Question(
-        id: json["_id"],
-        userId: json["userId"] != null ? UserId.fromJson(json["userId"]) : null,
-        question: json["question"],
-        answer: json["answer"],
-        isAnswered: json["isAnswered"],
-        payment: json["payment"] != null ? Payment.fromJson(json["payment"]) : null,
-        createdAt: json["createdAt"],
-        timeAgo: json["timeAgo"],
-        timeToAnswer: json["time_to_answer"]
-      );
+      id: json["_id"],
+      userId: json["userId"] != null ? UserId.fromJson(json["userId"]) : null,
+      question: json["question"],
+      answer: json["answer"],
+      isAnswered: json["isAnswered"],
+      payment:
+          json["payment"] != null ? Payment.fromJson(json["payment"]) : null,
+      createdAt: json["createdAt"],
+      timeAgo: json["timeAgo"],
+      timeToAnswer: json["time_to_answer"]);
 
   Map<String, dynamic> toJson() => {
         "_id": id,

@@ -102,7 +102,8 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                       radius: 60,
                                       foregroundImage: NetworkImage(
                                           aboutCommunity.aboutCommunityList[0]
-                                              .community.image),
+                                              .community!.image
+                                              .toString()),
                                     ),
                                     const SizedBox(
                                       height: 16,
@@ -119,8 +120,9 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                         TextWidget(
                                           text: aboutCommunity
                                               .aboutCommunityList[0]
-                                              .community
-                                              .name,
+                                              .community!
+                                              .name
+                                              .toString(),
                                           textSize: 20,
                                           fontWeight: FontWeight.w500,
                                           color: AppColors.primary,
@@ -140,8 +142,9 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                                 image: NetworkImage(
                                                   aboutCommunity
                                                       .aboutCommunityList[0]
-                                                      .community
-                                                      .image,
+                                                      .community!
+                                                      .image
+                                                      .toString(),
                                                 ),
                                                 fit: BoxFit.fill),
                                             borderRadius:
@@ -202,7 +205,8 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                               ),
                               HtmlWidget(
                                 aboutCommunity
-                                    .aboutCommunityList[0].community.about,
+                                    .aboutCommunityList[0].community!.about
+                                    .toString(),
                                 textStyle: TextStyle(
                                   fontSize: 14,
                                   color: AppColors.white,
@@ -226,15 +230,16 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                     radius: 40,
                                     backgroundImage: NetworkImage(aboutCommunity
                                         .aboutCommunityList[0]
-                                        .admin
-                                        .profilePicture),
+                                        .admin!
+                                        .profilePicture
+                                        .toString()),
                                   ),
                                   const SizedBox(
                                     height: 12,
                                   ),
                                   TextWidget(
                                     text:
-                                        "${aboutCommunity.aboutCommunityList[0].admin.firstName} ${aboutCommunity.aboutCommunityList[0].admin.lastName}",
+                                        "${aboutCommunity.aboutCommunityList[0].admin!.firstName} ${aboutCommunity.aboutCommunityList[0].admin!.lastName}",
                                     textSize: 16,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -243,14 +248,16 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                   ),
                                   TextWidget(
                                       text: aboutCommunity.aboutCommunityList[0]
-                                          .admin.designation,
+                                          .admin!.designation
+                                          .toString(),
                                       textSize: 16),
                                   const SizedBox(
                                     height: 12,
                                   ),
                                   TextWidget(
                                     text: aboutCommunity
-                                        .aboutCommunityList[0].admin.bio,
+                                        .aboutCommunityList[0].admin!.bio
+                                        .toString(),
                                     textSize: 14,
                                     maxLine: 9,
                                     align: TextAlign.center,
@@ -266,8 +273,8 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w500,
                               ),
-                              aboutCommunity.aboutCommunityList[0].community
-                                      .termsAndConditions.isEmpty
+                              aboutCommunity.aboutCommunityList[0].community!
+                                      .termsAndConditions!.isEmpty
                                   ? const SizedBox(
                                       height: 100,
                                       child: TextWidget(
@@ -279,12 +286,15 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                     ),
                               for (int i = 0;
                                   i <
-                                      aboutCommunity.aboutCommunityList[0]
-                                          .community.termsAndConditions.length;
+                                      aboutCommunity
+                                          .aboutCommunityList[0]
+                                          .community!
+                                          .termsAndConditions!
+                                          .length;
                                   i++)
                                 TextWidget(
                                     text:
-                                        "•   ${aboutCommunity.aboutCommunityList[0].community.termsAndConditions[i]}",
+                                        "•   ${aboutCommunity.aboutCommunityList[0].community!.termsAndConditions![i]}",
                                     textSize: 14),
                               const SizedBox(
                                 height: 12,
@@ -304,24 +314,21 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                           isPostsVisible = !isPostsVisible;
                                         });
                                       },
-                                      icon: 
-                                      isPostsVisible?
-                                      Icon(
-                                        Icons.keyboard_arrow_up,
-                                        color: AppColors.primary,
-                                      )
-                                      :
-                                      Icon(
-                                        Icons.keyboard_arrow_down,
-                                        color: AppColors.primary,
-                                      )
-                                      )
+                                      icon: isPostsVisible
+                                          ? Icon(
+                                              Icons.keyboard_arrow_up,
+                                              color: AppColors.primary,
+                                            )
+                                          : Icon(
+                                              Icons.keyboard_arrow_down,
+                                              color: AppColors.primary,
+                                            ))
                                 ],
                               ),
-                              if(isPostsVisible)
-                              const SizedBox(
-                                height: 12,
-                              ),
+                              if (isPostsVisible)
+                                const SizedBox(
+                                  height: 12,
+                                ),
                               if (isPostsVisible)
                                 aboutCommunity.aboutCommunityPostsList.isEmpty
                                     ? const SizedBox(
@@ -370,10 +377,10 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                                             CrossAxisAlignment
                                                                 .start,
                                                         children: [
-                                                          TextWidget(
-                                                              text:
-                                                                  "${aboutCommunity.aboutCommunityPostsList[index].user.firstName} ${aboutCommunity.aboutCommunityPostsList[index].user.lastName}",
-                                                              textSize: 16),
+                                                          // TextWidget(
+                                                          //     text:
+                                                          //         "${aboutCommunity.aboutCommunityPostsList[index].user!}",
+                                                          //     textSize: 16),
                                                           TextWidget(
                                                               text: aboutCommunity
                                                                   .aboutCommunityPostsList[
@@ -396,7 +403,7 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                                     aboutCommunity
                                                         .aboutCommunityPostsList[
                                                             index]
-                                                        .description,
+                                                        .description!,
                                                     textStyle: TextStyle(
                                                       fontSize: 14,
                                                       color: AppColors.white,
@@ -446,16 +453,15 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                               !isProductsVisible;
                                         });
                                       },
-                                      icon: isProductsVisible?
-                                      Icon(
-                                        Icons.keyboard_arrow_up,
-                                        color: AppColors.primary,
-                                      )
-                                      :
-                                      Icon(
-                                        Icons.keyboard_arrow_down,
-                                        color: AppColors.primary,
-                                      ))
+                                      icon: isProductsVisible
+                                          ? Icon(
+                                              Icons.keyboard_arrow_up,
+                                              color: AppColors.primary,
+                                            )
+                                          : Icon(
+                                              Icons.keyboard_arrow_down,
+                                              color: AppColors.primary,
+                                            ))
                                 ],
                               ),
                               if (isProductsVisible)
@@ -507,7 +513,8 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                                                     aboutCommunity
                                                                         .aboutCommunityProductsList[
                                                                             index]
-                                                                        .image,
+                                                                        .image
+                                                                        .toString(),
                                                                   ),
                                                                   fit: BoxFit
                                                                       .fill),
@@ -543,7 +550,7 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                                                 text: aboutCommunity
                                                                         .aboutCommunityProductsList[
                                                                             index]
-                                                                        .isFree
+                                                                        .isFree!
                                                                     ? "Free"
                                                                     : "\u{20B9}${aboutCommunity.aboutCommunityProductsList[index].amount}/-",
                                                                 textSize: 16)),
@@ -560,7 +567,8 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                                       text: aboutCommunity
                                                           .aboutCommunityProductsList[
                                                               index]
-                                                          .name,
+                                                          .name
+                                                          .toString(),
                                                       textSize: 18,
                                                       maxLine: 2,
                                                       fontWeight:
@@ -579,93 +587,94 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                                       aboutCommunity
                                                           .aboutCommunityProductsList[
                                                               index]
-                                                          .description,
+                                                          .description
+                                                          .toString(),
                                                       textStyle: TextStyle(
                                                         fontSize: 14,
                                                         color: AppColors.white,
                                                       ),
                                                     ),
                                                   ),
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 50,
-                                                        vertical: 12),
-                                                    child:
-                                                        AppButton.primaryButton(
-                                                            onButtonPressed:
-                                                                () {
-                                                              if (aboutCommunity
-                                                                  .aboutCommunityProductsList[
-                                                                      index]
-                                                                  .isFree) {
-                                                                showDialog(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (BuildContext
-                                                                          context) {
-                                                                    return AlertDialog(
-                                                                      backgroundColor:
-                                                                          AppColors
-                                                                              .blackCard,
-                                                                      title: const Align(
-                                                                          alignment: Alignment.center,
-                                                                          child: TextWidget(
-                                                                            text:
-                                                                                'Resource URLs',
-                                                                            textSize:
-                                                                                25,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                          )),
-                                                                      content:
-                                                                          Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.min,
-                                                                        children: [
-                                                                          for (var i = 0;
-                                                                              i < aboutCommunity.aboutCommunityProductsList[index].urls.length;
-                                                                              i++)
-                                                                            TextWidget(
-                                                                              text: aboutCommunity.aboutCommunityProductsList[index].urls[i],
-                                                                              textSize: 16,
-                                                                              color: AppColors.primary,
-                                                                            ),
-                                                                        ],
-                                                                      ),
-                                                                      actions: [
-                                                                        AppButton
-                                                                            .primaryButton(
-                                                                          bgColor:
-                                                                              AppColors.primary,
-                                                                          title:
-                                                                              'Close',
-                                                                          onButtonPressed:
-                                                                              () {
-                                                                            Navigator.of(context).pop();
-                                                                          },
-                                                                        ),
-                                                                      ],
-                                                                    );
-                                                                  },
-                                                                );
-                                                              } else {
-                                                                Get.to(() =>
-                                                                    PurchaseScreen(
-                                                                        index:
-                                                                            index));
-                                                              }
-                                                            },
-                                                            title: aboutCommunity
-                                                                    .aboutCommunityProductsList[
-                                                                        index]
-                                                                    .isFree
-                                                                ? "Access Resource"
-                                                                : "Buy \u{20B9}${aboutCommunity.aboutCommunityProductsList[index].amount} "),
-                                                  ),
+                                                  // Padding(
+                                                  //   padding: const EdgeInsets
+                                                  //       .symmetric(
+                                                  //       horizontal: 50,
+                                                  //       vertical: 12),
+                                                  //   child:
+                                                  //       AppButton.primaryButton(
+                                                  //           onButtonPressed:
+                                                  //               () {
+                                                  //             if (aboutCommunity
+                                                  //                 .aboutCommunityProductsList[
+                                                  //                     index]
+                                                  //                 .isFree!) {
+                                                  //               showDialog(
+                                                  //                 context:
+                                                  //                     context,
+                                                  //                 builder:
+                                                  //                     (BuildContext
+                                                  //                         context) {
+                                                  //                   return AlertDialog(
+                                                  //                     backgroundColor:
+                                                  //                         AppColors
+                                                  //                             .blackCard,
+                                                  //                     title: const Align(
+                                                  //                         alignment: Alignment.center,
+                                                  //                         child: TextWidget(
+                                                  //                           text:
+                                                  //                               'Resource URLs',
+                                                  //                           textSize:
+                                                  //                               25,
+                                                  //                           fontWeight:
+                                                  //                               FontWeight.bold,
+                                                  //                         )),
+                                                  //                     content:
+                                                  //                         Column(
+                                                  //                       crossAxisAlignment:
+                                                  //                           CrossAxisAlignment.start,
+                                                  //                       mainAxisSize:
+                                                  //                           MainAxisSize.min,
+                                                  //                       children: [
+                                                  //                         for (var i = 0;
+                                                  //                             i < aboutCommunity.aboutCommunityProductsList[index].urls!.length;
+                                                  //                             i++)
+                                                  //                           TextWidget(
+                                                  //                             text: aboutCommunity.aboutCommunityProductsList[index].urls![i],
+                                                  //                             textSize: 16,
+                                                  //                             color: AppColors.primary,
+                                                  //                           ),
+                                                  //                       ],
+                                                  //                     ),
+                                                  //                     actions: [
+                                                  //                       AppButton
+                                                  //                           .primaryButton(
+                                                  //                         bgColor:
+                                                  //                             AppColors.primary,
+                                                  //                         title:
+                                                  //                             'Close',
+                                                  //                         onButtonPressed:
+                                                  //                             () {
+                                                  //                           Navigator.of(context).pop();
+                                                  //                         },
+                                                  //                       ),
+                                                  //                     ],
+                                                  //                   );
+                                                  //                 },
+                                                  //               );
+                                                  //             } else {
+                                                  //               Get.to(() =>
+                                                  //                   PurchaseScreen(
+                                                  //                       index:
+                                                  //                           index));
+                                                  //             }
+                                                  //           },
+                                                  //           title: aboutCommunity
+                                                  //                   .aboutCommunityProductsList[
+                                                  //                       index]
+                                                  //                   .isFree!
+                                                  //               ? "Access Resource"
+                                                  //               : "Buy \u{20B9}${aboutCommunity.aboutCommunityProductsList[index].amount} "),
+                                                  // ),
                                                 ],
                                               ),
                                             ),
@@ -690,16 +699,15 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                           isEventsVisible = !isEventsVisible;
                                         });
                                       },
-                                      icon: isEventsVisible?
-                                      Icon(
-                                        Icons.keyboard_arrow_up,
-                                        color: AppColors.primary,
-                                      )
-                                      :
-                                      Icon(
-                                        Icons.keyboard_arrow_down,
-                                        color: AppColors.primary,
-                                      ))
+                                      icon: isEventsVisible
+                                          ? Icon(
+                                              Icons.keyboard_arrow_up,
+                                              color: AppColors.primary,
+                                            )
+                                          : Icon(
+                                              Icons.keyboard_arrow_down,
+                                              color: AppColors.primary,
+                                            ))
                                 ],
                               ),
                               if (isEventsVisible)
@@ -746,7 +754,8 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                                       text: aboutCommunity
                                                           .aboutCommunityEventsList[
                                                               index]
-                                                          .title,
+                                                          .title
+                                                          .toString(),
                                                       textSize: 25),
                                                   // communityEvents.communityEventsList[0].webinars[index].isActive?const SizedBox():
                                                   // TextWidget(text: "This meeting is cancelled.", textSize: 16,color: AppColors.grey,),

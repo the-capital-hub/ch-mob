@@ -3,6 +3,7 @@ import 'package:capitalhub_crm/controller/communityController/communityLandingAl
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityWebinarsController/community_webinars_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
@@ -34,7 +35,7 @@ class _CommunityRegisterNowScreenState
         WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
             communityAdminName =
-                "${aboutCommunity.aboutCommunityList[0].admin.firstName} ${aboutCommunity.aboutCommunityList[0].admin.lastName}";
+                "${aboutCommunity.aboutCommunityList[0].admin!.firstName} ${aboutCommunity.aboutCommunityList[0].admin!.lastName}";
           });
         });
       });
@@ -149,8 +150,8 @@ class _CommunityRegisterNowScreenState
                                     width: 5,
                                   ),
                                   TextWidget(
-                                      text:
-                                          communityEvents.communityEventsData.webinars![widget.index].duration,
+                                      text: communityEvents.communityEventsData
+                                          .webinars![widget.index].duration,
                                       textSize: 16)
                                 ],
                               ),
@@ -246,6 +247,7 @@ class _CommunityRegisterNowScreenState
                                 borderClr: AppColors.white12),
                             const SizedBox(height: 12),
                             MyCustomTextField.textField(
+                                textInputType: TextInputType.number,
                                 hintText: "Enter Mobile Number",
                                 controller: communityEvents.mobileController,
                                 lableText: "Mobile Number",
@@ -253,9 +255,10 @@ class _CommunityRegisterNowScreenState
                             const SizedBox(height: 12),
                             AppButton.primaryButton(
                                 onButtonPressed: () {
+                                  Helper.loader(context);
                                   communityEvents.registerCommunityWebinar(
-                                     communityEvents.communityEventsData
-                                    .webinars![widget.index].id
+                                      communityEvents.communityEventsData
+                                          .webinars![widget.index].id
                                           .toString());
                                 },
                                 title: "Register Now"),
