@@ -49,15 +49,15 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
 
   List<String> items = [
     "Home",
-    "Company",
-    "Explore",
     "Live deals",
+    "Explore",
+    "Company",
     "One Link",
-    "My Startups",
-    "Community",
-    "Meetings",
-    "News",
     "Saved Post",
+    "News",
+    "My Startups",
+    // "Community",
+    // "Meetings",
     "Connection",
     "Log Out",
   ];
@@ -75,29 +75,29 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
   ];
   List icons = [
     PngAssetPath.homeIcon,
-    PngAssetPath.financeIcon,
-    PngAssetPath.exploreIcon,
     PngAssetPath.liveDealIcon,
+    PngAssetPath.exploreIcon,
+    PngAssetPath.financeIcon, // Company
     PngAssetPath.onelinkIcon,
-    PngAssetPath.mystartupIcon,
-    PngAssetPath.communityIcon,
-    PngAssetPath.meetingIcon,
+    PngAssetPath.saveIcon, // Saved Post
     PngAssetPath.newsIcon,
-    PngAssetPath.saveIcon,
-    PngAssetPath.teamIcon,
+    PngAssetPath.mystartupIcon,
+    // PngAssetPath.communityIcon, (commented out)
+    // PngAssetPath.meetingIcon, (commented out)
+    PngAssetPath.teamIcon, // Connection
     PngAssetPath.logoutIcon,
   ];
   List page = [
     const LandingScreenInvestor(),
-    const CompanyInvScreen(),
-    const ExploreScreen(),
     const LiveDealScreen(),
+    const ExploreScreen(),
+    const CompanyInvScreen(),
     const OneLinkScreeen(),
-    const MyStartupScreen(),
-    const CommunityHomeScreen(),
-    const EventsScreen(),
-    const NewsScreen(),
     const SavedPostScreen(),
+    const NewsScreen(),
+    const MyStartupScreen(),
+    // const CommunityHomeScreen(), (commented out)
+    // const EventsScreen(), (commented out)
     const ConnectionScreen(),
     const LogoutScreen(),
   ];
@@ -203,9 +203,11 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
                                   verticalOffset: -20,
                                   curve: Curves.easeOutBack,
                                   child: FadeInAnimation(
-                                      child: (index == 6 || index == 7)
-                                          ? _buildExpansionTile(index)
-                                          : InkWell(
+                                      child:
+                                      //  (index == 6 || index == 7)
+                                      //     ? _buildExpansionTile(index)
+                                      //     : 
+                                          InkWell(
                                               onTap: () {
                                                 if (index == 0) {
                                                   homeController.selectIndex =

@@ -396,23 +396,83 @@ class ShimmerLoader {
   }
 
   static shimmerTile() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
-      child: Shimmer.fromColors(
-          baseColor: Colors.grey[800]!,
-          highlightColor: Colors.grey[600]!,
-          child: ListView.separated(
-              itemCount: 10,
-              separatorBuilder: (context, index) => sizedTextfield,
-              itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.black12,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: _buildShimmerBox(width: Get.width, height: 100),
-                );
-              })),
+    return Shimmer.fromColors(
+        baseColor: Colors.grey[800]!,
+        highlightColor: Colors.grey[600]!,
+        child: ListView.separated(
+            itemCount: 10,
+            padding: const EdgeInsets.all(10),
+            separatorBuilder: (context, index) => sizedTextfield,
+            itemBuilder: (context, index) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: AppColors.black12,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: _buildShimmerBox(width: Get.width, height: 100),
+              );
+            }));
+  }
+
+  static shimmerOutreachView() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[800]!,
+      highlightColor: AppColors.blackCard,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            shimmerContainer(height: 30, width: 200), // Title shimmer
+            const SizedBox(height: 10),
+            shimmerContainer(height: 20, width: 250), // Date shimmer
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                shimmerContainer(height: 50, width: 140),
+                const SizedBox(width: 10),
+                shimmerContainer(height: 50, width: 140),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                shimmerContainer(height: 40, width: 100),
+                const SizedBox(width: 10),
+                shimmerContainer(height: 40, width: 100),
+                const SizedBox(width: 10),
+                shimmerContainer(height: 40, width: 100),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: GridView.builder(
+                itemCount: 5,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 1.5,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemBuilder: (_, index) =>
+                    shimmerContainer(height: 100, width: 100),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static shimmerContainer({double height = 50, double width = 50}) {
+    return Container(
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+        color: Colors.grey[800],
+        borderRadius: BorderRadius.circular(8),
+      ),
     );
   }
 }

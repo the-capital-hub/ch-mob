@@ -2,6 +2,7 @@ import 'package:capitalhub_crm/controller/campaignsController/campaigns_controll
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
+import 'package:capitalhub_crm/utils/helper/placeholder.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
@@ -76,7 +77,7 @@ class _ViewOutreachScreenState extends State<ViewOutreachScreen>
     return Container(
       decoration: bgDec,
       child: Obx(() => campaignsController.isOutreachViewLoading.value
-          ? Helper.pageLoading()
+          ? SafeArea(child:  ShimmerLoader.shimmerOutreachView())
           : Scaffold(
               backgroundColor: AppColors.transparent,
               appBar: HelperAppBar.appbarHelper(

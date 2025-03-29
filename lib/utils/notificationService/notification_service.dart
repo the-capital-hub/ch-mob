@@ -2,6 +2,9 @@ import 'dart:developer';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import '../../screen/notificationScreen/notification_screen.dart';
 
 class FirebaseNotificationService extends GetxService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -10,10 +13,19 @@ class FirebaseNotificationService extends GetxService {
 
   String? _fcmToken;
 
-  String? get fcmToken => _fcmToken; // Expose the token
+  String? get fcmToken => _fcmToken;
+// Future<void> checkBatteryOptimization() async {
+//   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+//   AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
 
+//   if (androidInfo.version.sdkInt >= 31) { // Android 12+
+//     await Permission.ignoreBatteryOptimizations.request();
+//   }
+// }
   Future<FirebaseNotificationService> initialize() async {
-    NotificationSettings settings = await _firebaseMessaging.requestPermission();
+  
+  NotificationSettings settings =
+      await _firebaseMessaging.requestPermission();
     if (settings.authorizationStatus == AuthorizationStatus.denied) return this;
 
     _fcmToken = await _firebaseMessaging.getToken();
@@ -39,7 +51,7 @@ class FirebaseNotificationService extends GetxService {
         InitializationSettings(android: androidInitSettings);
     await _flutterLocalNotificationsPlugin.initialize(initSettings);
 
-    return this; // ✅ FIX: Return the instance
+    return this;
   }
 
   Future<String?> getFcmToken() async {
@@ -48,9 +60,11 @@ class FirebaseNotificationService extends GetxService {
   }
 
   void _showNotification(RemoteMessage message) async {
+    print("Notification Message: ${message.toMap()}");
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      'high_importance_channel', 'High Importance Notifications',
+      'high_importance_channel',
+      'High Importance Notifications',
       importance: Importance.max,
       priority: Priority.high,
     );
@@ -67,6 +81,6 @@ class FirebaseNotificationService extends GetxService {
 
   void _handleMessage(RemoteMessage message) {
     log("Notification Clicked: ${message.data}");
-    // Get.toNamed('/notificationScreen', arguments: message.data);
+    // Get.to(() => const NotificationScreen());
   }
 }

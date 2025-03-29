@@ -86,6 +86,7 @@ class HomeController extends GetxController {
         withToken: true);
     log(response.body);
     var data = json.decode(response.body);
+    Get.back();
     if (data["status"] == true) {
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
@@ -109,6 +110,7 @@ class HomeController extends GetxController {
     );
     log(response.body);
     var data = json.decode(response.body);
+    Get.back();
     if (data["status"] == true) {
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
@@ -132,7 +134,7 @@ class HomeController extends GetxController {
     );
     log(response.body);
     var data = json.decode(response.body);
-    if (data["status"] == 200) {
+    if (data["status"]) {
       return true;
     } else {
       return false;

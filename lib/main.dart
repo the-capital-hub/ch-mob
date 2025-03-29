@@ -11,6 +11,7 @@ import 'screen/Auth-Process/selectWhatYouAreScreen/select_role_screen.dart';
 import 'utils/getStore/get_store.dart';
 import 'utils/notificationService/notification_service.dart';
 
+@pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling background message: ${message.messageId}");
 }
@@ -25,7 +26,6 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    print(' Firebase initialized successfully');
   } catch (e) {
     print(' Firebase initialization failed: $e');
   }

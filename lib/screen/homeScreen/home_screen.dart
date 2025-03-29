@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:ui';
 
@@ -29,6 +30,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
+import 'package:like_button/like_button.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../controller/resourceController/resource_controller.dart';
 import '../../utils/constant/app_var.dart';
@@ -42,6 +44,7 @@ import '../notificationScreen/notification_screen.dart';
 import '../profileScreen/polls_widget_profile.dart';
 import '../resourceScreen/resource_template.dart';
 import '../subscriptionScreen/subscription_screen.dart';
+import 'widget/animation_feed.dart';
 import 'widget/video_player.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -61,8 +64,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late Animation<double> _opacityAnimation;
   late Animation<double> _scaleAnimation;
 
-  late AnimationController _controller;
-  late Animation<double> _animation;
+  // late AnimationController _controller;
   ScrollController scrollController = ScrollController();
   int page = 1;
   bool isPaginationLoad = false;
@@ -92,16 +94,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       }
     });
 
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    );
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOutCirc,
-    )..addListener(() {
-        setState(() {});
-      });
+    // _controller = AnimationController(
+    //   duration: const Duration(milliseconds: 1000),
+    //   vsync: this,
+    // );
+    // _animation = CurvedAnimation(
+    //   parent: _controller,
+    //   curve: Curves.easeOutCirc,
+    // )..addListener(() {
+    //     setState(() {});
+    //   });
 
     _animationController = AnimationController(
       vsync: this,
@@ -129,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       await Future.wait([
         newsController.getTodaysNews(),
         homeController.getPublicPost(page, true).then((v) {
-          _controller.forward();
+          // _controller.forward();
         }),
         homeController.getUserCollection(),
         homeController.getStartupNews(offSet: 10)
@@ -142,7 +144,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void dispose() {
     _animationController.dispose();
-    _controller.dispose();
+    // _controller.dispose();
+
     super.dispose();
   }
 
@@ -150,8 +153,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _animationController.reset();
 
     _animationController.forward();
-    homeController.postList[index].isLiked = true;
-    homeController.likeUnlike(homeController.postList[index].postId);
+    if (!homeController.postList[index].isLiked!) {
+      homeController.postList[index].isLiked = true;
+      homeController.postList[index].likeCount =
+          (homeController.postList[index].likeCount ?? 0) + 1;
+
+      homeController.likeUnlike(homeController.postList[index].postId);
+    }
+
     Future.delayed(const Duration(milliseconds: 1000), () {
       _animationController.reverse();
     });
@@ -178,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const TextWidget(text: "Good Morning", textSize: 12),
+                TextWidget(text: getGreeting(), textSize: 12),
                 const SizedBox(height: 3),
                 TextWidget(
                     text: "${GetStoreData.getStore.read('name')}",
@@ -229,7 +238,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               const SizedBox(width: 10),
             ],
           ),
-        
           body: Obx(() => isLoading.value
               ? ShimmerLoader.shimmerLoading()
               : Stack(
@@ -343,8 +351,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int _currentIndex = 0;
   bool _isExpanded = false;
   feeds(index) {
-    return Transform.scale(
-        scale: _animation.value,
+    return AnimatedFeedItem(
+        index: index,
         child: GestureDetector(
           onDoubleTap: () {
             _animate(index);
@@ -497,8 +505,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               ? "${homeController.postList[index].description}"
                               : homeController
                                           .postList[index].description!.length >
-                                      200
-                                  ? "${homeController.postList[index].description!.substring(0, 200)} ..."
+                                      500
+                                  ? "${homeController.postList[index].description!.substring(0, 500)} ..."
                                   : homeController.postList[index].description!,
                           onTapUrl: (url) async {
                             return await launch(url);
@@ -510,7 +518,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               color: AppColors.white),
                         ),
                         if (homeController.postList[index].description!.length >
-                            200)
+                            500)
                           InkWell(
                             onTap: () {
                               setState(() {
@@ -645,52 +653,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-                  // Divider(height: 0, color: AppColors.white38, thickness: 0.5),
-                  // if (homeController.postList[index].likes!.isNotEmpty)
-                  //   Padding(
-                  //     padding: const EdgeInsets.all(10.0),
-                  //     child: Row(
-                  //       children: [
-                  //         CircleAvatar(
-                  //           radius: 12,
-                  //           backgroundColor: AppColors.white12,
-                  //           child: const Icon(
-                  //             Icons.favorite,
-                  //             color: AppColors.redColor,
-                  //             size: 15,
-                  //           ),
-                  //         ),
-                  //         // const SizedBox(width: 4),
-                  //         // CircleAvatar(
-                  //         //   radius: 12,
-                  //         //   backgroundColor:
-                  //         //       AppColors.white12,
-                  //         //   child: Icon(
-                  //         //     CupertinoIcons
-                  //         //         .chat_bubble_text_fill,
-                  //         //     color: AppColors.whiteCard,
-                  //         //     size: 15,
-                  //         //   ),
-                  //         // ),
-                  //         const SizedBox(width: 8),
-                  //         if (homeController.postList[index].likes!.isNotEmpty)
-                  //           Expanded(
-                  //             child: TextWidget(
-                  //               text:
-                  //                   "${homeController.postList[index].likes!.first.firstName} and Many Others",
-                  //               textSize: 11,
-                  //               maxLine: 2,
-                  //             ),
-                  //           ),
-                  //         if (homeController.postList[index].comments!.isNotEmpty)
-                  //           TextWidget(
-                  //               text:
-                  //                   "${homeController.postList[index].comments!.length} Comments",
-                  //               textSize: 10)
-                  //       ],
-                  //     ),
-                  //   ),
-
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: const BoxDecoration(
@@ -701,110 +663,127 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            InkWell(
-                              splashColor: AppColors.transparent,
-                              onTap: () {
-                                homeController.postList[index].isLiked =
-                                    !homeController.postList[index].isLiked!;
-                                homeController.likeUnlike(
-                                    homeController.postList[index].postId);
-
-                                setState(() {});
-                              },
-                              child: Icon(
-                                homeController.postList[index].isLiked!
+                        Expanded(
+                          child: LikeButton(
+                            size: 22,
+                            isLiked: homeController.postList[index].isLiked,
+                            likeCount:
+                                homeController.postList[index].likeCount!,
+                            circleColor: const CircleColor(
+                                start: AppColors.redColor,
+                                end: Colors.redAccent),
+                            bubblesColor: const BubblesColor(
+                              dotPrimaryColor: AppColors.redColor,
+                              dotSecondaryColor: Colors.redAccent,
+                            ),
+                            likeBuilder: (bool isLiked) {
+                              return Icon(
+                                isLiked
                                     ? Icons.favorite
-                                    : Icons.favorite_border_outlined,
-                                color: homeController.postList[index].isLiked!
+                                    : Icons.favorite_border,
+                                color: isLiked
                                     ? AppColors.redColor
                                     : AppColors.whiteCard,
                                 size: 22,
-                              ),
+                              );
+                            },
+                            onTap: (bool isLiked) async {
+                              homeController.postList[index].isLiked = !isLiked;
+                              homeController.postList[index].likeCount = isLiked
+                                  ? homeController.postList[index].likeCount! -
+                                      1
+                                  : homeController.postList[index].likeCount! +
+                                      1;
+
+                              homeController.likeUnlike(
+                                  homeController.postList[index].postId);
+
+                              return !isLiked;
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              commentBottomSheet(index);
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  CupertinoIcons.chat_bubble_text,
+                                  color: AppColors.whiteCard,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 4),
+                                // if (homeController.postList[index].commentCount! >
+                                //     0)
+                                TextWidget(
+                                  text:
+                                      " ${homeController.postList[index].commentCount!}",
+                                  textSize: 14,
+                                  color: AppColors.grey,
+                                ),
+                              ],
                             ),
-                            // const SizedBox(width: 4),
-                            // if (homeController
-                            //     .postList[index].likes!.isNotEmpty)
-                            //   TextWidget(
-                            //       text:
-                            //           "${homeController.postList[index].likes!.length}",
-                            //       textSize: 13),
-                          ],
-                        ),
-                        InkWell(
-                          onTap: () {
-                            commentBottomSheet(index);
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                CupertinoIcons.chat_bubble_text,
-                                color: AppColors.whiteCard,
-                                size: 21,
-                              ),
-                              // const SizedBox(width: 4),
-                              // if (homeController
-                              //     .postList[index].comments!.isNotEmpty)
-                              //   TextWidget(
-                              //       text:
-                              //           "${homeController.postList[index].comments!.length}",
-                              //       textSize: 13),
-                            ],
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            sharePostPopup(context,
-                                homeController.postList[index].postId!, "");
-                          },
-                          child: Icon(
-                            Icons.mobile_screen_share_rounded,
-                            color: AppColors.whiteCard,
-                            size: 22,
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Get.to(CreatePostScreen(
-                              postid: homeController.postList[index].postId,
-                            ));
-                          },
-                          child: Transform.rotate(
-                            angle: 0.77,
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              sharePostPopup(context,
+                                  homeController.postList[index].postId!, "");
+                            },
                             child: Icon(
-                              Icons.screen_rotation_alt,
+                              Icons.ios_share_outlined,
                               color: AppColors.whiteCard,
                               size: 22,
                             ),
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            if (homeController.postList[index].isSaved!) {
-                              homeController
-                                  .unSavePost(
-                                context,
-                                postID: homeController.postList[index].postId!,
-                              )
-                                  .then((val) {
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              Get.to(CreatePostScreen(
+                                postid: homeController.postList[index].postId,
+                              ));
+                            },
+                            child: Icon(
+                              Icons.autorenew,
+                              color: AppColors.whiteCard,
+                              size: 22,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              if (homeController.postList[index].isSaved!) {
                                 homeController
-                                    .getPublicPost(page, false)
+                                    .unSavePost(
+                                  context,
+                                  postID:
+                                      homeController.postList[index].postId!,
+                                )
                                     .then((val) {
-                                  Get.back();
-                                  setState(() {});
+                                  homeController
+                                      .getPublicPost(page, false)
+                                      .then((val) {
+                                    Get.back();
+                                    setState(() {});
+                                  });
                                 });
-                              });
-                            } else {
-                              saveUnsavePost(index);
-                            }
-                          },
-                          child: Icon(
-                            homeController.postList[index].isSaved!
-                                ? Icons.bookmark
-                                : Icons.bookmark_border_outlined,
-                            color: AppColors.whiteCard,
-                            size: 22,
+                              } else {
+                                saveUnsavePost(index);
+                              }
+                            },
+                            child: Icon(
+                              homeController.postList[index].isSaved!
+                                  ? Icons.bookmark
+                                  : Icons.bookmark_add_outlined,
+                              color: AppColors.whiteCard,
+                              size: 22,
+                            ),
                           ),
                         ),
                       ],
@@ -1275,7 +1254,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return Get.bottomSheet(
       backgroundColor: AppColors.blackCard,
       StatefulBuilder(
-        builder: (BuildContext context, setState) {
+        builder: (BuildContext context, setStates) {
           return Container(
             height: Get.height / 1.5,
             width: Get.width,
@@ -1291,132 +1270,153 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       color: AppColors.whiteCard),
                 ),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: homeController.postList[Index].comments!.length,
-                    itemBuilder: (BuildContext context, int ind) {
-                      return ListTile(
-                        visualDensity: VisualDensity.compact,
-                        leading: CircleAvatar(
-                          radius: 20,
-                          backgroundImage: NetworkImage(
-                              '${homeController.postList[Index].comments![ind].userImage}'),
-                        ),
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TextWidget(
-                              text:
-                                  "${homeController.postList[Index].comments![ind].user}",
-                              textSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            TextWidget(
-                              text:
-                                  "${homeController.postList[Index].comments![ind].userDesignation} and ${homeController.postList[Index].comments![ind].userCompany}",
-                              textSize: 12,
-                              color: AppColors.white54,
-                            ),
-                          ],
-                        ),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.only(top: 2),
-                          child: TextWidget(
-                              text:
-                                  "${homeController.postList[Index].comments![ind].text}",
-                              textSize: 14),
-                        ),
-                        trailing: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                if (homeController.postList[Index]
-                                    .comments![ind].isMyComment!)
-                                  InkWell(
-                                      onTap: () {
-                                        homeController
-                                            .commentDelete(context,
-                                                postID: homeController
-                                                    .postList[Index].postId!,
-                                                commentID: homeController
-                                                    .postList[Index]
-                                                    .comments![ind]
-                                                    .id!)
-                                            .then((val) {
-                                          if (val) {
-                                            homeController
-                                                .getPublicPost(page, false)
-                                                .then((val) {
-                                              setState(() {});
-                                            });
-                                          }
-                                        });
-                                      },
-                                      child: Icon(Icons.delete,
-                                          color: AppColors.white, size: 18)),
-                                const SizedBox(width: 4),
-                                TextWidget(
+                  child: homeController.postList[Index].comments!.isEmpty
+                      ? const Center(
+                          child:
+                              TextWidget(text: "No Comments Yet", textSize: 14))
+                      : ListView.builder(
+                          itemCount:
+                              homeController.postList[Index].comments!.length,
+                          itemBuilder: (BuildContext context, int ind) {
+                            return ListTile(
+                              visualDensity: VisualDensity.compact,
+                              leading: CircleAvatar(
+                                radius: 20,
+                                backgroundImage: NetworkImage(
+                                    '${homeController.postList[Index].comments![ind].userImage}'),
+                              ),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextWidget(
                                     text:
-                                        "${homeController.postList[Index].comments![ind].createdAt}",
-                                    textSize: 12),
-                              ],
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                InkWell(
-                                  splashColor: AppColors.transparent,
-                                  onTap: () {
-                                    homeController.postList[Index]
-                                            .comments![ind].isLiked =
-                                        !homeController.postList[Index]
-                                            .comments![ind].isLiked!;
-                                    homeController
-                                        .commentLikeDislike(context,
-                                            postID: homeController
-                                                .postList[Index].postId!,
-                                            commentID: homeController
-                                                .postList[Index]
-                                                .comments![ind]
-                                                .id!)
-                                        .then((val) {
-                                      if (val) {
-                                        commentController.clear();
-                                        homeController
-                                            .getPublicPost(page, false)
-                                            .then((val) {
-                                          setState(() {});
-                                        });
-                                      }
-                                    });
-                                    ;
-                                    setState(() {});
-                                  },
-                                  child: Icon(
-                                    homeController.postList[Index]
-                                            .comments![ind].isLiked!
-                                        ? Icons.favorite
-                                        : Icons.favorite_border_outlined,
-                                    color: homeController.postList[Index]
-                                            .comments![ind].isLiked!
-                                        ? AppColors.redColor
-                                        : AppColors.whiteCard,
-                                    size: 15,
+                                        "${homeController.postList[Index].comments![ind].user}",
+                                    textSize: 12,
+                                    fontWeight: FontWeight.w500,
                                   ),
-                                ),
-                                const SizedBox(width: 8),
-                                TextWidget(
+                                  TextWidget(
                                     text:
-                                        "${homeController.postList[Index].comments![ind].likesCount}",
+                                        "${homeController.postList[Index].comments![ind].userDesignation} and ${homeController.postList[Index].comments![ind].userCompany}",
+                                    textSize: 12,
+                                    color: AppColors.white54,
+                                  ),
+                                ],
+                              ),
+                              subtitle: Padding(
+                                padding: const EdgeInsets.only(top: 2),
+                                child: TextWidget(
+                                    text:
+                                        "${homeController.postList[Index].comments![ind].text}",
                                     textSize: 14),
-                              ],
-                            ),
-                          ],
+                              ),
+                              trailing: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      if (homeController.postList[Index]
+                                          .comments![ind].isMyComment!)
+                                        InkWell(
+                                            onTap: () {
+                                              homeController
+                                                  .commentDelete(context,
+                                                      postID: homeController
+                                                          .postList[Index]
+                                                          .postId!,
+                                                      commentID: homeController
+                                                          .postList[Index]
+                                                          .comments![ind]
+                                                          .id!)
+                                                  .then((val) {
+                                                if (val) {
+                                                  homeController
+                                                      .getPublicPost(page, true)
+                                                      .then((val) {
+                                                    setState(() {});
+                                                  });
+                                                }
+                                              });
+                                            },
+                                            child: Icon(Icons.delete,
+                                                color: AppColors.white,
+                                                size: 18)),
+                                      const SizedBox(width: 4),
+                                      TextWidget(
+                                          text:
+                                              "${homeController.postList[Index].comments![ind].createdAt}",
+                                          textSize: 12),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      InkWell(
+                                        splashColor: AppColors.transparent,
+                                        onTap: () {
+                                          homeController.postList[Index]
+                                                  .comments![ind].isLiked =
+                                              !homeController.postList[Index]
+                                                  .comments![ind].isLiked!;
+                                          setStates(() {});
+                                          homeController
+                                              .commentLikeDislike(context,
+                                                  postID: homeController
+                                                      .postList[Index].postId!,
+                                                  commentID: homeController
+                                                      .postList[Index]
+                                                      .comments![ind]
+                                                      .id!)
+                                              .then((val) {
+                                            if (val) {
+                                              homeController
+                                                  .postList[Index]
+                                                  .comments![ind]
+                                                  .likesCount = homeController
+                                                      .postList[Index]
+                                                      .comments![ind]
+                                                      .isLiked!
+                                                  ? (int.parse(homeController
+                                                              .postList[Index]
+                                                              .comments![ind]
+                                                              .likesCount!) +
+                                                          1)
+                                                      .toString()
+                                                  : (int.parse(homeController
+                                                              .postList[Index]
+                                                              .comments![ind]
+                                                              .likesCount!) -
+                                                          1)
+                                                      .toString();
+
+                                              setStates(() {});
+                                            }
+                                          });
+                                        },
+                                        child: Icon(
+                                          homeController.postList[Index]
+                                                  .comments![ind].isLiked!
+                                              ? Icons.favorite
+                                              : Icons.favorite_border_outlined,
+                                          color: homeController.postList[Index]
+                                                  .comments![ind].isLiked!
+                                              ? AppColors.redColor
+                                              : AppColors.whiteCard,
+                                          size: 15,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      TextWidget(
+                                          text:
+                                              "${homeController.postList[Index].comments![ind].likesCount}",
+                                          textSize: 14),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
                 const SizedBox(height: 8),
                 Row(
@@ -1548,4 +1548,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   TextEditingController commentController = TextEditingController();
+
+  String getGreeting() {
+    final hour = DateTime.now().hour;
+
+    if (hour >= 5 && hour < 12) {
+      return "Good Morning";
+    } else if (hour >= 12 && hour < 17) {
+      return "Good Afternoon";
+    } else {
+      return "Good Evening";
+    }
+  }
 }

@@ -12,6 +12,7 @@ import '../../../utils/appcolors/app_colors.dart';
 import '../../../utils/constant/app_var.dart';
 import '../../../utils/constant/asset_constant.dart';
 import '../../../utils/helper/helper.dart';
+import '../../../utils/helper/placeholder.dart';
 import '../../../widget/appbar/appbar.dart';
 import '../../../widget/textwidget/text_widget.dart';
 import '../../drawerScreen/drawer_screen.dart';
@@ -128,7 +129,7 @@ class _CompanyInvScreenState extends State<CompanyInvScreen> {
               title: "Company", hideBack: true, autoAction: true),
           body: Obx(
             () => companyInvController.isLoading.value
-                ? Helper.pageLoading()
+                ? ShimmerLoader.shimmerLoadingExplore()
                 : Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Column(

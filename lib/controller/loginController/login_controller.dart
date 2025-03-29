@@ -17,7 +17,7 @@ import '../../utils/helper/helper_sncksbar.dart';
 import '../../utils/notificationService/notification_service.dart';
 
 class LoginController extends GetxController {
-   final FirebaseNotificationService _firebaseNotificationService = Get.find();
+  final FirebaseNotificationService _firebaseNotificationService = Get.find();
 
   TextEditingController loginPhoneController = TextEditingController();
   TextEditingController loginEmailController = TextEditingController();
@@ -48,7 +48,8 @@ class LoginController extends GetxController {
     print("FCM Token in LoginController: $fcmToken");
     var body = {
       "phoneNumber": loginEmailController.text,
-      "password": loginPassController.text
+      "password": loginPassController.text,
+      "fcmToken": fcmToken,
     };
     var response = await ApiBase.postRequest(
         body: body, extendedURL: ApiUrl.loginUrlEmail, withToken: false);
@@ -174,10 +175,13 @@ class LoginController extends GetxController {
 
   Future verifyOtpApi(context) async {
     Helper.loader(context);
+    String? fcmToken = await _firebaseNotificationService.getFcmToken();
+    print("FCM Token in LoginController: $fcmToken");
     var body = {
       "phoneNumber": "91${loginPhoneController.text}",
       "orderId": orderId,
       "otp": otpcontroller.text,
+      "fcmToken": fcmToken,
     };
     var response = await ApiBase.postRequest(
         body: body, extendedURL: ApiUrl.verifyOTPUrl, withToken: false);
@@ -238,12 +242,15 @@ class LoginController extends GetxController {
 
   Future verifySignupOtpApi(context) async {
     Helper.loader(context);
+    String? fcmToken = await _firebaseNotificationService.getFcmToken();
+    print("FCM Token in LoginController: $fcmToken");
     var body = {
       "phoneNumber": "91${loginPhoneController.text}",
       "orderId": orderId,
       "otp": otpcontroller.text,
       "isInvestor": selectedRoleIndex == 0 ? false : true,
-      "profilePicture": base64
+      "profilePicture": base64,
+      "fcmToken": fcmToken,
     };
     var response = await ApiBase.postRequest(
         body: body, extendedURL: ApiUrl.verifyOtpForSignup, withToken: false);
@@ -364,11 +371,14 @@ class LoginController extends GetxController {
 
   Future googleLogin(context, GoogleSignInAccount user,
       GoogleSignInAuthentication auth) async {
+    String? fcmToken = await _firebaseNotificationService.getFcmToken();
+    print("FCM Token in LoginController: $fcmToken");
     var body = {
       "credential": {
         "email": user.email,
         "serverAuthCode": user.serverAuthCode
       },
+      "fcmToken": fcmToken,
     };
     log.log(body.toString());
 

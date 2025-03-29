@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:capitalhub_crm/controller/companyController/company_controller.dart';
 import 'package:capitalhub_crm/screen/companyScreen/add_company_screen.dart';
+import 'package:capitalhub_crm/utils/helper/placeholder.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:flutter/material.dart';
@@ -128,7 +129,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
               title: "Company", hideBack: true, autoAction: true),
           body: Obx(
             () => companyController.isLoading.value
-                ? Helper.pageLoading()
+                ? ShimmerLoader.shimmerLoadingExplore()
                 : Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Column(

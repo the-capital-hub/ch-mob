@@ -1,6 +1,8 @@
 import 'package:capitalhub_crm/controller/connectionController/connection_controller.dart';
+import 'package:capitalhub_crm/utils/helper/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../utils/appcolors/app_colors.dart';
 import '../../utils/constant/app_var.dart';
 import '../../utils/getStore/get_store.dart';
@@ -94,7 +96,7 @@ class _ConnectionScreenState extends State<ConnectionScreen>
               ),
               Obx(() => Expanded(
                     child: connectionController.isLoading.value
-                        ? Helper.pageLoading()
+                        ? ShimmerLoader.shimmerTile()
                         : TabBarView(
                             controller: tabController,
                             physics: const NeverScrollableScrollPhysics(),

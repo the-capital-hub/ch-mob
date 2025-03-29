@@ -43,6 +43,8 @@ class PostPublic {
   String? postId;
   String? postType;
   bool? isMyPost;
+  int? likeCount;
+  int? commentCount;
   String? description;
   bool? isSaved;
   bool? isLiked;
@@ -72,6 +74,8 @@ class PostPublic {
       this.description,
       this.isSaved,
       this.isLiked,
+      this.likeCount,
+      this.commentCount,
       this.video_url,
       this.document_url,
       this.image,
@@ -98,6 +102,8 @@ class PostPublic {
       description: json["description"],
       isSaved: json["isSaved"],
       isLiked: json["isLiked"],
+      likeCount: json["likeCount"]??0,
+      commentCount: json["commentCount"]??0,
       image: List<String>.from(json["image"].map((x) => x)),
       pollOptions: List<PollOptionData>.from(
           json["pollOptions"].map((x) => PollOptionData.fromJson(x))),

@@ -57,19 +57,18 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   // final LogoutDialog _logout = LogoutDialog();
   List<String> items = [
     "Home",
-    "Documentation",
-    "Saved Post",
     "Explore",
-    "News",
+    "Company",
+    "Documentation",
     "One link",
     "Resources",
-    "Company",
-    "Team",
-    "Analytics",
     "Campaign",
-    "Community",
-    "Meetings",
-    // "Investors",
+    // "Meetings",
+    "Analytics",
+    "Saved Post",
+    "News",
+    "Team",
+    // "Community",
     "Help",
     "Log Out",
   ];
@@ -87,37 +86,35 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   ];
   List icons = [
     PngAssetPath.homeIcon,
-    PngAssetPath.documentIcon,
-    PngAssetPath.saveIcon,
     PngAssetPath.exploreIcon,
-    PngAssetPath.newsIcon,
+    PngAssetPath.financeIcon, // Company
+    PngAssetPath.documentIcon,
     PngAssetPath.onelinkIcon,
     PngAssetPath.resourceIcon,
-    PngAssetPath.financeIcon,
-    PngAssetPath.teamIcon,
-    PngAssetPath.customerIcon,
     PngAssetPath.campaignIcon,
-    PngAssetPath.communityIcon,
-    PngAssetPath.meetingIcon,
-    // PngAssetPath.investorsIcon,
+// PngAssetPath.meetingIcon, (commented out)
+    PngAssetPath.customerIcon, // Analytics
+    PngAssetPath.saveIcon, // Saved Post
+    PngAssetPath.newsIcon,
+    PngAssetPath.teamIcon,
+// PngAssetPath.communityIcon, (commented out)
     PngAssetPath.helpIcon,
     PngAssetPath.logoutIcon,
   ];
   List page = [
     const LandingScreen(),
-    const DocumentationScreen(),
-    const SavedPostScreen(),
     const ExploreScreen(),
-    const NewsScreen(),
+    const CompanyScreen(),
+    const DocumentationScreen(),
     const OneLinkScreeen(),
     const ResourceScreen(),
-    const CompanyScreen(),
-    const ConnectionScreen(),
-    const AnalyticsScreen(),
     const CampaignLandingScreen(),
-    const EventsScreen(),
-    const CommunityLandingScreen(),
-    // const LandingScreen(),
+// const EventsScreen(), (commented out for "Meetings")
+    const AnalyticsScreen(),
+    const SavedPostScreen(),
+    const NewsScreen(),
+    const ConnectionScreen(), // Team
+// const CommunityLandingScreen(), (commented out for "Community")
     const HelpScreen(),
     const LogoutScreen(),
   ];
@@ -222,9 +219,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                 curve:
                                     Curves.easeOutBack, // Adds a bounce effect
                                 child: FadeInAnimation(
-                                    child: (index == 11 || index == 12)
-                                        ? _buildExpansionTile(index)
-                                        : InkWell(
+                                    child: 
+                                    // (index == 11 || index == 12)
+                                    //     ? _buildExpansionTile(index)
+                                    //     : 
+                                        InkWell(
                                             onTap: () {
                                               if (index == 0) {
                                                 homeController.selectIndex = 0;

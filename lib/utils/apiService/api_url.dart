@@ -44,11 +44,11 @@ class ApiUrl {
   static const String toggelDealsUrl =
       "live_deals/toggle_investor_to_live_deal";
 
-  static String getNotification = "notificaton/getNotification/";
-  static String getNotificationCount = "notificaton/getNotificationCount";
-  static const String readNotification = "notificaton/markMessageAsRead/";
+  static String getNotification = "notification/getNotification/";
+  static String getNotificationCount = "notification/getNotificationCount";
+  static const String readNotification = "notification/markMessageAsRead/";
   static const String allReadNotification =
-      "notificaton/markAllNotificationsAsRead";
+      "notification/markAllNotificationsAsRead";
 
   static String getProfileUrl = "users/getUserById/";
   static String getProfilePost = "users/getProfilePosts/";

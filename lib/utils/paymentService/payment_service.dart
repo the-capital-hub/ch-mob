@@ -60,8 +60,7 @@ class CashFreePaymentService {
           CFPaymentComponentBuilder().setComponents(<CFPaymentModes>[]).build();
 
       var theme = CFThemeBuilder()
-          .setNavigationBarBackgroundColorColor(
-              GetStoreData.getStore.read('isInvestor') ? '#DDFF71' : "#FF620E")
+          .setNavigationBarBackgroundColorColor("#FF620E")
           .setPrimaryFont("Sans-Serif")
           .setSecondaryFont("Sans-Serif")
           .build();

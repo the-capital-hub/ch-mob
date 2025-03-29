@@ -4,6 +4,7 @@ import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 
@@ -62,69 +63,79 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           return const SizedBox(height: 10);
                         },
                         itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: notificaitonController
-                                            .notificationList[index].isRead!
-                                        ? AppColors.transparent
-                                        : GetStoreData.getStore
-                                                .read('isInvestor')
-                                            ? AppColors.primaryInvestor
-                                            : AppColors.primary,
-                                    width: 0.5),
-                                borderRadius: BorderRadius.circular(8)),
-                            child: ListTile(
-                              onTap: () {
-                                notificaitonController
-                                    .markAsRead(context, index)
-                                    .then((val) {
-                                  setState(() {});
-                                });
-                              },
-                              visualDensity: VisualDensity.compact,
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              minTileHeight: 60, minLeadingWidth: 20,
-                              leading: CircleAvatar(
-                                radius: 18,
-                                backgroundImage: NetworkImage(
-                                    "${notificaitonController.notificationList[index].image}"),
-                              ),
-                              title: Row(
-                                children: [
-                                  Expanded(
-                                    child: TextWidget(
-                                        text:
-                                            "${notificaitonController.notificationList[index].title} ",
-                                        textSize: 14),
-                                  ),
-                                  TextWidget(
-                                      text:
-                                          "${notificaitonController.notificationList[index].date}",
-                                      textSize: 10,
-                                      color: AppColors.white54),
-                                ],
-                              ),
-                              subtitle: HtmlWidget(
-                                "${notificaitonController.notificationList[index].subTitle}",
-                                textStyle: TextStyle(
-                                    fontSize: 12, color: AppColors.grey),
-                              ),
-                              //  TextWidget(
-                              //   text:
-                              //       "${notificaitonController.notificationList[index].subTitle}",
-                              //   maxLine: 5,
-                              //   textSize: 12,
-                              //   color: AppColors.grey,
-                              // ),
-                              // trailing: TextWidget(
-                              //     text:
-                              //         "${notificaitonController.notificationList[index].date}",
-                              //     textSize: 10,
-                              //     color: AppColors.white54),
-                            ),
-                          );
+                          return AnimationConfiguration.staggeredList(
+                              position: index,
+                              delay: const Duration(milliseconds: 100),
+                              duration: const Duration(milliseconds: 375),
+                              child: SlideAnimation(
+                                  horizontalOffset: 1000,
+                                  verticalOffset: 50.0,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: notificaitonController
+                                                    .notificationList[index]
+                                                    .isRead!
+                                                ? AppColors.transparent
+                                                : GetStoreData.getStore
+                                                        .read('isInvestor')
+                                                    ? AppColors.primaryInvestor
+                                                    : AppColors.primary,
+                                            width: 0.5),
+                                        borderRadius: BorderRadius.circular(8)),
+                                    child: ListTile(
+                                      onTap: () {
+                                        notificaitonController
+                                            .markAsRead(context, index)
+                                            .then((val) {
+                                          setState(() {});
+                                        });
+                                      },
+                                      visualDensity: VisualDensity.compact,
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                      minTileHeight: 60, minLeadingWidth: 20,
+                                      leading: CircleAvatar(
+                                        radius: 18,
+                                        backgroundImage: NetworkImage(
+                                            "${notificaitonController.notificationList[index].image}"),
+                                      ),
+                                      title: Row(
+                                        children: [
+                                          Expanded(
+                                            child: TextWidget(
+                                                text:
+                                                    "${notificaitonController.notificationList[index].title} ",
+                                                textSize: 14),
+                                          ),
+                                          TextWidget(
+                                              text:
+                                                  "${notificaitonController.notificationList[index].date}",
+                                              textSize: 10,
+                                              color: AppColors.white54),
+                                        ],
+                                      ),
+                                      subtitle: HtmlWidget(
+                                        "${notificaitonController.notificationList[index].subTitle}",
+                                        textStyle: TextStyle(
+                                            fontSize: 12,
+                                            color: AppColors.grey),
+                                      ),
+                                      //  TextWidget(
+                                      //   text:
+                                      //       "${notificaitonController.notificationList[index].subTitle}",
+                                      //   maxLine: 5,
+                                      //   textSize: 12,
+                                      //   color: AppColors.grey,
+                                      // ),
+                                      // trailing: TextWidget(
+                                      //     text:
+                                      //         "${notificaitonController.notificationList[index].date}",
+                                      //     textSize: 10,
+                                      //     color: AppColors.white54),
+                                    ),
+                                  )));
                         },
                       ),
           )),
