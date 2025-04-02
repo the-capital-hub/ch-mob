@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 
+import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
@@ -61,6 +63,7 @@ class CreatePostController extends GetxController {
               ? "public"
               : "company",
       "resharedPostId": postId ?? "",
+      "communityId": createdCommunityId,
     };
     var response = await ApiBase.postRequest(
         body: body, extendedURL: ApiUrl.addPost, withToken: true);
@@ -74,6 +77,7 @@ class CreatePostController extends GetxController {
       documentBase64 = "";
       pollOptions.clear();
       isPublicPost = true;
+      if (isCommunityPost) Get.to(() => CommunityLandingScreen());
       isCommunityPost = false;
 
       HelperSnackBar.snackBar("Success", data["message"]);

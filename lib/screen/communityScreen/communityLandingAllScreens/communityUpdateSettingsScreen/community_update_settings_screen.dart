@@ -34,6 +34,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       Future.wait([aboutCommunity.getAboutCommunity()]).then((values) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
+          addAbout();
           urlController.text =
               aboutCommunity.aboutCommunityList[0].community!.shareLink!;
           updateSettings.communityNameController.text =
@@ -56,7 +57,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
           });
 
           initializeControllers();
-          addAbout();
+          
         });
       });
     });
@@ -67,6 +68,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
     await updateSettings.aboutCommunityController
         .insertText(aboutCommunity.aboutCommunityList[0].community!.about!);
     print(aboutCommunity.aboutCommunityList[0].community!.about!);
+    print("aboutttttttttttttttttttttttttttttttttttttttttttttttttttt");
   }
 
   TextEditingController urlController = TextEditingController();

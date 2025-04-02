@@ -8,6 +8,7 @@ import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dilogue/custom_dialogue.dart';
@@ -35,7 +36,17 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       communityWebinars.getCommunityWebinars().then((v) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {});
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          setState(() {
+            communityWebinars.formattedDate = "";
+            communityWebinars.selectedDayName = "";
+            communityWebinars.selectedDayIndex = 0;
+            communityWebinars.isDaySelected = false;
+            communityWebinars.slot = "";
+            communityWebinars.startTime = "";
+            communityWebinars.endTime = "";
+          });
+        });
       });
     });
     super.initState();
@@ -190,11 +201,11 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                           decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(7),
-                                              color: AppColors.primary),
+                                              color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary),
                                           child: Center(
                                             child: Image.asset(
                                               PngAssetPath.meetingIcon,
-                                              color: AppColors.white,
+                                              color: GetStoreData.getStore.read('isInvestor')?AppColors.black:AppColors.white,
                                               height: 22,
                                             ),
                                           ),

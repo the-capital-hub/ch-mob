@@ -138,7 +138,7 @@ class _CreateCommunityStartScreenState
                                 ? Icons.radio_button_checked
                                 : Icons.radio_button_unchecked,
                             color: isSelected[index]
-                                ? AppColors.primary
+                                ? GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary
                                 : AppColors.white54,
                           ),
                         ),
@@ -152,7 +152,8 @@ class _CreateCommunityStartScreenState
                   children: [
                     Checkbox(
                       value: isChecked,
-                      activeColor: AppColors.primary,
+                      checkColor: GetStoreData.getStore.read('isInvestor')?AppColors.black:AppColors.white,
+                      activeColor: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                       onChanged: (bool? value) {
                         setState(() {
                           isChecked = value!;

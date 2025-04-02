@@ -16,8 +16,14 @@ CommunityEventsController communityEvents =
 
 class CommunityWebinarsController extends GetxController {
   String formattedDate = "";
+  String selectedDayName = "";
+  int selectedDayIndex = 0;
+  bool isDaySelected = false;
+  String slot = "";
+  String startTime = "";
+  String endTime = "";
   var isLoading = false.obs;
-  DateTime selectDate = DateTime.now();
+  
   RxList<CommunityWebinars> communityWebinarsList = <CommunityWebinars>[].obs;
 
   Future<void> getCommunityWebinars() async {
@@ -61,6 +67,19 @@ class CommunityWebinarsController extends GetxController {
       time.minute,
     );
     return outputFormat.format(finalDateTime);
+  }
+
+  String cleanHtmlDescription(String description) {
+    description = description.replaceAll(RegExp(r'(<br>\s*)+'), '<br>');
+
+    description = description.replaceAll(RegExp(r'<p>\s*<\/p>'), '');
+
+    description =
+        description.replaceAll(RegExp(r'<p>\s*<br>\s*<\/p>'), '<p><br></p>');
+
+    description = description.trim();
+
+    return description;
   }
 
   Future createCommunityWebinar(base64) async {
@@ -107,6 +126,7 @@ class CommunityWebinarsController extends GetxController {
   Future updateCommunityWebinar(base64, webinarId) async {
     String description = "";
     await descriptionController.getText().then((val) => description = val);
+    description = cleanHtmlDescription(description);
     DateTime? date = DateTime.tryParse(dateController.text);
     String? dateIso = "${date?.toIso8601String() ?? ""}Z";
     String startTime = convertToIsoFormat(startTimeController.text, date);

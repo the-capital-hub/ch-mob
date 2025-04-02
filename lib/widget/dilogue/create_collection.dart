@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:capitalhub_crm/controller/homeController/home_controller.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:flutter/material.dart';
@@ -30,12 +31,12 @@ Future<bool> createCollectionPopup(
                   width: 60,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
-                      color: AppColors.primary,
+                      color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                       border: Border.all(color: AppColors.white, width: 0)),
                   child: Icon(
                     Icons.bookmark_add_outlined,
                     size: 40,
-                    color: AppColors.white,
+                    color: GetStoreData.getStore.read('isInvestor')?AppColors.black:AppColors.white,
                   ),
                 ),
                 const SizedBox(

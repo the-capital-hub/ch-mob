@@ -57,7 +57,8 @@ class CommunityPriorityDMsController extends GetxController {
     // }
     String description = "";
     await descriptionController.getText().then((val) => description = val);
-    var bod = {
+    
+    var body = {
       "title": titleController.text,
       "description": description,
       "amount": amountController.text.isEmpty
@@ -66,23 +67,12 @@ class CommunityPriorityDMsController extends GetxController {
       "timeline": responseTimelineController.text.isEmpty
           ? null
           : int.tryParse(responseTimelineController.text),
-      "timeline_unit": selectedTimeLine,
+      "timeline_unit": selectedTimeLine.toLowerCase(),
       "topics": topics
     };
-    log(bod.toString());
+    log(body.toString());
     var response = await ApiBase.postRequest(
-      body: {
-        "title": titleController.text,
-        "description": description,
-        "amount": amountController.text.isEmpty
-            ? null
-            : int.tryParse(amountController.text),
-        "timeline": responseTimelineController.text.isEmpty
-            ? null
-            : int.tryParse(responseTimelineController.text),
-        "timeline_unit": selectedTimeLine,
-        "topics": topics
-      },
+      body: body,
       withToken: true,
       extendedURL: ApiUrl.createCommunityPriorityDM + createdCommunityId,
     );
@@ -103,6 +93,19 @@ class CommunityPriorityDMsController extends GetxController {
     }
   }
 
+  String cleanHtmlDescription(String description) {
+    description = description.replaceAll(RegExp(r'(<br>\s*)+'), '<br>');
+
+    description = description.replaceAll(RegExp(r'<p>\s*<\/p>'), '');
+
+    description =
+        description.replaceAll(RegExp(r'<p>\s*<br>\s*<\/p>'), '<p><br></p>');
+
+    description = description.trim();
+
+    return description;
+  }
+
   Future updateCommunityPriorityDM(topics, priorityDMId) async {
     // if (selectedTimeLine == "Hours") {
     //   timeLine = responseTimelineController.text.isEmpty
@@ -115,6 +118,7 @@ class CommunityPriorityDMsController extends GetxController {
     // }
     String description = "";
     await descriptionController.getText().then((val) => description = val);
+    description = cleanHtmlDescription(description);
     var response = await ApiBase.pachRequest(
         body: {
           "title": titleController.text,
@@ -125,7 +129,7 @@ class CommunityPriorityDMsController extends GetxController {
           "timeline": responseTimelineController.text.isEmpty
               ? null
               : int.tryParse(responseTimelineController.text),
-          "timeline_unit": selectedTimeLine,
+          "timeline_unit": selectedTimeLine.toLowerCase(),
           "topics": topics
         },
         withToken: true,

@@ -265,6 +265,27 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                             ],
                           ),
                           sizedTextfield,
+
+                          if (isAdmin) ...[
+                            AppButton.primaryButton(
+                                onButtonPressed: () {
+                                  Get.to(() => CommunityRegisteredUsersScreen(
+                                      index: index));
+                                },
+                                title: "View Guests"),
+                            sizedTextfield,
+                          ],
+                          if (!isAdmin &&
+                              !communityEvents.communityEventsData
+                                  .webinars![index].isExpired) ...[
+                            AppButton.primaryButton(
+                                onButtonPressed: () {
+                                  Get.to(() =>
+                                      CommunityRegisterNowScreen(index: index));
+                                },
+                                title: "+ Register Now"),
+                            sizedTextfield,
+                          ],
                           if (communityEvents
                               .communityEventsData.webinars![index].isExpired)
                             Card(
@@ -279,28 +300,12 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                               child: const Padding(
                                 padding: EdgeInsets.all(12),
                                 child: TextWidget(
-                                  text: "Wbinar Time Expired",
+                                  text: "Webinar Time Expired",
                                   textSize: 16,
                                   color: AppColors.redColor,
                                 ),
                               ),
                             ),
-                          if (isAdmin)
-                            AppButton.primaryButton(
-                                onButtonPressed: () {
-                                  Get.to(() => CommunityRegisteredUsersScreen(
-                                      index: index));
-                                },
-                                title: "View Guests"),
-                          if (!isAdmin &&
-                              !communityEvents.communityEventsData
-                                  .webinars![index].isExpired)
-                            AppButton.primaryButton(
-                                onButtonPressed: () {
-                                  Get.to(() =>
-                                      CommunityRegisterNowScreen(index: index));
-                                },
-                                title: "+ Register Now"),
                         ],
                       ),
                     ),
