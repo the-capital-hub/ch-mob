@@ -142,7 +142,7 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
                         Image.asset(
                           isAdmin ? adminIcons[index] : memberIcons[index],
                           color: selectIndex == index
-                              ? AppColors.primary
+                              ? GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary
                               : AppColors.whiteCard,
                           height: 22,
                         ),
@@ -152,7 +152,7 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
                               isAdmin ? adminTitle[index] : memberTitle[index],
                           textSize: 10,
                           color: selectIndex == index
-                              ? AppColors.primary
+                              ? GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary
                               : AppColors.whiteCard,
                           maxLine: 2,
                           align: TextAlign.center,

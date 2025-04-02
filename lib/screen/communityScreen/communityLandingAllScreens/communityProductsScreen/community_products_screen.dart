@@ -5,6 +5,7 @@ import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
@@ -38,6 +39,7 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
     super.initState();
   }
 
+  bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -92,7 +94,7 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                           bottomRight: Radius.circular(12),
                                           topLeft: Radius.circular(12)),
                                     ),
-                                    color: AppColors.primary,
+                                    color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                     child: Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 12, vertical: 4),
@@ -103,7 +105,7 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                                     .isFree
                                                 ? "Free"
                                                 : "\u{20B9}${communityProducts.communityProductsList[index].amount}/-",
-                                            textSize: 16)),
+                                            textSize: 16,color: GetStoreData.getStore.read('isInvestor')?AppColors.black:AppColors.white,)),
                                   ),
                                 ),
                                 // if (!isAdmin)
@@ -223,14 +225,50 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                               const SizedBox(
                                 height: 8,
                               ),
+                              // HtmlWidget(
+                              //   communityProducts
+                              //       .communityProductsList[index].description,
+                              //   textStyle: TextStyle(
+                              //     fontSize: 14,
+                              //     color: AppColors.white,
+                              //   ),
+                              // ),
                               HtmlWidget(
-                                communityProducts
-                                    .communityProductsList[index].description,
+                                _isExpanded
+                                    ? "${communityProducts.communityProductsList[index].description}"
+                                    : communityProducts
+                                                .communityProductsList[index]
+                                                .description
+                                                .length >
+                                            200
+                                        ? "${communityProducts.communityProductsList[index].description.substring(0, 200)} ..."
+                                        : communityProducts
+                                            .communityProductsList[index]
+                                            .description,
                                 textStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: AppColors.white,
-                                ),
+                                    fontSize:
+                                        (MediaQuery.of(context).size.width /
+                                                375) *
+                                            12,
+                                    color: AppColors.white),
                               ),
+                              if (communityProducts.communityProductsList[index]
+                                      .description.length >
+                                  200)
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _isExpanded = !_isExpanded;
+                                    });
+                                  },
+                                  child: Text(
+                                    _isExpanded ? "Read Less" : "Read More",
+                                    style: const TextStyle(
+                                        color: AppColors.blue,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
                               const SizedBox(
                                 height: 12,
                               ),

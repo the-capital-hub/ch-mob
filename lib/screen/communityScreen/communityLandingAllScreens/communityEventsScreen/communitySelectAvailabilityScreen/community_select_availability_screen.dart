@@ -41,9 +41,8 @@ class _SelectAvailabilityScreenState extends State<SelectAvailabilityScreen> {
     super.initState();
 
     // Assuming communityWebinarsList has the structure and day contains the weekday as a string
-    var availabilityList = communityWebinars
-        .communityWebinarsList[widget.index]
-        .availability;
+    var availabilityList =
+        communityWebinars.communityWebinarsList[widget.index].availability;
 
     // Loop through the availability list and extract the 'day' value
     if (availabilityList != null) {
@@ -56,6 +55,7 @@ class _SelectAvailabilityScreenState extends State<SelectAvailabilityScreen> {
 
     print(availableDays); // Print the final list of available days
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -74,126 +74,137 @@ class _SelectAvailabilityScreenState extends State<SelectAvailabilityScreen> {
                       TextWidget(text: "No Time Slot Available", textSize: 16),
                 )
               : SingleChildScrollView(
-                child: Padding(
+                  child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: Column(
                       children: [
-                        ListView.builder(
-                            shrinkWrap: true,
-                            padding: EdgeInsets.zero,
-                            itemCount: communityWebinars
-                                .communityWebinarsList[widget.index]
-                                .availability!
-                                .length,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    isDaySelected = !isDaySelected;
-                
-                                    day = isDaySelected
-                                        ? communityWebinars
-                                            .communityWebinarsList[widget.index]
-                                            .availability![index]
-                                            .day!
-                                        : "";
-                                    availabilityIndex = isDaySelected ? index : 0;
-                                  });
-                                },
-                                child: Center(
-                                  child: Card(
-                                      color: AppColors.transparent,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                        side: const BorderSide(
-                                          color: Colors.white38,
-                                          width: 1,
-                                        ),
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsets.all(12),
-                                        child: TextWidget(
-                                          text: communityWebinars
-                                              .communityWebinarsList[widget.index]
-                                              .availability![index]
-                                              .day!,
-                                          textSize: 16,
-                                        ),
-                                      )),
-                                ),
-                              );
-                            }),
-                        if (isDaySelected)
-                          Wrap(
-                            spacing: 4.0,
-                            runSpacing: 4.0,
-                            children: List.generate(
-                              communityWebinars
-                                  .communityWebinarsList[widget.index]
-                                  .availability![availabilityIndex]
-                                  .slots!
-                                  .length,
-                              (index) {
-                                bool isSlotSelected = _selectedIndex == index;
-                                return communityWebinars
-                                        .communityWebinarsList[widget.index]
-                                        .availability![availabilityIndex]
-                                        .slots![index]
-                                        .isAvailable!
-                                    ? InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            isSlotSelected = !isSlotSelected;
-                                            if (_selectedIndex == index) {
-                                              _selectedIndex = null;
-                                            } else {
-                                              _selectedIndex = index;
-                                            }
-                
-                                            slot = isSlotSelected
-                                                ? "${communityWebinars.communityWebinarsList[widget.index].availability![availabilityIndex].slots![index].startTime} - ${communityWebinars.communityWebinarsList[widget.index].availability![availabilityIndex].slots![index].endTime}"
-                                                : "";
-                                            startTime = communityWebinars
-                                                .communityWebinarsList[
-                                                    widget.index]
-                                                .availability![availabilityIndex]
-                                                .slots![index]
-                                                .startTime!;
-                                            endTime = communityWebinars
-                                                .communityWebinarsList[
-                                                    widget.index]
-                                                .availability![availabilityIndex]
-                                                .slots![index]
-                                                .endTime!;
-                                          });
-                                        },
-                                        child: Card(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(4),
-                                          ),
-                                          color: isSlotSelected
-                                              ? AppColors.primary
-                                              : AppColors.white12,
-                                          surfaceTintColor: AppColors.white12,
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 12, vertical: 4),
-                                            child: TextWidget(
-                                              text:
-                                                  "${communityWebinars.communityWebinarsList[widget.index].availability![availabilityIndex].slots![index].startTime} - ${communityWebinars.communityWebinarsList[widget.index].availability![availabilityIndex].slots![index].endTime}",
-                                              textSize: 14,
-                                              color: isSlotSelected
-                                                  ? AppColors.white
-                                                  : AppColors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    : const SizedBox.shrink();
-                              },
-                            ),
-                          ),
+                        // ListView.builder(
+                        //     shrinkWrap: true,
+                        //     padding: EdgeInsets.zero,
+                        //     itemCount: communityWebinars
+                        //         .communityWebinarsList[widget.index]
+                        //         .availability!
+                        //         .length,
+                        //     itemBuilder: (context, index) {
+                        //       return InkWell(
+                        //         onTap: () {
+                        //           setState(() {
+                        //             isDaySelected = !isDaySelected;
+
+                        //             day = isDaySelected
+                        //                 ? communityWebinars
+                        //                     .communityWebinarsList[widget.index]
+                        //                     .availability![index]
+                        //                     .day!
+                        //                 : "";
+                        //             availabilityIndex =
+                        //                 isDaySelected ? index : 0;
+                        //           });
+                        //         },
+                        //         child: Center(
+                        //           child: Card(
+                        //               color: AppColors.transparent,
+                        //               shape: RoundedRectangleBorder(
+                        //                 borderRadius: BorderRadius.circular(20),
+                        //                 side: const BorderSide(
+                        //                   color: Colors.white38,
+                        //                   width: 1,
+                        //                 ),
+                        //               ),
+                        //               child: Padding(
+                        //                 padding: EdgeInsets.all(12),
+                        //                 child: TextWidget(
+                        //                   text: communityWebinars
+                        //                       .communityWebinarsList[
+                        //                           widget.index]
+                        //                       .availability![index]
+                        //                       .day!,
+                        //                   textSize: 16,
+                        //                 ),
+                        //               )),
+                        //         ),
+                        //       );
+                        //     }),
+                        // if (communityWebinars.isDaySelected)
+
+                        CommunityEventsCalendar(
+                          availableDays: availableDays,
+                          index: widget.index,
+                        ),
+                        sizedTextfield,
+                        // if(communityWebinars.isDaySelected)
+                        // Wrap(
+                        //   spacing: 4.0,
+                        //   runSpacing: 4.0,
+                        //   children: List.generate(
+                        //     communityWebinars
+                        //         .communityWebinarsList[widget.index]
+                        //         .availability![
+                        //             communityWebinars.selectedDayIndex]
+                        //         .slots!
+                        //         .length,
+                        //     (index) {
+                        //       bool isSlotSelected = _selectedIndex == index;
+                        //       return communityWebinars
+                        //               .communityWebinarsList[widget.index]
+                        //               .availability![
+                        //                   communityWebinars.selectedDayIndex]
+                        //               .slots![index]
+                        //               .isAvailable!
+                        //           ? InkWell(
+                        //               onTap: () {
+                        //                 setState(() {
+                        //                   isSlotSelected = !isSlotSelected;
+                        //                   if (_selectedIndex == index) {
+                        //                     _selectedIndex = null;
+                        //                   } else {
+                        //                     _selectedIndex = index;
+                        //                   }
+
+                        //                   slot = isSlotSelected
+                        //                       ? "${communityWebinars.communityWebinarsList[widget.index].availability![communityWebinars.selectedDayIndex].slots![index].startTime} - ${communityWebinars.communityWebinarsList[widget.index].availability![communityWebinars.selectedDayIndex].slots![index].endTime}"
+                        //                       : "";
+                        //                   startTime = communityWebinars
+                        //                       .communityWebinarsList[
+                        //                           widget.index]
+                        //                       .availability![communityWebinars
+                        //                           .selectedDayIndex]
+                        //                       .slots![index]
+                        //                       .startTime!;
+                        //                   endTime = communityWebinars
+                        //                       .communityWebinarsList[
+                        //                           widget.index]
+                        //                       .availability![communityWebinars
+                        //                           .selectedDayIndex]
+                        //                       .slots![index]
+                        //                       .endTime!;
+                        //                 });
+                        //               },
+                        //               child: Card(
+                        //                 shape: RoundedRectangleBorder(
+                        //                   borderRadius:
+                        //                       BorderRadius.circular(4),
+                        //                 ),
+                        //                 color: isSlotSelected
+                        //                     ? AppColors.primary
+                        //                     : AppColors.white12,
+                        //                 surfaceTintColor: AppColors.white12,
+                        //                 child: Padding(
+                        //                   padding: const EdgeInsets.symmetric(
+                        //                       horizontal: 12, vertical: 4),
+                        //                   child: TextWidget(
+                        //                     text:
+                        //                         "${communityWebinars.communityWebinarsList[widget.index].availability![communityWebinars.selectedDayIndex].slots![index].startTime} - ${communityWebinars.communityWebinarsList[widget.index].availability![communityWebinars.selectedDayIndex].slots![index].endTime}",
+                        //                     textSize: 14,
+                        //                     color: AppColors.white,
+                        //                   ),
+                        //                 ),
+                        //               ),
+                        //             )
+                        //           : const SizedBox.shrink();
+                        //     },
+                        //   ),
+                        // ),
                         // ListView.builder(
                         //     shrinkWrap: true,
                         //     padding: EdgeInsets.zero,
@@ -256,8 +267,7 @@ class _SelectAvailabilityScreenState extends State<SelectAvailabilityScreen> {
                         // ],
                         // );
                         // }),
-                        sizedTextfield,
-                        CommunityEventsCalendar(availableDays: availableDays),
+
                         Row(
                           children: [
                             Expanded(
@@ -265,6 +275,15 @@ class _SelectAvailabilityScreenState extends State<SelectAvailabilityScreen> {
                                   borderColor: AppColors.primary,
                                   onButtonPressed: () {
                                     Get.back();
+                                    setState(() {
+                                      communityWebinars.formattedDate = "";
+                                      communityWebinars.selectedDayName = "";
+                                      communityWebinars.selectedDayIndex = 0;
+                                      communityWebinars.isDaySelected = false;
+                                      communityWebinars.slot = "";
+                                      communityWebinars.startTime = "";
+                                      communityWebinars.endTime = "";
+                                    });
                                   },
                                   title: "Cancel"),
                             ),
@@ -276,20 +295,24 @@ class _SelectAvailabilityScreenState extends State<SelectAvailabilityScreen> {
                                     onButtonPressed: () async {
                                       // selectedDate = await selectDate(
                                       //     context, DateTime.now());
-                
+
                                       // communityWebinars.formattedDate =
                                       //     DateFormat('MMMM d')
                                       //         .format(selectedDate);
-                
-                                      day != "" && slot != ""
-                                          ? Get.to(
-                                              () => CommunityScheduleEventsScreen(
-                                                    day: day,
-                                                    slot: slot,
-                                                    index: widget.index,
-                                                    startTime: startTime,
-                                                    endTime: endTime,
-                                                  ))
+
+                                      communityWebinars.formattedDate != "" &&
+                                              communityWebinars.slot != ""
+                                          ? Get.to(() =>
+                                              CommunityScheduleEventsScreen(
+                                                day: communityWebinars
+                                                    .formattedDate,
+                                                slot: communityWebinars.slot,
+                                                index: widget.index,
+                                                startTime:
+                                                    communityWebinars.startTime,
+                                                endTime:
+                                                    communityWebinars.endTime,
+                                              ))
                                           : HelperSnackBar.snackBar("Error",
                                               "Select a Time Slot for Booking");
                                     },
@@ -302,7 +325,7 @@ class _SelectAvailabilityScreenState extends State<SelectAvailabilityScreen> {
                       ],
                     ),
                   ),
-              )),
+                )),
     );
   }
 }

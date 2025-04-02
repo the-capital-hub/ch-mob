@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/01-Investor-Section/landingScreen/landing_screen_inv.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
@@ -41,14 +42,28 @@ class CommunityUpdateSettingsController extends GetxController {
   bool isOpen = false;
   List<String> termsAndConditions = [];
 
+  String cleanHtmlDescription(String description) {
+    description = description.replaceAll(RegExp(r'(<br>\s*)+'), '<br>');
+
+    description = description.replaceAll(RegExp(r'<p>\s*<\/p>'), '');
+
+    description =
+        description.replaceAll(RegExp(r'<p>\s*<br>\s*<\/p>'), '<p><br></p>');
+
+    description = description.trim();
+
+    return description;
+  }
+
   Future updateCommunity(base64) async {
-    String about = "";
-    await aboutCommunityController.getText().then((val) => about = val);
+    String description = "";
+    await aboutCommunityController.getText().then((val) => description = val);
+    description = cleanHtmlDescription(description);
     var response = await ApiBase.pachRequest(
       body: {
         "name": communityNameController.text,
         "size": communitySize,
-        "about": about,
+        "about": description,
         "subscription": subscriptionType.toLowerCase(),
         "amount": subscriptionAmountController.text.isEmpty
             ? null

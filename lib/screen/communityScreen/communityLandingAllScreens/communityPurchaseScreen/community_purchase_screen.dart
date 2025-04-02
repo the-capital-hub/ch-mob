@@ -6,6 +6,7 @@ import 'package:capitalhub_crm/screen/homeScreen/home_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
@@ -96,11 +97,11 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                             color: AppColors.white38,
                           ),
                           const SizedBox(height: 8),
-                          const TextWidget(
+                         TextWidget(
                             text: "Name:",
                             textSize: 16,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.primary,
+                            color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                           ),
                           const SizedBox(height: 8),
                           TextWidget(
@@ -112,11 +113,11 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                             color: AppColors.white38,
                           ),
                           const SizedBox(height: 8),
-                          const TextWidget(
+                           TextWidget(
                             text: "Description:",
                             textSize: 16,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.primary,
+                            color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                           ),
                           const SizedBox(height: 8),
                           HtmlWidget(
@@ -137,11 +138,11 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const TextWidget(
+                                   TextWidget(
                                     text: "Resources",
                                     textSize: 16,
                                     fontWeight: FontWeight.w500,
-                                    color: AppColors.primary,
+                                    color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                   ),
                                   const SizedBox(height: 8),
                                   TextWidget(
@@ -150,14 +151,14 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                       textSize: 13),
                                 ],
                               ),
-                              const Column(
+                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   TextWidget(
                                     text: "Access",
                                     textSize: 16,
                                     fontWeight: FontWeight.w500,
-                                    color: AppColors.primary,
+                                    color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                   ),
                                   SizedBox(height: 8),
                                   TextWidget(text: "Lifetime", textSize: 13),
@@ -166,11 +167,11 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const TextWidget(
+                                  TextWidget(
                                     text: "Price",
                                     textSize: 16,
                                     fontWeight: FontWeight.w500,
-                                    color: AppColors.primary,
+                                    color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                   ),
                                   const SizedBox(height: 8),
                                   TextWidget(
@@ -197,7 +198,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                         children: [
                           Expanded(
                             child: AppButton.outlineButton(
-                                borderColor: AppColors.primary,
+                                borderColor: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                 onButtonPressed: () {
                                   Get.back();
                                 },

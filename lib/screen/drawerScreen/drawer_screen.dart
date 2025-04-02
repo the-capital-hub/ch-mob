@@ -63,12 +63,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     "One link",
     "Resources",
     "Campaign",
-    // "Meetings",
+    "Meetings",
     "Analytics",
     "Saved Post",
     "News",
     "Team",
-    // "Community",
+    "Community",
+    "Meetings",
     "Help",
     "Log Out",
   ];
@@ -92,12 +93,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     PngAssetPath.onelinkIcon,
     PngAssetPath.resourceIcon,
     PngAssetPath.campaignIcon,
-// PngAssetPath.meetingIcon, (commented out)
+    PngAssetPath.meetingIcon,
     PngAssetPath.customerIcon, // Analytics
     PngAssetPath.saveIcon, // Saved Post
     PngAssetPath.newsIcon,
     PngAssetPath.teamIcon,
-// PngAssetPath.communityIcon, (commented out)
+    PngAssetPath.communityIcon,
+    PngAssetPath.meetingIcon,
     PngAssetPath.helpIcon,
     PngAssetPath.logoutIcon,
   ];
@@ -109,12 +111,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     const OneLinkScreeen(),
     const ResourceScreen(),
     const CampaignLandingScreen(),
-// const EventsScreen(), (commented out for "Meetings")
+    const EventsScreen(),
     const AnalyticsScreen(),
     const SavedPostScreen(),
     const NewsScreen(),
     const ConnectionScreen(), // Team
-// const CommunityLandingScreen(), (commented out for "Community")
+    const CommunityLandingScreen(),
+    const EventsScreen(),
     const HelpScreen(),
     const LogoutScreen(),
   ];
@@ -219,11 +222,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                 curve:
                                     Curves.easeOutBack, // Adds a bounce effect
                                 child: FadeInAnimation(
-                                    child: 
-                                    // (index == 11 || index == 12)
-                                    //     ? _buildExpansionTile(index)
-                                    //     : 
-                                        InkWell(
+                                    child: (index == 12 || index == 13)
+                                        ? _buildExpansionTile(index)
+                                        : InkWell(
                                             onTap: () {
                                               if (index == 0) {
                                                 homeController.selectIndex = 0;
@@ -370,7 +371,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           ],
         ),
-        children: index == 11
+        children: index == 12
             ? communitySubItems.map((communitySubItemsTitle) {
                 int communitySubItemsIndex =
                     communitySubItems.indexOf(communitySubItemsTitle);

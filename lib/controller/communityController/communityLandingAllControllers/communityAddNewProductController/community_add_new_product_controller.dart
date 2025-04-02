@@ -17,11 +17,25 @@ class CommunityAddNewProductController extends GetxController {
   TextEditingController productAmountController = TextEditingController();
   bool isFree = false;
   List<String> urls = [];
+  String cleanHtmlDescription(String description) {
+    description = description.replaceAll(RegExp(r'(<br>\s*)+'), '<br>');
+
+    description = description.replaceAll(RegExp(r'<p>\s*<\/p>'), '');
+
+    description =
+        description.replaceAll(RegExp(r'<p>\s*<br>\s*<\/p>'), '<p><br></p>');
+
+    description = description.trim();
+
+    return description;
+  }
+
   Future addProductToCommunity(base64, urls) async {
     String description = "";
     await productDescriptionController
         .getText()
         .then((val) => description = val);
+
     var response = await ApiBase.postRequest(
       body: {
         "name": productNameController.text,
@@ -58,6 +72,7 @@ class CommunityAddNewProductController extends GetxController {
     await productDescriptionController
         .getText()
         .then((val) => description = val);
+    description = cleanHtmlDescription(description);
     var response = await ApiBase.pachRequest(
         body: {
           "name": productNameController.text,

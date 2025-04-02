@@ -105,6 +105,10 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
       communityWebinars.priceDiscountController.clear();
     }
     if (widget.isEdit && widget.isPriorityDM) {
+      setState(() {
+        communityPriorityDMs.selectedTimeLine = communityPriorityDMs.titleController.text =
+          communityPriorityDMs.communityPriorityDMsList[widget.index!].timelineUnit!;
+      });
       communityPriorityDMs.titleController.text =
           communityPriorityDMs.communityPriorityDMsList[widget.index!].title!;
       communityPriorityDMs.amountController.text = communityPriorityDMs
@@ -224,21 +228,27 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
   bool isPriorityDMTopics = false;
   bool isMeetingsTopics = false;
   void splitTopics() {
-    setState(() {
-      if (isPriorityDMTopics) {
-        String text = communityPriorityDMs.topicsController.text;
-        topics = text.isEmpty
-            ? []
-            : text.split(',').map((topic) => topic.trim()).toList();
-      }
-      if (isMeetingsTopics) {
-        String text = communityMeetings.topicsController.text;
-        topics = text.isEmpty
-            ? []
-            : text.split(',').map((topic) => topic.trim()).toList();
-      }
-    });
-  }
+  setState(() {
+    if (isPriorityDMTopics) {
+      String text = communityPriorityDMs.topicsController.text.trim();
+      topics = _processTopics(text);
+    }
+    if (isMeetingsTopics) {
+      String text = communityMeetings.topicsController.text.trim();
+      topics = _processTopics(text);
+    }
+  });
+}
+
+List<String> _processTopics(String text) {
+  // Split by commas and trim spaces from each topic
+  List<String> processedTopics = text.split(',')
+      .map((topic) => topic.trim())
+      .where((topic) => topic.isNotEmpty) // Remove empty topics
+      .toList();
+
+  return processedTopics;
+}
 
   @override
   Widget build(BuildContext context) {
@@ -814,33 +824,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
       child: Column(
         children: [
           sizedTextfield,
-          MyCustomTextField.textField(
-              lableText: "Title",
-              hintText: "Enter service title",
-              controller: communityWebinars.titleController),
-          sizedTextfield,
-          MyCustomTextField.htmlTextField(
-            hintText: "Enter service description",
-            controller: communityWebinars.descriptionController,
-            lableText: "Description",
-            onEditorCreated: () async {
-              if (widget.isEdit) {
-                addDescription();
-              }
-            },
-          ),
-          sizedTextfield,
-          // widget.isEdit 
-          // &&
-          //         communityEvents.communityEventsData.webinars![widget.index!]
-          //             .image.isNotEmpty
-          //     ? CircleAvatar(
-          //         radius: 60,
-          //         foregroundImage: NetworkImage(communityEvents
-          //             .communityEventsData.webinars![widget.index!].image),
-          //       )
-          //     :
-               base64 != ""
+          base64 != ""
                   ? CircleAvatar(
                       radius: 60,
                       backgroundImage: MemoryImage(base64Decode(base64)),
@@ -871,6 +855,33 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             ]),
           ),
           sizedTextfield,
+          MyCustomTextField.textField(
+              lableText: "Title",
+              hintText: "Enter service title",
+              controller: communityWebinars.titleController),
+          sizedTextfield,
+          MyCustomTextField.htmlTextField(
+            hintText: "Enter service description",
+            controller: communityWebinars.descriptionController,
+            lableText: "Description",
+            onEditorCreated: () async {
+              if (widget.isEdit) {
+                addDescription();
+              }
+            },
+          ),
+          sizedTextfield,
+          // widget.isEdit 
+          // &&
+          //         communityEvents.communityEventsData.webinars![widget.index!]
+          //             .image.isNotEmpty
+          //     ? CircleAvatar(
+          //         radius: 60,
+          //         foregroundImage: NetworkImage(communityEvents
+          //             .communityEventsData.webinars![widget.index!].image),
+          //       )
+          //     :
+               
           Row(
             children: [
               Expanded(

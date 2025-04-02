@@ -285,17 +285,53 @@ class _CommunityScheduleEventsScreenState
                             borderClr: AppColors.white12,
                             maxLine: 3),
                         const SizedBox(height: 12),
-                        AppButton.primaryButton(
-                            onButtonPressed: () {
-                              Helper.loader(context);
-                              communityWebinars.communityScheduleEvent(
-                                  communityWebinars
-                                      .communityWebinarsList[widget.index].eventId,
-                                  widget.day,
-                                  widget.startTime,
-                                  widget.endTime);
-                            },
-                            title: "Schedule Event"),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: AppButton.outlineButton(
+                                  borderColor: AppColors.primary,
+                                  onButtonPressed: () {
+                                    Get.back();
+                                    setState(() {
+                                      communityWebinars.formattedDate = "";
+                                      communityWebinars.selectedDayName = "";
+                                      communityWebinars.selectedDayIndex = 0;
+                                      communityWebinars.isDaySelected = false;
+                                      communityWebinars.slot = "";
+                                      communityWebinars.startTime = "";
+                                      communityWebinars.endTime = "";
+                                    });
+                                  },
+                                  title: "Cancel"),
+                            ),
+                            const SizedBox(
+                              width: 12,
+                            ),
+                            Expanded(
+                              child: AppButton.primaryButton(
+                                  onButtonPressed: () {
+                                    Helper.loader(context);
+                                    communityWebinars.communityScheduleEvent(
+                                        communityWebinars
+                                            .communityWebinarsList[widget.index]
+                                            .eventId,
+                                        widget.day,
+                                        widget.startTime,
+                                        widget.endTime);
+                                    setState(() {
+                                      communityWebinars.formattedDate = "";
+                                      communityWebinars.selectedDayName = "";
+                                      communityWebinars.selectedDayIndex = 0;
+                                      communityWebinars.isDaySelected = false;
+                                      communityWebinars.slot = "";
+                                      communityWebinars.startTime = "";
+                                      communityWebinars.endTime = "";
+                                    });
+                                  },
+                                  title: "Schedule Event"),
+                            ),
+                          ],
+                        ),
                         const SizedBox(height: 12),
                       ],
                     )),

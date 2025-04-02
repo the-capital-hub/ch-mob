@@ -5,6 +5,7 @@ import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLan
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityMeetingsModel/community_member_emails_model.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -64,16 +65,60 @@ class CommunityMeetingsController extends GetxController {
     return outputFormat.format(finalDateTime);
   }
 
+  String cleanHtmlDescription(String description) {
+    description = description.replaceAll(RegExp(r'(<br>\s*)+'), '<br>');
+
+    description = description.replaceAll(RegExp(r'<p>\s*<\/p>'), '');
+
+    description =
+        description.replaceAll(RegExp(r'<p>\s*<br>\s*<\/p>'), '<p><br></p>');
+
+    description = description.trim();
+
+    return description;
+  }
+
+String convertTo24HourFormat(String time) {
+  try {
+    // Define the 12-hour format pattern
+    final DateFormat inputFormat = DateFormat("hh:mm a");
+
+    // Parse the input time
+    DateTime parsedTime = inputFormat.parse(time);
+
+    // Define the 24-hour format pattern
+    final DateFormat outputFormat = DateFormat("HH:mm");
+
+    // Return the time in 24-hour format
+    return outputFormat.format(parsedTime);
+  } catch (e) {
+    // If there is an error in parsing, return the original string or handle accordingly
+    return time;
+  }
+}
+
   Future createCommunityMeeting(topics) async {
     DateTime? date = DateTime.tryParse(dateController.text);
     String? dateIso = "${date?.toIso8601String() ?? ""}Z";
     String startTime =
-        startTimeController.text.replaceAll(RegExp(r"\sAM|\sPM"), "");
+        convertTo24HourFormat(startTimeController.text);
     String endTime =
-        endTimeController.text.replaceAll(RegExp(r"\sAM|\sPM"), "");
+        convertTo24HourFormat(endTimeController.text);
     String description = "";
     await descriptionController.getText().then((val) => description = val);
+    // Prepare the availability slots
+    var availabilitySlot = {
+      "startTime": startTime,
+      "endTime": endTime,
+    };
 
+    // Conditionally add memberEmail if it is not empty
+    if (memberEmailController.text.isNotEmpty || memberEmail.isNotEmpty) {
+      availabilitySlot["memberEmail"] = isNewEmail
+          ? memberEmailController.text
+          : memberEmail;
+    }
+    
     var bod = {
       "title": titleController.text,
       "description": description,
@@ -87,17 +132,12 @@ class CommunityMeetingsController extends GetxController {
       "availability": [
         {
           "day": dateIso,
-          "slots": [
-            {
-              "startTime": startTime,
-              "endTime": endTime,
-              "memberEmail": memberEmailController.text
-            },
-          ]
+          "slots": [availabilitySlot],
         }
       ]
     };
     log(bod.toString());
+    log("Bearer ${GetStoreData.getStore.read('access_token')}");
     var response = await ApiBase.postRequest(
       body: {
         "title": titleController.text,
@@ -112,14 +152,7 @@ class CommunityMeetingsController extends GetxController {
         "availability": [
           {
             "day": dateIso,
-            "slots": [
-              {
-                "startTime": startTime,
-                "endTime": endTime,
-                "memberEmail":
-                    isNewEmail ? memberEmailController.text : memberEmail
-              },
-            ]
+            "slots": [availabilitySlot],
           }
         ]
       },
@@ -149,11 +182,24 @@ class CommunityMeetingsController extends GetxController {
     DateTime? date = DateTime.tryParse(dateController.text);
     String? dateIso = "${date?.toIso8601String() ?? ""}Z";
     String startTime =
-        startTimeController.text.replaceAll(RegExp(r"\sAM|\sPM"), "");
+        convertTo24HourFormat(startTimeController.text);
     String endTime =
-        endTimeController.text.replaceAll(RegExp(r"\sAM|\sPM"), "");
+        convertTo24HourFormat(endTimeController.text);
     String description = "";
     await descriptionController.getText().then((val) => description = val);
+    description = cleanHtmlDescription(description);
+    // Prepare the availability slots
+    var availabilitySlot = {
+      "startTime": startTime,
+      "endTime": endTime,
+    };
+
+    // Conditionally add memberEmail if it is not empty
+    if (memberEmailController.text.isNotEmpty || memberEmail.isNotEmpty) {
+      availabilitySlot["memberEmail"] = isNewEmail
+          ? memberEmailController.text
+          : memberEmail;
+    }
     var bod = {
       "title": titleController.text,
       "description": description,
@@ -167,14 +213,7 @@ class CommunityMeetingsController extends GetxController {
       "availability": [
         {
           "day": dateIso,
-          "slots": [
-            {
-              "startTime": startTime,
-              "endTime": endTime,
-              "memberEmail":
-                  isNewEmail ? memberEmailController.text : memberEmail
-            },
-          ]
+          "slots": [availabilitySlot],
         }
       ]
     };
@@ -193,14 +232,7 @@ class CommunityMeetingsController extends GetxController {
         "availability": [
           {
             "day": dateIso,
-            "slots": [
-              {
-                "startTime": startTime,
-                "endTime": endTime,
-                "memberEmail":
-                    isNewEmail ? memberEmailController.text : memberEmail
-              },
-            ]
+            "slots": [availabilitySlot],
           }
         ]
       },
