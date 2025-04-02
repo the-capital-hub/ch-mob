@@ -7,7 +7,7 @@ import '../../../controller/notificationController/notification_controller.dart'
 import '../../../utils/appcolors/app_colors.dart';
 import '../../../widget/textwidget/text_widget.dart';
 import '../../Auth-Process/authScreen/signup_info_page.dart';
-import '../../chatScreen/community_screen.dart';
+import '../../chatScreen/group_screen.dart';
 import '../../communityScreen/myCommunityScreen/my_community_screen.dart';
 import '../../createPostScreen/create_post_screen.dart';
 import '../../exploreScreen/explore_screen.dart';

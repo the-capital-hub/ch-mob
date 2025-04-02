@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import '../../model/01-StartupModel/liveDealsModel/live_deals_model.dart';
 import '../../utils/constant/asset_constant.dart';
 import '../../utils/getStore/get_store.dart';
 import '../../utils/helper/helper.dart';
@@ -22,14 +24,44 @@ class LiveDealScreen extends StatefulWidget {
   State<LiveDealScreen> createState() => _LiveDealScreenState();
 }
 
-class _LiveDealScreenState extends State<LiveDealScreen> {
+class _LiveDealScreenState extends State<LiveDealScreen>
+    with TickerProviderStateMixin {
   LiveDealsController liveDealsController = Get.put(LiveDealsController());
+  late TabController fundingTabController;
+  late TabController tabController;
+
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      liveDealsController.getLiveDeals();
+      fundingTabController = TabController(length: 2, vsync: this);
+      tabController = TabController(length: 4, vsync: this);
+      liveDealsController.getLiveDeals().then((v) {});
     });
     super.initState();
+  }
+
+  List<ChartData> _generateChartData(LiveDealData deal) {
+    final funding = deal.fundingOverview;
+    return [
+      ChartData("Funding Ask", funding?.fundingAsk ?? 0.0),
+      ChartData("Proposed Funding", funding?.proposedFunding ?? 0.0),
+      ChartData("Raised Funds", funding?.raisedFunds ?? 0.0),
+    ];
+  }
+
+  List<ChartData> _generateChartDataAllocation(LiveDealData deal) {
+    return deal.allocationDetails?.map((allocation) {
+          return ChartData(allocation.name ?? "Unknown",
+              (allocation.percentage ?? 0).toDouble());
+        }).toList() ??
+        [];
+  }
+
+  @override
+  void dispose() {
+    fundingTabController.dispose();
+    tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -162,8 +194,9 @@ class _LiveDealScreenState extends State<LiveDealScreen> {
                                                         ),
                                                         const SizedBox(
                                                             width: 6),
-                                                        const TextWidget(
-                                                            text: "300",
+                                                        TextWidget(
+                                                            text:
+                                                                "${liveDealsController.liveDealsList[index].noOfEmployees}",
                                                             textSize: 14)
                                                       ],
                                                     )
@@ -188,8 +221,9 @@ class _LiveDealScreenState extends State<LiveDealScreen> {
                                                         color: AppColors.white,
                                                       ),
                                                       const SizedBox(width: 6),
-                                                      const TextWidget(
-                                                          text: "bengaluru",
+                                                      TextWidget(
+                                                          text:
+                                                              "${liveDealsController.liveDealsList[index].location}",
                                                           textSize: 14)
                                                     ],
                                                   )
@@ -306,7 +340,7 @@ class _LiveDealScreenState extends State<LiveDealScreen> {
                                   if (liveDealsController.liveDealsList[index]
                                       .interestedInvestors!.isNotEmpty)
                                     SizedBox(
-                                      height: 70,
+                                      height: 85,
                                       child: ListView.separated(
                                         itemCount: liveDealsController
                                             .liveDealsList[index]
@@ -358,6 +392,11 @@ class _LiveDealScreenState extends State<LiveDealScreen> {
                                                           text:
                                                               "${liveDealsController.liveDealsList[index].interestedInvestors![ind].designation}",
                                                           textSize: 12),
+                                                      const SizedBox(height: 2),
+                                                      TextWidget(
+                                                          text:
+                                                              "${liveDealsController.liveDealsList[index].interestedInvestors![ind].proposedInvestment}",
+                                                          textSize: 12),
                                                     ],
                                                   )
                                                 ],
@@ -403,26 +442,572 @@ class _LiveDealScreenState extends State<LiveDealScreen> {
                                         textSize: 16,
                                         fontWeight: FontWeight.w500),
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      sqaureCard(
-                                          img: PngAssetPath.fundingAskIcon,
-                                          subTitle:
-                                              "${liveDealsController.liveDealsList[index].currentFunding!.minimumTicketsSize}",
-                                          title: "Min. Tickets"),
-                                      sqaureCard(
-                                          img: PngAssetPath.valuationIcon,
-                                          subTitle:
-                                              "${liveDealsController.liveDealsList[index].currentFunding!.maximumTicketsSize}",
-                                          title: "Max. Tickets"),
-                                      sqaureCard(
-                                          img: PngAssetPath.fundingRaisedIcon,
-                                          subTitle:
-                                              "${liveDealsController.liveDealsList[index].currentFunding!.seedRound}",
-                                          title: "Seed Round"),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 6),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        sqaureCard(
+                                            img: PngAssetPath.fundingAskIcon,
+                                            subTitle:
+                                                "${liveDealsController.liveDealsList[index].currentFunding!.minimumTicketsSize}",
+                                            title: "Min. Tickets"),
+                                        sqaureCard(
+                                            img: PngAssetPath.valuationIcon,
+                                            subTitle:
+                                                "${liveDealsController.liveDealsList[index].currentFunding!.maximumTicketsSize}",
+                                            title: "Max. Tickets"),
+                                        sqaureCard(
+                                            img: PngAssetPath.fundingRaisedIcon,
+                                            subTitle:
+                                                "${liveDealsController.liveDealsList[index].currentFunding!.seedRound}",
+                                            title: "Seed Round"),
+                                      ],
+                                    ),
+                                  ),
+                                  sizedTextfield,
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 6),
+                                    child: Column(
+                                      children: [
+                                        Center(
+                                            child: TextWidget(
+                                                text:
+                                                    "${liveDealsController.liveDealsList[index].company}",
+                                                align: TextAlign.center,
+                                                color: AppColors.green,
+                                                maxLine: 3,
+                                                fontWeight: FontWeight.w500,
+                                                textSize: 18)),
+                                        sizedTextfield,
+                                        Container(
+                                            width: Get.width,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 12, vertical: 12),
+                                            decoration: BoxDecoration(
+                                                color: AppColors.green700
+                                                    .withOpacity(0.5),
+                                                borderRadius:
+                                                    BorderRadius.circular(12)),
+                                            child: TextWidget(
+                                                text:
+                                                    "Total Proposed Funding: ₹${liveDealsController.liveDealsList[index].fundingOverview!.proposedFunding}",
+                                                textSize: 16,
+                                                align: TextAlign.center,
+                                                color: AppColors.white,
+                                                fontWeight: FontWeight.w500)),
+                                        sizedTextfield,
+                                        Card(
+                                            color: AppColors.white12,
+                                            surfaceTintColor: AppColors.white12,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  TextWidget(
+                                                    text: "Funding Details",
+                                                    textSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: AppColors.white,
+                                                  ),
+                                                  const SizedBox(height: 8),
+                                                  TextWidget(
+                                                      text: "Funding Ask:",
+                                                      textSize: 14,
+                                                      color: AppColors.grey),
+                                                  const SizedBox(height: 4),
+                                                  TextWidget(
+                                                      text:
+                                                          "₹${liveDealsController.liveDealsList[index].fundingOverview!.fundingAsk}",
+                                                      textSize: 22,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.green),
+                                                  TabBar(
+                                                    controller:
+                                                        fundingTabController,
+                                                    indicator: BoxDecoration(
+                                                      color: AppColors
+                                                          .primaryInvestor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100),
+                                                    ),
+                                                    indicatorPadding:
+                                                        const EdgeInsets
+                                                            .symmetric(
+                                                            vertical: 6,
+                                                            horizontal: 6),
+                                                    indicatorSize:
+                                                        TabBarIndicatorSize.tab,
+                                                    labelColor:
+                                                        AppColors.blackCard,
+                                                    dividerColor:
+                                                        AppColors.transparent,
+                                                    dividerHeight: 0,
+                                                    unselectedLabelColor:
+                                                        AppColors.whiteShade,
+                                                    labelPadding:
+                                                        const EdgeInsets
+                                                            .symmetric(
+                                                            horizontal: 16),
+                                                    tabs: const [
+                                                      Tab(text: "Overview"),
+                                                      Tab(text: "Allocation"),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 250,
+                                                    child: TabBarView(
+                                                      physics:
+                                                          const NeverScrollableScrollPhysics(),
+                                                      controller:
+                                                          fundingTabController,
+                                                      children: [
+                                                        SfCircularChart(
+                                                          margin:
+                                                              EdgeInsets.zero,
+                                                          legend: const Legend(
+                                                            isVisible: true,
+                                                            position:
+                                                                LegendPosition
+                                                                    .bottom,
+                                                            textStyle: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                          tooltipBehavior:
+                                                              TooltipBehavior(
+                                                                  enable:
+                                                                      true), // Enables tooltips
+                                                          series: <CircularSeries>[
+                                                            DoughnutSeries<
+                                                                ChartData,
+                                                                String>(
+                                                              dataSource: _generateChartData(
+                                                                  liveDealsController
+                                                                          .liveDealsList[
+                                                                      index]),
+                                                              xValueMapper:
+                                                                  (ChartData data,
+                                                                          _) =>
+                                                                      data.label,
+                                                              yValueMapper:
+                                                                  (ChartData data,
+                                                                          _) =>
+                                                                      data.value,
+                                                              innerRadius:
+                                                                  '50%',
+                                                              dataLabelSettings:
+                                                                  const DataLabelSettings(
+                                                                isVisible: true,
+                                                                textStyle: TextStyle(
+                                                                    color: Colors
+                                                                        .white),
+                                                              ),
+                                                              enableTooltip:
+                                                                  true,
+                                                              animationDuration:
+                                                                  1500,
+                                                              onPointTap:
+                                                                  (ChartPointDetails
+                                                                      details) {
+                                                                setState(() {
+                                                                  _selectedIndex =
+                                                                      details
+                                                                          .pointIndex;
+                                                                });
+                                                              },
+                                                              selectionBehavior:
+                                                                  SelectionBehavior(
+                                                                enable: true,
+                                                                selectedColor:
+                                                                    AppColors
+                                                                        .green700,
+                                                                unselectedOpacity:
+                                                                    0.5,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SfCircularChart(
+                                                          margin:
+                                                              EdgeInsets.zero,
+                                                          legend: const Legend(
+                                                            isVisible: true,
+                                                            position:
+                                                                LegendPosition
+                                                                    .bottom,
+                                                            textStyle: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                          tooltipBehavior:
+                                                              TooltipBehavior(
+                                                                  enable:
+                                                                      true), // Enables tooltips
+                                                          series: <CircularSeries>[
+                                                            DoughnutSeries<
+                                                                ChartData,
+                                                                String>(
+                                                              dataSource: _generateChartDataAllocation(
+                                                                  liveDealsController
+                                                                          .liveDealsList[
+                                                                      index]),
+                                                              xValueMapper:
+                                                                  (ChartData data,
+                                                                          _) =>
+                                                                      data.label,
+                                                              yValueMapper:
+                                                                  (ChartData data,
+                                                                          _) =>
+                                                                      data.value,
+                                                              innerRadius:
+                                                                  '55%',
+                                                              dataLabelSettings:
+                                                                  const DataLabelSettings(
+                                                                isVisible: true,
+                                                                textStyle: TextStyle(
+                                                                    color: Colors
+                                                                        .white),
+                                                              ),
+                                                              enableTooltip:
+                                                                  true,
+                                                              animationDuration:
+                                                                  1500,
+                                                              onPointTap:
+                                                                  (ChartPointDetails
+                                                                      details) {
+                                                                setState(() {
+                                                                  _selectedIndex =
+                                                                      details
+                                                                          .pointIndex;
+                                                                });
+                                                              },
+                                                              selectionBehavior:
+                                                                  SelectionBehavior(
+                                                                enable: true,
+                                                                selectedColor:
+                                                                    AppColors
+                                                                        .green700,
+                                                                unselectedOpacity:
+                                                                    0.5,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )),
+                                        sizedTextfield,
+                                        Card(
+                                            color: AppColors.white12,
+                                            surfaceTintColor: AppColors.white12,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  TextWidget(
+                                                    text: "Pitch & Founder",
+                                                    textSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: AppColors.white,
+                                                  ),
+                                                  const SizedBox(height: 8),
+                                                  Stack(
+                                                    children: [
+                                                      Container(
+                                                        height: 150,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                            image: DecorationImage(
+                                                                image: NetworkImage(liveDealsController
+                                                                    .liveDealsList[
+                                                                        index]
+                                                                    .pitchRecordings!
+                                                                    .fileUrl!),
+                                                                fit: BoxFit
+                                                                    .cover)),
+                                                      ),
+                                                      InkWell(
+                                                        onTap: () {
+                                                          Helper.launchUrl(
+                                                              liveDealsController
+                                                                  .liveDealsList[
+                                                                      index]
+                                                                  .pitchRecordings!
+                                                                  .videoUrl!);
+                                                        },
+                                                        child: Container(
+                                                          height: 150,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: AppColors
+                                                                .black54,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Icon(
+                                                                  Icons
+                                                                      .play_circle,
+                                                                  color:
+                                                                      AppColors
+                                                                          .white,
+                                                                  size: 40),
+                                                              const SizedBox(
+                                                                  width: 8),
+                                                              const TextWidget(
+                                                                  text:
+                                                                      "Watch Pitch Recording",
+                                                                  textSize: 14),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 8),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            12),
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors.white12,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16),
+                                                    ),
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            CircleAvatar(
+                                                              radius: 25,
+                                                              backgroundImage:
+                                                                  NetworkImage(
+                                                                      "${liveDealsController.liveDealsList[index].founder!.profilePicture}"),
+                                                            ),
+                                                            const SizedBox(
+                                                                width: 12),
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                TextWidget(
+                                                                  text:
+                                                                      "${liveDealsController.liveDealsList[index].founder!.firstName} ${liveDealsController.liveDealsList[index].founder!.lastName}",
+                                                                  textSize: 14,
+                                                                ),
+                                                                TextWidget(
+                                                                    text:
+                                                                        "${liveDealsController.liveDealsList[index].founder!.designation}",
+                                                                    color:
+                                                                        AppColors
+                                                                            .grey,
+                                                                    textSize:
+                                                                        12),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 8),
+                                                        TextWidget(
+                                                            text:
+                                                                "${liveDealsController.liveDealsList[index].pitchRecordings!.userMessage}",
+                                                            maxLine: 10,
+                                                            textSize: 12)
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            )),
+                                        sizedTextfield,
+                                        Card(
+                                            color: AppColors.white12,
+                                            surfaceTintColor: AppColors.white12,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  TextWidget(
+                                                    text:
+                                                        "Documents and Pitch day",
+                                                    textSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: AppColors.white,
+                                                  ),
+                                                  const SizedBox(height: 8),
+                                                  AppButton.primaryButton(
+                                                      onButtonPressed: () {
+                                                        Helper.launchUrl(
+                                                            liveDealsController
+                                                                .liveDealsList[
+                                                                    index]
+                                                                .upcomingPitchDay!
+                                                                .link!);
+                                                      },
+                                                      borderRadius: 12,
+                                                      title:
+                                                          "Download Pitch Deck"),
+                                                  const SizedBox(height: 8),
+                                                  TextWidget(
+                                                    text: "Pitch Day Details",
+                                                    textSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: AppColors.white,
+                                                  ),
+                                                  const SizedBox(height: 8),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            12),
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors.white12,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16),
+                                                    ),
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            const Icon(
+                                                                Icons
+                                                                    .calendar_month,
+                                                                color: AppColors
+                                                                    .primaryInvestor,
+                                                                size: 20),
+                                                            const SizedBox(
+                                                                width: 8),
+                                                            TextWidget(
+                                                                text:
+                                                                    "${liveDealsController.liveDealsList[index].upcomingPitchDay!.date!}",
+                                                                textSize: 14)
+                                                          ],
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 8),
+                                                        Row(
+                                                          children: [
+                                                            const Icon(
+                                                                Icons
+                                                                    .alarm_outlined,
+                                                                color: AppColors
+                                                                    .primaryInvestor,
+                                                                size: 20),
+                                                            const SizedBox(
+                                                                width: 8),
+                                                            TextWidget(
+                                                                text:
+                                                                    "${liveDealsController.liveDealsList[index].upcomingPitchDay!.date!} - ${liveDealsController.liveDealsList[index].upcomingPitchDay!.date!}",
+                                                                textSize: 14)
+                                                          ],
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 8),
+                                                        TextWidget(
+                                                            text:
+                                                                "${liveDealsController.liveDealsList[index].upcomingPitchDay!.description!}",
+                                                            maxLine: 10,
+                                                            textSize: 12),
+                                                        const SizedBox(
+                                                            height: 8),
+                                                        AppButton.primaryButton(
+                                                            onButtonPressed:
+                                                                () {
+                                                              Helper.launchUrl(
+                                                                  liveDealsController
+                                                                      .liveDealsList[
+                                                                          index]
+                                                                      .upcomingPitchDay!
+                                                                      .link!);
+                                                            },
+                                                            borderRadius: 12,
+                                                            title:
+                                                                "Register Now"),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            )),
+                                        TabBar(
+                                          controller: tabController,
+                                          indicator: BoxDecoration(
+                                            color: AppColors.primaryInvestor,
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          indicatorPadding:
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 6, horizontal: 6),
+                                          indicatorSize:
+                                              TabBarIndicatorSize.tab,
+                                          isScrollable: true,
+                                          labelColor: AppColors.blackCard,
+                                          dividerColor: AppColors.transparent,
+                                          dividerHeight: 0,
+                                          tabAlignment: TabAlignment.start,
+                                          unselectedLabelColor:
+                                              AppColors.whiteShade,
+                                          labelPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 16),
+                                          tabs: const [
+                                            Tab(text: "Heighlights"),
+                                            Tab(text: "Documents"),
+                                            Tab(text: "Product Showcase"),
+                                            Tab(text: "About Founder"),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 8),
+                                        SizedBox(
+                                          height: 200,
+                                          child: TabBarView(
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            controller: tabController,
+                                            children: [
+                                              heighlists(index),
+                                              documentation(index),
+                                              productshowcase(index),
+                                              aboutFounder(index),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
@@ -516,7 +1101,8 @@ class _LiveDealScreenState extends State<LiveDealScreen> {
                                           Get.to(() => PublicProfileScreen(
                                               id: liveDealsController
                                                   .liveDealsList[index]
-                                                  .founderId!));
+                                                  .founder!
+                                                  .id!));
                                         },
                                         borderColor: GetStoreData.getStore
                                                 .read('isInvestor')
@@ -532,6 +1118,185 @@ class _LiveDealScreenState extends State<LiveDealScreen> {
                         },
                       )),
       ),
+    );
+  }
+
+  Widget heighlists(index) {
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 2.5,
+      ),
+      shrinkWrap: true,
+      itemCount: liveDealsController.liveDealsList[index].highlights!.length,
+      itemBuilder: (BuildContext context, int ind) {
+        return Card(
+          color: AppColors.white12,
+          surfaceTintColor: AppColors.white12,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.arrow_circle_right_outlined,
+                  color: AppColors.whiteCard,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextWidget(
+                        text:
+                            "${liveDealsController.liveDealsList[index].highlights![ind].key}",
+                        textSize: 12,
+                      ),
+                      TextWidget(
+                        text:
+                            "${liveDealsController.liveDealsList[index].highlights![ind].value}",
+                        textSize: 14,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget documentation(index) {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: liveDealsController.liveDealsList[index].documents!.length,
+      itemBuilder: (BuildContext context, int ind) {
+        return InkWell(
+          onTap: () {
+            Helper.launchUrl(liveDealsController
+                .liveDealsList[index].documents![ind].fileUrl!);
+          },
+          child: Card(
+            color: AppColors.white12,
+            surfaceTintColor: AppColors.white12,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  const SizedBox(width: 8),
+                  Icon(
+                    Icons.attach_file_outlined,
+                    color: AppColors.whiteCard,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextWidget(
+                          text:
+                              "${liveDealsController.liveDealsList[index].documents![ind].fileName}",
+                          textSize: 12,
+                        ),
+                        TextWidget(
+                          text:
+                              "${liveDealsController.liveDealsList[index].documents![ind].folderName}",
+                          textSize: 14,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget productshowcase(index) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: TextWidget(
+              text:
+                  "${liveDealsController.liveDealsList[index].productDescription}",
+              textSize: 12,
+              maxLine: 5),
+        ),
+        const SizedBox(height: 4),
+        SizedBox(
+          height: 110,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount:
+                liveDealsController.liveDealsList[index].productImages!.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (BuildContext context, int ind) {
+              return Container(
+                  height: 115,width: 150,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      image: DecorationImage(
+                          image: NetworkImage(liveDealsController
+                              .liveDealsList[index].productImages![ind]))));
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget aboutFounder(index) {
+    return Column(
+      children: [
+        Card(
+          color: AppColors.white12,
+          surfaceTintColor: AppColors.white12,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Row(
+              children: [
+                CircleAvatar(
+                    radius: 24,
+                    backgroundImage: NetworkImage(
+                        "${liveDealsController.liveDealsList[index].founder!.profilePicture}")),
+                const SizedBox(width: 8),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextWidget(
+                        text:
+                            "${liveDealsController.liveDealsList[index].founder!.firstName} ${liveDealsController.liveDealsList[index].founder!.lastName} ",
+                        textSize: 14),
+                    const SizedBox(height: 2),
+                    TextWidget(
+                        text:
+                            "${liveDealsController.liveDealsList[index].founder!.designation}",
+                        textSize: 12),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: TextWidget(
+              text: "${liveDealsController.liveDealsList[index].founder!.bio}",
+              textSize: 12,
+              maxLine: 6),
+        ),
+      ],
     );
   }
 
@@ -572,4 +1337,18 @@ class _LiveDealScreenState extends State<LiveDealScreen> {
       ),
     );
   }
+}
+
+int? _selectedIndex;
+final List<ChartData> _chartData = [
+  ChartData('Blue', 40),
+  ChartData('Green', 30),
+  ChartData('Red', 30),
+];
+
+class ChartData {
+  final String label;
+  final num value;
+
+  ChartData(this.label, this.value);
 }

@@ -23,9 +23,8 @@ class FirebaseNotificationService extends GetxService {
 //   }
 // }
   Future<FirebaseNotificationService> initialize() async {
-  
-  NotificationSettings settings =
-      await _firebaseMessaging.requestPermission();
+    NotificationSettings settings =
+        await _firebaseMessaging.requestPermission();
     if (settings.authorizationStatus == AuthorizationStatus.denied) return this;
 
     _fcmToken = await _firebaseMessaging.getToken();
@@ -46,7 +45,8 @@ class FirebaseNotificationService extends GetxService {
     });
 
     const AndroidInitializationSettings androidInitSettings =
-        AndroidInitializationSettings('@mipmap/launcher_icon');
+        AndroidInitializationSettings('ic_stat_notification');
+    //@drawable/ic_stat_notification
     final InitializationSettings initSettings =
         InitializationSettings(android: androidInitSettings);
     await _flutterLocalNotificationsPlugin.initialize(initSettings);
@@ -67,7 +67,17 @@ class FirebaseNotificationService extends GetxService {
       'High Importance Notifications',
       importance: Importance.max,
       priority: Priority.high,
+      icon: 'ic_stat_notification',
     );
+//     const AndroidNotificationDetails androidPlatformChannelSpecifics =
+//     AndroidNotificationDetails(
+//   'high_importance_channel',
+//   'High Importance Notifications',
+//   importance: Importance.max,
+//   priority: Priority.high,
+//   icon: '@drawable/ic_stat_notification', // Use the new icon here
+// );
+
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
 

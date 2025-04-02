@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import '../../controller/profileController/profile_controller.dart';
 import '../../utils/appcolors/app_colors.dart';
 import '../../widget/textwidget/text_widget.dart';
-import '../chatScreen/community_screen.dart';
+import '../chatScreen/group_screen.dart';
 import '../createPostScreen/create_post_screen.dart';
 import '../homeScreen/home_screen.dart';
 import '../oneLinkScreen/one_link_screen.dart';

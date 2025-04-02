@@ -98,7 +98,7 @@ class _DocumentationScreenState extends State<DocumentationScreen>
                   labelPadding: const EdgeInsets.only(left: 12),
                   indicatorSize: TabBarIndicatorSize.tab,
                   tabs: const [
-                    Tab(text: "Pre-Exixting Folders"),
+                    Tab(text: "Pre-Existing Folders"),
                     Tab(text: "Data Room"),
                   ],
                   onTap: (value) {

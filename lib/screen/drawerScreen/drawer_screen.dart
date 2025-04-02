@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:capitalhub_crm/controller/newsController/news_controller.dart';
 import 'package:capitalhub_crm/screen/Auth-Process/authScreen/signup_info_page.dart';
 import 'package:capitalhub_crm/screen/campaignsScreen/campaign_landing_screen.dart';
-import 'package:capitalhub_crm/screen/chatScreen/community_screen.dart';
+import 'package:capitalhub_crm/screen/chatScreen/group_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityLandingScreen/create_community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/exploreCommunityScreen/explore_community_screen.dart';

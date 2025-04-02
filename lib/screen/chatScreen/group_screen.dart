@@ -14,14 +14,14 @@ import 'package:get/get.dart';
 
 import 'group_chat_screen.dart';
 
-class CommunityMemberScreen extends StatefulWidget {
-  const CommunityMemberScreen({super.key});
+class GroupListScreen extends StatefulWidget {
+  const GroupListScreen({super.key});
 
   @override
-  State<CommunityMemberScreen> createState() => _CommunityMemberScreenState();
+  State<GroupListScreen> createState() => _GroupListScreenState();
 }
 
-class _CommunityMemberScreenState extends State<CommunityMemberScreen> {
+class _GroupListScreenState extends State<GroupListScreen> {
   TextEditingController searchController = TextEditingController();
   ChatController chatController = Get.put(ChatController());
   @override

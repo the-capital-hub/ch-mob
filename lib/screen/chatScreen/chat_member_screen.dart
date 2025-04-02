@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 
+import 'group_screen.dart';
+
 class ChatMemberScreen extends StatefulWidget {
   const ChatMemberScreen({super.key});
 
@@ -171,8 +173,7 @@ class _ChatMemberScreenState extends State<ChatMemberScreen> {
                           const SizedBox(height: 6),
                           InkWell(
                             onTap: () {
-                              homeController.selectIndex = 3;
-                              Get.to(() => const LandingScreen());
+                              Get.to(() => const GroupListScreen());
                             },
                             child: Card(
                               color: AppColors.blackCard,
@@ -187,7 +188,7 @@ class _ChatMemberScreenState extends State<ChatMemberScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     TextWidget(
-                                        text: "Communites",
+                                        text: "Groups",
                                         color: AppColors.whiteCard,
                                         textSize: 15),
                                     Icon(
