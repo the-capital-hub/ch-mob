@@ -226,7 +226,8 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                               ],
                             ),
                           if (communityMeetings
-                              .communityMeetingsList[index].isExpired!)
+                              .communityMeetingsList[index].isExpired!)...[
+                                sizedTextfield,
                             Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
@@ -245,11 +246,13 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                                 ),
                               ),
                             ),
+                            sizedTextfield,
+                              ],
 
                           if (!isAdmin
-                              // &&
-                              // !communityMeetings
-                              //   .communityMeetingsList[index].isExpired!
+                              &&
+                              !communityMeetings
+                                .communityMeetingsList[index].isExpired!
                               )
                             AppButton.primaryButton(
                               onButtonPressed: () {
@@ -263,7 +266,8 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                               title: "Book Meeting",
                             ),
                           if (communityMeetings
-                              .communityMeetingsList[index].isBookedByMe!)
+                              .communityMeetingsList[index].isBookedByMe!)...[
+                                sizedTextfield,
                             Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
@@ -299,6 +303,7 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                                 ),
                               ),
                             )
+                              ]
                         ],
                       ),
                     ),

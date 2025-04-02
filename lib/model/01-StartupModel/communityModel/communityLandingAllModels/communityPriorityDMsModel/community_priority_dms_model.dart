@@ -47,6 +47,7 @@ class CommunityPriorityDMs {
   final int? amount;
   final String? timeline;
   final int? timelineValue;
+  final String? timelineUnit;
   final List<String>? topics;
   final List<Question>? questions;
 
@@ -57,6 +58,7 @@ class CommunityPriorityDMs {
     this.amount,
     this.timeline,
     this.timelineValue,
+    this.timelineUnit,
     this.topics,
     this.questions,
   });
@@ -69,6 +71,7 @@ class CommunityPriorityDMs {
         amount: json["amount"],
         timeline: json["timeline"],
         timelineValue: json["timelineValue"],
+        timelineUnit: json["timelineUnit"],
         topics: json["topics"] != null
             ? List<String>.from(json["topics"].map((x) => x))
             : null,
@@ -85,6 +88,7 @@ class CommunityPriorityDMs {
         "amount": amount,
         "timeline": timeline,
         "timelineValue": timelineValue,
+        "timelineUnit": timelineUnit,
         "topics":
             topics != null ? List<dynamic>.from(topics!.map((x) => x)) : null,
         "questions": questions != null

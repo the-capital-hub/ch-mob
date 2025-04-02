@@ -45,9 +45,23 @@ class CommunityEventsController extends GetxController {
   TextEditingController startTimeController = TextEditingController();
   TextEditingController endTimeController = TextEditingController();
 
+  String cleanHtmlDescription(String description) {
+    description = description.replaceAll(RegExp(r'(<br>\s*)+'), '<br>');
+
+    description = description.replaceAll(RegExp(r'<p>\s*<\/p>'), '');
+
+    description =
+        description.replaceAll(RegExp(r'<p>\s*<br>\s*<\/p>'), '<p><br></p>');
+
+    description = description.trim();
+
+    return description;
+  }
+
   Future createCommunityEvent() async {
     String description = "";
     await descriptionController.getText().then((val) => description = val);
+    
     var response = await ApiBase.postRequest(
       body: {
         "title": titleController.text,
@@ -81,6 +95,7 @@ class CommunityEventsController extends GetxController {
   Future updateCommunityEvent(id) async {
     String description = "";
     await descriptionController.getText().then((val) => description = val);
+    description = cleanHtmlDescription(description);
     var response = await ApiBase.pachRequest(
       body: {
         "title": titleController.text,

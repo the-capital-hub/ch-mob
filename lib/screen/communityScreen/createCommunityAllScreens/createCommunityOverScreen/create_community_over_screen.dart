@@ -39,7 +39,7 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
             urlController.text =
-                createdCommunity.createdCommunityDetails[0].community.shareLink;
+                aboutCommunity.aboutCommunityDetailsList[0].shareLink!;
           });
         });
       });
@@ -75,7 +75,7 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
                     children: [
                       TextWidget(
                           text:
-                              "Congrats! ${aboutCommunity.aboutCommunityDetailsList[0].name} is live!",
+                              "Congrats! ${aboutCommunity.aboutCommunityDetailsList[0].name}\nis live!",
                           textSize: 20),
                       sizedTextfield,
                       sizedTextfield,

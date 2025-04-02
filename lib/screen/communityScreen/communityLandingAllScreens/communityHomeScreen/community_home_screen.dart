@@ -205,9 +205,10 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
         child: Scaffold(
             backgroundColor: AppColors.transparent,
             body: Obx(
-              () => isLoading.value
-                  ? Helper.pageLoading()
-                  :
+              () =>
+                  // isLoading.value
+                  //     ? Helper.pageLoading()
+                  //     :
                   //  : communityHomeController.communityPostList.postData.isEmpty
                   //       ? Center(child: TextWidget(text: "No Community Post Available", textSize: 16))
                   //       :
@@ -375,7 +376,7 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                 Expanded(
                                   child: InkWell(
                                       child: Card(
-                                        color: AppColors.primary,
+                                        color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                         child: Padding(
                                           padding: const EdgeInsets.all(12.0),
                                           child: Row(
@@ -384,7 +385,7 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                             children: [
                                               Icon(
                                                 Icons.post_add,
-                                                color: AppColors.white,
+                                                color: GetStoreData.getStore.read('isInvestor')?AppColors.black:AppColors.white,
                                               ),
                                               SizedBox(
                                                 width: 8,
@@ -392,6 +393,7 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                               TextWidget(
                                                 text: "Create Post",
                                                 textSize: 16,
+                                                color: GetStoreData.getStore.read('isInvestor')?AppColors.black:AppColors.white,
                                               ),
                                             ],
                                           ),
@@ -452,7 +454,7 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                         ?.showButtonMenu();
                                   },
                                   child: Card(
-                                    color: AppColors.primary,
+                                    color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                     child: Row(
                                       children: [
                                         PopupMenuButton<String>(
@@ -461,7 +463,7 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                               Icons.filter_list,
                                               size: 25,
                                             ),
-                                            iconColor: AppColors.white,
+                                            iconColor: GetStoreData.getStore.read('isInvestor')?AppColors.black:AppColors.white,
                                             color: AppColors.blackCard,
                                             offset: Offset(100, 55),
                                             onSelected: (value) {
@@ -517,60 +519,66 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                             //         return feeds(index);
                             //       }),
                             // ),
+
                             Expanded(
                               child: Stack(
                                   alignment: Alignment.bottomCenter,
                                   children: [
-                                    if (communityHomeController
-                                        .communityPostList.postData!.isEmpty)
-                                      const Center(
-                                          child: TextWidget(
-                                              text:
-                                                  "No Posts in this Community",
-                                              textSize: 16))
-                                    else
-                                      Column(
-                                        children: [
-                                          Expanded(
-                                            child: ListView.separated(
-                                              controller: scrollController,
-                                              itemCount: communityHomeController
-                                                  .communityPostList
-                                                  .postData!
-                                                  .length,
-                                              separatorBuilder:
-                                                  (context, index) {
-                                                return const SizedBox(
-                                                    height: 8);
-                                              },
-                                              shrinkWrap: true,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                // Show feed postData
-                                                if (index <
-                                                    communityHomeController
-                                                        .communityPostList
-                                                        .postData!
-                                                        .length) {
-                                                  return feeds(
-                                                      index); // Show feed post
-                                                }
+                                    isLoading.value
+                                        ? Helper.pageLoading()
+                                        : communityHomeController
+                                                .communityPostList
+                                                .postData!
+                                                .isEmpty
+                                            ? const Center(
+                                                child: TextWidget(
+                                                    text:
+                                                        "No Posts in this Community",
+                                                    textSize: 16))
+                                            : Column(
+                                                children: [
+                                                  Expanded(
+                                                    child: ListView.separated(
+                                                      controller:
+                                                          scrollController,
+                                                      itemCount:
+                                                          communityHomeController
+                                                              .communityPostList
+                                                              .postData!
+                                                              .length,
+                                                      separatorBuilder:
+                                                          (context, index) {
+                                                        return const SizedBox(
+                                                            height: 8);
+                                                      },
+                                                      shrinkWrap: true,
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        // Show feed postData
+                                                        if (index <
+                                                            communityHomeController
+                                                                .communityPostList
+                                                                .postData!
+                                                                .length) {
+                                                          return feeds(
+                                                              index); // Show feed post
+                                                        }
 
-                                                // If there are no more feed postData or news, return an empty widget
-                                                return const SizedBox
-                                                    .shrink(); // No more items to display
-                                              },
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                                        // If there are no more feed postData or news, return an empty widget
+                                                        return const SizedBox
+                                                            .shrink(); // No more items to display
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                     if (isPaginationLoad)
-                                      const Positioned(
+                                       Positioned(
                                           bottom: 10,
                                           child: SpinKitThreeBounce(
                                               size: 30,
-                                              color: AppColors.primary))
+                                              color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary))
                                   ]),
                             )
                           ]))),
@@ -712,7 +720,7 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                               : "Unfollow",
                                       textSize: 13,
                                       fontWeight: FontWeight.w500,
-                                      color: AppColors.primary,
+                                      color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                     ),
                                   )
                                 ],
@@ -881,7 +889,7 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: _currentIndex == index
-                                          ? AppColors.primary
+                                          ? GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary
                                           : AppColors.grey,
                                     ),
                                   ),
@@ -1752,7 +1760,7 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                   fontWeight: FontWeight.w500,
                                 ),
                                 trailing: Icon(Icons.add_circle_outline_rounded,
-                                    color: AppColors.white, size: 26));
+                                    color: GetStoreData.getStore.read('isInvestor')?AppColors.black:AppColors.white, size: 26));
                           },
                         ),
                 ),

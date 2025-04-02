@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:capitalhub_crm/screen/01-Investor-Section/landingScreen/landing_screen_inv.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityHomeScreen/community_home_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityLandingScreen/create_community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/exploreCommunityScreen/explore_community_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/myCommunityScreen/my_community_screen.dart';
@@ -56,8 +57,8 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     "Saved Post",
     "News",
     "My Startups",
-    // "Community",
-    // "Meetings",
+    "Community",
+    "Meetings",
     "Connection",
     "Log Out",
   ];
@@ -82,8 +83,8 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     PngAssetPath.saveIcon, // Saved Post
     PngAssetPath.newsIcon,
     PngAssetPath.mystartupIcon,
-    // PngAssetPath.communityIcon, (commented out)
-    // PngAssetPath.meetingIcon, (commented out)
+    PngAssetPath.communityIcon, 
+    PngAssetPath.meetingIcon, 
     PngAssetPath.teamIcon, // Connection
     PngAssetPath.logoutIcon,
   ];
@@ -96,8 +97,8 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     const SavedPostScreen(),
     const NewsScreen(),
     const MyStartupScreen(),
-    // const CommunityHomeScreen(), (commented out)
-    // const EventsScreen(), (commented out)
+    const CommunityLandingScreen(), 
+    const EventsScreen(), 
     const ConnectionScreen(),
     const LogoutScreen(),
   ];
@@ -114,7 +115,7 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
     const PriorityDMScreen()
   ];
   bool isExpanded = false;
-  List<bool> isExpandedList = List.generate(8, (index) => false);
+  List<bool> isExpandedList = List.generate(11, (index) => false);
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -204,9 +205,9 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
                                   curve: Curves.easeOutBack,
                                   child: FadeInAnimation(
                                       child:
-                                      //  (index == 6 || index == 7)
-                                      //     ? _buildExpansionTile(index)
-                                      //     : 
+                                       (index == 8 || index == 9)
+                                          ? _buildExpansionTile(index)
+                                          : 
                                           InkWell(
                                               onTap: () {
                                                 if (index == 0) {
@@ -356,7 +357,7 @@ class _DrawerWidgetInvestorState extends State<DrawerWidgetInvestor> {
             ),
           ],
         ),
-        children: index == 6
+        children: index == 8
             ? communitySubItems.map((communitySubItemsTitle) {
                 int communitySubItemsIndex =
                     communitySubItems.indexOf(communitySubItemsTitle);

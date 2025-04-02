@@ -35,6 +35,14 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
   String base64 = "";
   List<TextEditingController> controllers = [TextEditingController()];
   CommunityProductsAndMembersController communityProducts = Get.find();
+  // void _startCursorHideTimer() {
+  //     // After the specified delay (in seconds), unfocus the editor
+  //     Timer(Duration(seconds: cursorHideDelayInSeconds), () {
+  //       if (controller.hasFocus) {
+  //         controller.unfocus(); // Unfocus the editor, which hides the cursor
+  //       }
+  //     });
+  //   }
 
   @override
   void initState() {
@@ -283,14 +291,17 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                   itemCount: controllers.length,
                   itemBuilder: (context, index) {
                     return MyCustomTextField.textField(
-                        hintText: "Enter resource URL",
-                        controller: controllers[index],
-                        lableText: "Resource URLs",
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.delete),
-                          color: AppColors.primary,
-                          onPressed: () => removeTextField(index),
-                        ));
+                      hintText: "Enter resource URL",
+                      controller: controllers[index],
+                      lableText: "Resource URLs",
+                      suffixIcon: index > 0
+                          ? IconButton(
+                              icon: const Icon(Icons.delete),
+                              color: AppColors.primary,
+                              onPressed: () => removeTextField(index),
+                            )
+                          : null,
+                    );
                   },
                 ),
                 const SizedBox(

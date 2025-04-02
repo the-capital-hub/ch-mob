@@ -112,6 +112,7 @@ class MyCustomTextField {
     Function()? onEditorCreated,
     String? lableText,
     bool isEnable = true,
+    int cursorHideDelayInSeconds = 3,
   }) {
     Future<void> requestStoragePermission() async {
       if (await Permission.photos.isDenied) {
@@ -150,18 +151,18 @@ class MyCustomTextField {
                   activeIconColor: AppColors.white,
                   iconColor: AppColors.grey,
                   customButtons: [
-                    InkWell(
-                      onTap: () async {
-                        await requestStoragePermission();
-                        ImagePickerWidget imagePickerWidget =
-                            ImagePickerWidget();
-                        imagePickerWidget.getImage(false).then((val) {
-                          controller.embedImage('data:image/png;base64,' + val);
-                        });
-                      },
-                      child:
-                          Icon(Icons.image, color: AppColors.white54, size: 20),
-                    )
+                    // InkWell(
+                    //   onTap: () async {
+                    //     await requestStoragePermission();
+                    //     ImagePickerWidget imagePickerWidget =
+                    //         ImagePickerWidget();
+                    //     imagePickerWidget.getImage(false).then((val) {
+                    //       controller.embedImage('data:image/png;base64,' + val);
+                    //     });
+                    //   },
+                    //   child:
+                    //       Icon(Icons.image, color: AppColors.white54, size: 20),
+                    // )
                   ],
                   padding: const EdgeInsets.all(8),
                   toolBarConfig: const [

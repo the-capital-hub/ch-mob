@@ -29,7 +29,7 @@ class _CommunityBookAMeetingScreenState
   CommunityMeetingsController communityMeetings = Get.find();
   TextEditingController urlController = TextEditingController();
   bool isDaySelected = false;
-  bool isSlotSelected = false;
+  bool isSlotSelected = true;
 
   int? _selectedIndex;
   int? selectedDayIndex;
@@ -98,7 +98,7 @@ class _CommunityBookAMeetingScreenState
                           ? InkWell(
                               onTap: () {
                                 setState(() {
-                                  isSlotSelected = !isSlotSelected;
+                                  // isSlotSelected = !isSlotSelected;
                                   if (_selectedIndex == index) {
                                     _selectedIndex = null;
                                   } else {
@@ -124,21 +124,16 @@ class _CommunityBookAMeetingScreenState
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(4),
                                 ),
-                                color: isSlotSelected
-                                    ? AppColors.primary
-                                    : AppColors.white12,
+                                color: AppColors.primary,
                                 surfaceTintColor: AppColors.white12,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 4),
                                   child: TextWidget(
-                                    text:
-                                        "${communityMeetings.communityMeetingsList[widget.index].availability![0].slots![index].startTime} - ${communityMeetings.communityMeetingsList[widget.index].availability![0].slots![index].endTime}",
-                                    textSize: 14,
-                                    color: isSlotSelected
-                                        ? AppColors.white
-                                        : AppColors.white,
-                                  ),
+                                      text:
+                                          "${communityMeetings.communityMeetingsList[widget.index].availability![0].slots![index].startTime} - ${communityMeetings.communityMeetingsList[widget.index].availability![0].slots![index].endTime}",
+                                      textSize: 14,
+                                      color: AppColors.white),
                                 ),
                               ),
                             )

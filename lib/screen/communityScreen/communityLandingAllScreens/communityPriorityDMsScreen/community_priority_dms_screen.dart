@@ -30,15 +30,30 @@ class _CommunityPriorityDMScreenState
     extends State<CommunityPriorityDMsScreen> {
   CommunityPriorityDMsController communityPriorityDMs =
       Get.put(CommunityPriorityDMsController());
+  List<TextEditingController> questionControllers = [];
   Map<int, bool> questionFieldVisibility = {};
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       communityPriorityDMs.getCommunityPriorityDMs().then((v) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {});
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          for (int i = 0;
+              i < communityPriorityDMs.communityPriorityDMsList.length;
+              i++) {
+            questionControllers.add(TextEditingController());
+          }
+        });
       });
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    for (var controller in questionControllers) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 
   bool isQuestionFieldVisible = false;
@@ -251,8 +266,7 @@ class _CommunityPriorityDMScreenState
                                     sizedTextfield,
                                     MyCustomTextField.textField(
                                       hintText: "Type your question here...",
-                                      controller: communityPriorityDMs
-                                          .questionController,
+                                      controller: questionControllers[index],
                                       maxLine: 3,
                                       borderClr: AppColors.white12,
                                     ),
@@ -260,6 +274,10 @@ class _CommunityPriorityDMScreenState
                                     AppButton.primaryButton(
                                       onButtonPressed: () {
                                         setState(() {
+                                          communityPriorityDMs
+                                                  .questionController.text =
+                                              questionControllers[index].text;
+                                          questionControllers[index].clear();
                                           questionFieldVisibility[index] =
                                               false;
                                         });
@@ -326,8 +344,7 @@ class _CommunityPriorityDMScreenState
                                                             .id
                                                             .toString()));
                                           },
-                                          title:
-                                              "View Your\nQuestions",
+                                          title: "View Your\nQuestions",
                                         ),
                                       ),
                                     ],
