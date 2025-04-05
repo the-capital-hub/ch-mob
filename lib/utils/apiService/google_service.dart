@@ -4,7 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleSignInService {
   static final GoogleSignIn _googleSignIn = GoogleSignIn( serverClientId: "556993160670-mb0ek9ukp41t6402t61vkktpmek415qe.apps.googleusercontent.com",
-    clientId: "556993160670-o4cv647m8768qdoqp9od19egqgaq9rcb.apps.googleusercontent.com", 
+    clientId: "556993160670-ghje2l5vqmp4tvi0mlqr51hb3vcfmmh0.apps.googleusercontent.com", 
     scopes: ['email',
     'profile',
     'https://www.googleapis.com/auth/calendar', // Google Calendar access

@@ -31,6 +31,8 @@ class ApiUrl {
   static const String pollVote = "api/posts/vote";
   static const String getStartupCornerNews =
       "news/inshort-news?lang=en&category=startup&offset=";
+  static const String getComunityCorner =
+      "Communities/getAllCommunitiesUserIsNotMemberOf";
   static const String getNewsByDateUrl = "news/getNewsByDate";
   static const String getTodaysNewsUrl = "news/getTodaysNews";
 
@@ -58,13 +60,20 @@ class ApiUrl {
   static String deleteFeaturePost = "api/posts/removeFromFeaturedPost/";
   static String deleteCompanyPost = "api/posts/removeCompanyUpdatePost/";
   static String deleteMyPost = "api/posts/deletePost/";
-  static String getSubscriptionList = "subscription/get_subscription_plans?from_campaign=";
+  static String getSubscriptionList =
+      "subscription/get_subscription_plans?from_campaign=";
   static String createSubscription = "subscription/create_subscription";
-
 
   static const String searchCompany = "startup/searchStartUps/";
   static const String addCompanyUser = "users/addStartUpToUser";
   static String getCompanyDetail = "startup/getStartupByFounderId/";
+  static String getMemberAffilationReq = "startup/getMemberAffiliationRequests";
+  static String searchUser = "users/search?searchQuery=";
+  static String addTeamMember = "startup/addMemberToStartup";
+  static String getTeamMember = "startup/getTeamMembers";
+  static String removeTeamMember = "startup/removeMemberFromStartup";
+  static String updateAffilationReq = "startup/updateMemberAffiliationRequest";
+  static String sendAffilationReq = "startup/sendMemberAffiliationRequest";
   static const String deleteCompany = "startup/delete_startup";
   static const String createCompany = "startup/createStartup";
 
@@ -85,7 +94,8 @@ class ApiUrl {
   static const String uploadDocument = "documentation/uploadDocument";
   static const String createFolderName = "documentation/uploadDocument";
   static const String getFolderByUser = "documentation/getFolderByUser";
-  static const String uploadPitchRecording = "documentation/uploadPitchRecording";
+  static const String uploadPitchRecording =
+      "documentation/uploadPitchRecording";
 
   static const String getSavedPostFolderList =
       "api/posts/getSavedPostCollectionsProfile";
@@ -96,6 +106,7 @@ class ApiUrl {
   static const String getPostDetail = "api/posts/get_post_by_id";
 
   static const String oneLinkDetailsGet = "startup/onelinkDetails";
+  static const String getOneLinkPendingReq = "startup/getOneLinkRequests";
   static const String oneLinkDetailsEdit = "investor/editInvestorOneLink";
   static const String onelinkIntroMsgPost = "startup/introMessage";
   static const String onelinkCreateSecKey = "users/createSecretkey";
@@ -116,6 +127,8 @@ class ApiUrl {
   static const String groupChatMemberList =
       "community/getAllCommunitiesByUserId";
   static const String createGroup = "community/createCommunity";
+  static const String acceptOnelink = "startup/approveOneLinkRequest";
+  static const String rejectOnelink = "startup/rejectOneLinkRequest";
 
   static String getPublicProfileUrl = "users/getFounderProfilePageData/";
   static String addFounderEmailUrl = "users/addFounderEmailToCurrentUser/";
@@ -143,8 +156,7 @@ class ApiUrl {
   static const String getAllCommunities = "Communities/getAllCommunities?name=";
   static const String getMyCommunities =
       "Communities/getAllCommunitiesByUserId";
-  static const String getMemberEmails =
-      "Communities/getMemberEmails/";
+  static const String getMemberEmails = "Communities/getMemberEmails/";
   static const String leaveCommunity = "Communities/leaveCommunity/";
   static const String deleteCommunity = "Communities/deleteCommunity/";
   static const String joinCommunity = "Communities/addMembersToCommunity/";
@@ -160,7 +172,7 @@ class ApiUrl {
       "Communities/deletePriorityDM/";
   static const String askQuestionCommunityPriorityDM =
       "Communities/bookPriorityDM/";
-      static const String answerCommunityPriorityDM =
+  static const String answerCommunityPriorityDM =
       "Communities/answerPriorityDM/";
   static const String createCommunityMeeting = "Communities/createMeeting/";
   static const String updateCommunityMeeting = "Communities/updateMeeting/";
@@ -176,7 +188,7 @@ class ApiUrl {
       "webinars/getWebinarsByCommunityId/";
   static const String getCommunityPriorityDMs =
       "communities/services/priorityDMs/";
-      static const String getCommunityPriorityDMYourQuestions =
+  static const String getCommunityPriorityDMYourQuestions =
       "communities/priorityDM/userQuestions/";
   static const String getCommunityWebinars = "communities/services/events/";
   static const String deleteCommunityWebinar = "webinars/deleteWebinar/";

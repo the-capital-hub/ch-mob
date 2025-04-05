@@ -16,6 +16,7 @@ import 'package:palette_generator/palette_generator.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../utils/getStore/get_store.dart';
+import '../../utils/helper/placeholder.dart';
 import '../01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 import '../homeScreen/widget/video_player.dart';
 
@@ -95,7 +96,7 @@ class _SavedPostScreenState extends State<SavedPostScreen>
           body: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Obx(() => savedPostController.isLoading.value
-                ? Helper.pageLoading()
+                ? ShimmerLoader.shimmerLoading()
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -137,7 +138,7 @@ class _SavedPostScreenState extends State<SavedPostScreen>
                           : SizedBox(),
                       Expanded(
                         child: savedPostController.isTabLoading.value
-                            ? Helper.tabLoading()
+                            ? ShimmerLoader.shimmerLoading()
                             : savedPostController.savedPost.isEmpty
                                 ? const Center(
                                     child: TextWidget(

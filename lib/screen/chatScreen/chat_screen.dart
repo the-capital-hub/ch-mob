@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:capitalhub_crm/controller/chatController/chat_controller.dart';
+import 'package:capitalhub_crm/controller/oneLinkController/one_link_controller.dart';
 import 'package:capitalhub_crm/screen/chatScreen/doc_preview.dart';
 import 'package:capitalhub_crm/screen/homeScreen/widget/fullscreen_image_view.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
@@ -31,6 +32,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   ChatController chatController = Get.find();
+  OneLinkController oneLinkController = Get.find();
   final TextEditingController _controller = TextEditingController();
   ScrollController scrollController = ScrollController();
   final ImagePicker _picker = ImagePicker();
@@ -43,7 +45,7 @@ class _ChatScreenState extends State<ChatScreen> {
       if (_selectedAttachment != null) {
         base64String = await convertToBase64(_selectedAttachment!);
       }
-      //  api call to send message
+      DateTime now = DateTime.now();
       chatController
           .addMessage(
               chatmessage: ChatMessage(
@@ -52,7 +54,7 @@ class _ChatScreenState extends State<ChatScreen> {
         text: _controller.text,
         attachmentUrl: base64String,
         attachmentType: _selectedAttachmentType ?? MessageType.text,
-        timestamp: Helper.formatDateTime(DateTime.now()),
+        timestamp: Helper.formatDateTime(now),
       ))
           .then((v) {
         setState(() {
@@ -455,7 +457,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget _buildMessage(ChatMessage message) {
     switch (message.attachmentType) {
       case MessageType.text:
-        return TextWidget(text: message.text, textSize: 14);
+        return TextWidget(text: message.text, maxLine: 100, textSize: 14);
       case MessageType.image:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -555,6 +557,91 @@ class _ChatScreenState extends State<ChatScreen> {
               TextWidget(text: message.text, textSize: 14),
           ],
         );
+      case MessageType.oneLink:
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextWidget(text: message.text, maxLine: 3, textSize: 14),
+            const SizedBox(height: 4),
+
+            // Show buttons based on OneLinkRequest conditions
+            if (message.oneLinkRequest != null) ...[
+              if (message.oneLinkRequest!.isFounder! &&
+                  message.oneLinkRequest!.onelinkStatus == "pending") ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Helper.loader(context);
+                        chatController.acceptOnelink(
+                            message.oneLinkRequest!.startUpId!,
+                            message.oneLinkRequest!.requestId!,
+                            widget.member.chatId,
+                            true);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green),
+                      child: const Text("Approve",
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Helper.loader(context);
+                        chatController.acceptOnelink(
+                            message.oneLinkRequest!.startUpId!,
+                            message.oneLinkRequest!.requestId!,
+                            widget.member.chatId,
+                            false);
+                      },
+                      style:
+                          ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                      child: const Text("Reject",
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                  ],
+                ),
+              ] else if (!message.oneLinkRequest!.isFounder! &&
+                  message.oneLinkRequest!.onelinkStatus == "approved") ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          Helper.launchUrl(message.oneLinkRequest!.onelinkUrl!);
+                        },
+                        child: const TextWidget(
+                            text: "View Onelink",
+                            color: AppColors.primary,
+                            textSize: 12)),
+                    TextWidget(
+                        text:
+                            "Secret Key: ${message.oneLinkRequest!.onelinkSecretKey}",
+                        textSize: 12)
+                  ],
+                ),
+              ],
+            ],
+
+            // Always show status
+            if (message.oneLinkRequest != null) ...[
+              const SizedBox(height: 2),
+              Row(
+                children: [
+                  Icon(Icons.history, color: AppColors.white54, size: 16),
+                  const SizedBox(width: 4),
+                  TextWidget(
+                    text:
+                        "${message.oneLinkRequest!.onelinkStatus!.capitalizeFirst}",
+                    textSize: 12,
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
+            ],
+          ],
+        );
+
       default:
         return Container();
     }
@@ -679,6 +766,20 @@ class _ChatScreenState extends State<ChatScreen> {
                       });
                     }
                   }
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.link,
+                  color: AppColors.whiteCard,
+                ),
+                title: const TextWidget(
+                  text: 'OneLink',
+                  textSize: 15,
+                ),
+                onTap: () async {
+                  Navigator.pop(context);
+                  _controller.text = oneLinkController.oneLinkData.oneLink!;
                 },
               ),
             ],

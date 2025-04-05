@@ -3,6 +3,9 @@ import 'package:flutter/widgets.dart';
 
 import '../../model/01-StartupModel/companyModel/company_model.dart';
 import '../../model/01-StartupModel/companyModel/company_search_moel.dart';
+import '../../model/01-StartupModel/companyModel/get_affilation_request_model.dart';
+import '../../model/01-StartupModel/companyModel/get_team_member.dart';
+import '../../model/01-StartupModel/companyModel/search_user_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import 'dart:convert';
@@ -54,7 +57,6 @@ class CompanyController extends GetxController {
 
     var data = json.decode(response.body);
     if (data["status"]) {
-      getCompanyDetail();
       return true;
     } else {
       HelperSnackBar.snackBar("Error", data["message"]);
@@ -66,7 +68,6 @@ class CompanyController extends GetxController {
   var isCompanyFound = false.obs;
   Future getCompanyDetail() async {
     try {
-      isLoading.value = true;
       var response = await ApiBase.getRequest(
           extendedURL: ApiUrl.getCompanyDetail +
               GetStoreData.getStore.read('id').toString());
@@ -82,9 +83,7 @@ class CompanyController extends GetxController {
     } catch (e) {
       log("getCompany $e");
       return companyList;
-    } finally {
-      isLoading.value = false;
-    }
+    } finally {}
   }
 
   Future deleteCompany(context, id) async {
@@ -140,7 +139,7 @@ class CompanyController extends GetxController {
   TextEditingController lastYearRevenueController = TextEditingController();
   TextEditingController targetController = TextEditingController();
 
-  List<CoreTeamModel> coreTeamList = [];
+  // List<CoreTeamModel> coreTeamList = [];
 
   Future createCompany() async {
     var body = {
@@ -167,7 +166,7 @@ class CompanyController extends GetxController {
         "instagram": instagramLinkController.text
       },
       "description": companyDescriptionController.text,
-      "team": coreTeamList,
+      // "team": coreTeamList,
       "colorCard": {
         "last_round_investment": valuationController.text,
         "total_investment": totalInvestmentController.text,
@@ -249,33 +248,239 @@ class CompanyController extends GetxController {
     fundRaisedController.text = companyData.raisedFunds!;
     lastYearRevenueController.text = companyData.lastYearRevenue!;
     targetController.text = companyData.target!;
-    coreTeamList = (companyData.team ?? [])
-        .map((team) => CoreTeamModel.fromTeam(team))
-        .toList();
+    // coreTeamList = (companyData.team ?? [])
+    //     .map((team) => CoreTeamModel.fromTeam(team))
+    //     .toList();
   }
-}
+  Future clearData() async {
+    image = null;
+    companyNameController.clear();
+    companyTaglineController.clear();
+    companyLocationController.clear();
+    establishedDateController.clear();
+    selectedSector = null;
+    numOfEmpController.clear();
+    
+    websiteUrlController.clear();
+    visionController.clear();
+    missionController.clear();
+    keyFocusController.clear();
+    tamController.clear();
+    samController.clear();
+    somController.clear();
+    lastFundingDateController.clear();
+    selectedInvestmentStage = null;
+    selectedProductStage = null;
+    linkedInLinkController.clear();
+    twitterLinkController.clear();
+    instagramLinkController.clear();
+    companyDescriptionController.clear();
+    totalInvestmentController.clear();
+    noOfInvestorController.clear();
+    valuationController.clear();
+    fundAskController.clear();
+    currentValuationController.clear();
+    fundRaisedController.clear();
+    lastYearRevenueController.clear();
+    targetController.clear();
+  }
 
-class CoreTeamModel {
-  CoreTeamModel(
-      {required this.image, required this.name, required this.designaiton});
-  TextEditingController? image;
-  TextEditingController? name;
-  TextEditingController? designaiton;
 
-  Map<String, dynamic> toJson() {
-    return {
-      'image': image?.text ?? '',
-      'name': name?.text ?? '',
-      'designation': designaiton?.text ?? '',
+  TextEditingController roleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController startDateController = TextEditingController();
+  TextEditingController endDateController = TextEditingController();
+  bool currentWorking = false;
+  Future addAffilatedRequest(startupId) async {
+    var body = {
+      "role": roleController.text,
+      "description": descriptionController.text,
+      "startDate": startDateController.text,
+      "endDate": endDateController.text,
+      "currentWorking": currentWorking,
+      "startUpId": startupId,
     };
+    var response = await ApiBase.postRequest(
+        body: body, extendedURL: ApiUrl.sendAffilationReq, withToken: true);
+    log(response.body);
+
+    var data = json.decode(response.body);
+    Get.back(closeOverlays: true);
+    Get.back();
+    if (data["status"]) {
+      roleController.clear();
+      descriptionController.clear();
+      startDateController.clear();
+      endDateController.clear();
+      currentWorking = false;
+      HelperSnackBar.snackBar("Success", data["message"]);
+      return true;
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
   }
 
-  // ✅ Add this method to convert a Team model to CoreTeamModel
-  factory CoreTeamModel.fromTeam(Team team) {
-    return CoreTeamModel(
-      image: TextEditingController(text: team.image),
-      name: TextEditingController(text: team.name),
-      designaiton: TextEditingController(text: team.designation),
-    );
+  Future updateAffilatedRequest(
+      {required String requestId,
+      required String startupId,
+      required String status}) async {
+    var body = {
+      "requestId": requestId,
+      "startUpId": startupId,
+      "status": status,
+    };
+    var response = await ApiBase.pachRequest(
+        body: body, extendedURL: ApiUrl.updateAffilationReq, withToken: true);
+    log(response.body);
+
+    var data = json.decode(response.body);
+    Get.back();
+    if (data["status"]) {
+      roleController.clear();
+      descriptionController.clear();
+      startDateController.clear();
+      endDateController.clear();
+      currentWorking = false;
+      isLoading.value = true;
+      await getAffilatedRequest().then((v) {
+        isLoading.value = false;
+      });
+      return true;
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
+  }
+
+  AffilationReqData affilationReqData = AffilationReqData();
+  Future getAffilatedRequest() async {
+    try {
+      var response =
+          await ApiBase.getRequest(extendedURL: ApiUrl.getMemberAffilationReq);
+      log(response.body);
+      var data = jsonDecode(response.body);
+      if (data['status'] == true) {
+        GetAffilationRequestModel getAffilationRequestModel =
+            GetAffilationRequestModel.fromJson(data);
+        affilationReqData = getAffilationRequestModel.data!;
+      } else {}
+    } catch (e) {
+      log("getAffilatedrequest: $e");
+      return companyList;
+    } finally {}
+  }
+
+  List<UserData> userData = [];
+  var isUserLoading = false.obs;
+  Future searchUsers(query) async {
+    try {
+      isUserLoading.value = true;
+      var response =
+          await ApiBase.getRequest(extendedURL: ApiUrl.searchUser + query);
+      log(response.body);
+      userData.clear();
+      var data = jsonDecode(response.body);
+      if (data['status'] == true) {
+        SearchUserModel searchUserModel = SearchUserModel.fromJson(data);
+        userData.addAll(searchUserModel.data!);
+      } else {
+        HelperSnackBar.snackBar("Error", data["message"]);
+      }
+    } catch (e) {
+      log("getsearch: $e");
+      return false;
+    } finally {
+      isUserLoading.value = false;
+    }
+  }
+
+  Future addTeamMember({required String role, required String userId}) async {
+    var body = {
+      "role": role,
+      "userId": userId,
+    };
+    var response = await ApiBase.postRequest(
+        body: body, extendedURL: ApiUrl.addTeamMember, withToken: true);
+    log(response.body);
+    var data = json.decode(response.body);
+    Get.back(closeOverlays: true);
+    Get.back();
+    if (data["status"]) {
+      await getTeamMember();
+      HelperSnackBar.snackBar("Success", data["message"]);
+      return true;
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
+  }
+
+  var isTeamLoading = false.obs;
+  List<TeamMember> teamMember = [];
+  Future getTeamMember() async {
+    try {
+      isTeamLoading.value = true;
+      teamMember.clear();
+      var response =
+          await ApiBase.getRequest(extendedURL: ApiUrl.getTeamMember);
+      log(response.body);
+
+      var data = jsonDecode(response.body);
+      if (data['status'] == true) {
+        GetTeamMemberModel getTeamMemberModel =
+            GetTeamMemberModel.fromJson(data);
+        teamMember.addAll(getTeamMemberModel.data!);
+      }
+    } catch (e) {
+      log("getTeam member: $e");
+      return false;
+    } finally {
+      isTeamLoading.value = false;
+    }
+  }
+
+  Future removeTeamMember({required String userId}) async {
+    var body = {
+      "userId": userId,
+    };
+    var response = await ApiBase.pachRequest(
+        body: body, extendedURL: ApiUrl.removeTeamMember, withToken: true);
+    log(response.body);
+    var data = json.decode(response.body);
+    Get.back(closeOverlays: true);
+
+    if (data["status"]) {
+      HelperSnackBar.snackBar("Success", data["message"]);
+      return true;
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
   }
 }
+
+// class CoreTeamModel {
+//   CoreTeamModel(
+//       {required this.image, required this.name, required this.designaiton});
+//   TextEditingController? image;
+//   TextEditingController? name;
+//   TextEditingController? designaiton;
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'image': image?.text ?? '',
+//       'name': name?.text ?? '',
+//       'designation': designaiton?.text ?? '',
+//     };
+//   }
+
+//   // ✅ Add this method to convert a Team model to CoreTeamModel
+//   factory CoreTeamModel.fromTeam(Team team) {
+//     return CoreTeamModel(
+//       image: TextEditingController(text: team.image),
+//       name: TextEditingController(text: team.name),
+//       designaiton: TextEditingController(text: team.designation),
+//     );
+//   }
+// }

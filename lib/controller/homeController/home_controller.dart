@@ -8,6 +8,7 @@ import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../model/01-StartupModel/communityModel/communityCornerModel/community_corner_model.dart';
 import '../../model/01-StartupModel/newsModel/startup_corner_news_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
@@ -58,6 +59,28 @@ class HomeController extends GetxController {
       }
     } catch (e) {
       log("getHome Feed $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  List<CommunityCornerData> communityCornerList = [];
+  
+  Future geCommunityCorner() async {
+    try {
+      isLoading.value = true;
+      communityCornerList.clear();
+      var response =
+          await ApiBase.getRequest(extendedURL: ApiUrl.getComunityCorner);
+      log(response.body);
+      var data = jsonDecode(response.body);
+      if (data['status'] == true) {
+        CommunityCornerModel communityCornerModel =
+            CommunityCornerModel.fromJson(data);
+        communityCornerList.addAll(communityCornerModel.data!);
+      }
+    } catch (e) {
+      log("getcommunity corner $e");
     } finally {
       isLoading.value = false;
     }

@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final memberChat = memberChatFromJson(jsonString);
-
 import 'dart:convert';
 
 MemberChat memberChatFromJson(String str) =>
@@ -42,6 +38,7 @@ class ChatMessage {
   MessageType attachmentType;
   String? attachmentUrl;
   String timestamp;
+  OneLinkRequest? oneLinkRequest;
 
   ChatMessage({
     this.chatId,
@@ -51,6 +48,7 @@ class ChatMessage {
     this.messageId,
     this.attachmentUrl,
     required this.timestamp,
+    this.oneLinkRequest,
   });
 
   factory ChatMessage.fromJson(Map<String, dynamic> json) => ChatMessage(
@@ -60,6 +58,9 @@ class ChatMessage {
         attachmentType: attachmentTypeValues.map[json["attachment_type"]]!,
         attachmentUrl: json["attachment_url"],
         timestamp: json["timestamp"],
+        oneLinkRequest: json["oneLinkRequest"] != null
+            ? OneLinkRequest.fromJson(json["oneLinkRequest"])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -69,16 +70,52 @@ class ChatMessage {
         "attachment_type": attachmentTypeValues.reverse[attachmentType],
         "attachment_url": attachmentUrl,
         "timestamp": timestamp,
+        "oneLinkRequest": oneLinkRequest?.toJson(),
       };
 }
 
-enum MessageType { text, image, video, document }
+class OneLinkRequest {
+  String? onelinkStatus;
+  bool? isFounder;
+  String? requestId;
+  String? onelinkSecretKey;
+  String? startUpId;
+  String? onelinkUrl;
+
+  OneLinkRequest({
+    this.onelinkStatus,
+    this.isFounder,
+    this.requestId,
+    this.onelinkSecretKey,
+    this.startUpId,
+    this.onelinkUrl,
+  });
+
+  factory OneLinkRequest.fromJson(Map<String, dynamic> json) => OneLinkRequest(
+        onelinkStatus: json["onelinkStatus"],
+        isFounder: json["isFounder"],
+        requestId: json["requestId"],
+        startUpId: json["startUpId"],
+        onelinkSecretKey: json["onelinkSecretKey"],
+        onelinkUrl: json["onelinkUrl"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "onelinkStatus": onelinkStatus,
+        "isFounder": isFounder,
+        "requestId": requestId,
+        "startUpId": startUpId,
+      };
+}
+
+enum MessageType { text, image, video, document, oneLink }
 
 final attachmentTypeValues = EnumValues({
   "document": MessageType.document,
   "image": MessageType.image,
   "text": MessageType.text,
   "video": MessageType.video,
+  "oneLink": MessageType.oneLink
 });
 
 class EnumValues<T> {

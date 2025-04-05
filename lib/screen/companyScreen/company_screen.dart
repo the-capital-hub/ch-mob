@@ -2,13 +2,12 @@ import 'dart:async';
 
 import 'package:capitalhub_crm/controller/companyController/company_controller.dart';
 import 'package:capitalhub_crm/screen/companyScreen/add_company_screen.dart';
+import 'package:capitalhub_crm/screen/companyScreen/add_affilation_request_screen.dart';
 import 'package:capitalhub_crm/utils/helper/placeholder.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../model/01-StartupModel/companyModel/company_search_moel.dart';
 import '../../utils/appcolors/app_colors.dart';
 import '../../utils/constant/app_var.dart';
 import '../../utils/constant/asset_constant.dart';
@@ -16,6 +15,7 @@ import '../../utils/helper/helper.dart';
 import '../../widget/appbar/appbar.dart';
 import '../../widget/textwidget/text_widget.dart';
 import '../drawerScreen/drawer_screen.dart';
+import 'view_affilation_request_screen.dart';
 
 class CompanyScreen extends StatefulWidget {
   const CompanyScreen({super.key});
@@ -28,94 +28,34 @@ class _CompanyScreenState extends State<CompanyScreen> {
   CompanyController companyController = Get.put(CompanyController());
   TextEditingController searchController = TextEditingController();
   Timer? _debounce;
-  OverlayEntry? _overlayEntry;
   final LayerLink _layerLink = LayerLink();
   @override
   void initState() {
-    companyController.getCompanyDetail();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      companyController.isLoading.value = true;
+      _fetchAllApis().then((v) {
+        companyController.isLoading.value = false;
+      });
+    });
     super.initState();
+  }
+
+  Future<void> _fetchAllApis() async {
+    try {
+      await Future.wait([
+        companyController.getCompanyDetail(),
+        companyController.getAffilatedRequest()
+      ]);
+    } catch (e) {
+      print("Error calling APIs: $e");
+    }
   }
 
   @override
   void dispose() {
     searchController.dispose();
     _debounce?.cancel();
-    _overlayEntry?.remove();
     super.dispose();
-  }
-
-  void onSearchChanged(String query) {
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 300), () async {
-      if (query.isNotEmpty) {
-        await companyController.getCompanyList(query);
-        // setState(() {});
-        _showOverlay();
-      } else {
-        _removeOverlay();
-      }
-    });
-  }
-
-  void _showOverlay() {
-    _removeOverlay();
-    _overlayEntry = _createOverlayEntry();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Overlay.of(context).insert(_overlayEntry!);
-    });
-  }
-
-  void _removeOverlay() {
-    _overlayEntry?.remove();
-    _overlayEntry = null;
-  }
-
-  OverlayEntry _createOverlayEntry() {
-    return OverlayEntry(
-      builder: (context) => Positioned(
-        width: Get.width - 30,
-        child: CompositedTransformFollower(
-          link: _layerLink,
-          showWhenUnlinked: false,
-          offset: const Offset(0, 85),
-          child: Material(
-            elevation: 4.0,
-            color: AppColors.blackCard,
-            borderRadius: BorderRadius.circular(10),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 200),
-              child: companyController.isLoadingList.value
-                  ? Helper.loader(context)
-                  : ListView.separated(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      itemCount: companyController.companyList.length,
-                      separatorBuilder: (context, index) {
-                        return const Divider(height: 0);
-                      },
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          visualDensity: VisualDensity.compact,
-                          title: TextWidget(
-                              text:
-                                  companyController.companyList[index].company!,
-                              textSize: 14),
-                          onTap: () {
-                            searchController.clear();
-                            companyController.addCompanyToUser(context,
-                                companyController.companyList[index].id);
-
-                            _removeOverlay();
-                          },
-                        );
-                      },
-                    ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 
   @override
@@ -134,20 +74,34 @@ class _CompanyScreenState extends State<CompanyScreen> {
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
                       children: [
+                        if (companyController.affilationReqData.isFounder!)
+                          AppButton.outlineButton(
+                              onButtonPressed: () {
+                                Get.to(
+                                    () => const ViewAffilationRequestScreen());
+                              },
+                              borderRadius: 12,
+                              title: "View Affiliation Requests"),
                         Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Row(
                             children: [
                               Expanded(
-                                child: CompositedTransformTarget(
-                                  link: _layerLink,
-                                  child: MyCustomTextField.textField(
-                                      lableText:
-                                          "Choose from an existing company",
-                                      hintText: "Search",
-                                      onChange: onSearchChanged,
-                                      controller: searchController),
-                                ),
+                                child: MyCustomTextField.textField(
+                                    lableText:
+                                        "Choose from an existing company",
+                                    hintText: "Search",
+                                    onChange: (value) async {
+                                      if (value.trim().isEmpty) {
+                                        setState(() {
+                                          searchController.clear();
+                                        });
+                                      } else {
+                                        await companyController
+                                            .getCompanyList(value);
+                                      }
+                                    },
+                                    controller: searchController),
                               ),
                               const SizedBox(width: 8),
                               InkWell(
@@ -173,7 +127,8 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                   ),
                                 ),
                               ),
-                              if (companyController.companyData.isOwnCompany??false)
+                              if (companyController.companyData.isOwnCompany ??
+                                  false)
                                 InkWell(
                                   onTap: () {
                                     Get.to(AddCompanyScreen(
@@ -201,6 +156,100 @@ class _CompanyScreenState extends State<CompanyScreen> {
                             ],
                           ),
                         ),
+                        Obx(() {
+                          if (companyController.isLoadingList.value) {
+                            return Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Center(
+                                  child: CircularProgressIndicator(
+                                color: AppColors.white54,
+                              )),
+                            );
+                          }
+
+                          if (companyController.companyList.isEmpty ||
+                              searchController.text.isEmpty) {
+                            return const SizedBox();
+                          }
+
+                          return ConstrainedBox(
+                            constraints:
+                                BoxConstraints(maxHeight: 200, minHeight: 50),
+                            child: Container(
+                              margin: const EdgeInsets.only(
+                                  top: 5, bottom: 10, left: 10, right: 10),
+                              decoration: BoxDecoration(
+                                color: AppColors.blackCard,
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.white12,
+                                    blurRadius: 5,
+                                    spreadRadius: 1,
+                                  ),
+                                ],
+                              ),
+                              child: companyController.isLoadingList.value
+                                  ? Helper.loader(context)
+                                  : ListView.separated(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      itemCount:
+                                          companyController.companyList.length,
+                                      separatorBuilder: (context, index) {
+                                        return const Divider(height: 0);
+                                      },
+                                      itemBuilder: (context, index) {
+                                        return ListTile(
+                                          visualDensity: VisualDensity.compact,
+                                          leading: CircleAvatar(
+                                            radius: 20,
+                                            backgroundImage: NetworkImage(
+                                                companyController
+                                                    .companyList[index].logo!),
+                                          ),
+                                          title: TextWidget(
+                                              text: companyController
+                                                  .companyList[index].company!,
+                                              textSize: 14),
+                                          onTap: () {
+                                            searchController.clear();
+                                            setState(() {});
+                                            if (companyController
+                                                .companyList[index]
+                                                .isFounder!) {
+                                              Helper.loader(context);
+                                              companyController
+                                                  .addCompanyToUser(
+                                                      context,
+                                                      companyController
+                                                          .companyList[index]
+                                                          .id)
+                                                  .then((v) {
+                                                Get.back();
+                                                companyController
+                                                    .isLoading.value = true;
+                                                _fetchAllApis().then((v) {
+                                                  companyController
+                                                      .isLoading.value = false;
+                                                });
+                                              });
+                                            } else {
+                                              Get.to(() =>
+                                                  AffiliationRequestScreen(
+                                                      startupId:
+                                                          companyController
+                                                              .companyList[
+                                                                  index]
+                                                              .id!));
+                                            }
+                                          },
+                                        );
+                                      },
+                                    ),
+                            ),
+                          );
+                        }),
                         companyController.isCompanyFound.value == false
                             ? const Expanded(
                                 child: Center(
@@ -546,7 +595,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                                 fontWeight: FontWeight.w500),
                                           ),
                                           SizedBox(
-                                            height: 118,
+                                            height: 122,
                                             child: ListView.separated(
                                               itemCount: companyController
                                                   .companyData.team!.length,
@@ -587,17 +636,13 @@ class _CompanyScreenState extends State<CompanyScreen> {
                                                               ),
                                                               const SizedBox(
                                                                   width: 8),
-                                                              Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  TextWidget(
-                                                                      text:
-                                                                          "${companyController.companyData.team![index].name}",
-                                                                      textSize:
-                                                                          14),
-                                                                ],
+                                                              Expanded(
+                                                                child: TextWidget(
+                                                                    text:
+                                                                        "${companyController.companyData.team![index].name}",
+                                                                    maxLine: 2,
+                                                                    textSize:
+                                                                        14),
                                                               )
                                                             ],
                                                           ),

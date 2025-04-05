@@ -31,12 +31,12 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
   List<UserModel> users = GetStoreDataList.getUserList();
   @override
   void initState() {
-    log(users.length.toString());
-    bool isInvestor = GetStoreData.getStore.read('isInvestor') ?? false;
-    users = GetStoreDataList.getUserList()
-        .where((user) => user.isInvestor == isInvestor)
-        .toList();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      log(users.length.toString());
+      bool isInvestor = GetStoreData.getStore.read('isInvestor') ?? false;
+      users = GetStoreDataList.getUserList()
+          .where((user) => user.isInvestor == isInvestor)
+          .toList();
       profileController.getProfile();
     });
     super.initState();

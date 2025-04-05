@@ -166,10 +166,11 @@ class ExploreController extends GetxController {
       var body = {
         "startUpId": id,
       };
+      log(body.toString());
       var response = await ApiBase.postRequest(
           body: body, extendedURL: ApiUrl.onelinkSentUrl, withToken: true);
-      log(response.body);
       var data = json.decode(response.body);
+      Get.back();
       if (data["status"] == true) {
         HelperSnackBar.snackBar("Success", data["message"]);
         return true;

@@ -1,14 +1,10 @@
-import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
-import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'placeholder.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
 class Helper {

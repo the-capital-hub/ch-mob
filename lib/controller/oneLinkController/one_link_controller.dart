@@ -4,7 +4,9 @@ import 'package:capitalhub_crm/model/01-StartupModel/oneLinkGetModel/one_link_mo
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:quill_html_editor/quill_html_editor.dart';
 
+import '../../model/01-StartupModel/oneLinkGetModel/one_link_request_model.dart';
 import '../../model/01-StartupModel/profileModel/profile_post_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
@@ -12,7 +14,8 @@ import '../../utils/helper/helper.dart';
 import '../../utils/helper/helper_sncksbar.dart';
 
 class OneLinkController extends GetxController {
-  TextEditingController introMsgController = TextEditingController();
+  // TextEditingController introMsgController = TextEditingController();
+  QuillEditorController introMsgController = QuillEditorController();
   TextEditingController linkController = TextEditingController();
   TextEditingController secrateKeyController = TextEditingController();
   TextEditingController investmentPhilosophyController =
@@ -35,7 +38,6 @@ class OneLinkController extends GetxController {
         oneLinkData = oneLinkGetModel.data!;
         linkController.text = oneLinkData.oneLink!;
         secrateKeyController.text = oneLinkData.secretOneLinkKey!;
-        introMsgController.text = oneLinkData.introductoryMessage!;
         investmentPhilosophyController.text = oneLinkData.investmentPhilosophy!;
         thesisData = oneLinkData.thesis!;
       }
@@ -46,10 +48,53 @@ class OneLinkController extends GetxController {
     }
   }
 
+  OnelinkReqData oneLinkReqData = OnelinkReqData();
+  Future getOneLinkPendingRequest() async {
+    try {
+      isLoading.value = true;
+      var response =
+          await ApiBase.getRequest(extendedURL: ApiUrl.getOneLinkPendingReq);
+      log(response.body);
+      var data = jsonDecode(response.body);
+      if (data['status'] == true) {
+        OnelinkRequestModel onelinkRequestModel =
+            OnelinkRequestModel.fromJson(data);
+        oneLinkReqData = onelinkRequestModel.data!;
+      }
+    } catch (e) {
+      log("getOnelink req list $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future acceptOnelink(
+      String startupid, String reqId, bool isAccept) async {
+    var response = await ApiBase.postRequest(
+      body: {"startUpId": startupid, "requestId": reqId},
+      withToken: true,
+      extendedURL: isAccept ? ApiUrl.acceptOnelink : ApiUrl.rejectOnelink,
+    );
+    log(response.body);
+    var data = json.decode(response.body);
+    Get.back();
+    if (data["status"]) {
+      HelperSnackBar.snackBar("Success", data["message"]);
+      await getOneLinkPendingRequest();
+      return true;
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
+  }
+
   Future editOneLinkDetails(context) async {
     Helper.loader(context);
+    String onelinkIntroMsg = "";
+    await introMsgController.getText().then((val) => onelinkIntroMsg = val);
+
     var body = {
-      "introductoryMessage": introMsgController.text,
+      "introductoryMessage": onelinkIntroMsg,
       "investmentPhilosophy": investmentPhilosophyController.text,
       "secretOneLinkKey": secrateKeyController.text,
       "thesis": thesisData,
@@ -73,7 +118,9 @@ class OneLinkController extends GetxController {
   // only for startup
   Future postIntroMsg(context) async {
     Helper.loader(context);
-    var body = {"introductoryMessage": introMsgController.text};
+    String onelinkIntroMsg = "";
+    await introMsgController.getText().then((val) => onelinkIntroMsg = val);
+    var body = {"introductoryMessage": onelinkIntroMsg};
     var response = await ApiBase.pachRequest(
         body: body, extendedURL: ApiUrl.onelinkIntroMsgPost, withToken: true);
     log(response.body);

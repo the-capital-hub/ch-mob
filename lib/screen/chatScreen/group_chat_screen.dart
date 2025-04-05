@@ -1,15 +1,12 @@
 // lib/screens/chat_page.dart
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:capitalhub_crm/controller/chatController/chat_controller.dart';
 import 'package:capitalhub_crm/screen/chatScreen/doc_preview.dart';
 import 'package:capitalhub_crm/screen/homeScreen/widget/fullscreen_image_view.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
-import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:file_picker/file_picker.dart';
@@ -19,7 +16,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:video_player/video_player.dart';
-import '../../model/01-StartupModel/chatModel/chat_memberlist_model.dart';
 import '../../model/01-StartupModel/chatModel/group_memberlist_model.dart';
 import '../../model/01-StartupModel/chatModel/member_chats.dart';
 import 'video_preview.dart';

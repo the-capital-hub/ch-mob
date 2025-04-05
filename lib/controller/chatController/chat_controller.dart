@@ -238,4 +238,26 @@ class ChatController extends GetxController {
       return false;
     }
   }
+
+  Future acceptOnelink(String startupid,String reqId, String chatId, bool isAccept) async {
+    var response = await ApiBase.postRequest(
+      body: {
+        "startUpId": startupid,
+        "requestId":reqId
+      },
+      withToken: true,
+      extendedURL: isAccept ? ApiUrl.acceptOnelink : ApiUrl.rejectOnelink,
+    );
+    log(response.body);
+    var data = json.decode(response.body);
+    Get.back();
+    if (data["status"]) {
+      HelperSnackBar.snackBar("Success", data["message"]);
+      await getChats(chatId);
+      return true;
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
+    }
+  }
 }

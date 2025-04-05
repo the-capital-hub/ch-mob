@@ -17,27 +17,11 @@ class CommunitiesCornerWidget extends StatefulWidget {
 
 class _CommunitiesCornerWidgetState extends State<CommunitiesCornerWidget> {
   HomeController homeController = Get.find();
-  CommunityController allCommunities = Get.put(CommunityController());
-  @override
-  void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      // allCommunities.getAllCommunities().then((v) {
-      //   WidgetsBinding.instance.addPostFrameCallback((_) {});
-      // });
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 350,
-      margin: const EdgeInsets.all(6),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: AppColors.blackCard,
-      ),
-      padding: const EdgeInsets.all(8),
+    return SizedBox(
+      height: 320,
       child: homeController.isLoading.value
           ? Helper.loader(context)
           : Padding(
@@ -54,51 +38,62 @@ class _CommunitiesCornerWidgetState extends State<CommunitiesCornerWidget> {
                         separatorBuilder: (context, index) =>
                             const SizedBox(width: 12),
                         scrollDirection: Axis.horizontal,
-                        itemCount: homeController.startUpNewsList.length,
+                        itemCount: homeController.communityCornerList.length,
                         itemBuilder: (context, index) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 180,
-                                width: 250,
-                                decoration: BoxDecoration(
-                                  image: const DecorationImage(
-                                    image: NetworkImage(
-                                      "https://res.cloudinary.com/drjt9guif/image/upload/v1739605439/TheCapitalHub/posts/images/k3eekniyiqkswisifupe.webp",
+                          return Container(
+                            width: Get.width / 1.3,
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: AppColors.blackCard,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: 150,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        "${homeController.communityCornerList[index].image}",
+                                      ),
+                                      fit: BoxFit.fitHeight,
                                     ),
-                                    fit: BoxFit.fill,
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                              ),
-                              const SizedBox(height: 12),
-                              const TextWidget(
-                                text: "Hustler's Club",
-                                textSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              const SizedBox(height: 12),
-                              const TextWidget(
-                                  text: "Join our vibrant community!",
-                                  textSize: 14),
-                              const SizedBox(height: 12),
-                              Container(
-                                width: 250,
-                                child: const Row(
-                                  children: [
-                                    TextWidget(
-                                        text: "17 Members", textSize: 14),
-                                    Spacer(),
-                                    TextWidget(
-                                      text: "Free to Join",
-                                      textSize: 12,
-                                      color: AppColors.primary,
-                                    ),
-                                  ],
+                                Spacer(),
+                                TextWidget(
+                                  text: homeController
+                                      .communityCornerList[index].name!,
+                                  textSize: 16,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                              ),
-                            ],
+                                const SizedBox(height: 12),
+                                const TextWidget(
+                                    text: "Join our vibrant community!",
+                                    textSize: 14),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  width: 250,
+                                  child: Row(
+                                    children: [
+                                      TextWidget(
+                                          text:
+                                              "${homeController.communityCornerList[index].memberSize} Members",
+                                          textSize: 14),
+                                      Spacer(),
+                                      TextWidget(
+                                        text:
+                                            "${homeController.communityCornerList[index].amount}",
+                                        textSize: 12,
+                                        color: AppColors.primary,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           );
                         }),
                   ),

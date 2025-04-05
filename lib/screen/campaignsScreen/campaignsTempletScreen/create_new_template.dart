@@ -52,7 +52,7 @@ class _CreateNewTemplateState extends State<CreateNewTemplate> {
 
   addEmailBody() async {
     await campaignsController.templateBodyController
-        .insertText(campaignsController.templateList[widget.index!].emailBody!);
+        .setText(campaignsController.templateList[widget.index!].emailBody!);
   }
 
   @override

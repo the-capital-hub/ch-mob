@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:capitalhub_crm/controller/chatController/chat_controller.dart';
 import 'package:capitalhub_crm/controller/homeController/home_controller.dart';
+import 'package:capitalhub_crm/controller/oneLinkController/one_link_controller.dart';
 import 'package:capitalhub_crm/screen/chatScreen/chat_screen.dart';
 import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
@@ -26,8 +27,10 @@ class ChatMemberScreen extends StatefulWidget {
 
 class _ChatMemberScreenState extends State<ChatMemberScreen> {
   ChatController chatController = Get.put(ChatController());
+  OneLinkController oneLinkController = Get.put(OneLinkController());
   @override
   void initState() {
+    oneLinkController.getOneLinkDetails();
     chatController.getChatMemberList();
     searchController.addListener(_onSearchChanged);
     super.initState();

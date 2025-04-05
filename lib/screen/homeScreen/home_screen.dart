@@ -133,6 +133,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         homeController.getPublicPost(page, true).then((v) {
           // _controller.forward();
         }),
+        homeController.geCommunityCorner(),
         homeController.getUserCollection(),
         homeController.getStartupNews(offSet: 10)
       ]);

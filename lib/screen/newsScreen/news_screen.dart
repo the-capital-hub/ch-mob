@@ -10,6 +10,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../utils/appcolors/app_colors.dart';
 import '../../utils/constant/app_var.dart';
 import '../../utils/getStore/get_store.dart';
+import '../../utils/helper/placeholder.dart';
 import '../../widget/appbar/appbar.dart';
 import '../../widget/textwidget/text_widget.dart';
 import '../drawerScreen/drawer_screen.dart';
@@ -43,7 +44,7 @@ class _NewsScreenState extends State<NewsScreen> {
           appBar: HelperAppBar.appbarHelper(
               title: "News", hideBack: true, autoAction: true),
           body: Obx(() => newsController.isLoading.value
-              ? Helper.pageLoading()
+              ? ShimmerLoader.shimmerTile()
               : ListView.separated(
                   physics: const BouncingScrollPhysics(),
                   itemCount: newsController.newsList.length,

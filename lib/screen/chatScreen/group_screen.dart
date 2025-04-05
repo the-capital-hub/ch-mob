@@ -9,6 +9,7 @@ import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -26,7 +27,9 @@ class _GroupListScreenState extends State<GroupListScreen> {
   ChatController chatController = Get.put(ChatController());
   @override
   void initState() {
-    chatController.getGroupChatMemberList();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      chatController.getGroupChatMemberList();
+    });
     super.initState();
   }
 

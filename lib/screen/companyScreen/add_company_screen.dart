@@ -11,10 +11,12 @@ import 'package:capitalhub_crm/widget/datePicker/datePicker.dart';
 import 'package:capitalhub_crm/widget/dropdownWidget/drop_down_widget.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 
 import '../../widget/imagePickerWidget/image_picker_widget.dart';
 import '../../widget/textwidget/text_widget.dart';
+import 'add_core_team_screen.dart';
 
 class AddCompanyScreen extends StatefulWidget {
   bool isEdit = false;
@@ -28,17 +30,16 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
   CompanyController companyController = Get.find();
   @override
   void initState() {
-    if (widget.isEdit == false) {
-      if (companyController.coreTeamList.isEmpty) {
-        companyController.coreTeamList.add(CoreTeamModel(
-            image: TextEditingController(text: ""),
-            name: TextEditingController(text: ""),
-            designaiton: TextEditingController(text: "")));
-        setState(() {});
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      if (widget.isEdit == false) {
+        companyController.clearData();
+      } else {
+        companyController.fillData().then((v) {
+          setState(() {});
+        });
+        companyController.getTeamMember();
       }
-    } else {
-      companyController.fillData();
-    }
+    });
     super.initState();
   }
 
@@ -232,102 +233,121 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                     hintText: "Enter Company Description",
                     maxLine: 6,
                     controller: companyController.companyDescriptionController),
-                sizedTextfield,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const TextWidget(
-                        text: "Core Team",
-                        textSize: 16,
-                        fontWeight: FontWeight.w500),
-                    InkWell(
-                      onTap: () {
-                        companyController.coreTeamList.add(CoreTeamModel(
-                            image: TextEditingController(text: ""),
-                            name: TextEditingController(text: ""),
-                            designaiton: TextEditingController(text: "")));
-                        setState(() {});
-                      },
-                      child: const TextWidget(
-                        text: "Add New +",
-                        textSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.primary,
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 8),
-                SizedBox(
-                    height: 230,
-                    child: companyController.coreTeamList.isEmpty
-                        ? const Center(
-                            child: TextWidget(
-                                text: "No Members Added", textSize: 14))
-                        : ListView.separated(
-                            itemCount: companyController.coreTeamList.length,
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return const SizedBox(width: 8);
-                            },
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Container(
-                                height: 230,
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                width: Get.width / 1.5,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Colors.white10),
-                                child: Column(
-                                  children: [
-                                    const SizedBox(height: 8),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const TextWidget(
-                                          text: "Add Team Member",
-                                          textSize: 14,
+                if (widget.isEdit) sizedTextfield,
+                if (widget.isEdit)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const TextWidget(
+                          text: "Core Team",
+                          textSize: 16,
+                          fontWeight: FontWeight.w500),
+                      InkWell(
+                        onTap: () {
+                          Get.to(const AddCoreTeamScreen());
+                        },
+                        child: const TextWidget(
+                          text: "Add New +",
+                          textSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.primary,
+                        ),
+                      )
+                    ],
+                  ),
+                if (widget.isEdit) const SizedBox(height: 8),
+                if (widget.isEdit)
+                  Obx(
+                    () => SizedBox(
+                        height: 200,
+                        child: companyController.isTeamLoading.value
+                            ? Helper.pageLoading()
+                            : companyController.teamMember.isEmpty
+                                ? const Center(
+                                    child: TextWidget(
+                                        text: "No Members Added", textSize: 14))
+                                : ListView.separated(
+                                    itemCount:
+                                        companyController.teamMember.length,
+                                    separatorBuilder:
+                                        (BuildContext context, int index) {
+                                      return const SizedBox(width: 8);
+                                    },
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Container(
+                                        height: 200,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        width: Get.width / 2,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            color: Colors.white10),
+                                        child: Column(
+                                          children: [
+                                            const SizedBox(height: 8),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                InkWell(
+                                                  onTap: () {
+                                                    Helper.loader(context);
+                                                    companyController
+                                                        .removeTeamMember(
+                                                            userId:
+                                                                companyController
+                                                                    .teamMember[
+                                                                        index]
+                                                                    .userId!)
+                                                        .then((v) {
+                                                      companyController
+                                                          .teamMember
+                                                          .removeAt(index);
+                                                      setState(() {});
+                                                    });
+                                                  },
+                                                  child: const Icon(
+                                                    Icons.delete,
+                                                    color: AppColors.redColor,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 8),
+                                            CircleAvatar(
+                                              backgroundImage: NetworkImage(
+                                                  companyController
+                                                      .teamMember[index]
+                                                      .image!),
+                                              radius: 40,
+                                            ),
+                                            sizedTextfield,
+                                            TextWidget(
+                                              text: companyController
+                                                  .teamMember[index].name!,
+                                              textSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                              maxLine: 2,
+                                            ),
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
+                                            TextWidget(
+                                              text: companyController
+                                                  .teamMember[index]
+                                                  .designation!,
+                                              textSize: 14,
+                                              maxLine: 2,
+                                            ),
+                                          ],
                                         ),
-                                        InkWell(
-                                          onTap: () {
-                                            companyController.coreTeamList
-                                                .removeAt(index);
-                                            setState(() {});
-                                          },
-                                          child: const Icon(
-                                            Icons.delete,
-                                            color: AppColors.redColor,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 8),
-                                    MyCustomTextField.textField(
-                                        // lableText: "Image",
-                                        hintText: "Enter Image Url",
-                                        controller: companyController
-                                            .coreTeamList[index].image!),
-                                    sizedTextfield,
-                                    MyCustomTextField.textField(
-                                        // lableText: "Name",
-                                        hintText: "Enter Name",
-                                        controller: companyController
-                                            .coreTeamList[index].name!),
-                                    sizedTextfield,
-                                    MyCustomTextField.textField(
-                                        // lableText: "Designation",
-                                        hintText: "Enter Designation",
-                                        controller: companyController
-                                            .coreTeamList[index].designaiton!),
-                                    sizedTextfield,
-                                  ],
-                                ),
-                              );
-                            },
-                          )),
+                                      );
+                                    },
+                                  )),
+                  ),
                 sizedTextfield,
                 const TextWidget(
                     text: "Previous Funding Round",

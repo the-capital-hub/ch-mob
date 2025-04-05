@@ -257,7 +257,7 @@ class _CreateCampaignsScreenState extends State<CreateCampaignsScreen> {
                     lableText: "Email Body",
                     isEnable: false,
                     onEditorCreated: () {
-                      campaignsController.emailContentcontroller.insertText(
+                      campaignsController.emailContentcontroller.setText(
                           campaignsController
                               .proceedTemplateData.templateContent!);
                     },

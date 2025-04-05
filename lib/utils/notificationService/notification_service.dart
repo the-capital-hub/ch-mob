@@ -1,10 +1,9 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-import '../../screen/notificationScreen/notification_screen.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 class FirebaseNotificationService extends GetxService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -58,16 +57,24 @@ class FirebaseNotificationService extends GetxService {
     _fcmToken ??= await _firebaseMessaging.getToken();
     return _fcmToken;
   }
-
+  Future<String> _getNotificationIcon() async {
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+  
+  return androidInfo.version.sdkInt >= 34 
+      ? 'ic_stat_notification' 
+      : 'launcher_icon';   
+}
   void _showNotification(RemoteMessage message) async {
     print("Notification Message: ${message.toMap()}");
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+   String iconName = await _getNotificationIcon();
+    AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       'high_importance_channel',
       'High Importance Notifications',
       importance: Importance.max,
       priority: Priority.high,
-      icon: 'ic_stat_notification',
+      icon: iconName,
     );
 //     const AndroidNotificationDetails androidPlatformChannelSpecifics =
 //     AndroidNotificationDetails(
@@ -78,7 +85,7 @@ class FirebaseNotificationService extends GetxService {
 //   icon: '@drawable/ic_stat_notification', // Use the new icon here
 // );
 
-    const NotificationDetails platformChannelSpecifics =
+    NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
 
     await _flutterLocalNotificationsPlugin.show(

@@ -217,20 +217,12 @@ class _ExploreScreenState extends State<ExploreScreen>
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      TextWidget(
-                                        text:
-                                            "${exploreController.startupExploreList[index].company}",
-                                        textSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      // Icon(Icons.bookmark_border_outlined,
-                                      //     color: AppColors.white, size: 20)
-                                    ],
+                                  TextWidget(
+                                    text:
+                                        "${exploreController.startupExploreList[index].company}",
+                                    textSize: 15,
+                                    maxLine: 2,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                   const SizedBox(height: 4),
                                   TextWidget(
@@ -652,6 +644,7 @@ class _ExploreScreenState extends State<ExploreScreen>
                                                 .startupExploreList[index]
                                                 .oneLinkRequestStatus ==
                                             "Request for OneLink") {
+                                          Helper.loader(context);
                                           exploreController
                                               .onelinkSent(
                                                   id: exploreController
@@ -663,6 +656,7 @@ class _ExploreScreenState extends State<ExploreScreen>
                                                       .startupExploreList[index]
                                                       .oneLinkRequestStatus =
                                                   "pending";
+                                              setState(() {});
                                             }
                                           });
                                         }

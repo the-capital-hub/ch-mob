@@ -20,6 +20,7 @@ import 'package:quill_html_editor/quill_html_editor.dart';
 
 import '../../utils/getStore/get_store.dart';
 import '../profileScreen/polls_widget_profile.dart';
+import 'one_link_request_screen.dart';
 
 class OneLinkScreeen extends StatefulWidget {
   const OneLinkScreeen({super.key});
@@ -46,6 +47,7 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
     await Future.wait([
       oneLinkController.getOneLinkDetails(),
       oneLinkController.getCompanyProfilePost(),
+      oneLinkController.getOneLinkPendingRequest(),
     ]);
   }
 
@@ -68,6 +70,16 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            if (oneLinkController.oneLinkReqData.isFounder ??
+                                false)
+                              AppButton.outlineButton(
+                                  onButtonPressed: () {
+                                    Get.to(const OneLinkRequestScreen());
+                                  },
+                                  borderRadius: 12,
+                                  title: "View Pending Requests"),
+                            sizedTextfield,
+
                             const TextWidget(
                                 text: "Create one link", textSize: 16),
                             sizedTextfield,
@@ -82,49 +94,88 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                                 lableText:
                                     "Now share all your startup details in OneLink"),
                             sizedTextfield,
-                            MyCustomTextField.textField(
-                                hintText: "Type your text here",
-                                controller:
-                                    oneLinkController.introMsgController,
-                                suffixIcon: InkWell(
-                                  onTap: () {
-                                    if (GetStoreData.getStore
-                                        .read('isInvestor')) {
-                                      oneLinkController
-                                          .editOneLinkDetails(context);
-                                    } else {
-                                      oneLinkController.postIntroMsg(context);
-                                    }
-                                  },
-                                  child: Container(
-                                      height: 92,
-                                      width: 10,
-                                      decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.only(
-                                            topRight: Radius.circular(6),
-                                            bottomRight: Radius.circular(6)),
-                                        color: GetStoreData.getStore
-                                                .read('isInvestor')
-                                            ? AppColors.primaryInvestor
-                                            : AppColors.primary,
-                                      ),
-                                      child: Icon(
-                                        Icons.send,
-                                        color: GetStoreData.getStore
-                                                .read('isInvestor')
-                                            ? AppColors.black
-                                            : AppColors.white,
-                                      )),
-                                ),
-                                maxLine: 3,
-                                lableText: "Introductory message"),
+                            // MyCustomTextField.textField(
+                            //     hintText: "Type your text here",
+                            //     controller:
+                            //         oneLinkController.introMsgController,
+                            //     suffixIcon: InkWell(
+                            //       onTap: () {
+                            //         if (GetStoreData.getStore
+                            //             .read('isInvestor')) {
+                            //           oneLinkController
+                            //               .editOneLinkDetails(context);
+                            //         } else {
+                            //           oneLinkController.postIntroMsg(context);
+                            //         }
+                            //       },
+                            //       child: Container(
+                            //           height: 92,
+                            //           width: 10,
+                            //           decoration: BoxDecoration(
+                            //             borderRadius: const BorderRadius.only(
+                            //                 topRight: Radius.circular(6),
+                            //                 bottomRight: Radius.circular(6)),
+                            //             color: GetStoreData.getStore
+                            //                     .read('isInvestor')
+                            //                 ? AppColors.primaryInvestor
+                            //                 : AppColors.primary,
+                            //           ),
+                            //           child: Icon(
+                            //             Icons.send,
+                            //             color: GetStoreData.getStore
+                            //                     .read('isInvestor')
+                            //                 ? AppColors.black
+                            //                 : AppColors.white,
+                            //           )),
+                            //     ),
+                            //     maxLine: 3,
+                            //     lableText: "Introductory message"),
                             Stack(
                               children: [
                                 MyCustomTextField.htmlTextField(
                                     hintText: "hintText",
                                     lableText: "Introductory message",
-                                    controller: QuillEditorController()),
-                                    
+                                    onEditorCreated: () {
+                                      oneLinkController.introMsgController
+                                          .setText(oneLinkController.oneLinkData
+                                              .introductoryMessage!);
+                                    },
+                                    suffixButton: InkWell(
+                                      onTap: () {
+                                        if (GetStoreData.getStore
+                                            .read('isInvestor')) {
+                                          oneLinkController
+                                              .editOneLinkDetails(context);
+                                        } else {
+                                          oneLinkController
+                                              .postIntroMsg(context);
+                                        }
+                                      },
+                                      child: Container(
+                                          height: 92,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    topRight:
+                                                        Radius.circular(6),
+                                                    bottomRight:
+                                                        Radius.circular(6)),
+                                            color: GetStoreData.getStore
+                                                    .read('isInvestor')
+                                                ? AppColors.primaryInvestor
+                                                : AppColors.primary,
+                                          ),
+                                          child: Icon(
+                                            Icons.send,
+                                            color: GetStoreData.getStore
+                                                    .read('isInvestor')
+                                                ? AppColors.black
+                                                : AppColors.white,
+                                          )),
+                                    ),
+                                    controller:
+                                        oneLinkController.introMsgController),
                                 Positioned(
                                   right: 8,
                                   child: InkWell(
@@ -607,8 +658,10 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
           itemBuilder: (BuildContext context, int index) {
             return InkWell(
               onTap: () {
-                oneLinkController.introMsgController.text = oneLinkController
-                    .oneLinkData.previousIntroductoryMessage![index];
+                oneLinkController.introMsgController.clear();
+                oneLinkController.introMsgController.insertText(
+                    oneLinkController
+                        .oneLinkData.previousIntroductoryMessage![index]);
                 setState(() {});
                 Get.back(closeOverlays: true);
               },
