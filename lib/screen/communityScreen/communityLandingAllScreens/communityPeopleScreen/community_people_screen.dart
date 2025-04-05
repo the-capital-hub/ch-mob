@@ -61,139 +61,141 @@ class _CommunityPeopleScreenState extends State<CommunityPeopleScreen> {
         child: Scaffold(
             backgroundColor: AppColors.transparent,
             body: Obx(
-              () => communityMembers.isLoading.value
-                  ? Helper.pageLoading()
-                  : communityMembers.communityMembersList.isEmpty
-                      ? const Center(
-                          child: TextWidget(
-                              text: "No Members Present", textSize: 16))
-                      : Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              MyCustomTextField.textField(
-                                  prefixIcon: Icon(
-                                    Icons.search,
-                                    color: AppColors.white54,
-                                  ),
-                                  fillColor: AppColors.white,
-                                  borderClr: AppColors.white54,
-                                  borderRadius: 8,
-                                  hintText: "Search",
-                                  onChange: (String name) {
-                                    onMemberNameChanged(name);
-                                  },
-                                  controller: searchController),
-                              const SizedBox(
-                                height: 12,
-                              ),
-                              Expanded(
-                                child: ListView.separated(
-                                    itemBuilder: (context, index) {
-                                      return Card(
-                                        margin: EdgeInsets.zero,
-                                        color: AppColors.blackCard,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  CircleAvatar(
-                                                    radius: 25,
-                                                    foregroundImage:
-                                                        NetworkImage(
-                                                      communityMembers
+              () => Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    MyCustomTextField.textField(
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: AppColors.white54,
+                        ),
+                        fillColor: AppColors.white,
+                        borderClr: AppColors.white54,
+                        borderRadius: 8,
+                        hintText: "Search",
+                        onChange: (String name) {
+                          onMemberNameChanged(name);
+                        },
+                        controller: searchController),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Expanded(
+                      child: communityMembers.isLoading.value
+                          ? Helper.pageLoading()
+                          : communityMembers.communityMembersList.isEmpty
+                              ? const Center(
+                                  child: TextWidget(
+                                      text: "No Members Present", textSize: 16))
+                              : ListView.separated(
+                                  itemBuilder: (context, index) {
+                                    return Card(
+                                      margin: EdgeInsets.zero,
+                                      color: AppColors.blackCard,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                CircleAvatar(
+                                                  radius: 25,
+                                                  foregroundImage: NetworkImage(
+                                                    communityMembers
+                                                        .communityMembersList[
+                                                            index]
+                                                        .profilePicture,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 12,
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    TextWidget(
+                                                        text:
+                                                            "${communityMembers.communityMembersList[index].firstName} ${communityMembers.communityMembersList[index].lastName}",
+                                                        textSize: 20),
+                                                    TextWidget(
+                                                      text: communityMembers
                                                           .communityMembersList[
                                                               index]
-                                                          .profilePicture,
+                                                          .designation
+                                                          .toString(),
+                                                      textSize: 13,
+                                                      color: GetStoreData
+                                                              .getStore
+                                                              .read(
+                                                                  'isInvestor')
+                                                          ? AppColors
+                                                              .primaryInvestor
+                                                          : AppColors.primary,
                                                     ),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 12,
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      TextWidget(
-                                                          text:
-                                                              "${communityMembers.communityMembersList[index].firstName} ${communityMembers.communityMembersList[index].lastName}",
-                                                          textSize: 20),
-                                                      TextWidget(
+                                                    TextWidget(
                                                         text: communityMembers
                                                             .communityMembersList[
                                                                 index]
-                                                            .designation
+                                                            .company
                                                             .toString(),
-                                                        textSize: 13,
+                                                        textSize: 15),
+                                                    TextWidget(
+                                                        text: communityMembers
+                                                            .communityMembersList[
+                                                                index]
+                                                            .location
+                                                            .toString(),
+                                                        textSize: 15),
+                                                    TextWidget(
+                                                        text: communityMembers
+                                                            .communityMembersList[
+                                                                index]
+                                                            .joinedDate,
+                                                        textSize: 15),
+                                                  ],
+                                                ),
+                                                const Spacer(),
+                                                if (isAdmin)
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        Helper.loader(context);
+                                                        communityMembers
+                                                            .removeCommunityMember(
+                                                                communityMembers
+                                                                    .communityMembersList[
+                                                                        index]
+                                                                    .id);
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.person_remove,
                                                         color:
-                                                            GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
-                                                      ),
-                                                      TextWidget(
-                                                          text: communityMembers
-                                                              .communityMembersList[
-                                                                  index]
-                                                              .company
-                                                              .toString(),
-                                                          textSize: 15),
-                                                      TextWidget(
-                                                          text: communityMembers
-                                                              .communityMembersList[
-                                                                  index]
-                                                              .location
-                                                              .toString(),
-                                                          textSize: 15),
-                                                      TextWidget(
-                                                          text: communityMembers
-                                                              .communityMembersList[
-                                                                  index]
-                                                              .joinedDate,
-                                                          textSize: 15),
-                                                    ],
-                                                  ),
-                                                  const Spacer(),
-                                                  if (isAdmin)
-                                                    IconButton(
-                                                        onPressed: () {
-                                                          Helper.loader(
-                                                              context);
-                                                          communityMembers
-                                                              .removeCommunityMember(
-                                                                  communityMembers
-                                                                      .communityMembersList[
-                                                                          index]
-                                                                      .id);
-                                                        },
-                                                        icon: const Icon(
-                                                          Icons.person_remove,
-                                                          color: AppColors
-                                                              .redColor,
-                                                        ))
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                height: 16,
-                                              ),
-                                            ],
-                                          ),
+                                                            AppColors.redColor,
+                                                      ))
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 16,
+                                            ),
+                                          ],
                                         ),
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) =>
-                                        const SizedBox(
-                                          height: 12,
-                                        ),
-                                    itemCount: communityMembers
-                                        .communityMembersList.length),
-                              )
-                            ],
-                          ),
-                        ),
+                                      ),
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                        height: 12,
+                                      ),
+                                  itemCount: communityMembers
+                                      .communityMembersList.length),
+                    )
+                  ],
+                ),
+              ),
             )));
   }
 }

@@ -208,25 +208,29 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
                                                         .toString());
                                               },
                                             ),
-                                            IconButton(
-                                              padding: EdgeInsets.zero,
-                                              icon: const Icon(Icons.logout),
-                                              color: GetStoreData.getStore
-                                                      .read('isInvestor')
-                                                  ? AppColors.primaryInvestor
-                                                  : AppColors.primary,
-                                              onPressed: () {
-                                                Helper.loader(context);
-                                                myCommunities.leaveCommunity(
-                                                    myCommunities
-                                                        .myCommunitiesDetails[
-                                                            index]
-                                                        .id);
-                                              },
-                                            ),
+                                            if (myCommunities
+                                                    .myCommunitiesDetails[index]
+                                                    .role ==
+                                                "Member")
+                                              IconButton(
+                                                padding: EdgeInsets.zero,
+                                                icon: const Icon(Icons.logout),
+                                                color: GetStoreData.getStore
+                                                        .read('isInvestor')
+                                                    ? AppColors.primaryInvestor
+                                                    : AppColors.primary,
+                                                onPressed: () {
+                                                  Helper.loader(context);
+                                                  myCommunities.leaveCommunity(
+                                                      myCommunities
+                                                          .myCommunitiesDetails[
+                                                              index]
+                                                          .id);
+                                                },
+                                              ),
                                           ],
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 )),

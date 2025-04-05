@@ -1,11 +1,19 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityEventsController/community_events_controller.dart';
+import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityMeetingsController/community_meetings_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/controller/loginController/login_controller.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityWebinarsModel/community_webinars_model.dart';
+import 'package:capitalhub_crm/screen/Auth-Process/authScreen/login_page.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
+import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
+import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
+import 'package:capitalhub_crm/widget/buttons/button.dart';
+import 'package:capitalhub_crm/widget/dilogue/communityDialog/login_dialog.dart';
+import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -13,6 +21,8 @@ import 'package:quill_html_editor/quill_html_editor.dart';
 
 CommunityEventsController communityEvents =
     Get.put(CommunityEventsController());
+
+LoginController loginMobileController = Get.put(LoginController());
 
 class CommunityWebinarsController extends GetxController {
   String formattedDate = "";
@@ -23,7 +33,7 @@ class CommunityWebinarsController extends GetxController {
   String startTime = "";
   String endTime = "";
   var isLoading = false.obs;
-  
+
   RxList<CommunityWebinars> communityWebinarsList = <CommunityWebinars>[].obs;
 
   Future<void> getCommunityWebinars() async {
@@ -69,20 +79,20 @@ class CommunityWebinarsController extends GetxController {
     return outputFormat.format(finalDateTime);
   }
 
-  String cleanHtmlDescription(String description) {
-    description = description.replaceAll(RegExp(r'(<br>\s*)+'), '<br>');
+  // String cleanHtmlDescription(String description) {
+  //   description = description.replaceAll(RegExp(r'(<br>\s*)+'), '<br>');
 
-    description = description.replaceAll(RegExp(r'<p>\s*<\/p>'), '');
+  //   description = description.replaceAll(RegExp(r'<p>\s*<\/p>'), '');
 
-    description =
-        description.replaceAll(RegExp(r'<p>\s*<br>\s*<\/p>'), '<p><br></p>');
+  //   description =
+  //       description.replaceAll(RegExp(r'<p>\s*<br>\s*<\/p>'), '<p><br></p>');
 
-    description = description.trim();
+  //   description = description.trim();
 
-    return description;
-  }
+  //   return description;
+  // }
 
-  Future createCommunityWebinar(base64) async {
+  Future createCommunityWebinar(context, base64) async {
     String description = "";
     await descriptionController.getText().then((val) => description = val);
     DateTime? date = DateTime.tryParse(dateController.text);
@@ -115,6 +125,8 @@ class CommunityWebinarsController extends GetxController {
       HelperSnackBar.snackBar("Success", data["message"]);
       communityEvents.getCommunityEvents();
       return true;
+    } else if (data["message"] == "googleLogin") {
+      showLoginAlertDialog(context);
     } else {
       Get.back();
       Get.back();
@@ -126,7 +138,7 @@ class CommunityWebinarsController extends GetxController {
   Future updateCommunityWebinar(base64, webinarId) async {
     String description = "";
     await descriptionController.getText().then((val) => description = val);
-    description = cleanHtmlDescription(description);
+    // description = cleanHtmlDescription(description);
     DateTime? date = DateTime.tryParse(dateController.text);
     String? dateIso = "${date?.toIso8601String() ?? ""}Z";
     String startTime = convertToIsoFormat(startTimeController.text, date);

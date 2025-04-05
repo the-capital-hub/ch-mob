@@ -4,107 +4,114 @@
 
 import 'dart:convert';
 
-GetCommunityEventsModel getCommunityEventsModelFromJson(String str) => GetCommunityEventsModel.fromJson(json.decode(str));
+GetCommunityEventsModel getCommunityEventsModelFromJson(String str) =>
+    GetCommunityEventsModel.fromJson(json.decode(str));
 
-String getCommunityEventsModelToJson(GetCommunityEventsModel data) => json.encode(data.toJson());
+String getCommunityEventsModelToJson(GetCommunityEventsModel data) =>
+    json.encode(data.toJson());
 
 class GetCommunityEventsModel {
-    bool status;
-    String message;
-    CommunityEvent data;
+  bool status;
+  String message;
+  CommunityEvent data;
 
-    GetCommunityEventsModel({
-        required this.status,
-        required this.message,
-        required this.data,
-    });
+  GetCommunityEventsModel({
+    required this.status,
+    required this.message,
+    required this.data,
+  });
 
-    factory GetCommunityEventsModel.fromJson(Map<String, dynamic> json) => GetCommunityEventsModel(
+  factory GetCommunityEventsModel.fromJson(Map<String, dynamic> json) =>
+      GetCommunityEventsModel(
         status: json["status"],
         message: json["message"],
         data: CommunityEvent.fromJson(json["data"]),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
         "data": data.toJson(),
-    };
+      };
 }
 
 class CommunityEvent {
-    List<Webinar>? webinars;
+  List<Webinar>? webinars;
 
-    CommunityEvent({
-        this.webinars,
-    });
+  CommunityEvent({
+    this.webinars,
+  });
 
-    factory CommunityEvent.fromJson(Map<String, dynamic> json) => CommunityEvent(
-        webinars: List<Webinar>.from(json["webinars"].map((x) => Webinar.fromJson(x))),
-    );
+  factory CommunityEvent.fromJson(Map<String, dynamic> json) => CommunityEvent(
+        webinars: List<Webinar>.from(
+            json["webinars"].map((x) => Webinar.fromJson(x))),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "webinars": List<dynamic>.from(webinars!.map((x) => x.toJson())),
-    };
+      };
 }
 
 class Webinar {
-    String id;
-    bool isActive;
-    bool isExpired;
-    String date;
-    String title;
-    String description;
-    String startTime;
-    String endTime;
-    String duration;
-    String discount;
-    String price;
-    String image;
-    String webinarLink;
-    String creatorName;
-    List<JoinedUser> joinedUsers;
-    String registerUrl;
+  String? id;
+  bool? isActive;
+  bool? isExpired;
+  String? date;
+  String? title;
+  String? description;
+  String? startTime;
+  String? endTime;
+  String? duration;
+  String? discount;
+  String? price;
+  String? image;
+  String? webinarLink;
+  String? creatorName;
+  List<JoinedUser>? joinedUsers;
+  String? registerUrl;
+  String? webinarSharelink;
 
-    Webinar({
-        required this.id,
-        required this.isActive,
-        required this.isExpired,
-        required this.date,
-        required this.title,
-        required this.description,
-        required this.startTime,
-        required this.endTime,
-        required this.duration,
-        required this.discount,
-        required this.price,
-        required this.webinarLink,
-        required this.creatorName,
-        required this.joinedUsers,
-        required this.registerUrl,
-        required this.image,
-    });
+  Webinar({
+    this.id,
+    this.isActive,
+    this.isExpired,
+    this.date,
+    this.title,
+    this.description,
+    this.startTime,
+    this.endTime,
+    this.duration,
+    this.discount,
+    this.price,
+    this.webinarLink,
+    this.creatorName,
+    this.joinedUsers,
+    this.registerUrl,
+    this.image,
+    this.webinarSharelink,
+  });
 
-    factory Webinar.fromJson(Map<String, dynamic> json) => Webinar(
-        id: json["_id"],
-        isActive: json["isActive"],
-        isExpired: json["is_expired"],
-        date: json["date"],
-        title: json["title"],
-        description: json["description"],
-        startTime: json["startTime"],
-        endTime: json["endTime"],
-        duration: json["duration"],
-        discount: json["discount"],
-        price: json["price"],
-        webinarLink: json["webinarLink"],
-        creatorName: json["creatorName"],
-        joinedUsers: List<JoinedUser>.from(json["joinedUsers"].map((x) => JoinedUser.fromJson(x))),
-        registerUrl: json["registerUrl"],
-        image: json["image"],
-    );
+  factory Webinar.fromJson(Map<String, dynamic> json) => Webinar(
+      id: json["_id"],
+      isActive: json["isActive"],
+      isExpired: json["is_expired"],
+      date: json["date"],
+      title: json["title"],
+      description: json["description"],
+      startTime: json["startTime"],
+      endTime: json["endTime"],
+      duration: json["duration"],
+      discount: json["discount"],
+      price: json["price"],
+      webinarLink: json["webinarLink"],
+      creatorName: json["creatorName"],
+      joinedUsers: List<JoinedUser>.from(
+          json["joinedUsers"].map((x) => JoinedUser.fromJson(x))),
+      registerUrl: json["registerUrl"],
+      image: json["image"],
+      webinarSharelink: json["webinar_shareLink"]);
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "_id": id,
         "isActive": isActive,
         "is_expired": isExpired,
@@ -118,34 +125,35 @@ class Webinar {
         "price": price,
         "webinarLink": webinarLink,
         "creatorName": creatorName,
-        "joinedUsers": List<dynamic>.from(joinedUsers.map((x) => x.toJson())),
+        "joinedUsers": List<dynamic>.from(joinedUsers!.map((x) => x.toJson())),
         "registerUrl": registerUrl,
         "image": image,
-    };
+        "webinar_shareLink": webinarSharelink
+      };
 }
 
 class JoinedUser {
-    String name;
-    String email;
-    String mobile;
-    dynamic orderId;
-    dynamic paymentId;
-    dynamic paymentTime;
-    int paymentAmount;
-    String id;
+  String? name;
+  String? email;
+  String? mobile;
+  String? orderId;
+  String? paymentId;
+  String? paymentTime;
+  int? paymentAmount;
+  String? id;
 
-    JoinedUser({
-        required this.name,
-        required this.email,
-        required this.mobile,
-        required this.orderId,
-        required this.paymentId,
-        required this.paymentTime,
-        required this.paymentAmount,
-        required this.id,
-    });
+  JoinedUser({
+    this.name,
+    this.email,
+    this.mobile,
+    this.orderId,
+    this.paymentId,
+    this.paymentTime,
+    this.paymentAmount,
+    this.id,
+  });
 
-    factory JoinedUser.fromJson(Map<String, dynamic> json) => JoinedUser(
+  factory JoinedUser.fromJson(Map<String, dynamic> json) => JoinedUser(
         name: json["name"],
         email: json["email"],
         mobile: json["mobile"],
@@ -154,9 +162,9 @@ class JoinedUser {
         paymentTime: json["paymentTime"],
         paymentAmount: json["paymentAmount"],
         id: json["_id"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "name": name,
         "email": email,
         "mobile": mobile,
@@ -165,5 +173,5 @@ class JoinedUser {
         "paymentTime": paymentTime,
         "paymentAmount": paymentAmount,
         "_id": id,
-    };
+      };
 }

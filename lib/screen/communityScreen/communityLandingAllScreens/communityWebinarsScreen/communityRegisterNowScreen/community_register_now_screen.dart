@@ -101,7 +101,7 @@ class _CommunityRegisterNowScreenState
                             children: [
                               TextWidget(
                                 text: communityEvents.communityEventsData
-                                    .webinars![widget.index].title,
+                                    .webinars![widget.index].title!,
                                 textSize: 20,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -119,7 +119,7 @@ class _CommunityRegisterNowScreenState
                                   ),
                                   TextWidget(
                                       text: communityEvents.communityEventsData
-                                          .webinars![widget.index].date,
+                                          .webinars![widget.index].date!,
                                       textSize: 16)
                                 ],
                               ),
@@ -151,7 +151,7 @@ class _CommunityRegisterNowScreenState
                                   ),
                                   TextWidget(
                                       text: communityEvents.communityEventsData
-                                          .webinars![widget.index].duration,
+                                          .webinars![widget.index].duration!,
                                       textSize: 16)
                                 ],
                               ),
@@ -196,7 +196,7 @@ class _CommunityRegisterNowScreenState
 
                               HtmlWidget(
                                 communityEvents.communityEventsData
-                                    .webinars![widget.index].description,
+                                    .webinars![widget.index].description!,
                                 textStyle: TextStyle(
                                   fontSize: 16,
                                   color: AppColors.white,

@@ -39,6 +39,7 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
   }
 
   bool isBooked = false;
+  bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Obx(() => communityMeetings.isLoading.value
@@ -68,32 +69,79 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                                 textSize: 20,
                                 fontWeight: FontWeight.w500,
                               ),
-                              // IconButton(
-                              //   icon: Icon(
-                              //     Icons.mobile_screen_share_rounded,
-                              //     color: AppColors.white,
-                              //   ),
-                              //   onPressed: () {
-                              //     sharePostPopup(
-                              //         context, "", "share meeting details");
-                              //   },
-                              // )
+                              IconButton(
+                                icon: Icon(
+                                  Icons.mobile_screen_share_rounded,
+                                  color: AppColors.white,
+                                ),
+                                onPressed: () {
+                                  sharePostPopup(
+                                      context,
+                                      "",
+                                      communityMeetings
+                                          .communityMeetingsList[index]
+                                          .meetingSharelink!);
+                                },
+                              )
                             ],
                           ),
                           sizedTextfield,
-                          HtmlWidget(
-                            // "${communityMeetings.communityMeetingsList[index].description}",
-                             communityMeetings.communityMeetingsList[index].description!.replaceAll(RegExp(r'\n\s*\n'), '\n'),
-                            textStyle: TextStyle(
-                              fontSize: 15,
-                              color: AppColors.white,
-                            ),
-                          ),
+                          // HtmlWidget(
+                          //   // "${communityMeetings.communityMeetingsList[index].description}",
+                          //    communityMeetings.communityMeetingsList[index].description!.replaceAll(RegExp(r'\n\s*\n'), '\n'),
+                          //   textStyle: TextStyle(
+                          //     fontSize: 15,
+                          //     color: AppColors.white,
+                          //   ),
+                          // ),
                           // TextWidget(
                           //   text: communityMeetings
                           //       .communityMeetingsList[index].description,
                           //   textSize: 15,
                           // ),
+                          HtmlWidget(
+                            _isExpanded
+                                ? "${communityMeetings.communityMeetingsList[index].description!.replaceAll(RegExp(r'\n\s*\n'), '\n')}"
+                                : communityMeetings.communityMeetingsList[index]
+                                            .description!
+                                            .replaceAll(
+                                                RegExp(r'\n\s*\n'), '\n')
+                                            .length >
+                                        200
+                                    ? "${communityMeetings.communityMeetingsList[index].description!.replaceAll(RegExp(r'\n\s*\n'), '\n').substring(0, 200)} ..."
+                                    : communityMeetings
+                                        .communityMeetingsList[index]
+                                        .description!
+                                        .replaceAll(RegExp(r'\n\s*\n'), '\n'),
+                            textStyle: TextStyle(
+                                fontSize:
+                                    (MediaQuery.of(context).size.width / 375) *
+                                        12,
+                                color: AppColors.white),
+                          ),
+                          if (communityMeetings
+                                  .communityMeetingsList[index].description!
+                                  .replaceAll(RegExp(r'\n\s*\n'), '\n')
+                                  .length >
+                              200)
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _isExpanded = !_isExpanded;
+                                  });
+                                },
+                                child: Text(
+                                  _isExpanded ? "Read Less" : "Read More",
+                                  style: const TextStyle(
+                                      color: AppColors.blue,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+
                           sizedTextfield,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -226,84 +274,98 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                               ],
                             ),
                           if (communityMeetings
-                              .communityMeetingsList[index].isExpired!)...[
-                                sizedTextfield,
-                            Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                side: const BorderSide(
-                                  color: AppColors.redColor,
-                                  width: 1,
+                              .communityMeetingsList[index].isExpired!) ...[
+                            sizedTextfield,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      side: const BorderSide(
+                                        color: AppColors.redColor,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    color: AppColors.redColor.withOpacity(0.3),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(12),
+                                      child: Center(
+                                        child: TextWidget(
+                                          text: "Meeting Time Expired",
+                                          textSize: 16,
+                                          color: AppColors.redColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              color: AppColors.redColor.withOpacity(0.3),
-                              child: const Padding(
-                                padding: EdgeInsets.all(12),
-                                child: TextWidget(
-                                  text: "Meeting Time Expired",
-                                  textSize: 16,
-                                  color: AppColors.redColor,
-                                ),
-                              ),
+                              ],
                             ),
                             sizedTextfield,
-                              ],
+                          ],
 
-                          if (!isAdmin
-                              &&
+                          if (!isAdmin &&
                               !communityMeetings
-                                .communityMeetingsList[index].isExpired!
-                              )
+                                  .communityMeetingsList[index].isExpired!)
                             AppButton.primaryButton(
                               onButtonPressed: () {
                                 // Get.to(() => CommunitySelectTimeSlotScreen(
                                 //       index: index,
                                 //     ));
-                                    Get.to(() => CommunityBookAMeetingScreen(
+                                Get.to(() => CommunityBookAMeetingScreen(
                                       index: index,
                                     ));
                               },
                               title: "Book Meeting",
                             ),
                           if (communityMeetings
-                              .communityMeetingsList[index].isBookedByMe!)...[
-                                sizedTextfield,
-                            Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                side: const BorderSide(
-                                  color: AppColors.green,
-                                  width: 1,
-                                ),
-                              ),
-                              color: AppColors.green.withOpacity(0.3),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  children: [
-                                    AppButton.primaryButton(
-                                        onButtonPressed: () {},
-                                        title: "Booked!",
-                                        bgColor: AppColors.green700),
-                                    sizedTextfield,
-                                    TextWidget(
-                                      text: communityMeetings
-                                          .communityMeetingsList[index]
-                                          .availability![0]
-                                          .day!,
-                                      textSize: 16,
+                              .communityMeetingsList[index].isBookedByMe!) ...[
+                            sizedTextfield,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      side: const BorderSide(
+                                        color: AppColors.green,
+                                        width: 1,
+                                      ),
                                     ),
-                                    sizedTextfield,
-                                    TextWidget(
-                                      text:
-                                          "${communityMeetings.communityMeetingsList[index].availability![0].slots![0].startTime} - ${communityMeetings.communityMeetingsList[index].availability![0].slots![0].endTime}",
-                                      textSize: 16,
+                                    color: AppColors.green.withOpacity(0.3),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12),
+                                      child: Center(
+                                        child: Column(
+                                          children: [
+                                            AppButton.primaryButton(
+                                                onButtonPressed: () {},
+                                                title: "Booked!",
+                                                bgColor: AppColors.green700),
+                                            sizedTextfield,
+                                            TextWidget(
+                                              text: communityMeetings
+                                                  .communityMeetingsList[index]
+                                                  .availability![0]
+                                                  .day!,
+                                              textSize: 16,
+                                            ),
+                                            sizedTextfield,
+                                            TextWidget(
+                                              text:
+                                                  "${communityMeetings.communityMeetingsList[index].availability![0].slots![0].startTime} - ${communityMeetings.communityMeetingsList[index].availability![0].slots![0].endTime}",
+                                              textSize: 16,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             )
-                              ]
+                          ]
                         ],
                       ),
                     ),

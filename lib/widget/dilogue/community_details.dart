@@ -98,7 +98,7 @@ Future<bool> showCommunityDetailsPopup(BuildContext context) async {
                             child: Center(
                               child: TextWidget(
                                   text: "back".toUpperCase(),
-                                  color: Colors.orange,
+                                  color: AppColors.redColor,
                                   fontWeight: FontWeight.w500,
                                   textSize: 14),
                             )),

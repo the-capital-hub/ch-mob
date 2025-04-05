@@ -32,6 +32,7 @@ class _CommunityPriorityDMScreenState
       Get.put(CommunityPriorityDMsController());
   List<TextEditingController> questionControllers = [];
   Map<int, bool> questionFieldVisibility = {};
+  bool _isExpanded = false;
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
@@ -93,26 +94,71 @@ class _CommunityPriorityDMScreenState
                                 textSize: 20,
                                 fontWeight: FontWeight.w500,
                               ),
-                              // IconButton(
-                              //   icon: Icon(
-                              //     Icons.mobile_screen_share_rounded,
-                              //     color: AppColors.white,
-                              //   ),
-                              //   onPressed: () {
-                              //     sharePostPopup(
-                              //         context, "", "share priorityDMs detail");
-                              //   },
-                              // )
+                              IconButton(
+                                icon: Icon(
+                                  Icons.mobile_screen_share_rounded,
+                                  color: AppColors.white,
+                                ),
+                                onPressed: () {
+                                  sharePostPopup(
+                                      context,
+                                      "",
+                                      communityPriorityDMs
+                                          .communityPriorityDMsList[index]
+                                          .dmSharelink!);
+                                },
+                              )
                             ],
                           ),
                           sizedTextfield,
+                          // HtmlWidget(
+                          //   "${communityPriorityDMs.communityPriorityDMsList[index].description}",
+                          //   textStyle: TextStyle(
+                          //     fontSize: 15,
+                          //     color: AppColors.white,
+                          //   ),
+                          // ),
                           HtmlWidget(
-                            "${communityPriorityDMs.communityPriorityDMsList[index].description}",
+                            _isExpanded
+                                ? "${communityPriorityDMs.communityPriorityDMsList[index].description}"
+                                : communityPriorityDMs
+                                            .communityPriorityDMsList[index]
+                                            .description!
+                                            .length >
+                                        200
+                                    ? "${communityPriorityDMs.communityPriorityDMsList[index].description!.substring(0, 200)} ..."
+                                    : communityPriorityDMs
+                                        .communityPriorityDMsList[index]
+                                        .description!,
                             textStyle: TextStyle(
-                              fontSize: 15,
-                              color: AppColors.white,
-                            ),
+                                fontSize:
+                                    (MediaQuery.of(context).size.width / 375) *
+                                        12,
+                                color: AppColors.white),
                           ),
+                          if (communityPriorityDMs
+                                  .communityPriorityDMsList[index]
+                                  .description!
+                                  .length >
+                              200)
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _isExpanded = !_isExpanded;
+                                  });
+                                },
+                                child: Text(
+                                  _isExpanded ? "Read Less" : "Read More",
+                                  style: const TextStyle(
+                                      color: AppColors.blue,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+
                           sizedTextfield,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

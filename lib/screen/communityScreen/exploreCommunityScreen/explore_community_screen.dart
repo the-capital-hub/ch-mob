@@ -37,13 +37,12 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
     });
     super.initState();
   }
-  
+
   Timer? _debounce;
   void onCommunityNameChanged(String name) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 1000), () async {
       await allCommunities.getAllCommunities(name);
-      
     });
   }
 
@@ -61,272 +60,360 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
             hideBack: true,
             autoAction: true,
           ),
-          body: Obx(() => allCommunities.isLoading.value
-              ? Helper.pageLoading()
-              : allCommunities.allCommunitiesDetails.isEmpty
-                  ? const Center(
-                      child: TextWidget(
-                          text: "No Community Available", textSize: 16))
-                  : Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        children: [
-                          MyCustomTextField.textField(
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: AppColors.white54,
-                              ),
-                              onChange: (String name){
-                                onCommunityNameChanged(name);
-                              },
-                              fillColor: AppColors.white,
-                              borderClr: AppColors.white54,
-                              borderRadius: 8,
-                              hintText: "Search",
-                              controller: searchController),
-                          const SizedBox(
-                            height: 12,
-                          ),
-                          Expanded(
-                            child: GridView.builder(
-                              itemCount:
-                                  allCommunities.allCommunitiesDetails.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 7,
-                                mainAxisSpacing: 7,
-                                childAspectRatio: 0.7,
-                              ),
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () {
-                                    if (!allCommunities
-                                            .allCommunitiesDetails[index]
-                                            .isCommunityMember &&
-                                        allCommunities
-                                            .allCommunitiesDetails[index]
-                                            .isOpen) {
-                                      createdCommunityId = allCommunities
-                                          .allCommunitiesDetails[index].id;
-                                      communityLogo = allCommunities
-                                          .allCommunitiesDetails[index].image;
-                                      communityName = allCommunities
-                                          .allCommunitiesDetails[index]
-                                          .community;
-                                      isAdmin = allCommunities
-                                                  .allCommunitiesDetails[index]
-                                                  .role ==
-                                              "Admin"
-                                          ? true
-                                          : false;
-                                      Get.to(() => CommunityAboutScreen(
-                                          isPublic: true, index: index));
-                                    } else if (!allCommunities
-                                            .allCommunitiesDetails[index]
-                                            .isCommunityMember &&
-                                        !allCommunities
-                                            .allCommunitiesDetails[index]
-                                            .isOpen) {
-                                      showCommunityDetailsPopup(context);
-                                    } else {
-                                      createdCommunityId = allCommunities
-                                          .allCommunitiesDetails[index].id;
-                                      communityLogo = allCommunities
-                                          .allCommunitiesDetails[index].image;
-                                      communityName = allCommunities
-                                          .allCommunitiesDetails[index]
-                                          .community;
-                                      isAdmin = allCommunities
-                                                  .allCommunitiesDetails[index]
-                                                  .role ==
-                                              "Admin"
-                                          ? true
-                                          : false;
-                                      Get.to(
-                                          () => const CommunityLandingScreen());
-                                    }
-                                  },
-                                  child: Card(
-                                      margin: EdgeInsets.zero,
-                                      color: AppColors.blackCard,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 4, right: 7),
-                                        child: Column(
-                                          children: [
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            CircleAvatar(
-                                              foregroundImage: NetworkImage(
-                                                  allCommunities
+          body: Obx(() => Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  children: [
+                    MyCustomTextField.textField(
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: AppColors.white54,
+                        ),
+                        onChange: (String name) {
+                          onCommunityNameChanged(name);
+                        },
+                        fillColor: AppColors.white,
+                        borderClr: AppColors.white54,
+                        borderRadius: 8,
+                        hintText: "Search",
+                        controller: searchController),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Expanded(
+                      child: allCommunities.isLoading.value
+                          ? Helper.pageLoading()
+                          : allCommunities.allCommunitiesDetails.isEmpty
+                              ? const Center(
+                                  child: TextWidget(
+                                      text: "No Community Available",
+                                      textSize: 16))
+                              : ListView.separated(
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                    height: 12,
+                                  ),
+                                  shrinkWrap: true,
+                                  padding: EdgeInsets.zero,
+                                  itemCount: allCommunities
+                                      .allCommunitiesDetails.length,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        if (!allCommunities
+                                                .allCommunitiesDetails[index]
+                                                .isCommunityMember &&
+                                            allCommunities
+                                                .allCommunitiesDetails[index]
+                                                .isOpen) {
+                                          createdCommunityId = allCommunities
+                                              .allCommunitiesDetails[index].id;
+                                          communityLogo = allCommunities
+                                              .allCommunitiesDetails[index]
+                                              .image;
+                                          communityName = allCommunities
+                                              .allCommunitiesDetails[index]
+                                              .community;
+                                          isAdmin = allCommunities
                                                       .allCommunitiesDetails[
                                                           index]
-                                                      .image
-                                                      .toString()),
-                                            ),
-                                            const SizedBox(
-                                              height: 2,
-                                            ),
-                                            TextWidget(
-                                              text: allCommunities
-                                                  .allCommunitiesDetails[index]
-                                                  .community,
-                                              textSize: 13,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                            const SizedBox(height: 3),
-                                            TextWidget(
-                                              text: allCommunities
-                                                  .allCommunitiesDetails[index]
-                                                  .size,
-                                              textSize: 12,
-                                              color: GetStoreData.getStore
-                                                      .read('isInvestor')
-                                                  ? AppColors.primaryInvestor
-                                                  : AppColors.primary,
-                                            ),
-                                            const SizedBox(
-                                              height: 3,
-                                            ),
-                                            TextWidget(
-                                                text:
-                                                    "${allCommunities.allCommunitiesDetails[index].members.length.toString()} Members",
-                                                textSize: 5),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                                      .role ==
+                                                  "Admin"
+                                              ? true
+                                              : false;
+                                          Get.to(() => CommunityAboutScreen(
+                                              isPublic: true, index: index));
+                                        } else if (!allCommunities
+                                                .allCommunitiesDetails[index]
+                                                .isCommunityMember &&
+                                            !allCommunities
+                                                .allCommunitiesDetails[index]
+                                                .isOpen) {
+                                          showCommunityDetailsPopup(context);
+                                        } else {
+                                          createdCommunityId = allCommunities
+                                              .allCommunitiesDetails[index].id;
+                                          communityLogo = allCommunities
+                                              .allCommunitiesDetails[index]
+                                              .image;
+                                          communityName = allCommunities
+                                              .allCommunitiesDetails[index]
+                                              .community;
+                                          isAdmin = allCommunities
+                                                      .allCommunitiesDetails[
+                                                          index]
+                                                      .role ==
+                                                  "Admin"
+                                              ? true
+                                              : false;
+                                          Get.to(() =>
+                                              const CommunityLandingScreen());
+                                        }
+                                      },
+                                      child: Card(
+                                          margin: EdgeInsets.zero,
+                                          color: AppColors.blackCard,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(
+                                                12),
+                                            child: Row(
+                                             
                                               children: [
-                                                Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Container(
-                                                      height: 3,
-                                                      width: 3,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(20),
-                                                          color:
-                                                              AppColors.white)),
-                                                ),
-                                                const SizedBox(
-                                                  width: 4,
-                                                ),
-                                                TextWidget(
-                                                    text: allCommunities
-                                                        .allCommunitiesDetails[
-                                                            index]
-                                                        .createdAtTimeAgo,
-                                                    textSize: 5),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              height: 4,
-                                            ),
-                                            Card(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20)),
-                                              color: AppColors.grey700,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 5,
-                                                        vertical: 6),
-                                                child: TextWidget(
-                                                    text: allCommunities
-                                                        .allCommunitiesDetails[
-                                                            index]
-                                                        .isAbleToJoinTag,
-                                                    textSize: 11),
-                                              ),
-                                            ),
-                                            TextWidget(
-                                                text: allCommunities
-                                                    .allCommunitiesDetails[
-                                                        index]
-                                                    .amount,
-                                                textSize: 11),
-                                            if (!allCommunities
-                                                    .allCommunitiesDetails[
-                                                        index]
-                                                    .isCommunityMember &&
-                                                allCommunities
-                                                    .allCommunitiesDetails[
-                                                        index]
-                                                    .isOpen)
-                                              InkWell(
-                                                onTap: () async {
-                                                  Helper.loader(context);
-                                                  createdCommunityId =
-                                                      allCommunities
-                                                          .allCommunitiesDetails[
-                                                              index]
-                                                          .id;
-                                                  await allCommunities
-                                                      .joinCommunity();
-                                                  communityLogo = allCommunities
-                                                      .allCommunitiesDetails[
-                                                          index]
-                                                      .image;
-                                                  communityName = allCommunities
-                                                      .allCommunitiesDetails[
-                                                          index]
-                                                      .community;
-                                                  isAdmin = allCommunities
+                                                Column(
+                                                  children: [
+                                                    CircleAvatar(
+                                                      radius: 30,
+                                                      foregroundImage: NetworkImage(
+                                                          allCommunities
                                                               .allCommunitiesDetails[
                                                                   index]
-                                                              .role ==
-                                                          "Admin"
-                                                      ? true
-                                                      : false;
-                                                  Get.to(() =>
-                                                      const CommunityLandingScreen());
-                                                },
-                                                child: Card(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20)),
-                                                  color: GetStoreData.getStore
-                                                          .read('isInvestor')
-                                                      ? AppColors
-                                                          .primaryInvestor
-                                                      : AppColors.primary,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 5,
-                                                        vertical: 6),
-                                                    child: TextWidget(
-                                                      text: "Join Now",
-                                                      textSize: 11,
+                                                              .image
+                                                              .toString()),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(width: 12,),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 2,
+                                                    ),
+                                                    TextWidget(
+                                                      text: allCommunities
+                                                          .allCommunitiesDetails[
+                                                              index]
+                                                          .community,
+                                                      textSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                    const SizedBox(height: 3),
+                                                    TextWidget(
+                                                      text: allCommunities
+                                                          .allCommunitiesDetails[
+                                                              index]
+                                                          .size,
+                                                      textSize: 12,
                                                       color: GetStoreData
                                                               .getStore
                                                               .read(
                                                                   'isInvestor')
-                                                          ? AppColors.black
-                                                          : AppColors.white,
+                                                          ? AppColors
+                                                              .primaryInvestor
+                                                          : AppColors.primary,
                                                     ),
-                                                  ),
+                                                    const SizedBox(
+                                                      height: 3,
+                                                    ),
+                                                    
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        TextWidget(
+                                                        text:
+                                                            "${allCommunities.allCommunitiesDetails[index].members.length.toString()} Members",
+                                                        textSize: 5),
+                                                        SizedBox(width: 8,),
+                                                        Container(
+                                                            height: 3,
+                                                            width: 3,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20),
+                                                                color: AppColors
+                                                                    .white)),
+                                                        const SizedBox(
+                                                          width: 4,
+                                                        ),
+                                                        TextWidget(
+                                                            text: allCommunities
+                                                                .allCommunitiesDetails[
+                                                                    index]
+                                                                .createdAtTimeAgo,
+                                                            textSize: 5),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(
+                                                      height:4,
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        if(allCommunities
+                                                      .allCommunitiesDetails[
+                                                          index]
+                                                      .role ==
+                                                  "Admin")...[
+                                                        Card(
+                                                          margin: EdgeInsets.zero,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20)),
+                                                          color: GetStoreData
+                                                              .getStore
+                                                              .read(
+                                                                  'isInvestor')
+                                                          ? AppColors
+                                                              .primaryInvestor
+                                                          : AppColors.primary,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal: 5,
+                                                                    vertical: 6),
+                                                            child: TextWidget(
+                                                                text: "Owner",
+                                                                textSize: 11,
+                                                                color: GetStoreData
+                                                                      .getStore
+                                                                      .read(
+                                                                          'isInvestor')
+                                                                  ? AppColors
+                                                                      .black
+                                                                  : AppColors
+                                                                      .white,
+                                                                ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 8,)
+                                                  ],
+                                                        Card(
+                                                          margin: EdgeInsets.zero,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20)),
+                                                          color: AppColors.grey700,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal: 5,
+                                                                    vertical: 6),
+                                                            child: TextWidget(
+                                                                text: allCommunities
+                                                                    .allCommunitiesDetails[
+                                                                        index]
+                                                                    .isAbleToJoinTag,
+                                                                textSize: 11),
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 8,),
+                                                        TextWidget(
+                                                        text: allCommunities
+                                                            .allCommunitiesDetails[
+                                                                index]
+                                                            .amount,
+                                                        textSize: 11),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 8,),
+                                                    if (!allCommunities
+                                                            .allCommunitiesDetails[
+                                                                index]
+                                                            .isCommunityMember &&
+                                                        allCommunities
+                                                            .allCommunitiesDetails[
+                                                                index]
+                                                            .isOpen)
+                                                      InkWell(
+                                                        onTap: () async {
+                                                          Helper.loader(
+                                                              context);
+                                                          createdCommunityId =
+                                                              allCommunities
+                                                                  .allCommunitiesDetails[
+                                                                      index]
+                                                                  .id;
+                                                          await allCommunities
+                                                              .joinCommunity();
+                                                          communityLogo =
+                                                              allCommunities
+                                                                  .allCommunitiesDetails[
+                                                                      index]
+                                                                  .image;
+                                                          communityName =
+                                                              allCommunities
+                                                                  .allCommunitiesDetails[
+                                                                      index]
+                                                                  .community;
+                                                          isAdmin = allCommunities
+                                                                      .allCommunitiesDetails[
+                                                                          index]
+                                                                      .role ==
+                                                                  "Admin"
+                                                              ? true
+                                                              : false;
+                                                          Get.to(() =>
+                                                              const CommunityLandingScreen());
+                                                        },
+                                                        child: Card(
+                                                          margin: EdgeInsets.zero,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20)),
+                                                          color: GetStoreData
+                                                                  .getStore
+                                                                  .read(
+                                                                      'isInvestor')
+                                                              ? AppColors
+                                                                  .primaryInvestor
+                                                              : AppColors
+                                                                  .primary,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        20,
+                                                                    vertical:
+                                                                        6),
+                                                            child: TextWidget(
+                                                              text: "Join Now",
+                                                              textSize: 11,
+                                                              color: GetStoreData
+                                                                      .getStore
+                                                                      .read(
+                                                                          'isInvestor')
+                                                                  ? AppColors
+                                                                      .black
+                                                                  : AppColors
+                                                                      .white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                  ],
                                                 ),
-                                              ),
-                                          ],
-                                        ),
-                                      )),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    )),
+                                              ],
+                                            ),
+                                          )),
+                                    );
+                                  },
+                                ),
+                    ),
+                  ],
+                ),
+              )),
         ));
   }
 }

@@ -1,16 +1,28 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
+import 'package:capitalhub_crm/controller/loginController/login_controller.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityMeetingsModel/communityMeetingsModel.dart';
 import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityMeetingsModel/community_member_emails_model.dart';
+import 'package:capitalhub_crm/screen/Auth-Process/authScreen/login_page.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
+import 'package:capitalhub_crm/utils/apiService/google_service.dart';
+import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
+import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
+import 'package:capitalhub_crm/widget/buttons/button.dart';
+import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
+import 'package:capitalhub_crm/widget/dilogue/communityDialog/login_dialog.dart';
+
+LoginController loginMobileController = Get.put(LoginController());
+CommunityController communityLogin = Get.put(CommunityController());
 
 class CommunityMeetingsController extends GetxController {
   var isLoading = false.obs;
@@ -18,6 +30,7 @@ class CommunityMeetingsController extends GetxController {
   String day = "";
   bool isDaySelected = false;
   RxList<CommunityMeetings> communityMeetingsList = <CommunityMeetings>[].obs;
+   DateTime dateSelected  = DateTime.now();
 
   Future<void> getCommunityMeetings() async {
     try {
@@ -65,45 +78,43 @@ class CommunityMeetingsController extends GetxController {
     return outputFormat.format(finalDateTime);
   }
 
-  String cleanHtmlDescription(String description) {
-    description = description.replaceAll(RegExp(r'(<br>\s*)+'), '<br>');
+  // String cleanHtmlDescription(String description) {
+  //   description = description.replaceAll(RegExp(r'(<br>\s*)+'), '<br>');
 
-    description = description.replaceAll(RegExp(r'<p>\s*<\/p>'), '');
+  //   description = description.replaceAll(RegExp(r'<p>\s*<\/p>'), '');
 
-    description =
-        description.replaceAll(RegExp(r'<p>\s*<br>\s*<\/p>'), '<p><br></p>');
+  //   description =
+  //       description.replaceAll(RegExp(r'<p>\s*<br>\s*<\/p>'), '<p><br></p>');
 
-    description = description.trim();
+  //   description = description.trim();
 
-    return description;
+  //   return description;
+  // }
+
+  String convertTo24HourFormat(String time) {
+    try {
+      // Define the 12-hour format pattern
+      final DateFormat inputFormat = DateFormat("hh:mm a");
+
+      // Parse the input time
+      DateTime parsedTime = inputFormat.parse(time);
+
+      // Define the 24-hour format pattern
+      final DateFormat outputFormat = DateFormat("HH:mm");
+
+      // Return the time in 24-hour format
+      return outputFormat.format(parsedTime);
+    } catch (e) {
+      // If there is an error in parsing, return the original string or handle accordingly
+      return time;
+    }
   }
 
-String convertTo24HourFormat(String time) {
-  try {
-    // Define the 12-hour format pattern
-    final DateFormat inputFormat = DateFormat("hh:mm a");
-
-    // Parse the input time
-    DateTime parsedTime = inputFormat.parse(time);
-
-    // Define the 24-hour format pattern
-    final DateFormat outputFormat = DateFormat("HH:mm");
-
-    // Return the time in 24-hour format
-    return outputFormat.format(parsedTime);
-  } catch (e) {
-    // If there is an error in parsing, return the original string or handle accordingly
-    return time;
-  }
-}
-
-  Future createCommunityMeeting(topics) async {
+  Future createCommunityMeeting(context, topics) async {
     DateTime? date = DateTime.tryParse(dateController.text);
     String? dateIso = "${date?.toIso8601String() ?? ""}Z";
-    String startTime =
-        convertTo24HourFormat(startTimeController.text);
-    String endTime =
-        convertTo24HourFormat(endTimeController.text);
+    String startTime = convertTo24HourFormat(startTimeController.text);
+    String endTime = convertTo24HourFormat(endTimeController.text);
     String description = "";
     await descriptionController.getText().then((val) => description = val);
     // Prepare the availability slots
@@ -114,11 +125,10 @@ String convertTo24HourFormat(String time) {
 
     // Conditionally add memberEmail if it is not empty
     if (memberEmailController.text.isNotEmpty || memberEmail.isNotEmpty) {
-      availabilitySlot["memberEmail"] = isNewEmail
-          ? memberEmailController.text
-          : memberEmail;
+      availabilitySlot["memberEmail"] =
+          isNewEmail ? memberEmailController.text : memberEmail;
     }
-    
+
     var bod = {
       "title": titleController.text,
       "description": description,
@@ -169,6 +179,9 @@ String convertTo24HourFormat(String time) {
       getCommunityMeetings();
       memberEmailController.clear();
       return true;
+    } else if (data["message"] == "googleLogin") {
+      Get.back();
+      showLoginAlertDialog(context);
     } else {
       Get.back();
       Get.back();
@@ -181,13 +194,11 @@ String convertTo24HourFormat(String time) {
   Future updateCommunityMeeting(topics, meetingId) async {
     DateTime? date = DateTime.tryParse(dateController.text);
     String? dateIso = "${date?.toIso8601String() ?? ""}Z";
-    String startTime =
-        convertTo24HourFormat(startTimeController.text);
-    String endTime =
-        convertTo24HourFormat(endTimeController.text);
+    String startTime = convertTo24HourFormat(startTimeController.text);
+    String endTime = convertTo24HourFormat(endTimeController.text);
     String description = "";
     await descriptionController.getText().then((val) => description = val);
-    description = cleanHtmlDescription(description);
+    // description = cleanHtmlDescription(description);
     // Prepare the availability slots
     var availabilitySlot = {
       "startTime": startTime,
@@ -196,9 +207,8 @@ String convertTo24HourFormat(String time) {
 
     // Conditionally add memberEmail if it is not empty
     if (memberEmailController.text.isNotEmpty || memberEmail.isNotEmpty) {
-      availabilitySlot["memberEmail"] = isNewEmail
-          ? memberEmailController.text
-          : memberEmail;
+      availabilitySlot["memberEmail"] =
+          isNewEmail ? memberEmailController.text : memberEmail;
     }
     var bod = {
       "title": titleController.text,
@@ -294,14 +304,14 @@ String convertTo24HourFormat(String time) {
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"]) {
-      Get.back();
+      
       Get.back();
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       getCommunityMeetings();
       return true;
     } else {
-      Get.back();
+      
       Get.back();
       Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);

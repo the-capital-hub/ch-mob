@@ -41,6 +41,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
   }
 
   bool isWebinarEnded = false;
+  bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Obx(() => communityEvents.isLoading.value
@@ -62,7 +63,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (communityEvents.communityEventsData
-                              .webinars![index].image.isNotEmpty) ...[
+                              .webinars![index].image!.isNotEmpty) ...[
                             Container(
                               height: 200,
                               decoration: BoxDecoration(
@@ -70,7 +71,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                       image: NetworkImage(
                                         // "https://bettermeetings.expert/wp-content/uploads/engaging-interactive-webinar-best-practices-and-formats.jpg",
                                         communityEvents.communityEventsData
-                                            .webinars![index].image,
+                                            .webinars![index].image!,
                                       ),
                                       fit: BoxFit.fill),
                                   borderRadius: BorderRadius.circular(10)),
@@ -79,11 +80,14 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                           ],
                           Row(
                             children: [
-                              TextWidget(
-                                text: communityEvents
-                                    .communityEventsData.webinars![index].title,
-                                textSize: 20,
-                                fontWeight: FontWeight.w500,
+                              Expanded(
+                                child: TextWidget(
+                                  maxLine: 1,
+                                  text: communityEvents
+                                      .communityEventsData.webinars![index].title!,
+                                  textSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               const Spacer(),
                               if (isAdmin) ...[
@@ -139,36 +143,42 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                       Icons.delete,
                                       color: AppColors.white,
                                     )),
-                                // IconButton(
-                                //   padding: EdgeInsets.zero,
-                                //   icon: Icon(
-                                //     Icons.mobile_screen_share_rounded,
-                                //     color: AppColors.whiteCard,
-                                //   ),
-                                //   onPressed: () {
-                                //     sharePostPopup(
-                                //         context, "", "share webinar detail");
-                                //   },
-                                // ),
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  icon: Icon(
+                                    Icons.mobile_screen_share_rounded,
+                                    color: AppColors.whiteCard,
+                                  ),
+                                  onPressed: () {
+                                    sharePostPopup(
+                                        context, "", communityEvents
+                                              .communityEventsData
+                                              .webinars![index]
+                                              .webinarSharelink!);
+                                  },
+                                ),
                               ],
-                              // if (!isAdmin)
-                              //   IconButton(
-                              //     padding: EdgeInsets.zero,
-                              //     icon: Icon(
-                              //       Icons.mobile_screen_share_rounded,
-                              //       color: AppColors.whiteCard,
-                              //     ),
-                              //     onPressed: () {
-                              //       sharePostPopup(
-                              //           context, "", "share webinar detail");
-                              //     },
-                              //   ),
+                              if (!isAdmin)
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  icon: Icon(
+                                    Icons.mobile_screen_share_rounded,
+                                    color: AppColors.whiteCard,
+                                  ),
+                                  onPressed: () {
+                                    sharePostPopup(
+                                        context, "", communityEvents
+                                              .communityEventsData
+                                              .webinars![index]
+                                              .webinarSharelink!);
+                                  },
+                                ),
                             ],
                           ),
                           sizedTextfield,
 
                           if (!communityEvents.communityEventsData
-                              .webinars![index].isActive) ...[
+                              .webinars![index].isActive!) ...[
                             TextWidget(
                               text: "This webinar is cancelled.",
                               textSize: 16,
@@ -176,19 +186,60 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                             ),
                             sizedTextfield
                           ],
-                          HtmlWidget(
-                            communityEvents.communityEventsData.webinars![index]
-                                .description,
-                            textStyle: TextStyle(
-                              fontSize: 15,
-                              color: AppColors.white,
-                            ),
-                          ),
+                          // HtmlWidget(
+                          //   communityEvents.communityEventsData.webinars![index]
+                          //       .description,
+                          //   textStyle: TextStyle(
+                          //     fontSize: 15,
+                          //     color: AppColors.white,
+                          //   ),
+                          // ),
                           // TextWidget(
                           //   text: communityEvents
                           //       .communityWebinarsList[index].description,
                           //   textSize: 16,
                           // ),
+
+
+                          HtmlWidget(
+                            _isExpanded
+                                ? "${communityEvents.communityEventsData.webinars![index]
+                                .description}"
+                                : communityEvents.communityEventsData.webinars![index]
+                                .description!
+                                            .length >
+                                        200
+                                    ? "${communityEvents.communityEventsData.webinars![index]
+                                .description!.substring(0, 200)} ..."
+                                    : communityEvents.communityEventsData.webinars![index]
+                                .description!,
+                            textStyle: TextStyle(
+                                fontSize:
+                                    (MediaQuery.of(context).size.width / 375) *
+                                        12,
+                                color: AppColors.white),
+                          ),
+                          if (communityEvents.communityEventsData.webinars![index]
+                                .description!
+                                  .length >
+                              200)
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _isExpanded = !_isExpanded;
+                                  });
+                                },
+                                child: Text(
+                                  _isExpanded ? "Read Less" : "Read More",
+                                  style: const TextStyle(
+                                      color: AppColors.blue,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
                           sizedTextfield,
                           Row(
                             children: [
@@ -202,7 +253,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                               ),
                               TextWidget(
                                   text: communityEvents.communityEventsData
-                                      .webinars![index].date,
+                                      .webinars![index].date!,
                                   textSize: 16)
                             ],
                           ),
@@ -219,7 +270,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                               ),
                               TextWidget(
                                   text: communityEvents.communityEventsData
-                                      .webinars![index].duration,
+                                      .webinars![index].duration!,
                                   textSize: 16)
                             ],
                           ),
@@ -238,7 +289,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                               ),
                               TextWidget(
                                   text:
-                                      "${communityEvents.communityEventsData.webinars![index].joinedUsers.length} joined",
+                                      "${communityEvents.communityEventsData.webinars![index].joinedUsers!.length} joined",
                                   textSize: 16)
                             ],
                           ),
@@ -277,7 +328,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                           ],
                           if (!isAdmin &&
                               !communityEvents.communityEventsData
-                                  .webinars![index].isExpired) ...[
+                                  .webinars![index].isExpired!) ...[
                             AppButton.primaryButton(
                                 onButtonPressed: () {
                                   Get.to(() =>
@@ -287,24 +338,32 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                             sizedTextfield,
                           ],
                           if (communityEvents
-                              .communityEventsData.webinars![index].isExpired)
-                            Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                side: const BorderSide(
-                                  color: AppColors.redColor,
-                                  width: 1,
+                              .communityEventsData.webinars![index].isExpired!)
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      side: const BorderSide(
+                                        color: AppColors.redColor,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    color: AppColors.redColor.withOpacity(0.3),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(12),
+                                      child: Center(
+                                        child: TextWidget(
+                                          text: "Webinar Time Expired",
+                                          textSize: 16,
+                                          color: AppColors.redColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              color: AppColors.redColor.withOpacity(0.3),
-                              child: const Padding(
-                                padding: EdgeInsets.all(12),
-                                child: TextWidget(
-                                  text: "Webinar Time Expired",
-                                  textSize: 16,
-                                  color: AppColors.redColor,
-                                ),
-                              ),
+                              ],
                             ),
                         ],
                       ),

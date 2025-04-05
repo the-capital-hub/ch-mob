@@ -49,6 +49,7 @@ class CommunityWebinars {
   List<Booking>? bookings;
   int? joined;
   List<Availability>? availability;
+  String? eventSharelink;
 
   CommunityWebinars({
     this.isAdmin,
@@ -63,29 +64,30 @@ class CommunityWebinars {
     this.bookings,
     this.joined,
     this.availability,
+    this.eventSharelink,
   });
 
   factory CommunityWebinars.fromJson(Map<String, dynamic> json) =>
       CommunityWebinars(
-        isAdmin: json["isAdmin"],
-        id: json["_id"],
-        eventId: json["eventId"],
-        title: json["title"],
-        description: json["description"],
-        date: json["date"],
-        price: json["price"],
-        discount: json["discount"],
-        duration: json["duration"],
-        bookings: json["bookings"] == null
-            ? null
-            : List<Booking>.from(
-                json["bookings"].map((x) => Booking.fromJson(x))),
-        joined: json["joined"],
-        availability: json["availability"] == null
-            ? null
-            : List<Availability>.from(
-                json["availability"].map((x) => Availability.fromJson(x))),
-      );
+          isAdmin: json["isAdmin"],
+          id: json["_id"],
+          eventId: json["eventId"],
+          title: json["title"],
+          description: json["description"],
+          date: json["date"],
+          price: json["price"],
+          discount: json["discount"],
+          duration: json["duration"],
+          bookings: json["bookings"] == null
+              ? null
+              : List<Booking>.from(
+                  json["bookings"].map((x) => Booking.fromJson(x))),
+          joined: json["joined"],
+          availability: json["availability"] == null
+              ? null
+              : List<Availability>.from(
+                  json["availability"].map((x) => Availability.fromJson(x))),
+          eventSharelink: json["event_shareLink"]);
 
   Map<String, dynamic> toJson() => {
         "isAdmin": isAdmin,
@@ -101,6 +103,7 @@ class CommunityWebinars {
             ? null
             : List<dynamic>.from(bookings!.map((x) => x.toJson())),
         "joined": joined,
+        "event_shareLink": eventSharelink
       };
 }
 

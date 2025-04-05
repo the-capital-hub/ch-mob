@@ -68,9 +68,12 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
             () => aboutCommunity.isLoading.value
                 ? Helper.pageLoading()
                 : aboutCommunity.aboutCommunityList.isEmpty
-                    ? const Center(
+                    ? Center(
                         child: TextWidget(
-                            text: "No About Community Available", textSize: 16))
+                        text: "No About Community Available",
+                        textSize: 16,
+                        color: AppColors.grey,
+                      ))
                     : SingleChildScrollView(
                         child: Column(children: [
                         Column(
@@ -126,7 +129,10 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                               .toString(),
                                           textSize: 20,
                                           fontWeight: FontWeight.w500,
-                                          color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                          color: GetStoreData.getStore
+                                                  .read('isInvestor')
+                                              ? AppColors.primaryInvestor
+                                              : AppColors.primary,
                                         ),
                                       ],
                                     ),
@@ -198,10 +204,13 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                     height: 12,
                                   ),
                                 ],
-                                 TextWidget(
+                                TextWidget(
                                   text: "About Community",
                                   textSize: 20,
-                                  color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                  color:
+                                      GetStoreData.getStore.read('isInvestor')
+                                          ? AppColors.primaryInvestor
+                                          : AppColors.primary,
                                   fontWeight: FontWeight.w500,
                                 ),
                                 const SizedBox(
@@ -221,30 +230,42 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                 ),
                                 Column(
                                   children: [
-                                     TextWidget(
-                                      text: "Community Admin",
-                                      textSize: 20,
-                                      color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
-                                      fontWeight: FontWeight.w500,
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: TextWidget(
+                                        text: "Community Admin",
+                                        textSize: 20,
+                                        color: GetStoreData.getStore
+                                                .read('isInvestor')
+                                            ? AppColors.primaryInvestor
+                                            : AppColors.primary,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                     const SizedBox(
                                       height: 12,
                                     ),
-                                    CircleAvatar(
-                                      radius: 40,
-                                      backgroundImage: NetworkImage(
-                                          aboutCommunity.aboutCommunityList[0]
-                                              .admin!.profilePicture
-                                              .toString()),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: CircleAvatar(
+                                        radius: 40,
+                                        backgroundImage: NetworkImage(
+                                            aboutCommunity.aboutCommunityList[0]
+                                                .admin!.profilePicture
+                                                .toString()),
+                                      ),
                                     ),
                                     const SizedBox(
                                       height: 12,
                                     ),
-                                    TextWidget(
-                                      text:
-                                          "${aboutCommunity.aboutCommunityList[0].admin!.firstName} ${aboutCommunity.aboutCommunityList[0].admin!.lastName}",
-                                      textSize: 16,
-                                      fontWeight: FontWeight.w500,
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: TextWidget(
+                                        text:
+                                            "${aboutCommunity.aboutCommunityList[0].admin!.firstName} ${aboutCommunity.aboutCommunityList[0].admin!.lastName}",
+                                        textSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                     const SizedBox(
                                       height: 12,
@@ -272,20 +293,29 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                 const SizedBox(
                                   height: 12,
                                 ),
-                                 TextWidget(
+                                TextWidget(
                                   text: "Terms and Conditions",
                                   textSize: 20,
-                                  color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                  color:
+                                      GetStoreData.getStore.read('isInvestor')
+                                          ? AppColors.primaryInvestor
+                                          : AppColors.primary,
                                   fontWeight: FontWeight.w500,
                                 ),
                                 aboutCommunity.aboutCommunityList[0].community!
                                         .termsAndConditions!.isEmpty
-                                    ? const SizedBox(
-                                        height: 100,
-                                        child: TextWidget(
-                                            text:
-                                                "No Community Terms and Conditions Available",
-                                            textSize: 16))
+                                    ? Align(
+                                        alignment: Alignment.center,
+                                        child: SizedBox(
+                                            height: 100,
+                                            child: TextWidget(
+                                              align: TextAlign.center,
+                                              text:
+                                                  "No Community Terms and Conditions Available",
+                                              textSize: 16,
+                                              color: AppColors.grey,
+                                            )),
+                                      )
                                     : const SizedBox(
                                         height: 12,
                                       ),
@@ -297,10 +327,24 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                             .termsAndConditions!
                                             .length;
                                     i++)
-                                  TextWidget(
-                                      text:
-                                          "•   ${aboutCommunity.aboutCommunityList[0].community!.termsAndConditions![i]}",
-                                      textSize: 14),
+                                  Row(crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      TextWidget(
+                                        
+                                        maxLine: 3,
+                                          text:
+                                              "•  ",
+                                          textSize: 14),
+                                          Expanded(
+                                            child: TextWidget(
+                                                                                    
+                                                                                    maxLine: 3,
+                                            text:
+                                                "${aboutCommunity.aboutCommunityList[0].community!.termsAndConditions![i]}",
+                                            textSize: 14),
+                                          ),
+                                    ],
+                                  ),
                                 const SizedBox(
                                   height: 12,
                                 ),
@@ -310,7 +354,10 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                       TextWidget(
                                         text: "Recent Posts From Admin",
                                         textSize: 20,
-                                        color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                        color: GetStoreData.getStore
+                                                .read('isInvestor')
+                                            ? AppColors.primaryInvestor
+                                            : AppColors.primary,
                                         fontWeight: FontWeight.w500,
                                       ),
                                       Spacer(),
@@ -323,11 +370,19 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                           icon: isPostsVisible
                                               ? Icon(
                                                   Icons.keyboard_arrow_up,
-                                                  color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                                  color: GetStoreData.getStore
+                                                          .read('isInvestor')
+                                                      ? AppColors
+                                                          .primaryInvestor
+                                                      : AppColors.primary,
                                                 )
                                               : Icon(
                                                   Icons.keyboard_arrow_down,
-                                                  color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                                  color: GetStoreData.getStore
+                                                          .read('isInvestor')
+                                                      ? AppColors
+                                                          .primaryInvestor
+                                                      : AppColors.primary,
                                                 ))
                                     ],
                                   ),
@@ -338,12 +393,18 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                   if (isPostsVisible)
                                     aboutCommunity
                                             .aboutCommunityPostsList.isEmpty
-                                        ? const SizedBox(
-                                            height: 100,
-                                            child: TextWidget(
-                                                text:
-                                                    "No Community Posts Available",
-                                                textSize: 16))
+                                        ? Align(
+                                            alignment: Alignment.center,
+                                            child: SizedBox(
+                                                height: 100,
+                                                child: TextWidget(
+                                                  align: TextAlign.center,
+                                                  text:
+                                                      "No Community Posts Available",
+                                                  textSize: 16,
+                                                  color: AppColors.grey,
+                                                )),
+                                          )
                                         : ListView.separated(
                                             separatorBuilder: (context, index) {
                                               return const SizedBox(
@@ -454,10 +515,13 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                   ),
                                   Row(
                                     children: [
-                                    TextWidget(
+                                      TextWidget(
                                         text: "Community Products",
                                         textSize: 20,
-                                        color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                        color: GetStoreData.getStore
+                                                .read('isInvestor')
+                                            ? AppColors.primaryInvestor
+                                            : AppColors.primary,
                                         fontWeight: FontWeight.w500,
                                       ),
                                       Spacer(),
@@ -471,11 +535,19 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                           icon: isProductsVisible
                                               ? Icon(
                                                   Icons.keyboard_arrow_up,
-                                                  color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                                  color: GetStoreData.getStore
+                                                          .read('isInvestor')
+                                                      ? AppColors
+                                                          .primaryInvestor
+                                                      : AppColors.primary,
                                                 )
                                               : Icon(
                                                   Icons.keyboard_arrow_down,
-                                                  color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                                  color: GetStoreData.getStore
+                                                          .read('isInvestor')
+                                                      ? AppColors
+                                                          .primaryInvestor
+                                                      : AppColors.primary,
                                                 ))
                                     ],
                                   ),
@@ -486,12 +558,18 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                   if (isProductsVisible)
                                     aboutCommunity
                                             .aboutCommunityProductsList.isEmpty
-                                        ? const SizedBox(
-                                            height: 100,
-                                            child: TextWidget(
-                                                text:
-                                                    "No Community Products Available",
-                                                textSize: 16))
+                                        ? Align(
+                                            alignment: Alignment.center,
+                                            child: SizedBox(
+                                                height: 100,
+                                                child: TextWidget(
+                                                  align: TextAlign.center,
+                                                  text:
+                                                      "No Community Products Available",
+                                                  textSize: 16,
+                                                  color: AppColors.grey,
+                                                )),
+                                          )
                                         : ListView.separated(
                                             separatorBuilder: (context, index) {
                                               return const SizedBox(
@@ -553,8 +631,14 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                                                       .circular(
                                                                           12)),
                                                             ),
-                                                            color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
-                                                                
+                                                            color: GetStoreData
+                                                                    .getStore
+                                                                    .read(
+                                                                        'isInvestor')
+                                                                ? AppColors
+                                                                    .primaryInvestor
+                                                                : AppColors
+                                                                    .primary,
                                                             child: Padding(
                                                                 padding: const EdgeInsets
                                                                     .symmetric(
@@ -562,15 +646,24 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                                                         12,
                                                                     vertical:
                                                                         4),
-                                                                child: TextWidget(
-                                                                    text: aboutCommunity
-                                                                            .aboutCommunityProductsList[
-                                                                                index]
-                                                                            .isFree!
-                                                                        ? "Free"
-                                                                        : "\u{20B9}${aboutCommunity.aboutCommunityProductsList[index].amount}/-",
-                                                                    textSize:
-                                                                        16,color: GetStoreData.getStore.read('isInvestor')?AppColors.black:AppColors.white,)),
+                                                                child:
+                                                                    TextWidget(
+                                                                  text: aboutCommunity
+                                                                          .aboutCommunityProductsList[
+                                                                              index]
+                                                                          .isFree!
+                                                                      ? "Free"
+                                                                      : "\u{20B9}${aboutCommunity.aboutCommunityProductsList[index].amount}/-",
+                                                                  textSize: 16,
+                                                                  color: GetStoreData
+                                                                          .getStore
+                                                                          .read(
+                                                                              'isInvestor')
+                                                                      ? AppColors
+                                                                          .black
+                                                                      : AppColors
+                                                                          .white,
+                                                                )),
                                                           ),
                                                         ),
                                                       ]),
@@ -709,7 +802,10 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                       TextWidget(
                                         text: "Upcoming Events",
                                         textSize: 20,
-                                        color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                        color: GetStoreData.getStore
+                                                .read('isInvestor')
+                                            ? AppColors.primaryInvestor
+                                            : AppColors.primary,
                                         fontWeight: FontWeight.w500,
                                       ),
                                       Spacer(),
@@ -723,11 +819,19 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                           icon: isEventsVisible
                                               ? Icon(
                                                   Icons.keyboard_arrow_up,
-                                                  color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                                  color: GetStoreData.getStore
+                                                          .read('isInvestor')
+                                                      ? AppColors
+                                                          .primaryInvestor
+                                                      : AppColors.primary,
                                                 )
                                               : Icon(
                                                   Icons.keyboard_arrow_down,
-                                                  color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                                  color: GetStoreData.getStore
+                                                          .read('isInvestor')
+                                                      ? AppColors
+                                                          .primaryInvestor
+                                                      : AppColors.primary,
                                                 ))
                                     ],
                                   ),
@@ -738,12 +842,18 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                   if (isEventsVisible)
                                     aboutCommunity
                                             .aboutCommunityEventsList.isEmpty
-                                        ? const SizedBox(
-                                            height: 100,
-                                            child: TextWidget(
-                                                text:
-                                                    "No Community Events Available",
-                                                textSize: 16))
+                                        ? Align(
+                                            alignment: Alignment.center,
+                                            child: SizedBox(
+                                                height: 100,
+                                                child: TextWidget(
+                                                  align: TextAlign.center,
+                                                  text:
+                                                      "No Community Events Available",
+                                                  textSize: 16,
+                                                  color: AppColors.grey,
+                                                )),
+                                          )
                                         : ListView.separated(
                                             separatorBuilder: (context, index) {
                                               return const SizedBox(
@@ -805,14 +915,23 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                                                         BorderRadius
                                                                             .circular(
                                                                                 7),
-                                                                    color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary
-                                                                        ),
+                                                                    color: GetStoreData.getStore.read(
+                                                                            'isInvestor')
+                                                                        ? AppColors
+                                                                            .primaryInvestor
+                                                                        : AppColors
+                                                                            .primary),
                                                                 child: Center(
                                                                   child: Image
                                                                       .asset(
                                                                     PngAssetPath
                                                                         .meetingIcon,
-                                                                    color: GetStoreData.getStore.read('isInvestor')?AppColors.black:AppColors.white,
+                                                                    color: GetStoreData.getStore.read(
+                                                                            'isInvestor')
+                                                                        ? AppColors
+                                                                            .black
+                                                                        : AppColors
+                                                                            .white,
                                                                     height: 22,
                                                                   ),
                                                                 ),

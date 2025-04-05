@@ -47,6 +47,7 @@ class CommunityMeetings {
   List<Availability>? availability;
   List<Booking>? bookings;
   bool? isBookedByMe;
+  String? meetingSharelink;
 
   CommunityMeetings({
     this.id,
@@ -59,6 +60,7 @@ class CommunityMeetings {
     this.bookings,
     this.isExpired,
     this.isBookedByMe,
+    this.meetingSharelink,
   });
 
   factory CommunityMeetings.fromJson(Map<String, dynamic> json) =>
@@ -81,6 +83,7 @@ class CommunityMeetings {
                 json["bookings"]!.map((x) => Booking.fromJson(x)))
             : null,
         isBookedByMe: json["isBookedByMe"],
+        meetingSharelink: json["meeting_shareLink"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -99,6 +102,7 @@ class CommunityMeetings {
             : List<dynamic>.from(bookings!.map((x) => x.toJson())),
         "is_expired": isExpired,
         "isBookedByMe": isBookedByMe,
+        "meeting_shareLink": meetingSharelink,
       };
 }
 

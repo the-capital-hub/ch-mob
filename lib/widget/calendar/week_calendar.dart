@@ -3,6 +3,7 @@ import 'package:capitalhub_crm/controller/communityController/communityLandingAl
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityWebinarsController/community_webinars_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
@@ -120,7 +121,7 @@ import 'package:table_calendar/table_calendar.dart';
 //                             noSlot = !noSlot;
 //                           });
 //                         }
-                        
+
 //                         }
 //   }
 
@@ -254,16 +255,14 @@ import 'package:table_calendar/table_calendar.dart';
 //           // Text('Selected Day: $selectedDayName'),
 //           // sizedTextfield,
 //           // if (communityWebinars.isDaySelected)
-            
-                    
-//                 // : 
-                
-                        
+
+//                 // :
+
 // noSlot?
-                  
+
 //               SizedBox(
 //                     height: 100,
-                
+
 //                     child: TextWidget(text: "No Slots available", textSize: 16)):
 //                 Wrap(
 //                     spacing: 4.0,
@@ -361,13 +360,14 @@ class _EventCalendarState extends State<CommunityEventsCalendar> {
   List<int> availableWeekdays = [];
   DateTime selectedDate = DateTime.now();
 
-  @override
-  void initState() {
-    super.initState();
-    _selectedDay = _normalizeDate(DateTime.now());
-    _focusedDay = _normalizeDate(DateTime.now());
-    _generateAvailableWeekdays(widget.availableDays);
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _selectedDay = _normalizeDate(DateTime.now());
+  //   _focusedDay = _normalizeDate(DateTime.now());
+  //   _generateAvailableWeekdays(widget.availableDays);
+  //   communityWebinars.isDaySelected = true;
+  // }
 
   DateTime _normalizeDate(DateTime date) {
     return DateTime(date.year, date.month, date.day);
@@ -424,12 +424,74 @@ class _EventCalendarState extends State<CommunityEventsCalendar> {
 
   // Helper method to check if there are any available slots
   bool _hasAvailableSlots() {
-    final slots = communityWebinars
-        .communityWebinarsList[widget.index]
-        .availability![communityWebinars.selectedDayIndex]
-        .slots!;
+    final slots = communityWebinars.communityWebinarsList[widget.index]
+        .availability![communityWebinars.selectedDayIndex].slots!;
     return slots.any((slot) => slot.isAvailable!);
   }
+
+ @override
+void initState() {
+  super.initState();
+  
+  // Set the selected day to today if it's available, otherwise set it to the next available day
+  _selectedDay = _getNextAvailableDay(widget.availableDays);
+  _focusedDay = _selectedDay;
+  
+  // Generate available weekdays
+  _generateAvailableWeekdays(widget.availableDays);
+  
+  // communityWebinars.isDaySelected = false;
+}
+
+DateTime _getNextAvailableDay(List<String> availableDays) {
+  int currentWeekday = DateTime.now().weekday;  // Get current weekday
+  
+  // Loop through available days and find the next available day from today onwards
+  for (String day in availableDays) {
+    int dayIndex = _getWeekdayIndex(day);  // Get index of available day
+    if (dayIndex >= currentWeekday) {  // If day is today or later
+      return _getDateForNextWeekday(dayIndex);  // Return the day
+    }
+  }
+
+  // If no available day is later in the week, return the first available day in the next week
+  int firstAvailableDayIndex = _getWeekdayIndex(availableDays.first);
+  return _getDateForNextWeekday(firstAvailableDayIndex);
+}
+
+int _getWeekdayIndex(String day) {
+  switch (day.toLowerCase()) {
+    case "monday":
+      return DateTime.monday;
+    case "tuesday":
+      return DateTime.tuesday;
+    case "wednesday":
+      return DateTime.wednesday;
+    case "thursday":
+      return DateTime.thursday;
+    case "friday":
+      return DateTime.friday;
+    case "saturday":
+      return DateTime.saturday;
+    case "sunday":
+      return DateTime.sunday;
+    default:
+      return -1;  // Invalid day
+  }
+}
+
+DateTime _getDateForNextWeekday(int weekday) {
+  DateTime today = DateTime.now();
+  int daysToAdd = (weekday - today.weekday + 7) % 7;  // Calculate how many days to add
+  
+  if (daysToAdd == 0) {
+    daysToAdd = 0; // If it's today, no need to add any days
+  } else if (daysToAdd < 0) {
+    daysToAdd = daysToAdd + 7;  // If the day is in the next week
+  }
+  
+  return today.add(Duration(days: daysToAdd));  // Return the next available day
+}
 
   @override
   Widget build(BuildContext context) {
@@ -458,9 +520,11 @@ class _EventCalendarState extends State<CommunityEventsCalendar> {
                         communityWebinars.selectedDayName =
                             _getDayName(selectedDay);
 
-                        for (int i = 0; i <
-                            communityWebinars.communityWebinarsList[0]
-                                .availability!.length; i++) {
+                        for (int i = 0;
+                            i <
+                                communityWebinars.communityWebinarsList[0]
+                                    .availability!.length;
+                            i++) {
                           if (communityWebinars
                                   .communityWebinarsList[widget.index]
                                   .availability![i]
@@ -486,13 +550,18 @@ class _EventCalendarState extends State<CommunityEventsCalendar> {
                         shape: BoxShape.circle,
                       ),
                       selectedDecoration: BoxDecoration(
-                        color: AppColors.primary,
+                        color: GetStoreData.getStore.read('isInvestor')
+                            ? AppColors.primaryInvestor
+                            : AppColors.primary,
                         shape: BoxShape.circle,
                       ),
+                      weekendTextStyle: TextStyle(color: AppColors.white),
                     ),
                     headerStyle: HeaderStyle(
-                      leftChevronIcon: Icon(Icons.chevron_left, color: AppColors.white),
-                      rightChevronIcon: Icon(Icons.chevron_right, color: AppColors.white),
+                      leftChevronIcon:
+                          Icon(Icons.chevron_left, color: AppColors.white),
+                      rightChevronIcon:
+                          Icon(Icons.chevron_right, color: AppColors.white),
                       formatButtonVisible: false,
                       titleCentered: true,
                       titleTextStyle: TextStyle(
@@ -500,12 +569,20 @@ class _EventCalendarState extends State<CommunityEventsCalendar> {
                         fontWeight: FontWeight.w500,
                         color: AppColors.white,
                       ),
+                     
                       headerMargin: EdgeInsets.only(bottom: 10),
                       decoration: BoxDecoration(
                         color: AppColors.primary.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
+                    daysOfWeekStyle: DaysOfWeekStyle(
+                        weekdayStyle: TextStyle(
+                          color: AppColors.white,
+                        ),
+                        weekendStyle: TextStyle(
+                          color: AppColors.white,
+                        )),
                   ),
                 ),
               ),
@@ -534,15 +611,16 @@ class _EventCalendarState extends State<CommunityEventsCalendar> {
                                   // Toggle the selected slot
                                   if (_selectedIndex == index) {
                                     _selectedIndex = null;
+                                    // communityWebinars.isDaySelected = false;
                                   } else {
                                     _selectedIndex = index;
                                   }
 
                                   // Update slot details in the controller
-                                  communityWebinars.slot =
-                                      _selectedIndex != null
-                                          ? "${slot.startTime} - ${slot.endTime}"
-                                          : "";
+                                  communityWebinars.slot = _selectedIndex !=
+                                          null
+                                      ? "${slot.startTime} - ${slot.endTime}"
+                                      : "";
                                   communityWebinars.startTime = slot.startTime!;
                                   communityWebinars.endTime = slot.endTime!;
                                 });
@@ -552,16 +630,20 @@ class _EventCalendarState extends State<CommunityEventsCalendar> {
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 color: _selectedIndex == index
-                                    ? AppColors.primary
+                                    ? GetStoreData.getStore.read('isInvestor')
+                                        ? AppColors.primaryInvestor
+                                        : AppColors.primary
                                     : AppColors.white12,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 4),
                                   child: TextWidget(
-                                    text:
-                                        "${slot.startTime} - ${slot.endTime}",
+                                    text: "${slot.startTime} - ${slot.endTime}",
                                     textSize: 14,
-                                    color: AppColors.white,
+                                    color:
+                                        GetStoreData.getStore.read('isInvestor')
+                                            ? AppColors.black
+                                            : AppColors.white,
                                   ),
                                 ),
                               ),
