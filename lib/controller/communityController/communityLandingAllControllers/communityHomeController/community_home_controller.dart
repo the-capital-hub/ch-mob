@@ -14,11 +14,13 @@ import 'package:get/get.dart';
 class CommunityHomeController extends GetxController {
   int selectIndex = 0;
   var isLoading = false.obs;
-  CommunityPost communityPostList = CommunityPost();
+  // CommunityPost communityPostList = CommunityPost();
+  List<HomePost> communityPostList = <HomePost>[].obs;
+  Community communityLinkData = Community();
   Future getCommunityPosts(int page, bool isLoadOn, filterValue) async {
     try {
       if (page == 1) {
-        // communityPostList.clear();
+        communityPostList.clear();
         isLoading.value = isLoadOn;
       }
       var response = await ApiBase.getRequest(
@@ -31,7 +33,8 @@ class CommunityHomeController extends GetxController {
         CommunityPostModel communityPostModel =
             CommunityPostModel.fromJson(data);
         // communityPostList.assignAll([communityPostModel.data!]);
-        communityPostList = communityPostModel.data!;
+        communityPostList.addAll(communityPostModel.data!.postData!);
+        communityLinkData = communityPostModel.data!.communityData!;
       } else {
         HelperSnackBar.snackBar("Info", data["message"]);
       }
@@ -155,9 +158,11 @@ class CommunityHomeController extends GetxController {
     );
     log(response.body);
     var data = json.decode(response.body);
+    Get.back();
     if (data["status"] == true) {
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
+      await getCommunityPosts(1, true, "");
       return true;
     } else {
       Get.back();

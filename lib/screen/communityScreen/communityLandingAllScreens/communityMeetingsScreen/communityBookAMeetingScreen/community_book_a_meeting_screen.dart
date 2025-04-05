@@ -1,6 +1,7 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityMeetingsController/community_meetings_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
@@ -124,7 +125,7 @@ class _CommunityBookAMeetingScreenState
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(4),
                                 ),
-                                color: AppColors.primary,
+                                color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                 surfaceTintColor: AppColors.white12,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -133,7 +134,7 @@ class _CommunityBookAMeetingScreenState
                                       text:
                                           "${communityMeetings.communityMeetingsList[widget.index].availability![0].slots![index].startTime} - ${communityMeetings.communityMeetingsList[widget.index].availability![0].slots![index].endTime}",
                                       textSize: 14,
-                                      color: AppColors.white),
+                                      color: GetStoreData.getStore.read('isInvestor')?AppColors.black:AppColors.white),
                                 ),
                               ),
                             )
@@ -156,11 +157,11 @@ class _CommunityBookAMeetingScreenState
                           fontWeight: FontWeight.w500,
                         ),
                         const SizedBox(height: 12),
-                        const TextWidget(
+                       TextWidget(
                           text: "Meeting:",
                           textSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.primary,
+                          color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                         ),
                         const SizedBox(height: 12),
                         TextWidget(
@@ -168,11 +169,11 @@ class _CommunityBookAMeetingScreenState
                                 .communityMeetingsList[widget.index].title!,
                             textSize: 13),
                         const SizedBox(height: 12),
-                        const TextWidget(
+                       TextWidget(
                           text: "Description:",
                           textSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.primary,
+                          color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                         ),
                         SizedBox(height: 12),
                         HtmlWidget(
@@ -192,7 +193,7 @@ class _CommunityBookAMeetingScreenState
                                   text: "Selected Slot",
                                   textSize: 16,
                                   fontWeight: FontWeight.w500,
-                                  color: AppColors.primary,
+                                  color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                 ),
                                 SizedBox(height: 8),
                                 TextWidget(
@@ -204,12 +205,12 @@ class _CommunityBookAMeetingScreenState
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                TextWidget(
+                             TextWidget(
                                   text:
                                       "${communityMeetings.communityMeetingsList[widget.index].duration} minutes",
                                   textSize: 16,
                                   fontWeight: FontWeight.w500,
-                                  color: AppColors.primary,
+                                  color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                 ),
                                 SizedBox(height: 8),
                                 TextWidget(text: "30 minutes", textSize: 13),
@@ -222,7 +223,7 @@ class _CommunityBookAMeetingScreenState
                                   text: "Price",
                                   textSize: 16,
                                   fontWeight: FontWeight.w500,
-                                  color: AppColors.primary,
+                                  color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                 ),
                                 SizedBox(height: 8),
                                 TextWidget(
@@ -245,7 +246,7 @@ class _CommunityBookAMeetingScreenState
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Expanded(
                 child: AppButton.outlineButton(
-                    borderColor: AppColors.primary,
+                    borderColor: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                     onButtonPressed: () {
                       Get.back();
                     },

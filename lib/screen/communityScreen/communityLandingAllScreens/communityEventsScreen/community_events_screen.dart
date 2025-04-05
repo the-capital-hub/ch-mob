@@ -31,6 +31,7 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
       Get.put(CommunityWebinarsController());
   CommunityEventsController communityEvents =
       Get.put(CommunityEventsController());
+  bool _isExpanded = false;
 
   @override
   void initState() {
@@ -146,30 +147,39 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                             Icons.delete,
                                             color: AppColors.white,
                                           )),
-                                      // if (!isAdmin)
-                                      //   IconButton(
-                                      //     padding: EdgeInsets.zero,
-                                      //     icon: Icon(
-                                      //       Icons.mobile_screen_share_rounded,
-                                      //       color: AppColors.whiteCard,
-                                      //     ),
-                                      //     onPressed: () {
-                                      //       sharePostPopup(context, "",
-                                      //           "share event detail");
-                                      //     },
-                                      //   ),
+                                      if (!isAdmin)
+                                        IconButton(
+                                          padding: EdgeInsets.zero,
+                                          icon: Icon(
+                                            Icons.mobile_screen_share_rounded,
+                                            color: AppColors.whiteCard,
+                                          ),
+                                          onPressed: () {
+                                            sharePostPopup(
+                                                context,
+                                                "",
+                                                communityWebinars
+                                                    .communityWebinarsList[
+                                                        index]
+                                                    .eventSharelink!);
+                                          },
+                                        ),
                                     ],
-                                    // IconButton(
-                                    //   padding: EdgeInsets.zero,
-                                    //   icon: Icon(
-                                    //     Icons.mobile_screen_share_rounded,
-                                    //     color: AppColors.whiteCard,
-                                    //   ),
-                                    //   onPressed: () {
-                                    //     sharePostPopup(context, "",
-                                    //         "share event detail");
-                                    //   },
-                                    // ),
+                                    IconButton(
+                                      padding: EdgeInsets.zero,
+                                      icon: Icon(
+                                        Icons.mobile_screen_share_rounded,
+                                        color: AppColors.whiteCard,
+                                      ),
+                                      onPressed: () {
+                                        sharePostPopup(
+                                            context,
+                                            "",
+                                            communityWebinars
+                                                .communityWebinarsList[index]
+                                                .eventSharelink!);
+                                      },
+                                    ),
                                   ],
                                 ),
                                 // communityWebinars.communityWebinarsList
@@ -181,14 +191,55 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                 //         color: AppColors.grey,
                                 //       ),
                                 const SizedBox(height: 8),
+                                // HtmlWidget(
+                                //   communityWebinars.communityWebinarsList[index]
+                                //       .description!,
+                                //   textStyle: TextStyle(
+                                //     fontSize: 16,
+                                //     color: AppColors.white,
+                                //   ),
+                                // ),
                                 HtmlWidget(
-                                  communityWebinars.communityWebinarsList[index]
-                                      .description!,
+                                  _isExpanded
+                                      ? "${communityWebinars.communityWebinarsList[index].description!}"
+                                      : communityWebinars
+                                                  .communityWebinarsList[index]
+                                                  .description!
+                                                  .length >
+                                              200
+                                          ? "${communityWebinars.communityWebinarsList[index].description!.substring(0, 200)} ..."
+                                          : communityWebinars
+                                              .communityWebinarsList[index]
+                                              .description!,
                                   textStyle: TextStyle(
-                                    fontSize: 16,
-                                    color: AppColors.white,
-                                  ),
+                                      fontSize:
+                                          (MediaQuery.of(context).size.width /
+                                                  375) *
+                                              12,
+                                      color: AppColors.white),
                                 ),
+                                if (communityWebinars
+                                        .communityWebinarsList[index]
+                                        .description!
+                                        .length >
+                                    200)
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          _isExpanded = !_isExpanded;
+                                        });
+                                      },
+                                      child: Text(
+                                        _isExpanded ? "Read Less" : "Read More",
+                                        style: const TextStyle(
+                                            color: AppColors.blue,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ),
                                 sizedTextfield,
                                 Card(
                                   color: AppColors.white38,
@@ -201,11 +252,17 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                           decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(7),
-                                              color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary),
+                                              color: GetStoreData.getStore
+                                                      .read('isInvestor')
+                                                  ? AppColors.primaryInvestor
+                                                  : AppColors.primary),
                                           child: Center(
                                             child: Image.asset(
                                               PngAssetPath.meetingIcon,
-                                              color: GetStoreData.getStore.read('isInvestor')?AppColors.black:AppColors.white,
+                                              color: GetStoreData.getStore
+                                                      .read('isInvestor')
+                                                  ? AppColors.black
+                                                  : AppColors.white,
                                               height: 22,
                                             ),
                                           ),
@@ -247,7 +304,7 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                                               .price ==
                                                           0
                                                       ? "Free"
-                                                      : "\u{20B9}${communityWebinars.communityWebinarsList[index].price} +",
+                                                      : "\u{20B9}${communityWebinars.communityWebinarsList[index].price}",
                                                   textSize: 12),
                                               const SizedBox(width: 5),
                                               Icon(Icons.arrow_forward,

@@ -1,6 +1,7 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityPriorityDMsController/community_priority_dms_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
@@ -75,7 +76,7 @@ class _CommunityYourQuestionsScreenState
                                     text:
                                         "Time left:${communityPriorityDMs.yourQuestionsData.questions![index].timeLeft}",
                                     textSize: 16,
-                                    color: AppColors.primary,
+                                    color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                   ),
                                   sizedTextfield,
                                   TextWidget(

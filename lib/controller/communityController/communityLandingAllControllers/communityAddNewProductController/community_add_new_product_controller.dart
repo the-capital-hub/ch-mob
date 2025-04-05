@@ -9,26 +9,27 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 
+CommunityProductsAndMembersController communityProducts =
+    Get.put(CommunityProductsAndMembersController());
+
 class CommunityAddNewProductController extends GetxController {
-  CommunityProductsAndMembersController communityProducts =
-      Get.put(CommunityProductsAndMembersController());
   TextEditingController productNameController = TextEditingController();
   QuillEditorController productDescriptionController = QuillEditorController();
   TextEditingController productAmountController = TextEditingController();
   bool isFree = false;
   List<String> urls = [];
-  String cleanHtmlDescription(String description) {
-    description = description.replaceAll(RegExp(r'(<br>\s*)+'), '<br>');
+  // String cleanHtmlDescription(String description) {
+  //   description = description.replaceAll(RegExp(r'(<br>\s*)+'), '<br>');
 
-    description = description.replaceAll(RegExp(r'<p>\s*<\/p>'), '');
+  //   description = description.replaceAll(RegExp(r'<p>\s*<\/p>'), '');
 
-    description =
-        description.replaceAll(RegExp(r'<p>\s*<br>\s*<\/p>'), '<p><br></p>');
+  //   description =
+  //       description.replaceAll(RegExp(r'<p>\s*<br>\s*<\/p>'), '<p><br></p>');
 
-    description = description.trim();
+  //   description = description.trim();
 
-    return description;
-  }
+  //   return description;
+  // }
 
   Future addProductToCommunity(base64, urls) async {
     String description = "";
@@ -72,7 +73,7 @@ class CommunityAddNewProductController extends GetxController {
     await productDescriptionController
         .getText()
         .then((val) => description = val);
-    description = cleanHtmlDescription(description);
+    // description = cleanHtmlDescription(description);
     var response = await ApiBase.pachRequest(
         body: {
           "name": productNameController.text,

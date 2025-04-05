@@ -1,6 +1,7 @@
 class PngAssetPath {
   PngAssetPath._internal();
   static const String appLogo = 'assets/img/icon.png';
+  static const String appIcon = 'assets/img/appicon.png';
   static const String startupImg = 'assets/img/startup.png';
   static const String investorImg = 'assets/img/investor.png';
   static const String accountImg = 'assets/img/account.png';

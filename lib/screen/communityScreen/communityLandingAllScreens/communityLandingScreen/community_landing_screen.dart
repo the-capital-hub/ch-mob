@@ -13,6 +13,7 @@ import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
+import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -27,10 +28,12 @@ class CommunityLandingScreen extends StatefulWidget {
 
 class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
   CommunityAboutController aboutCommunity = Get.put(CommunityAboutController());
+  CommunityController myCommunities = Get.put(CommunityController());
   CommunityMeetingsController communityMeetings =
       Get.put(CommunityMeetingsController());
+  CommunityController allCommunities = Get.put(CommunityController());
   int selectIndex = 0;
-
+  GlobalKey<PopupMenuButtonState<String>> _popupMenuKey = GlobalKey();
   List adminIcons = [
     PngAssetPath.homeIcon,
     PngAssetPath.categoryIcon,
@@ -68,7 +71,11 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      communityMeetings.getMemberEmails();
+      if (!isAdmin) {
+        allCommunities.getCommunityMemberSettings();
+
+        communityMeetings.getMemberEmails();
+      }
       aboutCommunity.getAboutCommunity().then((v) {
         WidgetsBinding.instance.addPostFrameCallback((_) {});
       });
@@ -92,6 +99,81 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
             ),
             title: TextWidget(text: communityName, textSize: 16),
             actions: [
+              if (!isAdmin)
+                PopupMenuButton<String>(
+                    key: _popupMenuKey,
+                    icon: Icon(
+                      Icons.settings,
+                      size: 30,
+                    ),
+                    iconColor: GetStoreData.getStore.read('isInvestor')
+                        ? AppColors.black
+                        : AppColors.white,
+                    color: AppColors.blackCard,
+                    offset: Offset(100, 55),
+                    onSelected: (value) {
+                      // Helper.loader(context);
+                      // setState(() {
+                      //   postFilter = value;
+                      // });
+                      // onPostTypeChanged();
+                    },
+                    itemBuilder: (context) => [
+                          PopupMenuItem(
+                            enabled: false,
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  value: allCommunities.receiveEmail,
+                                  checkColor:
+                                      GetStoreData.getStore.read('isInvestor')
+                                          ? AppColors.black
+                                          : AppColors.white,
+                                  activeColor:
+                                      GetStoreData.getStore.read('isInvestor')
+                                          ? AppColors.primaryInvestor
+                                          : AppColors.primary,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      allCommunities.receiveEmail = value!;
+                                    });
+                                    Get.back(); 
+                                    Helper.loader(context);
+                                    allCommunities.toggleReceiveEmail();
+                                    
+                                  },
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                const TextWidget(
+                                  maxLine: 2,
+                                  text: "Receive Community\nEmails",
+                                  textSize: 16,
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuDivider(),
+                          PopupMenuItem(
+                            value: "admin",
+                            child: TextWidget(
+                              text: "Leave Community",
+                              textSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.redColor,
+                            ),
+                            onTap: () {
+                              Helper.loader(context);
+                              myCommunities
+                                  .leaveCommunity(createdCommunityId)
+                                  .then((v) {
+                                GetStoreData.getStore.read('isInvestor')
+                                    ? Get.offAll(const LandingScreenInvestor())
+                                    : Get.offAll(const LandingScreen());
+                              });
+                            },
+                          ),
+                        ]),
               IconButton(
                   onPressed: () {
                     GetStoreData.getStore.read('isInvestor')
@@ -142,7 +224,9 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
                         Image.asset(
                           isAdmin ? adminIcons[index] : memberIcons[index],
                           color: selectIndex == index
-                              ? GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary
+                              ? GetStoreData.getStore.read('isInvestor')
+                                  ? AppColors.primaryInvestor
+                                  : AppColors.primary
                               : AppColors.whiteCard,
                           height: 22,
                         ),
@@ -152,7 +236,9 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
                               isAdmin ? adminTitle[index] : memberTitle[index],
                           textSize: 10,
                           color: selectIndex == index
-                              ? GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary
+                              ? GetStoreData.getStore.read('isInvestor')
+                                  ? AppColors.primaryInvestor
+                                  : AppColors.primary
                               : AppColors.whiteCard,
                           maxLine: 2,
                           align: TextAlign.center,

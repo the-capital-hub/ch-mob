@@ -149,6 +149,8 @@ class ApiUrl {
   static const String deleteCommunity = "Communities/deleteCommunity/";
   static const String joinCommunity = "Communities/addMembersToCommunity/";
   static const String updateCommunity = "Communities/updateCommunity/";
+  static const String toggleReceiveEmail = "communities/toggleRecieveEmail/";
+  static const String communityMemberSettings = "communities/getCommunityMemberSettings/";
   static const String addProductToCommunity =
       "Communities/addProductToCommunity/";
   static const String updateCommunityProduct = "Communities/updateProduct/";

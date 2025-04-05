@@ -629,7 +629,7 @@ class CommunityPostModel {
 }
 
 class CommunityPost {
-  List<Post>? postData;
+  List<HomePost>? postData;
   Community? communityData;
 
   CommunityPost({
@@ -641,7 +641,7 @@ class CommunityPost {
     try {
       return CommunityPost(
         postData: json["postData"] != null
-            ? List<Post>.from(json["postData"].map((x) => Post.fromJson(x)))
+            ? List<HomePost>.from(json["postData"].map((x) => HomePost.fromJson(x)))
             : [],
         communityData: json["communityData"] != null ? Community.fromJson(json["communityData"]) : null,
       );
@@ -690,7 +690,7 @@ class Community {
       };
 }
 
-class Post {
+class HomePost {
   String? postId;
   String? postType;
   bool? isMyPost;
@@ -716,7 +716,7 @@ class Post {
   String? connectionStatus;
   ResharedCommunityPostData? resharedPostData;
 
-  Post({
+  HomePost({
     this.postId,
     this.postType,
     this.isMyPost,
@@ -743,9 +743,9 @@ class Post {
     this.resharedPostData,
   });
 
-  factory Post.fromJson(Map<String, dynamic> json) {
+  factory HomePost.fromJson(Map<String, dynamic> json) {
     try {
-      return Post(
+      return HomePost(
         postId: json["postId"] ?? '',
         postType: json["postType"] ?? '',
         isMyPost: json["isMyPost"] ?? false,
@@ -777,7 +777,7 @@ class Post {
       );
     } catch (e) {
       print("Error parsing Post: $e");
-      return Post(
+      return HomePost(
         postId: "",
         postType: "",
         isMyPost: false,

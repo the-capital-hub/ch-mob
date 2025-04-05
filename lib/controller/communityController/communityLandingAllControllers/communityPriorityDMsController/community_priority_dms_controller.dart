@@ -93,18 +93,18 @@ class CommunityPriorityDMsController extends GetxController {
     }
   }
 
-  String cleanHtmlDescription(String description) {
-    description = description.replaceAll(RegExp(r'(<br>\s*)+'), '<br>');
+  // String cleanHtmlDescription(String description) {
+  //   description = description.replaceAll(RegExp(r'(<br>\s*)+'), '<br>');
 
-    description = description.replaceAll(RegExp(r'<p>\s*<\/p>'), '');
+  //   description = description.replaceAll(RegExp(r'<p>\s*<\/p>'), '');
 
-    description =
-        description.replaceAll(RegExp(r'<p>\s*<br>\s*<\/p>'), '<p><br></p>');
+  //   description =
+  //       description.replaceAll(RegExp(r'<p>\s*<br>\s*<\/p>'), '<p><br></p>');
 
-    description = description.trim();
+  //   description = description.trim();
 
-    return description;
-  }
+  //   return description;
+  // }
 
   Future updateCommunityPriorityDM(topics, priorityDMId) async {
     // if (selectedTimeLine == "Hours") {
@@ -118,7 +118,7 @@ class CommunityPriorityDMsController extends GetxController {
     // }
     String description = "";
     await descriptionController.getText().then((val) => description = val);
-    description = cleanHtmlDescription(description);
+    // description = cleanHtmlDescription(description);
     var response = await ApiBase.pachRequest(
         body: {
           "title": titleController.text,

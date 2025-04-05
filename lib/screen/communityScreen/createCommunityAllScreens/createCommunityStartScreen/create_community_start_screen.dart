@@ -47,8 +47,8 @@ class _CreateCommunityStartScreenState
       decoration: bgDec,
       child: Scaffold(
         drawer: GetStoreData.getStore.read('isInvestor')
-              ? const DrawerWidgetInvestor()
-              : const DrawerWidget(),
+            ? const DrawerWidgetInvestor()
+            : const DrawerWidget(),
         backgroundColor: AppColors.transparent,
         appBar: HelperAppBar.appbarHelper(
           title: "Create Community",
@@ -115,6 +115,7 @@ class _CreateCommunityStartScreenState
                 ]),
                 SizedBox(
                   child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: optionsControllers.length,
                     itemBuilder: (context, index) {
@@ -138,7 +139,9 @@ class _CreateCommunityStartScreenState
                                 ? Icons.radio_button_checked
                                 : Icons.radio_button_unchecked,
                             color: isSelected[index]
-                                ? GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary
+                                ? GetStoreData.getStore.read('isInvestor')
+                                    ? AppColors.primaryInvestor
+                                    : AppColors.primary
                                 : AppColors.white54,
                           ),
                         ),
@@ -152,8 +155,12 @@ class _CreateCommunityStartScreenState
                   children: [
                     Checkbox(
                       value: isChecked,
-                      checkColor: GetStoreData.getStore.read('isInvestor')?AppColors.black:AppColors.white,
-                      activeColor: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                      checkColor: GetStoreData.getStore.read('isInvestor')
+                          ? AppColors.black
+                          : AppColors.white,
+                      activeColor: GetStoreData.getStore.read('isInvestor')
+                          ? AppColors.primaryInvestor
+                          : AppColors.primary,
                       onChanged: (bool? value) {
                         setState(() {
                           isChecked = value!;

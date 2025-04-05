@@ -11,7 +11,7 @@ Future<bool> showCustomPopup({
   required IconData icon,
   required VoidCallback onButton1Pressed,
   required VoidCallback onButton2Pressed,
-  Color? buttonColor = AppColors.primary,
+  Color? buttonColor = AppColors.redColor,
   Widget? body,
 }) async {
   return await showDialog(

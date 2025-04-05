@@ -3,6 +3,7 @@ import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityMeetingsScreen/communityBookAMeetingScreen/community_book_a_meeting_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
@@ -272,7 +273,7 @@ class _SelectAvailabilityScreenState extends State<SelectAvailabilityScreen> {
                           children: [
                             Expanded(
                               child: AppButton.outlineButton(
-                                  borderColor: AppColors.primary,
+                                  borderColor: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                   onButtonPressed: () {
                                     Get.back();
                                     setState(() {
@@ -300,7 +301,7 @@ class _SelectAvailabilityScreenState extends State<SelectAvailabilityScreen> {
                                       //     DateFormat('MMMM d')
                                       //         .format(selectedDate);
 
-                                      communityWebinars.formattedDate != "" &&
+                                     communityWebinars.formattedDate != "" &&
                                               communityWebinars.slot != ""
                                           ? Get.to(() =>
                                               CommunityScheduleEventsScreen(

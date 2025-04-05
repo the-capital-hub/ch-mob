@@ -4,6 +4,7 @@ import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
@@ -177,13 +178,15 @@ class _CommunityScheduleEventsScreenState
                       sizedTextfield,
                       Row(
                         children: [
-                          HtmlWidget(
-                            communityWebinars
-                                .communityWebinarsList[widget.index]
-                                .description!,
-                            textStyle: TextStyle(
-                              fontSize: 16,
-                              color: AppColors.white,
+                          Expanded(
+                            child: HtmlWidget(
+                              communityWebinars
+                                  .communityWebinarsList[widget.index]
+                                  .description!,
+                              textStyle: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.white,
+                              ),
                             ),
                           ),
                         ],
@@ -289,7 +292,7 @@ class _CommunityScheduleEventsScreenState
                           children: [
                             Expanded(
                               child: AppButton.outlineButton(
-                                  borderColor: AppColors.primary,
+                                  borderColor: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                   onButtonPressed: () {
                                     Get.back();
                                     setState(() {

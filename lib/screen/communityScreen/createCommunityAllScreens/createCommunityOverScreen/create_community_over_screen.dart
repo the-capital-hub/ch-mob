@@ -74,9 +74,10 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       TextWidget(
+                        align: TextAlign.center,
                           text:
                               "Congrats! ${aboutCommunity.aboutCommunityDetailsList[0].name}\nis live!",
-                          textSize: 20),
+                          textSize: 20,),
                       sizedTextfield,
                       sizedTextfield,
                       CircleAvatar(

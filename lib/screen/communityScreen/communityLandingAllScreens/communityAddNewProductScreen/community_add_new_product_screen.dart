@@ -7,6 +7,7 @@ import 'package:capitalhub_crm/screen/homeScreen/home_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
@@ -31,7 +32,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
   CommunityAddNewProductController addNewProduct =
       Get.put(CommunityAddNewProductController());
   TextEditingController urlController = TextEditingController();
-  bool isChecked = false;
+
   String base64 = "";
   List<TextEditingController> controllers = [TextEditingController()];
   CommunityProductsAndMembersController communityProducts = Get.find();
@@ -47,7 +48,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
   @override
   void initState() {
     if (!widget.isEdit) {
-      isChecked = false;
+      addNewProduct.isFree = false;
       base64 = "";
       addNewProduct.productNameController.clear();
       addNewProduct.productDescriptionController.clear();
@@ -61,7 +62,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
       addNewProduct.urls =
           communityProducts.communityProductsList[widget.index!].urls;
       setState(() {
-        isChecked =
+        addNewProduct.isFree =
             communityProducts.communityProductsList[widget.index!].isFree;
         base64 = communityProducts.communityProductsList[widget.index!].image;
       });
@@ -129,7 +130,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
   }
 
   addDescription() async {
-    await addNewProduct.productDescriptionController.insertText(
+    await addNewProduct.productDescriptionController.setText(
         communityProducts.communityProductsList[widget.index!].description);
   }
 
@@ -257,7 +258,12 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                   children: [
                     Checkbox(
                       value: addNewProduct.isFree,
-                      activeColor: AppColors.primary,
+                      checkColor: GetStoreData.getStore.read('isInvestor')
+                          ? AppColors.black
+                          : AppColors.white,
+                      activeColor: GetStoreData.getStore.read('isInvestor')
+                          ? AppColors.primaryInvestor
+                          : AppColors.primary,
                       onChanged: (bool? value) {
                         setState(() {
                           addNewProduct.isFree = value!;
@@ -297,7 +303,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       suffixIcon: index > 0
                           ? IconButton(
                               icon: const Icon(Icons.delete),
-                              color: AppColors.primary,
+                              color: AppColors.redColor,
                               onPressed: () => removeTextField(index),
                             )
                           : null,
@@ -328,7 +334,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Expanded(
                 child: AppButton.outlineButton(
-                    borderColor: AppColors.primary,
+                    borderColor: GetStoreData.getStore.read('isInvestor')
+                        ? AppColors.primaryInvestor
+                        : AppColors.primary,
                     onButtonPressed: () {
                       Get.back();
                     },
@@ -341,9 +349,10 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       if (base64 == "") {
                         HelperSnackBar.snackBar(
                             "Error", "Upload an Image for the Product.");
-                      } else if (addNewProduct
-                              .productAmountController.text.isEmpty ||
-                          addNewProduct.productAmountController.text == "0") {
+                      } else if (!addNewProduct.isFree &&
+                          (addNewProduct.productAmountController.text.isEmpty ||
+                              addNewProduct.productAmountController.text ==
+                                  "0")) {
                         HelperSnackBar.snackBar(
                             "Error", "Enter a valid Product Price Amount");
                       } else {

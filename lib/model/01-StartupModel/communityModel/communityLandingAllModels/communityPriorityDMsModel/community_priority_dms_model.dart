@@ -50,6 +50,7 @@ class CommunityPriorityDMs {
   final String? timelineUnit;
   final List<String>? topics;
   final List<Question>? questions;
+  final String? dmSharelink;
 
   CommunityPriorityDMs({
     this.id,
@@ -61,25 +62,26 @@ class CommunityPriorityDMs {
     this.timelineUnit,
     this.topics,
     this.questions,
+    this.dmSharelink,
   });
 
   factory CommunityPriorityDMs.fromJson(Map<String, dynamic> json) =>
       CommunityPriorityDMs(
-        id: json["_id"],
-        title: json["title"],
-        description: json["description"],
-        amount: json["amount"],
-        timeline: json["timeline"],
-        timelineValue: json["timelineValue"],
-        timelineUnit: json["timelineUnit"],
-        topics: json["topics"] != null
-            ? List<String>.from(json["topics"].map((x) => x))
-            : null,
-        questions: json["questions"] != null
-            ? List<Question>.from(
-                json["questions"].map((x) => Question.fromJson(x)))
-            : null,
-      );
+          id: json["_id"],
+          title: json["title"],
+          description: json["description"],
+          amount: json["amount"],
+          timeline: json["timeline"],
+          timelineValue: json["timelineValue"],
+          timelineUnit: json["timelineUnit"],
+          topics: json["topics"] != null
+              ? List<String>.from(json["topics"].map((x) => x))
+              : null,
+          questions: json["questions"] != null
+              ? List<Question>.from(
+                  json["questions"].map((x) => Question.fromJson(x)))
+              : null,
+          dmSharelink: json["dm_shareLink"]);
 
   Map<String, dynamic> toJson() => {
         "_id": id,
@@ -94,6 +96,7 @@ class CommunityPriorityDMs {
         "questions": questions != null
             ? List<dynamic>.from(questions!.map((x) => x.toJson()))
             : null,
+        "dm_shareLink": dmSharelink,
       };
 }
 
