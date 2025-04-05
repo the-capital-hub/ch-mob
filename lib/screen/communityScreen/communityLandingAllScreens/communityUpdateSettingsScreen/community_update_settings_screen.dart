@@ -4,6 +4,7 @@ import 'package:capitalhub_crm/controller/communityController/communityLandingAl
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityAboutScreen/communities_about_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dropdownWidget/drop_down_widget.dart';
@@ -34,7 +35,6 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       Future.wait([aboutCommunity.getAboutCommunity()]).then((values) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          addAbout();
           urlController.text =
               aboutCommunity.aboutCommunityList[0].community!.shareLink!;
           updateSettings.communityNameController.text =
@@ -57,7 +57,6 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
           });
 
           initializeControllers();
-          
         });
       });
     });
@@ -67,8 +66,6 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
   addAbout() async {
     await updateSettings.aboutCommunityController
         .insertText(aboutCommunity.aboutCommunityList[0].community!.about!);
-    print(aboutCommunity.aboutCommunityList[0].community!.about!);
-    print("aboutttttttttttttttttttttttttttttttttttttttttttttttttttt");
   }
 
   TextEditingController urlController = TextEditingController();
@@ -239,8 +236,15 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Checkbox(
+                                  checkColor:
+                                      GetStoreData.getStore.read('isInvestor')
+                                          ? AppColors.black
+                                          : AppColors.white,
                                   value: updateSettings.isOpen,
-                                  activeColor: AppColors.primary,
+                                  activeColor:
+                                      GetStoreData.getStore.read('isInvestor')
+                                          ? AppColors.primaryInvestor
+                                          : AppColors.primary,
                                   onChanged: (bool? value) {
                                     setState(() {
                                       updateSettings.isOpen = value!;
@@ -259,6 +263,9 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                               controller:
                                   updateSettings.aboutCommunityController,
                               lableText: "About Community",
+                              onEditorCreated: () async {
+                                addAbout();
+                              },
                             ),
                             const SizedBox(
                               height: 16,
@@ -284,7 +291,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                   lableText: "Terms and conditions",
                                   suffixIcon: IconButton(
                                     icon: const Icon(Icons.delete),
-                                    color: AppColors.primary,
+                                    color: AppColors.redColor,
                                     onPressed: () => removeTextField(index),
                                   ),
                                 );
@@ -305,7 +312,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                               height: 16,
                             ),
                             AppButton.primaryButton(
-                                bgColor: AppColors.primary,
+                                // bgColor: AppColors.primary,
                                 onButtonPressed: () {
                                   Helper.loader(context);
                                   updateSettings.updateCommunity(base64);
@@ -318,7 +325,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 60, vertical: 0),
                               child: AppButton.primaryButton(
-                                  bgColor: AppColors.primary,
+                                  // bgColor: AppColors.primary,
                                   onButtonPressed: () {
                                     showDialog(
                                       context: context,

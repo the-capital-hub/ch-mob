@@ -58,6 +58,7 @@ class Product {
   List<String> urls;
   String id;
   bool isProductPurchased;
+  String? productSharelink;
 
   Product({
     required this.name,
@@ -69,6 +70,7 @@ class Product {
     required this.urls,
     required this.id,
     required this.isProductPurchased,
+    this.productSharelink,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
@@ -81,6 +83,7 @@ class Product {
         urls: List<String>.from(json["URLS"].map((x) => x)),
         id: json["_id"],
         isProductPurchased: json["isProductPurchased"],
+        productSharelink: json["product_shareLink"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -93,6 +96,7 @@ class Product {
         "URLS": List<dynamic>.from(urls.map((x) => x)),
         "_id": id,
         "isProductPurchased": isProductPurchased,
+        "product_shareLink": productSharelink,
       };
 }
 

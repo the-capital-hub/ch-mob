@@ -2,6 +2,7 @@ import 'package:capitalhub_crm/controller/communityController/communityLandingAl
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityPriorityDMsController/community_priority_dms_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
@@ -79,11 +80,11 @@ class _CommunityBookAMeetingScreenState
                           fontWeight: FontWeight.w500,
                         ),
                         const SizedBox(height: 12),
-                        const TextWidget(
+                      TextWidget(
                           text: "Service:",
                           textSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.primary,
+                          color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                         ),
                         const SizedBox(height: 12),
                         TextWidget(
@@ -91,11 +92,11 @@ class _CommunityBookAMeetingScreenState
                                 .communityPriorityDMsList[widget.index].title!,
                             textSize: 13),
                         const SizedBox(height: 12),
-                        const TextWidget(
+                        TextWidget(
                           text: "Description:",
                           textSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.primary,
+                          color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                         ),
                         SizedBox(height: 12),
                         HtmlWidget(
@@ -116,7 +117,7 @@ class _CommunityBookAMeetingScreenState
                                   text: "Type",
                                   textSize: 16,
                                   fontWeight: FontWeight.w500,
-                                  color: AppColors.primary,
+                                  color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                 ),
                                 SizedBox(height: 8),
                                 TextWidget(text: "PriorityDM", textSize: 13),
@@ -132,7 +133,7 @@ class _CommunityBookAMeetingScreenState
                                   text: "Price",
                                   textSize: 16,
                                   fontWeight: FontWeight.w500,
-                                  color: AppColors.primary,
+                                  color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                 ),
                                 SizedBox(height: 8),
                                 TextWidget(
@@ -155,7 +156,7 @@ class _CommunityBookAMeetingScreenState
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Expanded(
                 child: AppButton.outlineButton(
-                    borderColor: AppColors.primary,
+                    borderColor: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                     onButtonPressed: () {
                       Get.back();
                     },

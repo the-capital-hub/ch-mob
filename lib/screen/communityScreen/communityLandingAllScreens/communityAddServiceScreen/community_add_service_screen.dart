@@ -67,6 +67,9 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
 
   String base64 = "";
 
+  final RegExp emailRegex =
+      RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+
   bool isAddNewMemberFieldVisible = false;
   CommunityPriorityDMsController communityPriorityDMs =
       Get.put(CommunityPriorityDMsController());
@@ -106,8 +109,9 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
     }
     if (widget.isEdit && widget.isPriorityDM) {
       setState(() {
-        communityPriorityDMs.selectedTimeLine = communityPriorityDMs.titleController.text =
-          communityPriorityDMs.communityPriorityDMsList[widget.index!].timelineUnit!;
+        communityPriorityDMs.selectedTimeLine =
+            communityPriorityDMs.titleController.text = communityPriorityDMs
+                .communityPriorityDMsList[widget.index!].timelineUnit!;
       });
       communityPriorityDMs.titleController.text =
           communityPriorityDMs.communityPriorityDMsList[widget.index!].title!;
@@ -133,6 +137,14 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
       DateFormat outputFormat = DateFormat("yyyy-MM-dd");
       String outputMeetingDate = outputFormat.format(dateTime);
       communityMeetings.dateController.text = outputMeetingDate;
+      setState(() {
+        communityMeetings.memberEmail = communityMeetings
+            .communityMeetingsList[widget.index!]
+            .availability![0]
+            .slots![0]
+            .memberEmail!;
+      });
+
       communityMeetings.startTimeController.text = communityMeetings
           .communityMeetingsList[widget.index!]
           .availability![0]
@@ -168,7 +180,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
     if (widget.isEdit && widget.isWebinar) {
       String numberString = "";
       String inputString =
-          communityEvents.communityEventsData.webinars![widget.index!].duration;
+          communityEvents.communityEventsData.webinars![widget.index!].duration!;
 
       // Use regex to capture the number from the string
       RegExp regExp = RegExp(r'(\d+)');
@@ -184,7 +196,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
         print("No number found.");
       }
       String inputDate = communityEvents.communityEventsData
-          .webinars![widget.index!].date; // Original date format (DD-MM-YYYY)
+          .webinars![widget.index!].date!; // Original date format (DD-MM-YYYY)
 
       // Parse the date in DD-MM-YYYY format
       DateFormat inputFormat = DateFormat('dd-MM-yyyy');
@@ -195,19 +207,19 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
       String formattedDate = outputFormat.format(date);
 
       communityWebinars.titleController.text =
-          communityEvents.communityEventsData.webinars![widget.index!].title;
+          communityEvents.communityEventsData.webinars![widget.index!].title!;
       communityWebinars.dateController.text = formattedDate;
 
       communityWebinars.durationMinutesController.text = numberString;
 
       communityWebinars.startTimeController.text = communityEvents
-          .communityEventsData.webinars![widget.index!].startTime;
+          .communityEventsData.webinars![widget.index!].startTime!;
       communityWebinars.endTimeController.text =
-          communityEvents.communityEventsData.webinars![widget.index!].endTime;
+          communityEvents.communityEventsData.webinars![widget.index!].endTime!;
       communityWebinars.priceController.text =
-          communityEvents.communityEventsData.webinars![widget.index!].price;
+          communityEvents.communityEventsData.webinars![widget.index!].price!;
       communityWebinars.priceDiscountController.text =
-          communityEvents.communityEventsData.webinars![widget.index!].discount;
+          communityEvents.communityEventsData.webinars![widget.index!].discount!;
     }
     super.initState();
 
@@ -228,27 +240,28 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
   bool isPriorityDMTopics = false;
   bool isMeetingsTopics = false;
   void splitTopics() {
-  setState(() {
-    if (isPriorityDMTopics) {
-      String text = communityPriorityDMs.topicsController.text.trim();
-      topics = _processTopics(text);
-    }
-    if (isMeetingsTopics) {
-      String text = communityMeetings.topicsController.text.trim();
-      topics = _processTopics(text);
-    }
-  });
-}
+    setState(() {
+      if (isPriorityDMTopics) {
+        String text = communityPriorityDMs.topicsController.text.trim();
+        topics = _processTopics(text);
+      }
+      if (isMeetingsTopics) {
+        String text = communityMeetings.topicsController.text.trim();
+        topics = _processTopics(text);
+      }
+    });
+  }
 
-List<String> _processTopics(String text) {
-  // Split by commas and trim spaces from each topic
-  List<String> processedTopics = text.split(',')
-      .map((topic) => topic.trim())
-      .where((topic) => topic.isNotEmpty) // Remove empty topics
-      .toList();
+  List<String> _processTopics(String text) {
+    // Split by commas and trim spaces from each topic
+    List<String> processedTopics = text
+        .split(',')
+        .map((topic) => topic.trim())
+        .where((topic) => topic.isNotEmpty) // Remove empty topics
+        .toList();
 
-  return processedTopics;
-}
+    return processedTopics;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -362,7 +375,7 @@ List<String> _processTopics(String text) {
 
   priorityDMTab() {
     addDescription() async {
-      await communityPriorityDMs.descriptionController.insertText(
+      await communityPriorityDMs.descriptionController.setText(
           communityPriorityDMs
               .communityPriorityDMsList[widget.index!].description!);
     }
@@ -475,7 +488,7 @@ List<String> _processTopics(String text) {
 
   meetingTab() {
     addDescription() async {
-      await communityMeetings.descriptionController.insertText(
+      await communityMeetings.descriptionController.setText(
           communityMeetings.communityMeetingsList[widget.index!].description!);
     }
 
@@ -548,7 +561,9 @@ List<String> _processTopics(String text) {
               if (selectedDate != null) {
                 communityMeetings.dateController.text =
                     Helper.formatDatePost(selectedDate.toString());
-
+                communityMeetings.dateSelected = selectedDate;
+                communityMeetings.startTimeController.clear();
+                communityMeetings.endTimeController.clear();
                 print(communityMeetings.dateController.text);
                 setState(() {});
               }
@@ -583,22 +598,30 @@ List<String> _processTopics(String text) {
               ),
             ),
             const SizedBox(width: 12),
+            // Expanded(
+            //   child: MyCustomTextField.textField(
+            //     hintText: "Select End Time",
+            //     readonly: true,
+            //     lableText: "End Time",
+            //     controller: communityMeetings.endTimeController,
+            //     onTap: () async {
+            //       DateTime? selectedTime = await selectTime(context, false);
+            //       print(selectedTime);
+            //       if (selectedTime != null) {
+            //         communityMeetings.endTimeController.text =
+            //             DateFormat('hh:mm a').format(selectedTime);
+
+            //         // _updateStartTime(selectedTime, true);
+            //       }
+            //     },
+            //   ),
+            // ),
             Expanded(
               child: MyCustomTextField.textField(
                 hintText: "Select End Time",
                 readonly: true,
                 lableText: "End Time",
                 controller: communityMeetings.endTimeController,
-                onTap: () async {
-                  DateTime? selectedTime = await selectTime(context, false);
-                  print(selectedTime);
-                  if (selectedTime != null) {
-                    communityMeetings.endTimeController.text =
-                        DateFormat('hh:mm a').format(selectedTime);
-
-                    _updateStartTime(selectedTime, true);
-                  }
-                },
               ),
             ),
           ],
@@ -630,15 +653,20 @@ List<String> _processTopics(String text) {
         sizedTextfield,
         if (isAddNewMemberFieldVisible) ...[
           MyCustomTextField.textField(
-              readonly: false,
-              hintText: "Enter member's email",
-              controller: communityMeetings.memberEmailController,
-              lableText: "Add Member"),
+            readonly: false,
+            hintText: "Enter member's email",
+            controller: communityMeetings.memberEmailController,
+            lableText: "Add Member",
+          ),
           sizedTextfield,
           AppButton.primaryButton(
               onButtonPressed: () {
-                if (communityMeetings.memberEmailController.text.isEmpty) {
-                  HelperSnackBar.snackBar("Error", "Enter a valid email id");
+                if (communityMeetings.memberEmailController.text.isEmpty ||
+                    !emailRegex.hasMatch(
+                        communityMeetings.memberEmailController.text)) {
+                  HelperSnackBar.snackBar(
+                      "Error", "Enter a valid email address");
+                  communityMeetings.memberEmailController.clear();
                 } else {
                   setState(() {
                     isAddNewMemberFieldVisible = false;
@@ -677,7 +705,7 @@ List<String> _processTopics(String text) {
                         topics, widget.meetingId);
                   } else {
                     Helper.loader(context);
-                    communityMeetings.createCommunityMeeting(topics);
+                    communityMeetings.createCommunityMeeting(context, topics);
                   }
                 },
                 title: widget.isEdit && widget.isMeeting
@@ -705,25 +733,25 @@ List<String> _processTopics(String text) {
     }
   }
 
-  void _updateStartTime(DateTime endTime, bool isMeeting) {
-    if (isMeeting) {
-      final durationInMinutes =
-          int.tryParse(communityMeetings.durationController.text) ?? 30;
-      final startTime = endTime.subtract(Duration(minutes: durationInMinutes));
-      communityMeetings.startTimeController.text =
-          DateFormat('hh:mm a').format(startTime);
-    } else {
-      final durationInMinutes =
-          int.tryParse(communityWebinars.durationMinutesController.text) ?? 30;
-      final startTime = endTime.subtract(Duration(minutes: durationInMinutes));
-      communityWebinars.startTimeController.text =
-          DateFormat('hh:mm a').format(startTime);
-    }
-  }
+  // void _updateStartTime(DateTime endTime, bool isMeeting) {
+  //   if (isMeeting) {
+  //     final durationInMinutes =
+  //         int.tryParse(communityMeetings.durationController.text) ?? 30;
+  //     final startTime = endTime.subtract(Duration(minutes: durationInMinutes));
+  //     communityMeetings.startTimeController.text =
+  //         DateFormat('hh:mm a').format(startTime);
+  //   } else {
+  //     final durationInMinutes =
+  //         int.tryParse(communityWebinars.durationMinutesController.text) ?? 30;
+  //     final startTime = endTime.subtract(Duration(minutes: durationInMinutes));
+  //     communityWebinars.startTimeController.text =
+  //         DateFormat('hh:mm a').format(startTime);
+  //   }
+  // }
 
   eventTab() {
     addDescription() async {
-      await communityEvents.descriptionController.insertText(
+      await communityEvents.descriptionController.setText(
           communityWebinars.communityWebinarsList[widget.index!].description!);
     }
 
@@ -816,8 +844,8 @@ List<String> _processTopics(String text) {
 
   webinarTab() {
     addDescription() async {
-      await communityWebinars.descriptionController.insertText(communityEvents
-          .communityEventsData.webinars![widget.index!].description);
+      await communityWebinars.descriptionController.setText(communityEvents
+          .communityEventsData.webinars![widget.index!].description!);
     }
 
     return SingleChildScrollView(
@@ -825,14 +853,13 @@ List<String> _processTopics(String text) {
         children: [
           sizedTextfield,
           base64 != ""
-                  ? CircleAvatar(
-                      radius: 60,
-                      backgroundImage: MemoryImage(base64Decode(base64)),
-                    )
-                  : const CircleAvatar(
-                      radius: 60,
-                      child:
-                          Icon(Icons.add_photo_alternate_outlined, size: 40)),
+              ? CircleAvatar(
+                  radius: 60,
+                  backgroundImage: MemoryImage(base64Decode(base64)),
+                )
+              : const CircleAvatar(
+                  radius: 60,
+                  child: Icon(Icons.add_photo_alternate_outlined, size: 40)),
           const SizedBox(
             height: 12,
           ),
@@ -871,7 +898,7 @@ List<String> _processTopics(String text) {
             },
           ),
           sizedTextfield,
-          // widget.isEdit 
+          // widget.isEdit
           // &&
           //         communityEvents.communityEventsData.webinars![widget.index!]
           //             .image.isNotEmpty
@@ -881,7 +908,7 @@ List<String> _processTopics(String text) {
           //             .communityEventsData.webinars![widget.index!].image),
           //       )
           //     :
-               
+
           Row(
             children: [
               Expanded(
@@ -904,6 +931,9 @@ List<String> _processTopics(String text) {
                       if (selectedDate != null) {
                         communityWebinars.dateController.text =
                             Helper.formatDatePost(selectedDate.toString());
+                        communityMeetings.dateSelected = selectedDate;
+                        communityWebinars.startTimeController.clear();
+                        communityWebinars.endTimeController.clear();
                         setState(() {});
                       }
                     },
@@ -951,7 +981,7 @@ List<String> _processTopics(String text) {
                     if (selectedTime != null) {
                       communityWebinars.endTimeController.text =
                           DateFormat('hh:mm a').format(selectedTime);
-                      _updateStartTime(selectedTime, false);
+                      // _updateStartTime(selectedTime, false);
                     }
                   },
                   controller: communityWebinars.endTimeController,
@@ -995,7 +1025,7 @@ List<String> _processTopics(String text) {
                           base64, widget.webinarId);
                     } else {
                       Helper.loader(context);
-                      communityWebinars.createCommunityWebinar(base64);
+                      communityWebinars.createCommunityWebinar(context, base64);
                     }
                   },
                   title: widget.isEdit && widget.isWebinar

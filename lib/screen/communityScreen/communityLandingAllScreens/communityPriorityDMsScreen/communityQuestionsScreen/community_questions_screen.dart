@@ -125,7 +125,7 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                         ? const Center(
                                             child: TextWidget(
                                                 text:
-                                                    "No Unanswered PriorityDMs Questions Available",
+                                                    "No Unanswered\nPriorityDMs Questions Available",
                                                 textSize: 16))
                                         : ListView.builder(
                                             itemCount:
@@ -186,8 +186,7 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                                                 text:
                                                                     "Time to answer :\n${unansweredQuestions[index].timeToAnswer}",
                                                                 textSize: 13,
-                                                                color: AppColors
-                                                                    .primary,
+                                                                color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                                               ),
                                                             ],
                                                           )
@@ -249,7 +248,7 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                         ? const Center(
                                             child: TextWidget(
                                                 text:
-                                                    "No Answered PriorityDMs Questions Available",
+                                                    "No Answered\nPriorityDMs Questions Available",
                                                 textSize: 16))
                                         : ListView.builder(
                                             itemCount: answeredQuestions.length,
