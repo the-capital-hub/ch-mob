@@ -315,6 +315,9 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        horizontal: 12),
                                                 backgroundColor:
                                                     AppColors.blackCard,
                                                 content: SingleChildScrollView(
@@ -325,16 +328,16 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                                     mainAxisSize:
                                                         MainAxisSize.min,
                                                     children: [
+                                                      SizedBox(height: 12),
                                                       Image.asset(
                                                         PngAssetPath
                                                             .resourceUrlImg,
-                                                        height: 200,
+                                                        height: 100,
                                                       ),
-                                                      const SizedBox(
-                                                          height: 20),
+                                                      const SizedBox(height: 6),
                                                       const TextWidget(
                                                         text: 'Resource URLs',
-                                                        textSize: 20,
+                                                        textSize: 18,
                                                         fontWeight:
                                                             FontWeight.w500,
                                                       ),
@@ -366,7 +369,7 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                                                             index]
                                                                         .urls[i],
                                                                     textSize:
-                                                                        16,
+                                                                        14,
                                                                     color: AppColors
                                                                         .white,
                                                                     maxLine: 4,
@@ -406,37 +409,37 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                                             ),
                                                           ),
                                                         ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(12),
+                                                        child: AppButton
+                                                            .primaryButton(
+                                                          bgColor: GetStoreData
+                                                                  .getStore
+                                                                  .read(
+                                                                      'isInvestor')
+                                                              ? AppColors
+                                                                  .primaryInvestor
+                                                              : AppColors
+                                                                  .primary,
+                                                          title: 'Close',
+                                                          textColor: GetStoreData
+                                                                  .getStore
+                                                                  .read(
+                                                                      'isInvestor')
+                                                              ? AppColors.black
+                                                              : AppColors.white,
+                                                          onButtonPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                        ),
+                                                      ),
                                                     ],
                                                   ),
                                                 ),
-                                                actions: [
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 50),
-                                                    child:
-                                                        AppButton.primaryButton(
-                                                      bgColor: GetStoreData
-                                                              .getStore
-                                                              .read(
-                                                                  'isInvestor')
-                                                          ? AppColors
-                                                              .primaryInvestor
-                                                          : AppColors.primary,
-                                                      title: 'Close',
-                                                      textColor: GetStoreData
-                                                              .getStore
-                                                              .read(
-                                                                  'isInvestor')
-                                                          ? AppColors.black
-                                                          : AppColors.white,
-                                                      onButtonPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                  ),
-                                                ],
                                               );
                                             },
                                           );
