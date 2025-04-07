@@ -111,39 +111,36 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
                         : AppColors.white,
                     color: AppColors.blackCard,
                     offset: Offset(100, 55),
-                    onSelected: (value) {
-                      // Helper.loader(context);
-                      // setState(() {
-                      //   postFilter = value;
-                      // });
-                      // onPostTypeChanged();
-                    },
                     itemBuilder: (context) => [
                           PopupMenuItem(
                             enabled: false,
                             child: Row(
                               children: [
-                                Checkbox(
-                                  value: allCommunities.receiveEmail,
-                                  checkColor:
-                                      GetStoreData.getStore.read('isInvestor')
+                                StatefulBuilder(
+                                  builder: (BuildContext context,
+                                      StateSetter setState) {
+                                    return Checkbox(
+                                      value: allCommunities.receiveEmail,
+                                      checkColor: GetStoreData.getStore
+                                              .read('isInvestor')
                                           ? AppColors.black
                                           : AppColors.white,
-                                  activeColor:
-                                      GetStoreData.getStore.read('isInvestor')
+                                      activeColor: GetStoreData.getStore
+                                              .read('isInvestor')
                                           ? AppColors.primaryInvestor
                                           : AppColors.primary,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      allCommunities.receiveEmail = value!;
-                                    });
-                                    Get.back(); 
-                                    Helper.loader(context);
-                                    allCommunities.toggleReceiveEmail();
-                                    
+                                      onChanged: (bool? value) {
+                                        setState(() {
+                                          allCommunities.receiveEmail = value!;
+                                        });
+
+                                        Helper.loader(context);
+                                        allCommunities.toggleReceiveEmail();
+                                      },
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                    );
                                   },
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
                                 ),
                                 const TextWidget(
                                   maxLine: 2,
