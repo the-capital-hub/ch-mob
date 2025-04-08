@@ -295,6 +295,7 @@ class _CommunityScheduleEventsScreenState
                                   borderColor: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                   onButtonPressed: () {
                                     Get.back();
+                                    Get.back();
                                     setState(() {
                                       communityWebinars.formattedDate = "";
                                       communityWebinars.selectedDayName = "";

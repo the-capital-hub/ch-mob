@@ -150,6 +150,7 @@ class ApiUrl {
   static String registerWebinar = "webinars/bookWebinar/";
   static String getPriorityDMForUser = "priorityDM/getPriority-DMForUser";
   static String getPriorityDMForFounder = "priorityDM/getPriority-DMForFounder";
+  static String answerPriorityDM = "priorityDM/updatePriority-DM/";
 
   static const String createCommunity = "Communities/createCommunity";
   static const String getCommunityById = "Communities/getCommunityById/";

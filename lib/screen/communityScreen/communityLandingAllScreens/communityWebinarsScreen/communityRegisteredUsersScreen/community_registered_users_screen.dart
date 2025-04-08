@@ -31,7 +31,7 @@ class _CommunityRegisteredUsersScreenState
             hideBack: true,
             autoAction: true,
           ),
-          body: communityEvents.communityEventsData.webinars![widget.index]
+          body: communityEvents.communityWebinarsList[widget.index]
                   .joinedUsers!.isEmpty
               ? const Center(
                   child: TextWidget(
@@ -39,8 +39,7 @@ class _CommunityRegisteredUsersScreenState
               : Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: ListView.builder(
-                    itemCount: communityEvents.communityEventsData
-                        .webinars![widget.index].joinedUsers!.length,
+                    itemCount: communityEvents.communityWebinarsList[widget.index].joinedUsers!.length,
                     itemBuilder: (context, index) {
                       return Card(
                         color: AppColors.blackCard,
@@ -52,8 +51,7 @@ class _CommunityRegisteredUsersScreenState
                                CircleAvatar(
                                   backgroundColor: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
                                   child: TextWidget(text: communityEvents
-                                        .communityEventsData
-                                        .webinars![widget.index]
+                                        .communityWebinarsList[widget.index]
                                         .joinedUsers![index]
                                         .name![0].toUpperCase(), textSize: 16,color: GetStoreData.getStore.read('isInvestor')?AppColors.black:AppColors.white,)),
                               const SizedBox(
@@ -64,8 +62,7 @@ class _CommunityRegisteredUsersScreenState
                                 children: [
                                   TextWidget(
                                     text: communityEvents
-                                        .communityEventsData
-                                        .webinars![widget.index]
+                                        .communityWebinarsList[widget.index]
                                         .joinedUsers![index]
                                         .name!,
                                     textSize: 16,
@@ -81,8 +78,7 @@ class _CommunityRegisteredUsersScreenState
                                       SizedBox(width: 8),
                                       TextWidget(
                                           text: communityEvents
-                                              .communityEventsData
-                                              .webinars![widget.index]
+                                              .communityWebinarsList[widget.index]
                                               .joinedUsers![index]
                                               .email!,
                                           textSize: 16),
@@ -98,8 +94,7 @@ class _CommunityRegisteredUsersScreenState
                                       SizedBox(width: 8),
                                       TextWidget(
                                           text: communityEvents
-                                              .communityEventsData
-                                              .webinars![widget.index]
+                                              .communityWebinarsList[widget.index]
                                               .joinedUsers![index]
                                               .mobile!,
                                           textSize: 16),

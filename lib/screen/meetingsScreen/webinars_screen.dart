@@ -13,6 +13,7 @@ import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class WebinarsScreen extends StatefulWidget {
   const WebinarsScreen({super.key});
@@ -32,6 +33,8 @@ class _WebinarsScreenState extends State<WebinarsScreen> {
     });
     super.initState();
   }
+
+   
 
   @override
   Widget build(BuildContext context) {

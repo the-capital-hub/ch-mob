@@ -91,17 +91,15 @@ class CommunityAddNewProductController extends GetxController {
 
     log(response.body);
     var data = json.decode(response.body);
+    Get.back();
+    Get.back();
     if (data["status"]) {
-      Get.back();
-      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       communityProducts.getCommunityProductsandMembers("");
       return true;
     } else {
-      Get.back();
-      Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
-      Get.back();
+
       return false;
     }
   }

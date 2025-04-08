@@ -48,29 +48,17 @@ class CommunityProductsAndMembersController extends GetxController {
     );
     log(response.body);
     var data = json.decode(response.body);
+    if(!isFree){
+    Get.back();
+    }
+    Get.back();
     if (data["status"]) {
-      if (isFree) {
-        Get.back();
-        HelperSnackBar.snackBar("Success", data["message"]);
-        getCommunityProductsandMembers("");
-      } else {
-        Get.back();
-        HelperSnackBar.snackBar("Success", data["message"]);
-        Get.back();
+      HelperSnackBar.snackBar("Success", data["message"]);
 
-        getCommunityProductsandMembers("");
-      }
-
+      getCommunityProductsandMembers("");
       return true;
     } else {
-      if (isFree) {
-        Get.back();
-        HelperSnackBar.snackBar("Error", data["message"]);
-      } else {
-        Get.back();
-        HelperSnackBar.snackBar("Error", data["message"]);
-        Get.back();
-      }
+      HelperSnackBar.snackBar("Error", data["message"]);
 
       return false;
     }

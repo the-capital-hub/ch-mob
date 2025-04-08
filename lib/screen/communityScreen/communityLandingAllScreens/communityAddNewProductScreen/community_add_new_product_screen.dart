@@ -64,7 +64,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
       setState(() {
         addNewProduct.isFree =
             communityProducts.communityProductsList[widget.index!].isFree;
-        base64 = communityProducts.communityProductsList[widget.index!].image;
+        // base64 = communityProducts.communityProductsList[widget.index!].image;
       });
       initializeControllers();
     }
@@ -194,21 +194,43 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                 const SizedBox(
                   height: 12,
                 ),
+                // widget.isEdit
+                //     ? CircleAvatar(
+                //         radius: 60,
+                //         foregroundImage: NetworkImage(communityProducts
+                //             .communityProductsList[widget.index!].image),
+                //       )
+                //     : base64 != ""
+                //         ? CircleAvatar(
+                //             radius: 60,
+                //             backgroundImage: MemoryImage(base64Decode(base64)),
+                //           )
+                //         : const CircleAvatar(
+                //             radius: 60,
+                //             child: Icon(Icons.add_photo_alternate_outlined,
+                //                 size: 40)),
                 widget.isEdit
-                    ? CircleAvatar(
-                        radius: 60,
-                        foregroundImage: NetworkImage(communityProducts
-                            .communityProductsList[widget.index!].image),
-                      )
-                    : base64 != ""
+                    ? base64 != ""
                         ? CircleAvatar(
                             radius: 60,
                             backgroundImage: MemoryImage(base64Decode(base64)),
                           )
-                        : const CircleAvatar(
+                        : CircleAvatar(
                             radius: 60,
-                            child: Icon(Icons.add_photo_alternate_outlined,
-                                size: 40)),
+                            foregroundImage: NetworkImage(communityProducts
+                                .communityProductsList[widget.index!].image),
+                          )
+                    : 
+                    base64 != ""
+                        ? CircleAvatar(
+                            radius: 60,
+                            backgroundImage: MemoryImage(base64Decode(base64)),
+                          )
+                        :
+                    const CircleAvatar(
+                        radius: 60,
+                        child:
+                            Icon(Icons.add_photo_alternate_outlined, size: 40)),
                 const SizedBox(
                   height: 12,
                 ),
@@ -346,7 +368,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               Expanded(
                 child: AppButton.primaryButton(
                     onButtonPressed: () {
-                      if (base64 == "") {
+                      if (!widget.isEdit && base64 == "") {
                         HelperSnackBar.snackBar(
                             "Error", "Upload an Image for the Product.");
                       } else if (!addNewProduct.isFree &&

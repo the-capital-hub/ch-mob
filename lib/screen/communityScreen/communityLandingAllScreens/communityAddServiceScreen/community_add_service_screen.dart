@@ -180,7 +180,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
     if (widget.isEdit && widget.isWebinar) {
       String numberString = "";
       String inputString =
-          communityEvents.communityEventsData.webinars![widget.index!].duration!;
+          communityEvents.communityWebinarsList[widget.index!].duration!;
 
       // Use regex to capture the number from the string
       RegExp regExp = RegExp(r'(\d+)');
@@ -195,8 +195,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
       } else {
         print("No number found.");
       }
-      String inputDate = communityEvents.communityEventsData
-          .webinars![widget.index!].date!; // Original date format (DD-MM-YYYY)
+      String inputDate = communityEvents.communityWebinarsList[widget.index!].date!; // Original date format (DD-MM-YYYY)
 
       // Parse the date in DD-MM-YYYY format
       DateFormat inputFormat = DateFormat('dd-MM-yyyy');
@@ -207,19 +206,19 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
       String formattedDate = outputFormat.format(date);
 
       communityWebinars.titleController.text =
-          communityEvents.communityEventsData.webinars![widget.index!].title!;
+          communityEvents.communityWebinarsList[widget.index!].title!;
       communityWebinars.dateController.text = formattedDate;
 
       communityWebinars.durationMinutesController.text = numberString;
 
       communityWebinars.startTimeController.text = communityEvents
-          .communityEventsData.webinars![widget.index!].startTime!;
+          .communityWebinarsList[widget.index!].startTime!;
       communityWebinars.endTimeController.text =
-          communityEvents.communityEventsData.webinars![widget.index!].endTime!;
+          communityEvents.communityWebinarsList[widget.index!].endTime!;
       communityWebinars.priceController.text =
-          communityEvents.communityEventsData.webinars![widget.index!].price!;
+          communityEvents.communityWebinarsList[widget.index!].price!;
       communityWebinars.priceDiscountController.text =
-          communityEvents.communityEventsData.webinars![widget.index!].discount!;
+          communityEvents.communityWebinarsList[widget.index!].discount!;
     }
     super.initState();
 
@@ -584,7 +583,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                 readonly: true,
                 lableText: "Start Time",
                 onTap: () async {
-                  DateTime? selectedTime = await selectTime(context, false);
+                  DateTime? selectedTime = await selectTime(context, false, "community");
                   print(selectedTime);
 
                   if (selectedTime != null) {
@@ -845,21 +844,40 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
   webinarTab() {
     addDescription() async {
       await communityWebinars.descriptionController.setText(communityEvents
-          .communityEventsData.webinars![widget.index!].description!);
+          .communityWebinarsList[widget.index!].description!);
     }
 
     return SingleChildScrollView(
       child: Column(
         children: [
           sizedTextfield,
-          base64 != ""
-              ? CircleAvatar(
-                  radius: 60,
-                  backgroundImage: MemoryImage(base64Decode(base64)),
-                )
-              : const CircleAvatar(
-                  radius: 60,
-                  child: Icon(Icons.add_photo_alternate_outlined, size: 40)),
+          // base64 != ""
+          //     ? CircleAvatar(
+          //         radius: 60,
+          //         backgroundImage: MemoryImage(base64Decode(base64)),
+          //       )
+          //     : const CircleAvatar(
+          //         radius: 60,
+          //         child: Icon(Icons.add_photo_alternate_outlined, size: 40)),
+          widget.isEdit
+                    ? base64 != ""
+                        ? CircleAvatar(
+                            radius: 60,
+                            backgroundImage: MemoryImage(base64Decode(base64)),
+                          )
+                        : CircleAvatar(
+                            radius: 60,
+                            backgroundImage: NetworkImage(communityEvents.communityWebinarsList[widget.index!].image!),
+                          )
+                    : base64 != ""
+                        ? CircleAvatar(
+                            radius: 60,
+                            backgroundImage: MemoryImage(base64Decode(base64)),
+                          )
+                        : const CircleAvatar(
+                        radius: 60,
+                        child:
+                            Icon(Icons.add_photo_alternate_outlined, size: 40)),
           const SizedBox(
             height: 12,
           ),
@@ -959,7 +977,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                   readonly: true,
                   lableText: "Start Time",
                   onTap: () async {
-                    DateTime? selectedTime = await selectTime(context, false);
+                    DateTime? selectedTime = await selectTime(context, false, "community");
 
                     if (selectedTime != null) {
                       communityWebinars.startTimeController.text =
@@ -977,7 +995,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                   readonly: true,
                   lableText: "End Time",
                   onTap: () async {
-                    DateTime? selectedTime = await selectTime(context, false);
+                    DateTime? selectedTime = await selectTime(context, false, "community");
                     if (selectedTime != null) {
                       communityWebinars.endTimeController.text =
                           DateFormat('hh:mm a').format(selectedTime);

@@ -301,7 +301,8 @@ class _SelectAvailabilityScreenState extends State<SelectAvailabilityScreen> {
                                       //     DateFormat('MMMM d')
                                       //         .format(selectedDate);
 
-                                     communityWebinars.formattedDate != "" &&
+                                     communityWebinars.formattedDate != "" 
+                                     &&
                                               communityWebinars.slot != ""
                                           ? Get.to(() =>
                                               CommunityScheduleEventsScreen(

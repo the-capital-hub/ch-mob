@@ -46,12 +46,12 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
   Widget build(BuildContext context) {
     return Obx(() => communityEvents.isLoading.value
         ? Helper.pageLoading()
-        : communityEvents.communityEventsData.webinars!.isEmpty
+        : communityEvents.communityWebinarsList.isEmpty
             ? const Center(
                 child: TextWidget(text: "No Webinars Available", textSize: 16))
             : ListView.builder(
                 padding: EdgeInsets.zero,
-                itemCount: communityEvents.communityEventsData.webinars!.length,
+                itemCount: communityEvents.communityWebinarsList.length,
                 itemBuilder: (context, index) {
                   return Card(
                     shape: RoundedRectangleBorder(
@@ -62,16 +62,16 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (communityEvents.communityEventsData
-                              .webinars![index].image!.isNotEmpty) ...[
+                          if (communityEvents.communityWebinarsList
+                              [index].image!.isNotEmpty) ...[
                             Container(
                               height: 200,
                               decoration: BoxDecoration(
                                   image: DecorationImage(
                                       image: NetworkImage(
                                         // "https://bettermeetings.expert/wp-content/uploads/engaging-interactive-webinar-best-practices-and-formats.jpg",
-                                        communityEvents.communityEventsData
-                                            .webinars![index].image!,
+                                        communityEvents.communityWebinarsList
+                                            [index].image!,
                                       ),
                                       fit: BoxFit.fill),
                                   borderRadius: BorderRadius.circular(10)),
@@ -84,7 +84,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                 child: TextWidget(
                                   maxLine: 1,
                                   text: communityEvents
-                                      .communityEventsData.webinars![index].title!,
+                                      .communityWebinarsList[index].title!,
                                   textSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -102,8 +102,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                     addServiceIndex = 3;
                                     Get.to(() => CommunityAddServiceScreen(
                                           webinarId: communityEvents
-                                              .communityEventsData
-                                              .webinars![index]
+                                              .communityWebinarsList[index]
                                               .id,
                                           index: index,
                                           isEdit: true,
@@ -133,8 +132,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                           communityWebinars
                                               .deleteCommunityWebinar(
                                                   communityEvents
-                                                      .communityEventsData
-                                                      .webinars![index]
+                                                      .communityWebinarsList[index]
                                                       .id);
                                         },
                                       );
@@ -152,8 +150,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                   onPressed: () {
                                     sharePostPopup(
                                         context, "", communityEvents
-                                              .communityEventsData
-                                              .webinars![index]
+                                              .communityWebinarsList[index]
                                               .webinarSharelink!);
                                   },
                                 ),
@@ -168,8 +165,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                   onPressed: () {
                                     sharePostPopup(
                                         context, "", communityEvents
-                                              .communityEventsData
-                                              .webinars![index]
+                                              .communityWebinarsList[index]
                                               .webinarSharelink!);
                                   },
                                 ),
@@ -177,8 +173,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                           ),
                           sizedTextfield,
 
-                          if (!communityEvents.communityEventsData
-                              .webinars![index].isActive!) ...[
+                          if (!communityEvents.communityWebinarsList[index].isActive!) ...[
                             TextWidget(
                               text: "This webinar is cancelled.",
                               textSize: 16,
@@ -203,15 +198,15 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
 
                           HtmlWidget(
                             _isExpanded
-                                ? "${communityEvents.communityEventsData.webinars![index]
+                                ? "${communityEvents.communityWebinarsList[index]
                                 .description}"
-                                : communityEvents.communityEventsData.webinars![index]
+                                : communityEvents.communityWebinarsList[index]
                                 .description!
                                             .length >
                                         200
-                                    ? "${communityEvents.communityEventsData.webinars![index]
+                                    ? "${communityEvents.communityWebinarsList[index]
                                 .description!.substring(0, 200)} ..."
-                                    : communityEvents.communityEventsData.webinars![index]
+                                    : communityEvents.communityWebinarsList[index]
                                 .description!,
                             textStyle: TextStyle(
                                 fontSize:
@@ -219,7 +214,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                         12,
                                 color: AppColors.white),
                           ),
-                          if (communityEvents.communityEventsData.webinars![index]
+                          if (communityEvents.communityWebinarsList[index]
                                 .description!
                                   .length >
                               200)
@@ -252,8 +247,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                 width: 5,
                               ),
                               TextWidget(
-                                  text: communityEvents.communityEventsData
-                                      .webinars![index].date!,
+                                  text: communityEvents.communityWebinarsList[index].date!,
                                   textSize: 16)
                             ],
                           ),
@@ -269,8 +263,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                 width: 8,
                               ),
                               TextWidget(
-                                  text: communityEvents.communityEventsData
-                                      .webinars![index].duration!,
+                                  text: communityEvents.communityWebinarsList[index].duration!,
                                   textSize: 16)
                             ],
                           ),
@@ -289,7 +282,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                               ),
                               TextWidget(
                                   text:
-                                      "${communityEvents.communityEventsData.webinars![index].joinedUsers!.length} joined",
+                                      "${communityEvents.communityWebinarsList[index].joinedUsers!.length} joined",
                                   textSize: 16)
                             ],
                           ),
@@ -307,11 +300,10 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                                 width: 8,
                               ),
                               TextWidget(
-                                  text: communityEvents.communityEventsData
-                                              .webinars![index].price ==
+                                  text: communityEvents.communityWebinarsList[index].price ==
                                           "0"
                                       ? "Free"
-                                      : "\u{20B9}${communityEvents.communityEventsData.webinars![index].price}",
+                                      : "\u{20B9}${communityEvents.communityWebinarsList[index].price}",
                                   textSize: 16)
                             ],
                           ),
@@ -327,8 +319,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                             sizedTextfield,
                           ],
                           if (!isAdmin &&
-                              !communityEvents.communityEventsData
-                                  .webinars![index].isExpired!) ...[
+                              !communityEvents.communityWebinarsList[index].isExpired!) ...[
                             AppButton.primaryButton(
                                 onButtonPressed: () {
                                   Get.to(() =>
@@ -338,7 +329,7 @@ class _CommunityWebinarsScreenState extends State<CommunityWebinarsScreen> {
                             sizedTextfield,
                           ],
                           if (communityEvents
-                              .communityEventsData.webinars![index].isExpired!)
+                              .communityWebinarsList[index].isExpired!)
                             Row(
                               children: [
                                 Expanded(
