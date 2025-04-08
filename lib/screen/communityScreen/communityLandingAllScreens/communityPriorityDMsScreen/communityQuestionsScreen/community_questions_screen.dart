@@ -77,8 +77,9 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                 : communityPriorityDMs.communityPriorityDMsList.isEmpty
                     ? const Center(
                         child: TextWidget(
+                          align: TextAlign.center,
                             text:
-                                "No PriorityDMs Questions and Answers Available",
+                                "No PriorityDMs\nQuestions and Answers Available",
                             textSize: 16))
                     : Padding(
                         padding: const EdgeInsets.all(12.0),
@@ -124,6 +125,7 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                     unansweredQuestions.isEmpty
                                         ? const Center(
                                             child: TextWidget(
+                                              align: TextAlign.center,
                                                 text:
                                                     "No Unanswered\nPriorityDMs Questions Available",
                                                 textSize: 16))
@@ -247,6 +249,7 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                     answeredQuestions.isEmpty
                                         ? const Center(
                                             child: TextWidget(
+                                              align: TextAlign.center,
                                                 text:
                                                     "No Answered\nPriorityDMs Questions Available",
                                                 textSize: 16))

@@ -71,7 +71,7 @@ class _CommunityPeopleScreenState extends State<CommunityPeopleScreen> {
                           Icons.search,
                           color: AppColors.white54,
                         ),
-                        fillColor: AppColors.white,
+                        
                         borderClr: AppColors.white54,
                         borderRadius: 8,
                         hintText: "Search",

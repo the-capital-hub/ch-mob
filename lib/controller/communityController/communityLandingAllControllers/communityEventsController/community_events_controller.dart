@@ -15,11 +15,12 @@ CommunityWebinarsController communityWebinars =
 
 class CommunityEventsController extends GetxController {
   var isLoading = false.obs;
-  CommunityEvent communityEventsData = CommunityEvent();
+
+  RxList<Webinar> communityWebinarsList = <Webinar>[].obs;
   Future<void> getCommunityEvents() async {
     try {
       isLoading.value = true;
-
+     communityWebinarsList.clear();
       var response = await ApiBase.getRequest(
           extendedURL: ApiUrl.getWebinarsByCommunityId + createdCommunityId);
       log(response.body);
@@ -27,7 +28,7 @@ class CommunityEventsController extends GetxController {
       if (data["status"]) {
         GetCommunityEventsModel communityEventsModel =
             GetCommunityEventsModel.fromJson(data);
-        communityEventsData = communityEventsModel.data;
+        communityWebinarsList.assignAll(communityEventsModel.data.webinars!);
       }
     } catch (e) {
       log("getCommunityEvents $e");
@@ -61,7 +62,7 @@ class CommunityEventsController extends GetxController {
   Future createCommunityEvent() async {
     String description = "";
     await descriptionController.getText().then((val) => description = val);
-    
+
     var response = await ApiBase.postRequest(
       body: {
         "title": titleController.text,

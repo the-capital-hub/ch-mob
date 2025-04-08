@@ -70,12 +70,12 @@ class _CreateNewWebinarScreenState
                     hintText: "Enter Title",
                     controller: webinarController.titleController),
                 sizedTextfield,
-                MyCustomTextField.textField(
-                    lableText: "Description",
-                    hintText: "Enter Description",
-                    maxLine: 7,
-                    controller: webinarController.descriptionController),
-                sizedTextfield,
+                // MyCustomTextField.textField(
+                //     lableText: "Description",
+                //     hintText: "Enter Description",
+                //     maxLine: 7,
+                //     controller: webinarController.descriptionController),
+                // sizedTextfield,
                 Row(
                   children: [
                     Expanded(
@@ -128,7 +128,7 @@ class _CreateNewWebinarScreenState
                         lableText: "Start Time",
                         onTap: () async {
                           DateTime? selectedTime =
-                              await selectTime(context, false);
+                              await selectTime(context, false, "community");
 
                           if (selectedTime != null) {
                             webinarController.startTimeController.text =
@@ -144,15 +144,7 @@ class _CreateNewWebinarScreenState
                         hintText: "Select End Time",
                         readonly: true,
                         lableText: "End Time",
-                        onTap: () async {
-                          DateTime? selectedTime =
-                              await selectTime(context, false);
-
-                          if (selectedTime != null) {
-                            webinarController.endTimeController.text =
-                                DateFormat('hh:mm a').format(selectedTime);
-                          }
-                        },
+                        
                         controller: webinarController.endTimeController,
                       ),
                     ),

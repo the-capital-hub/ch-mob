@@ -72,7 +72,7 @@ Future<bool> scheduleCampaignPopup(
                           borderClr: AppColors.white38,
                           onTap: () async {
                             DateTime? selectedTime =
-                                await selectTime(context, false);
+                                await selectTime(context, false, "");
                             if (selectedTime != null) {
                               setState(() {
                                 campaignsController

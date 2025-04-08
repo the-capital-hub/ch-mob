@@ -221,6 +221,8 @@ class _EventsScreenState extends State<EventsScreen> {
                                                                   'Cancel Event',
                                                               onButtonPressed:
                                                                   () {
+                                                                    Get.back();
+                                                                    Helper.loader(context);
                                                                 eventController.disableEvent(
                                                                     eventController
                                                                         .eventsList[

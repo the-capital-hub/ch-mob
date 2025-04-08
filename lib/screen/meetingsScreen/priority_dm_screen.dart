@@ -1,6 +1,7 @@
 import 'package:capitalhub_crm/controller/meetingController/meeting_controller.dart';
 import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
+import 'package:capitalhub_crm/screen/meetingsScreen/question_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
@@ -97,77 +98,90 @@ class _PriorityDMScreenState extends State<PriorityDMScreen>
                                   const EdgeInsets.symmetric(horizontal: 8),
                               itemCount: userController.userList.length,
                               itemBuilder: (context, index) {
-                                return Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  color: AppColors.blackCard,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            const CircleAvatar(
-                                              radius: 18,
-                                              backgroundImage: AssetImage(
-                                                  PngAssetPath.accountImg),
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            TextWidget(
-                                              text: userController
-                                                  .userList[index].founderName,
-                                              textSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            const SizedBox(
-                                              width: 8,
-                                            ),
-                                            TextWidget(
-                                              text:
-                                                  "${userController.userList[index].founderRating}/5",
-                                              textSize: 16,
-                                            )
-                                          ],
-                                        ),
-                                        sizedTextfield,
-                                        TextWidget(
-                                          text: userController
-                                              .userList[index].question,
-                                          textSize: 16,
-                                          maxLine: 2,
-                                        ),
-                                        sizedTextfield,
-                                        TextWidget(
-                                          text: userController
-                                                  .userList[index].isAnswered
-                                              ? userController
-                                                  .userList[index].answer
-                                              : "Thank you for your question! When the founder answers your query, we will notify you via email.",
-                                          textSize: 16,
-                                          maxLine: 3,
-                                          color: AppColors.white54,
-                                        ),
-                                        sizedTextfield,
-                                        TextWidget(
-                                          text: userController
-                                                  .userList[index].isAnswered
-                                              ? "Answered"
-                                              : "Unanswered",
-                                          textSize: 16,
-                                          maxLine: 3,
-                                          color: userController
-                                                  .userList[index].isAnswered
-                                              ? GetStoreData.getStore
-                                                      .read('isInvestor')
-                                                  ? AppColors.primaryInvestor
-                                                  : AppColors.primary
-                                              : AppColors.white54,
-                                        ),
-                                      ],
+                                return InkWell(
+                                  onTap: () {
+                                    print(_tabController.index);
+                                    Get.to(() => QuestionScreen(
+                                          tabIndex: _tabController.index,
+                                          userData:
+                                              userController.userList[index],
+                                        ));
+                                  },
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    color: AppColors.blackCard,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              CircleAvatar(
+                                                  radius: 18,
+                                                  backgroundImage: NetworkImage(
+                                                      userController
+                                                          .userList[index]
+                                                          .profileImage)),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              TextWidget(
+                                                text: userController
+                                                    .userList[index]
+                                                    .founderName,
+                                                textSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              const SizedBox(
+                                                width: 8,
+                                              ),
+                                              TextWidget(
+                                                text:
+                                                    "${userController.userList[index].founderRating}/5",
+                                                textSize: 16,
+                                              )
+                                            ],
+                                          ),
+                                          sizedTextfield,
+                                          TextWidget(
+                                            text: userController
+                                                .userList[index].question,
+                                            textSize: 16,
+                                            maxLine: 2,
+                                          ),
+                                          sizedTextfield,
+                                          TextWidget(
+                                            text: userController
+                                                    .userList[index].isAnswered
+                                                ? userController
+                                                    .userList[index].answer
+                                                : "Thank you for your question! When the founder answers your query, we will notify you via email.",
+                                            textSize: 16,
+                                            maxLine: 3,
+                                            color: AppColors.white54,
+                                          ),
+                                          sizedTextfield,
+                                          TextWidget(
+                                            text: userController
+                                                    .userList[index].isAnswered
+                                                ? "Answered"
+                                                : "Unanswered",
+                                            textSize: 16,
+                                            maxLine: 3,
+                                            color: userController
+                                                    .userList[index].isAnswered
+                                                ? GetStoreData.getStore
+                                                        .read('isInvestor')
+                                                    ? AppColors.primaryInvestor
+                                                    : AppColors.primary
+                                                : AppColors.white54,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );
@@ -179,68 +193,77 @@ class _PriorityDMScreenState extends State<PriorityDMScreen>
                     itemBuilder: (context, index) {
                       if (founderController.founderList[index].isAnswered ==
                           false) {
-                        return Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          color: AppColors.blackCard,
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
+                        return InkWell(
+                            onTap: () {
+                              Get.to(() => QuestionScreen(
+                                    tabIndex: _tabController.index,
+                                    founderData:
+                                        founderController.founderList[index],
+                                  ));
+                            },
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              color: AppColors.blackCard,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const CircleAvatar(
-                                      radius: 18,
-                                      backgroundImage:
-                                          AssetImage(PngAssetPath.accountImg),
+                                    Row(
+                                      children: [
+                                        CircleAvatar(
+                                            radius: 18,
+                                            backgroundImage: NetworkImage(
+                                                founderController
+                                                    .founderList[index]
+                                                    .profileImage)),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        TextWidget(
+                                          text: founderController
+                                              .founderList[index].userName,
+                                          textSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        TextWidget(
+                                          text:
+                                              "${founderController.founderList[index].userRating}/5",
+                                          textSize: 16,
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
+                                    sizedTextfield,
                                     TextWidget(
                                       text: founderController
-                                          .founderList[index].userName,
-                                      textSize: 18,
-                                      fontWeight: FontWeight.bold,
+                                          .founderList[index].question,
+                                      textSize: 16,
+                                      maxLine: 2,
                                     ),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
+                                    sizedTextfield,
                                     TextWidget(
                                       text:
-                                          "${founderController.founderList[index].userRating}/5",
+                                          "Thank you for your question! When the founder answers your query, we will notify you via email.",
                                       textSize: 16,
+                                      maxLine: 3,
+                                      color: AppColors.white54,
+                                    ),
+                                    sizedTextfield,
+                                    TextWidget(
+                                      text: "Unanswered",
+                                      textSize: 16,
+                                      maxLine: 3,
+                                      color: AppColors.white54,
                                     ),
                                   ],
                                 ),
-                                sizedTextfield,
-                                TextWidget(
-                                  text: founderController
-                                      .founderList[index].question,
-                                  textSize: 16,
-                                  maxLine: 2,
-                                ),
-                                sizedTextfield,
-                                TextWidget(
-                                  text:
-                                      "Thank you for your question! When the founder answers your query, we will notify you via email.",
-                                  textSize: 16,
-                                  maxLine: 3,
-                                  color: AppColors.white54,
-                                ),
-                                sizedTextfield,
-                                TextWidget(
-                                  text: "Unanswered",
-                                  textSize: 16,
-                                  maxLine: 3,
-                                  color: AppColors.white54,
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
+                              ),
+                            ));
                       }
 
                       return const SizedBox.shrink();
@@ -252,68 +275,77 @@ class _PriorityDMScreenState extends State<PriorityDMScreen>
                     itemBuilder: (context, index) {
                       if (founderController.founderList[index].isAnswered ==
                           true) {
-                        return Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          color: AppColors.blackCard,
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
+                        return InkWell(
+                            onTap: () {
+                              Get.to(() => QuestionScreen(
+                                    tabIndex: _tabController.index,
+                                    founderData:
+                                        founderController.founderList[index],
+                                  ));
+                            },
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              color: AppColors.blackCard,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const CircleAvatar(
-                                      radius: 18,
-                                      backgroundImage:
-                                          AssetImage(PngAssetPath.accountImg),
+                                    Row(
+                                      children: [
+                                        CircleAvatar(
+                                            radius: 18,
+                                            backgroundImage: NetworkImage(
+                                                founderController
+                                                    .founderList[index]
+                                                    .profileImage)),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        TextWidget(
+                                          text: founderController
+                                              .founderList[index].userName,
+                                          textSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        TextWidget(
+                                          text:
+                                              "${founderController.founderList[index].userRating}/5",
+                                          textSize: 16,
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
+                                    sizedTextfield,
                                     TextWidget(
                                       text: founderController
-                                          .founderList[index].userName,
-                                      textSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
-                                    TextWidget(
-                                      text:
-                                          "${founderController.founderList[index].userRating}/5",
+                                          .founderList[index].question,
                                       textSize: 16,
+                                      maxLine: 2,
+                                    ),
+                                    sizedTextfield,
+                                    TextWidget(
+                                      text: founderController
+                                          .founderList[index].answer,
+                                      textSize: 16,
+                                      maxLine: 3,
+                                      color: AppColors.white54,
+                                    ),
+                                    sizedTextfield,
+                                    const TextWidget(
+                                      text: "Answered",
+                                      textSize: 16,
+                                      maxLine: 3,
+                                      color: AppColors.primary,
                                     ),
                                   ],
                                 ),
-                                sizedTextfield,
-                                TextWidget(
-                                  text: founderController
-                                      .founderList[index].question,
-                                  textSize: 16,
-                                  maxLine: 2,
-                                ),
-                                sizedTextfield,
-                                TextWidget(
-                                  text: founderController
-                                      .founderList[index].answer,
-                                  textSize: 16,
-                                  maxLine: 3,
-                                  color: AppColors.white54,
-                                ),
-                                sizedTextfield,
-                                const TextWidget(
-                                  text: "Answered",
-                                  textSize: 16,
-                                  maxLine: 3,
-                                  color: AppColors.primary,
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
+                              ),
+                            ));
                       }
                       return const SizedBox.shrink();
                     },

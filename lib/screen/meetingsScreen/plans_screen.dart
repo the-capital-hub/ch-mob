@@ -30,7 +30,7 @@ class _PlansScreenState extends State<PlansScreen>
     super.initState();
 
     _tabController = TabController(length: 2, vsync: this);
-
+    meetingController.getALLScheduledMeetings("upcoming");
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
         if (_tabController.index == 0) {
@@ -61,8 +61,8 @@ class _PlansScreenState extends State<PlansScreen>
       decoration: bgDec,
       child: Scaffold(
         drawer: GetStoreData.getStore.read('isInvestor')
-              ? const DrawerWidgetInvestor()
-              : const DrawerWidget(),
+            ? const DrawerWidgetInvestor()
+            : const DrawerWidget(),
         backgroundColor: AppColors.transparent,
         appBar: HelperAppBar.appbarHelper(
           title: "Plans",
@@ -195,6 +195,7 @@ class _PlansScreenState extends State<PlansScreen>
                                                       child: AppButton
                                                           .primaryButton(
                                                         onButtonPressed: () {
+                                                          Helper.loader(context);
                                                           meetingController
                                                               .cancelScheduledMeeting(
                                                                   meetingController
