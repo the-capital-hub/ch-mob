@@ -24,6 +24,7 @@ import 'package:capitalhub_crm/screen/newsScreen/news_screen.dart';
 import 'package:capitalhub_crm/screen/oneLinkScreen/one_link_screen.dart';
 import 'package:capitalhub_crm/screen/profileScreen/profile_screen.dart';
 import 'package:capitalhub_crm/screen/resourceScreen/resource_screen.dart';
+import 'package:capitalhub_crm/screen/spotlLightScreen/spotlight_landing_screen.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
@@ -41,6 +42,7 @@ import '../../widget/textwidget/text_widget.dart';
 import '../connectionScreen/connection_screen.dart';
 import '../documentationScreen/documentation_screen.dart';
 import '../helpScreen/help_screen.dart';
+import '../paymentTransactionScreen/payment_transaction_screen.dart';
 import '../savedPostScreen/saved_post_screen.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -70,6 +72,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     "Team",
     "Community",
     "Meetings",
+    "Payments",
+    "Spotlight",
     "Help",
     "Log Out",
   ];
@@ -100,6 +104,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     PngAssetPath.teamIcon,
     PngAssetPath.communityIcon,
     PngAssetPath.meetingIcon,
+    PngAssetPath.paymentIcon,
+    PngAssetPath.paymentIcon,
     PngAssetPath.helpIcon,
     PngAssetPath.logoutIcon,
   ];
@@ -118,6 +124,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     const ConnectionScreen(), // Team
     const CommunityLandingScreen(),
     const EventsScreen(),
+    const PaymentTransactionScreen(),
+    const SpotLightLandingScreen(),
     const HelpScreen(),
     const LogoutScreen(),
   ];

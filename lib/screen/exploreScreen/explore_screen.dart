@@ -120,10 +120,8 @@ class _ExploreScreenState extends State<ExploreScreen>
                             ],
                             labelColor: GetStoreData.getStore.read('isInvestor')
                                 ? AppColors.black
-                                : AppColors
-                                    .white, // Text color for selected tab
-                            unselectedLabelColor:
-                                Colors.white, // Text color for unselected tab
+                                : AppColors.white,
+                            unselectedLabelColor: AppColors.white,
                             unselectedLabelStyle:
                                 const TextStyle(fontWeight: FontWeight.normal),
                             labelStyle: const TextStyle(

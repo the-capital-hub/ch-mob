@@ -60,7 +60,7 @@ class MyCustomTextField {
           obscureText: obcureText,
           decoration: InputDecoration(
               hintText: hintText,
-              fillColor: AppColors.blackCard,
+              fillColor: fillColor ?? AppColors.blackCard,
               filled: true,
               hintStyle: GoogleFonts.outfit(
                   textStyle: TextStyle(
@@ -112,7 +112,7 @@ class MyCustomTextField {
     Function()? onEditorCreated,
     String? lableText,
     bool isEnable = true,
-    Widget?suffixButton,
+    Widget? suffixButton,
     int cursorHideDelayInSeconds = 3,
   }) {
     Future<void> requestStoragePermission() async {
@@ -124,84 +124,84 @@ class MyCustomTextField {
       }
     }
 
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      if (lableText != null)
-        TextWidget(text: lableText, textSize: 14, fontWeight: FontWeight.w500),
-      if (lableText != null) const SizedBox(height: 8),
-      Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: AppColors.blackCard,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.white12),
-        ),
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.white12),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ToolBar(
-                      controller: controller,
-                      toolBarColor: AppColors.transparent,
-                      iconSize: 20,
-                      activeIconColor: AppColors.white,
-                      iconColor: AppColors.grey,
-                      padding: const EdgeInsets.all(8),
-                      toolBarConfig: const [
-                        ToolBarStyle.size,
-                        ToolBarStyle.bold,
-                        ToolBarStyle.underline,
-                        ToolBarStyle.strike,
-                        ToolBarStyle.listBullet,
-                        ToolBarStyle.listOrdered,
-                        ToolBarStyle.align,
-                        ToolBarStyle.link,
-                        ToolBarStyle.codeBlock,
-                        ToolBarStyle.italic,
-                        ToolBarStyle.undo,
-                      ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (lableText != null)
+          TextWidget(
+              text: lableText, textSize: 14, fontWeight: FontWeight.w500),
+        if (lableText != null) const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: AppColors.blackCard,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AppColors.white12),
+          ),
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.white12),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ToolBar(
+                        controller: controller,
+                        toolBarColor: AppColors.transparent,
+                        iconSize: 20,
+                        activeIconColor: AppColors.white,
+                        iconColor: AppColors.grey,
+                        padding: const EdgeInsets.all(8),
+                        toolBarConfig: const [
+                          ToolBarStyle.size,
+                          ToolBarStyle.bold,
+                          ToolBarStyle.underline,
+                          ToolBarStyle.strike,
+                          ToolBarStyle.listBullet,
+                          ToolBarStyle.listOrdered,
+                          ToolBarStyle.align,
+                          ToolBarStyle.link,
+                          ToolBarStyle.codeBlock,
+                          ToolBarStyle.italic,
+                          ToolBarStyle.undo,
+                        ],
+                      ),
                     ),
-                  ),
-                  suffixButton ?? const SizedBox()
-                ],
+                    suffixButton ?? const SizedBox()
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-            QuillHtmlEditor(
-              controller: controller,
-              hintText: hintText,
-              minHeight: 200,
-              isEnabled: isEnable,
-              backgroundColor: AppColors.blackCard,
-              hintTextStyle: TextStyle(color: AppColors.white12),
-              textStyle: TextStyle(color: AppColors.white),
-              loadingBuilder: (context) {
-                return Container(
-                  height: 200,
-                  color: AppColors.blackCard,
-                  child: const Center(
-                      child: CircularProgressIndicator(color: Colors.white)),
-                );
-              },
-              onEditorCreated: onEditorCreated,
-              onTextChanged: (text) {
-                print("HTML Output: $text");
-              },
-            ),
-          ],
+              const SizedBox(height: 8),
+              QuillHtmlEditor(
+                controller: controller,
+                hintText: hintText,
+                minHeight: 200,
+                isEnabled: isEnable,
+                backgroundColor: AppColors.blackCard,
+                hintTextStyle: TextStyle(color: AppColors.white12),
+                textStyle: TextStyle(color: AppColors.white),
+                loadingBuilder: (context) {
+                  return Container(
+                    height: 200,
+                    color: AppColors.blackCard,
+                    child: const Center(
+                        child: CircularProgressIndicator(color: Colors.white)),
+                  );
+                },
+                onEditorCreated: onEditorCreated,
+                onTextChanged: (text) {
+                  print("HTML Output: $text");
+                },
+              ),
+            ],
+          ),
         ),
-      ),
-    ],
-  );
-}
-
+      ],
+    );
+  }
 
   static textFieldPassword({
     required String hintText,

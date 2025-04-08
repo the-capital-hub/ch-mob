@@ -77,6 +77,8 @@ class ApiUrl {
   static const String deleteCompany = "startup/delete_startup";
   static const String createCompany = "startup/createStartup";
 
+  static const String paymentListing = "payments/getAllPayments";
+
   static const String getReceivedConnection =
       "connections/getPendingConnectionRequests";
   static const String getSentConnection =
