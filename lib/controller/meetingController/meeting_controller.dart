@@ -13,10 +13,12 @@ import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:quill_html_editor/quill_html_editor.dart';
 
 class MeetingController extends GetxController {
   List<Map<String, dynamic>> availabilityData = [];
   var isLoading = false.obs;
+  DateTime dateSelected = DateTime.now();
 
   Future updateAvailability(context, dayAvailability, minimumGap) async {
     Helper.loader(context);
@@ -42,15 +44,12 @@ class MeetingController extends GetxController {
   }
 
   Future createEvent(
-      {context,
-      required String title,
+      {required String title,
       required String description,
       required String duration,
       required String eventType,
       required String price,
       required String discount}) async {
-    Helper.loader(context);
-
     var response = await ApiBase.postRequest(
       body: {
         "title": title,
@@ -65,13 +64,13 @@ class MeetingController extends GetxController {
       extendedURL: ApiUrl.createEvent,
     );
     log(response.body);
+    Get.back();
+    Get.back();
     var data = json.decode(response.body);
     if (data["status"]) {
-      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       return true;
     } else {
-      Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
     }
@@ -104,6 +103,7 @@ class MeetingController extends GetxController {
           extendedURL: ApiUrl.disableEvent + id, body: body, withToken: true);
       log(response.body);
       var data = jsonDecode(response.body);
+      Get.back();
       if (data["status"]) {
         HelperSnackBar.snackBar("Success", data["message"]);
         return true;
@@ -144,6 +144,8 @@ class MeetingController extends GetxController {
     );
     log(response.body);
     var data = json.decode(response.body);
+
+    Get.back();
     if (data["status"]) {
       meetingsList.removeWhere((meeting) => meeting.id == id);
       HelperSnackBar.snackBar("Success", data["message"]);
@@ -189,7 +191,7 @@ class MeetingController extends GetxController {
   }
 
   TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
+  QuillEditorController descriptionController = QuillEditorController();
   TextEditingController dateController = TextEditingController();
   TextEditingController durationMinutesController = TextEditingController();
   TextEditingController startTimeController = TextEditingController();
@@ -215,6 +217,8 @@ class MeetingController extends GetxController {
   }
 
   Future createWebinar() async {
+    String description = "";
+    await descriptionController.getText().then((val) => description = val);
     DateTime? date = DateTime.tryParse(dateController.text);
     String? dateIso = "${date?.toIso8601String() ?? ""}Z";
     String startTime = convertToIsoFormat(startTimeController.text, date);
@@ -224,7 +228,7 @@ class MeetingController extends GetxController {
       body: {
         "date": dateIso,
         "title": titleController.text,
-        "description": descriptionController.text,
+        "description": description,
         "webinarType": type,
         "startTime": startTime,
         "endTime": endTime,
@@ -237,13 +241,13 @@ class MeetingController extends GetxController {
       extendedURL: ApiUrl.createWebinar,
     );
     log(response.body);
+    Get.back();
+    Get.back();
     var data = json.decode(response.body);
     if (data["status"]) {
-      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       return true;
     } else {
-      Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);
       return false;
     }
@@ -288,6 +292,32 @@ class MeetingController extends GetxController {
       log("getPriorityDMForFounder $e");
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  TextEditingController answerController = TextEditingController();
+  Future answerPriorityDM(priorityDMId) async {
+    var response = await ApiBase.pachRequest(
+      body: {
+        "answer": answerController.text,
+      },
+      withToken: true,
+      extendedURL:
+          "${ApiUrl.answerPriorityDM}$priorityDMId",
+    );
+
+    log(response.body);
+    var data = json.decode(response.body);
+    Get.back();
+    Get.back();
+    if (data["status"]) {
+      HelperSnackBar.snackBar("Success", data["message"]);
+      getPriorityDMForUser();
+
+      return true;
+    } else {
+      HelperSnackBar.snackBar("Error", data["message"]);
+      return false;
     }
   }
 

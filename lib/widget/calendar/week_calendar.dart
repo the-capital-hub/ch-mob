@@ -435,7 +435,10 @@ void initState() {
   
   // Set the selected day to today if it's available, otherwise set it to the next available day
   _selectedDay = _getNextAvailableDay(widget.availableDays);
+  communityWebinars.formattedDate =
+                            DateFormat('MMMM d').format(_selectedDay);
   _focusedDay = _selectedDay;
+  communityWebinars.selectedDayIndex = 0;
   
   // Generate available weekdays
   _generateAvailableWeekdays(widget.availableDays);
@@ -589,7 +592,7 @@ DateTime _getDateForNextWeekday(int weekday) {
             ),
           ),
           _hasAvailableSlots()
-              ? Wrap(
+              ? Wrap(alignment: WrapAlignment.start,
                   spacing: 4.0,
                   runSpacing: 4.0,
                   children: List.generate(

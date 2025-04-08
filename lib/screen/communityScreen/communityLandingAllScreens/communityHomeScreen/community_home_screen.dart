@@ -1443,14 +1443,15 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                       padding: const EdgeInsets.only(left: 43),
                       child: AppButton.primaryButton(
                           onButtonPressed: () {
+                            Helper.loader(context);
                             communityHomeController
-                                .reportPost(context,
+                                .reportPost(
                                     postID: communityHomeController
                                         .communityPostList[index].postId!,
                                     reportReason: reportReason)
                                 .then((val) {
                               if (val) {
-                                Get.back();
+                                
                                 communityHomeController.getCommunityPosts(
                                     1, true, postFilter);
                               }

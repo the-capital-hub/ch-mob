@@ -226,7 +226,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                                   onTap: () async {
                                                     DateTime? selectedTime =
                                                         await selectTime(
-                                                            context, false);
+                                                            context, false, "");
                                                     if (selectedTime != null) {
                                                       setState(() {
                                                         startTimes[index] =
@@ -282,7 +282,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                                   onTap: () async {
                                                     DateTime? selectedEndTime =
                                                         await selectTime(
-                                                            context, false);
+                                                            context, false, "");
                                                     if (selectedEndTime !=
                                                         null) {
                                                       if (selectedEndTime

@@ -101,10 +101,11 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
             actions: [
               if (!isAdmin)
                 PopupMenuButton<String>(
+                    padding: EdgeInsets.zero,
                     key: _popupMenuKey,
                     icon: Icon(
                       Icons.settings,
-                      size: 30,
+                      size: 22,
                     ),
                     iconColor: GetStoreData.getStore.read('isInvestor')
                         ? AppColors.black
@@ -171,17 +172,19 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
                             },
                           ),
                         ]),
-              IconButton(
-                  onPressed: () {
-                    GetStoreData.getStore.read('isInvestor')
-                        ? Get.offAll(const LandingScreenInvestor())
-                        : Get.offAll(const LandingScreen());
-                  },
-                  icon: Icon(
-                    Icons.swap_horizontal_circle_sharp,
-                    color: AppColors.white,
-                    size: 30,
-                  ))
+              InkWell(
+                onTap: () {
+                  GetStoreData.getStore.read('isInvestor')
+                      ? Get.offAll(const LandingScreenInvestor())
+                      : Get.offAll(const LandingScreen());
+                },
+                child: Icon(
+                  Icons.swap_horizontal_circle_sharp,
+                  color: AppColors.white,
+                  size: 22,
+                ),
+              ),
+              const SizedBox(width: 10),
             ],
           ),
           backgroundColor: AppColors.black,

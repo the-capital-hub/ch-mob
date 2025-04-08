@@ -210,7 +210,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                 onButtonPressed: () {
                                   Helper.loader(context);
                                   communityProducts.buyProduct(
-                                      false,
+                                     false,
                                       communityProducts
                                           .communityProductsList[widget.index]
                                           .id);

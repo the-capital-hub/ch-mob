@@ -1,6 +1,7 @@
 import 'package:capitalhub_crm/controller/meetingController/meeting_controller.dart';
 import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
+import 'package:capitalhub_crm/screen/meetingsScreen/webinars_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
@@ -46,14 +47,24 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
     }
   }
 
+  void _updateEndTime(DateTime startTime) {
+    final durationInMinutes =
+        int.tryParse(webinarController.durationMinutesController.text) ?? 30;
+    final endTime = startTime.add(Duration(minutes: durationInMinutes));
+    setState(() {
+      webinarController.endTimeController.text =
+          DateFormat('hh:mm a').format(endTime);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: bgDec,
       child: Scaffold(
         drawer: GetStoreData.getStore.read('isInvestor')
-              ? const DrawerWidgetInvestor()
-              : const DrawerWidget(),
+            ? const DrawerWidgetInvestor()
+            : const DrawerWidget(),
         backgroundColor: AppColors.transparent,
         appBar: HelperAppBar.appbarHelper(
           title: "Create new webinar",
@@ -71,11 +82,11 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                     hintText: "Enter Title",
                     controller: webinarController.titleController),
                 sizedTextfield,
-                MyCustomTextField.textField(
-                    lableText: "Description",
-                    hintText: "Enter Description",
-                    maxLine: 7,
-                    controller: webinarController.descriptionController),
+                MyCustomTextField.htmlTextField(
+                  hintText: "Enter Description",
+                  controller: webinarController.descriptionController,
+                  lableText: "Description",
+                ),
                 sizedTextfield,
                 Row(
                   children: [
@@ -100,6 +111,9 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                               webinarController.dateController.text =
                                   Helper.formatDatePost(
                                       selectedDate.toString());
+                              webinarController.dateSelected = selectedDate;
+                              webinarController.startTimeController.clear();
+                              webinarController.endTimeController.clear();
                               setState(() {});
                             }
                           },
@@ -114,6 +128,8 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                       onChange: (value) {
                         _validateDuration(
                             value, webinarController.durationMinutesController);
+                        webinarController.startTimeController.clear();
+                        webinarController.endTimeController.clear();
                       },
                       controller: webinarController.durationMinutesController,
                     )),
@@ -129,11 +145,12 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                         lableText: "Start Time",
                         onTap: () async {
                           DateTime? selectedTime =
-                              await selectTime(context, false);
+                              await selectTime(context, false, "meeting");
 
                           if (selectedTime != null) {
                             webinarController.startTimeController.text =
                                 DateFormat('hh:mm a').format(selectedTime);
+                            _updateEndTime(selectedTime);
                           }
                         },
                         controller: webinarController.startTimeController,
@@ -145,15 +162,6 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                         hintText: "Select End Time",
                         readonly: true,
                         lableText: "End Time",
-                        onTap: () async {
-                          DateTime? selectedTime =
-                              await selectTime(context, false);
-
-                          if (selectedTime != null) {
-                            webinarController.endTimeController.text =
-                                DateFormat('hh:mm a').format(selectedTime);
-                          }
-                        },
                         controller: webinarController.endTimeController,
                       ),
                     ),
@@ -194,9 +202,7 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
               child: AppButton.primaryButton(
                   onButtonPressed: () {
                     Helper.loader(context);
-                    webinarController.createWebinar().then((val) {
-                      setState(() {});
-                    });
+                    webinarController.createWebinar();
                   },
                   title: "Create Webinar"),
             ),
@@ -208,14 +214,15 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                       ? AppColors.primaryInvestor
                       : AppColors.primary,
                   onButtonPressed: () {
-                    webinarController.titleController.clear();
-                    webinarController.descriptionController.clear();
-                    webinarController.dateController.clear();
-                    webinarController.durationMinutesController.clear();
-                    webinarController.startTimeController.clear();
-                    webinarController.endTimeController.clear();
-                    webinarController.priceController.clear();
-                    webinarController.priceDiscountController.clear();
+                    // webinarController.titleController.clear();
+                    // webinarController.descriptionController.clear();
+                    // webinarController.dateController.clear();
+                    // webinarController.durationMinutesController.clear();
+                    // webinarController.startTimeController.clear();
+                    // webinarController.endTimeController.clear();
+                    // webinarController.priceController.clear();
+                    // webinarController.priceDiscountController.clear();
+                    Get.back();
                     setState(() {
                       privacyStatus = "Public";
                     });

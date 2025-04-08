@@ -452,7 +452,7 @@ class _CommunityProductsScreenState extends State<CommunityProductsScreen> {
                                               .isProductPurchased) {
                                         Helper.loader(context);
                                         communityProducts.buyProduct(
-                                            true,
+                                           true,
                                             communityProducts
                                                 .communityProductsList[index]
                                                 .id);

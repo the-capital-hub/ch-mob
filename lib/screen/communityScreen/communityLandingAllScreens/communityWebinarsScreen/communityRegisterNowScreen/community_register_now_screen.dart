@@ -100,8 +100,7 @@ class _CommunityRegisterNowScreenState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TextWidget(
-                                text: communityEvents.communityEventsData
-                                    .webinars![widget.index].title!,
+                                text: communityEvents.communityWebinarsList[widget.index].title!,
                                 textSize: 20,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -118,8 +117,7 @@ class _CommunityRegisterNowScreenState
                                     width: 5,
                                   ),
                                   TextWidget(
-                                      text: communityEvents.communityEventsData
-                                          .webinars![widget.index].date!,
+                                      text: communityEvents.communityWebinarsList[widget.index].date!,
                                       textSize: 16)
                                 ],
                               ),
@@ -150,8 +148,7 @@ class _CommunityRegisterNowScreenState
                                     width: 5,
                                   ),
                                   TextWidget(
-                                      text: communityEvents.communityEventsData
-                                          .webinars![widget.index].duration!,
+                                      text: communityEvents.communityWebinarsList[widget.index].duration!,
                                       textSize: 16)
                                 ],
                               ),
@@ -168,12 +165,11 @@ class _CommunityRegisterNowScreenState
                                   ),
                                   TextWidget(
                                       text: communityEvents
-                                                  .communityEventsData
-                                                  .webinars![widget.index]
+                                                  .communityWebinarsList[widget.index]
                                                   .price ==
                                               "0"
                                           ? "Free"
-                                          : "\u{20B9}${communityEvents.communityEventsData.webinars![widget.index].price}",
+                                          : "\u{20B9}${communityEvents.communityWebinarsList[widget.index].price}",
                                       textSize: 16)
                                 ],
                               ),
@@ -195,8 +191,7 @@ class _CommunityRegisterNowScreenState
                               sizedTextfield,
 
                               HtmlWidget(
-                                communityEvents.communityEventsData
-                                    .webinars![widget.index].description!,
+                                communityEvents.communityWebinarsList[widget.index].description!,
                                 textStyle: TextStyle(
                                   fontSize: 16,
                                   color: AppColors.white,
@@ -257,8 +252,7 @@ class _CommunityRegisterNowScreenState
                                 onButtonPressed: () {
                                   Helper.loader(context);
                                   communityEvents.registerCommunityWebinar(
-                                      communityEvents.communityEventsData
-                                          .webinars![widget.index].id
+                                      communityEvents.communityWebinarsList[widget.index].id
                                           .toString());
                                 },
                                 title: "Register Now"),

@@ -258,17 +258,20 @@ class CommunityHomeController extends GetxController {
     }
   }
 
-  Future<bool> reportPost(
-    context, {
+  Future<bool> reportPost({
     required String postID,
     required String reportReason,
   }) async {
     var body = {"postId": postID, "reportReason": reportReason};
     var response = await ApiBase.postRequest(
         body: body, extendedURL: ApiUrl.reportPost, withToken: true);
+    print(body.toString());
     log(response.body);
     var data = json.decode(response.body);
+    Get.back();
+    Get.back();
     if (data["status"] == true) {
+      HelperSnackBar.snackBar("Error", data["message"]);
       return true;
     } else {
       HelperSnackBar.snackBar("Error", data["message"]);

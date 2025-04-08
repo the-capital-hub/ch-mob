@@ -1,13 +1,15 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityMeetingsController/community_meetings_controller.dart';
+import 'package:capitalhub_crm/controller/meetingController/meeting_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-Future<DateTime?> selectTime(BuildContext context, bool isMinutes) async {
+Future<DateTime?> selectTime(BuildContext context, bool isMinutes, section) async {
   CommunityMeetingsController communityMeetings =
       Get.put(CommunityMeetingsController());
+      MeetingController webinarController = Get.put(MeetingController());
   final currentTime = DateTime.now();
 
   // Set the initial time to one minute ahead if not selecting minutes
@@ -68,11 +70,20 @@ Future<DateTime?> selectTime(BuildContext context, bool isMinutes) async {
         currentTime.day, pickedTime.hour, pickedTime.minute);
 
     // If the selected time is before the current time, prevent selecting a past time for today
+    if(section=="community"){
     if (selectedTime.isBefore(currentTime) &&
         communityMeetings.dateSelected.day == selectedTime.day) {
       HelperSnackBar.snackBar("Error", "Past time cannot be selected");
       return null;
     }
+    }
+if(section=="meeting"){
+    if (selectedTime.isBefore(currentTime) &&
+        webinarController.dateSelected.day == selectedTime.day) {
+      HelperSnackBar.snackBar("Error", "Past time cannot be selected");
+      return null;
+    }
+}
 
     // If it's a minutes-only picker, return only the minutes in a specific format
     if (isMinutes) {

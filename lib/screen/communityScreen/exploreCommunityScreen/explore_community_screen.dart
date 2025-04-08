@@ -72,7 +72,7 @@ class _ExploreCommunityScreenState extends State<ExploreCommunityScreen> {
                         onChange: (String name) {
                           onCommunityNameChanged(name);
                         },
-                        fillColor: AppColors.white,
+                        
                         borderClr: AppColors.white54,
                         borderRadius: 8,
                         hintText: "Search",
