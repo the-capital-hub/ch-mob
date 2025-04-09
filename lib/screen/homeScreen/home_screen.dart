@@ -1228,14 +1228,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       padding: const EdgeInsets.only(left: 43),
                       child: AppButton.primaryButton(
                           onButtonPressed: () {
+                            Get.back();
+                            Helper.loader(context);
                             homeController
-                                .reportPost(context,
+                                .reportPost(
                                     postID:
                                         homeController.postList[index].postId!,
                                     reportReason: reportReason)
                                 .then((val) {
                               if (val) {
-                                Get.back();
                                 homeController.getPublicPost(1, true);
                               }
                             });

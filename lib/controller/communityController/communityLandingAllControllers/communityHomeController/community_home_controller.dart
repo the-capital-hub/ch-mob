@@ -271,7 +271,7 @@ class CommunityHomeController extends GetxController {
     Get.back();
     Get.back();
     if (data["status"] == true) {
-      HelperSnackBar.snackBar("Error", data["message"]);
+      HelperSnackBar.snackBar("Success", data["message"]);
       return true;
     } else {
       HelperSnackBar.snackBar("Error", data["message"]);

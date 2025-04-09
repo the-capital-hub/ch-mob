@@ -63,6 +63,19 @@ class _CommunityScheduleEventsScreenState
   String startTime = "";
   String endTime = "";
   @override
+  void initState() {
+    super.initState();
+
+    autoFillDetails();
+  }
+
+  void autoFillDetails() {
+    communityWebinars.nameController.text = GetStoreData.getStore.read('name');
+    communityWebinars.emailController.text =
+        GetStoreData.getStore.read('email');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: bgDec,
@@ -292,7 +305,10 @@ class _CommunityScheduleEventsScreenState
                           children: [
                             Expanded(
                               child: AppButton.outlineButton(
-                                  borderColor: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                  borderColor:
+                                      GetStoreData.getStore.read('isInvestor')
+                                          ? AppColors.primaryInvestor
+                                          : AppColors.primary,
                                   onButtonPressed: () {
                                     Get.back();
                                     Get.back();

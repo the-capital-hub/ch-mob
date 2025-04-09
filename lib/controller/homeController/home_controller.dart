@@ -227,7 +227,7 @@ class HomeController extends GetxController {
   }
 
   Future<bool> reportPost(
-    context, {
+     {
     required String postID,
     required String reportReason,
   }) async {
@@ -236,7 +236,10 @@ class HomeController extends GetxController {
         body: body, extendedURL: ApiUrl.reportPost, withToken: true);
     log(response.body);
     var data = json.decode(response.body);
-    if (data["status"] == true) {
+    Get.back();
+   
+    if (data["status"]==true) {
+      HelperSnackBar.snackBar("Success", data["message"]);
       return true;
     } else {
       HelperSnackBar.snackBar("Error", data["message"]);

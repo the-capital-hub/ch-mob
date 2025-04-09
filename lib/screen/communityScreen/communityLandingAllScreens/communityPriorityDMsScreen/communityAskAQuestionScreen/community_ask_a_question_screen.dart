@@ -28,6 +28,22 @@ class _CommunityBookAMeetingScreenState
   CommunityPriorityDMsController communityPriorityDMs = Get.find();
   TextEditingController urlController = TextEditingController();
   @override
+  void initState() {
+    super.initState();
+
+    autoFillDetails();
+  }
+
+  void autoFillDetails() {
+    communityPriorityDMs.nameController.text =
+        GetStoreData.getStore.read('name');
+    communityPriorityDMs.emailController.text =
+        GetStoreData.getStore.read('email');
+    communityPriorityDMs.mobileController.text =
+        GetStoreData.getStore.read('phone');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
         decoration: bgDec,
@@ -80,11 +96,13 @@ class _CommunityBookAMeetingScreenState
                           fontWeight: FontWeight.w500,
                         ),
                         const SizedBox(height: 12),
-                      TextWidget(
+                        TextWidget(
                           text: "Service:",
                           textSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                          color: GetStoreData.getStore.read('isInvestor')
+                              ? AppColors.primaryInvestor
+                              : AppColors.primary,
                         ),
                         const SizedBox(height: 12),
                         TextWidget(
@@ -96,7 +114,9 @@ class _CommunityBookAMeetingScreenState
                           text: "Description:",
                           textSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                          color: GetStoreData.getStore.read('isInvestor')
+                              ? AppColors.primaryInvestor
+                              : AppColors.primary,
                         ),
                         SizedBox(height: 12),
                         HtmlWidget(
@@ -117,7 +137,10 @@ class _CommunityBookAMeetingScreenState
                                   text: "Type",
                                   textSize: 16,
                                   fontWeight: FontWeight.w500,
-                                  color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                  color:
+                                      GetStoreData.getStore.read('isInvestor')
+                                          ? AppColors.primaryInvestor
+                                          : AppColors.primary,
                                 ),
                                 SizedBox(height: 8),
                                 TextWidget(text: "PriorityDM", textSize: 13),
@@ -133,7 +156,10 @@ class _CommunityBookAMeetingScreenState
                                   text: "Price",
                                   textSize: 16,
                                   fontWeight: FontWeight.w500,
-                                  color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                  color:
+                                      GetStoreData.getStore.read('isInvestor')
+                                          ? AppColors.primaryInvestor
+                                          : AppColors.primary,
                                 ),
                                 SizedBox(height: 8),
                                 TextWidget(
@@ -156,7 +182,9 @@ class _CommunityBookAMeetingScreenState
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Expanded(
                 child: AppButton.outlineButton(
-                    borderColor: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                    borderColor: GetStoreData.getStore.read('isInvestor')
+                        ? AppColors.primaryInvestor
+                        : AppColors.primary,
                     onButtonPressed: () {
                       Get.back();
                     },
