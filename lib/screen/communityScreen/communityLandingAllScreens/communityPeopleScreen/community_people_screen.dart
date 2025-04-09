@@ -71,7 +71,6 @@ class _CommunityPeopleScreenState extends State<CommunityPeopleScreen> {
                           Icons.search,
                           color: AppColors.white54,
                         ),
-                        
                         borderClr: AppColors.white54,
                         borderRadius: 8,
                         hintText: "Search",
@@ -122,41 +121,64 @@ class _CommunityPeopleScreenState extends State<CommunityPeopleScreen> {
                                                         text:
                                                             "${communityMembers.communityMembersList[index].firstName} ${communityMembers.communityMembersList[index].lastName}",
                                                         textSize: 20),
-                                                    TextWidget(
-                                                      text: communityMembers
-                                                          .communityMembersList[
-                                                              index]
-                                                          .designation
-                                                          .toString(),
-                                                      textSize: 13,
-                                                      color: GetStoreData
-                                                              .getStore
-                                                              .read(
-                                                                  'isInvestor')
-                                                          ? AppColors
-                                                              .primaryInvestor
-                                                          : AppColors.primary,
-                                                    ),
-                                                    TextWidget(
+                                                    if (communityMembers
+                                                        .communityMembersList[
+                                                            index]
+                                                        .designation
+                                                        .toString()
+                                                        .isNotEmpty)
+                                                      TextWidget(
                                                         text: communityMembers
                                                             .communityMembersList[
                                                                 index]
-                                                            .company
+                                                            .designation
                                                             .toString(),
-                                                        textSize: 15),
-                                                    TextWidget(
-                                                        text: communityMembers
-                                                            .communityMembersList[
-                                                                index]
-                                                            .location
-                                                            .toString(),
-                                                        textSize: 15),
-                                                    TextWidget(
-                                                        text: communityMembers
-                                                            .communityMembersList[
-                                                                index]
-                                                            .joinedDate,
-                                                        textSize: 15),
+                                                        textSize: 13,
+                                                        color: GetStoreData
+                                                                .getStore
+                                                                .read(
+                                                                    'isInvestor')
+                                                            ? AppColors
+                                                                .primaryInvestor
+                                                            : AppColors.primary,
+                                                      ),
+                                                    if (communityMembers
+                                                        .communityMembersList[
+                                                            index]
+                                                        .company
+                                                        .toString()
+                                                        .isNotEmpty)
+                                                      TextWidget(
+                                                          text: communityMembers
+                                                              .communityMembersList[
+                                                                  index]
+                                                              .company
+                                                              .toString(),
+                                                          textSize: 15),
+                                                    if (communityMembers
+                                                        .communityMembersList[
+                                                            index]
+                                                        .location
+                                                        .toString()
+                                                        .isNotEmpty)
+                                                      TextWidget(
+                                                          text: communityMembers
+                                                              .communityMembersList[
+                                                                  index]
+                                                              .location
+                                                              .toString(),
+                                                          textSize: 15),
+                                                    if (communityMembers
+                                                        .communityMembersList[
+                                                            index]
+                                                        .joinedDate
+                                                        .isNotEmpty)
+                                                      TextWidget(
+                                                          text: communityMembers
+                                                              .communityMembersList[
+                                                                  index]
+                                                              .joinedDate,
+                                                          textSize: 15),
                                                   ],
                                                 ),
                                                 const Spacer(),

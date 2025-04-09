@@ -59,6 +59,7 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
     });
     super.initState();
   }
+  GlobalKey<FormState> eventsFormkey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -74,10 +75,15 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(12),
-            child: Column(
+            child: 
+            Form(
+            key: eventsFormkey,
+            child:
+            Column(
               children: [
                 sizedTextfield,
                 MyCustomTextField.textField(
+                  valText: "Please enter event title",
                     lableText: "Event Title",
                     hintText: "Enter Title",
                     controller: titleController),
@@ -89,6 +95,7 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
                 ),
                 sizedTextfield,
                 MyCustomTextField.textField(
+                  valText: "Please enter duration",
                   hintText: "Enter Duration(Minutes)",
                   lableText: "Duration(Minutes)",
                   textInputType: TextInputType.number,
@@ -109,12 +116,14 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
                     }),
                 sizedTextfield,
                 MyCustomTextField.textField(
+                  valText: "Please enter price",
                     textInputType: TextInputType.number,
                     lableText: "Event Price",
                     hintText: "Enter Price",
                     controller: priceController),
                 sizedTextfield,
                 MyCustomTextField.textField(
+                  valText: "Please enter Discount(%)",
                     textInputType: TextInputType.number,
                     lableText: "Price Discount(%)",
                     hintText: "Enter Price Discount(%)",
@@ -124,12 +133,14 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
             ),
           ),
         ),
+        ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(12),
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Expanded(
               child: AppButton.primaryButton(
                   onButtonPressed: () async {
+                    if (eventsFormkey.currentState!.validate()) {
                     Helper.loader(context);
                     String description = "";
                     await descriptionController
@@ -144,7 +155,7 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
                       price: priceController.text,
                       discount: priceDiscountController.text,
                     );
-                    
+                    }
                   },
                   title: "Create Event"),
             ),

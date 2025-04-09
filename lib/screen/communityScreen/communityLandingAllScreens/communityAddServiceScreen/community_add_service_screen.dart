@@ -64,6 +64,10 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
   TextEditingController output = TextEditingController();
   TextEditingController durationMinutesController = TextEditingController();
   QuillEditorController descriptionController = QuillEditorController();
+  GlobalKey<FormState> priorityDMFormkey = GlobalKey();
+  GlobalKey<FormState> meetingsFormkey = GlobalKey();
+  GlobalKey<FormState> eventsFormkey = GlobalKey();
+  GlobalKey<FormState> webinarsFormkey = GlobalKey();
 
   String base64 = "";
 
@@ -195,7 +199,8 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
       } else {
         print("No number found.");
       }
-      String inputDate = communityEvents.communityWebinarsList[widget.index!].date!; // Original date format (DD-MM-YYYY)
+      String inputDate = communityEvents.communityWebinarsList[widget.index!]
+          .date!; // Original date format (DD-MM-YYYY)
 
       // Parse the date in DD-MM-YYYY format
       DateFormat inputFormat = DateFormat('dd-MM-yyyy');
@@ -211,8 +216,8 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
 
       communityWebinars.durationMinutesController.text = numberString;
 
-      communityWebinars.startTimeController.text = communityEvents
-          .communityWebinarsList[widget.index!].startTime!;
+      communityWebinars.startTimeController.text =
+          communityEvents.communityWebinarsList[widget.index!].startTime!;
       communityWebinars.endTimeController.text =
           communityEvents.communityWebinarsList[widget.index!].endTime!;
       communityWebinars.priceController.text =
@@ -380,8 +385,11 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
     }
 
     return SingleChildScrollView(
+        child: Form(
+      key: priorityDMFormkey,
       child: Column(children: [
         MyCustomTextField.textField(
+            valText: "Please enter title",
             hintText: "Enter service title",
             controller: communityPriorityDMs.titleController,
             lableText: "Title"),
@@ -402,6 +410,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           height: 16,
         ),
         MyCustomTextField.textField(
+            valText: "Please enter amount",
             textInputType: TextInputType.number,
             hintText: "Enter amount",
             controller: communityPriorityDMs.amountController,
@@ -413,6 +422,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           children: [
             Expanded(
                 child: MyCustomTextField.textField(
+                    valText: "Please enter Response Timeline",
                     textInputType: TextInputType.number,
                     hintText: "Enter Response Timeline",
                     controller: communityPriorityDMs.responseTimelineController,
@@ -442,6 +452,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           height: 16,
         ),
         MyCustomTextField.textField(
+            valText: "Please anter topics",
             hintText: "Enter topics, seperated by commas",
             controller: communityPriorityDMs.topicsController,
             lableText: "Topics (comma-seperated)"),
@@ -463,17 +474,19 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           Expanded(
             child: AppButton.primaryButton(
                 onButtonPressed: () {
-                  setState(() {
-                    isPriorityDMTopics = true;
-                  });
-                  splitTopics();
-                  if (widget.isEdit && widget.isPriorityDM) {
-                    Helper.loader(context);
-                    communityPriorityDMs.updateCommunityPriorityDM(
-                        topics, widget.priorityDMId.toString());
-                  } else {
-                    Helper.loader(context);
-                    communityPriorityDMs.createCommunityPriorityDM(topics);
+                  if (priorityDMFormkey.currentState!.validate()) {
+                    setState(() {
+                      isPriorityDMTopics = true;
+                    });
+                    splitTopics();
+                    if (widget.isEdit && widget.isPriorityDM) {
+                      Helper.loader(context);
+                      communityPriorityDMs.updateCommunityPriorityDM(
+                          topics, widget.priorityDMId.toString());
+                    } else {
+                      Helper.loader(context);
+                      communityPriorityDMs.createCommunityPriorityDM(topics);
+                    }
                   }
                 },
                 title: widget.isEdit && widget.isPriorityDM
@@ -482,7 +495,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           ),
         ]),
       ]),
-    );
+    ));
   }
 
   meetingTab() {
@@ -492,8 +505,11 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
     }
 
     return SingleChildScrollView(
+        child: Form(
+      key: meetingsFormkey,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         MyCustomTextField.textField(
+          valText: "Please enter service title",
             hintText: "Enter service title",
             controller: communityMeetings.titleController,
             lableText: "Title"),
@@ -517,6 +533,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           children: [
             Expanded(
                 child: MyCustomTextField.textField(
+                  valText: "Please enter amount",
                     textInputType: TextInputType.number,
                     hintText: "Enter amount",
                     controller: communityMeetings.amountController,
@@ -526,6 +543,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             ),
             Expanded(
                 child: MyCustomTextField.textField(
+                  valText: "Please enter duration",
                     textInputType: TextInputType.number,
                     hintText: "Enter duration",
                     controller: communityMeetings.durationController,
@@ -536,6 +554,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           height: 16,
         ),
         MyCustomTextField.textField(
+          valText: "Please enter the topics",
             hintText: "Enter topics, seperated by commas",
             controller: communityMeetings.topicsController,
             lableText: "Topics (comma-seperated)"),
@@ -551,6 +570,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                 height: 0,
               ),
             ),
+            valText: "Please select available days",
             hintText: "No dates selected",
             readonly: true,
             lableText: "Select Available Days",
@@ -579,11 +599,13 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           children: [
             Expanded(
               child: MyCustomTextField.textField(
+                valText: "Please select start time",
                 hintText: "Select Start Time",
                 readonly: true,
                 lableText: "Start Time",
                 onTap: () async {
-                  DateTime? selectedTime = await selectTime(context, false, "community");
+                  DateTime? selectedTime =
+                      await selectTime(context, false, "community");
                   print(selectedTime);
 
                   if (selectedTime != null) {
@@ -617,6 +639,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             // ),
             Expanded(
               child: MyCustomTextField.textField(
+                valText: "Please select end time",
                 hintText: "Select End Time",
                 readonly: true,
                 lableText: "End Time",
@@ -652,6 +675,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
         sizedTextfield,
         if (isAddNewMemberFieldVisible) ...[
           MyCustomTextField.textField(
+            valText: "Please enter member's email",
             readonly: false,
             hintText: "Enter member's email",
             controller: communityMeetings.memberEmailController,
@@ -694,17 +718,19 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           Expanded(
             child: AppButton.primaryButton(
                 onButtonPressed: () {
-                  setState(() {
-                    isMeetingsTopics = true;
-                  });
-                  splitTopics();
-                  if (widget.isEdit && widget.isMeeting) {
-                    Helper.loader(context);
-                    communityMeetings.updateCommunityMeeting(
-                        topics, widget.meetingId);
-                  } else {
-                    Helper.loader(context);
-                    communityMeetings.createCommunityMeeting(context, topics);
+                  if (meetingsFormkey.currentState!.validate()) {
+                    setState(() {
+                      isMeetingsTopics = true;
+                    });
+                    splitTopics();
+                    if (widget.isEdit && widget.isMeeting) {
+                      Helper.loader(context);
+                      communityMeetings.updateCommunityMeeting(
+                          topics, widget.meetingId);
+                    } else {
+                      Helper.loader(context);
+                      communityMeetings.createCommunityMeeting(context, topics);
+                    }
                   }
                 },
                 title: widget.isEdit && widget.isMeeting
@@ -713,7 +739,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           ),
         ]),
       ]),
-    );
+    ));
   }
 
   void _updateEndTime(DateTime startTime, bool isMeeting) {
@@ -755,8 +781,11 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
     }
 
     return SingleChildScrollView(
+        child: Form(
+      key: eventsFormkey,
       child: Column(children: [
         MyCustomTextField.textField(
+          valText: "Please enter service title",
             hintText: "Enter service title",
             controller: communityEvents.titleController,
             lableText: "Title"),
@@ -780,6 +809,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           children: [
             Expanded(
                 child: MyCustomTextField.textField(
+                  valText: "Please enter amount",
                     textInputType: TextInputType.number,
                     hintText: "Enter amount",
                     controller: communityEvents.priceController,
@@ -789,6 +819,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             ),
             Expanded(
                 child: MyCustomTextField.textField(
+                  valText: "Please enter duration",
                     textInputType: TextInputType.number,
                     hintText: "Enter duration",
                     controller: communityEvents.durationMinutesController,
@@ -799,6 +830,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           height: 16,
         ),
         MyCustomTextField.textField(
+          valText: "Please enter discount (%)",
             textInputType: TextInputType.number,
             hintText: "Enter discount (%)",
             controller: communityEvents.priceDiscountController,
@@ -821,15 +853,17 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           Expanded(
             child: AppButton.primaryButton(
                 onButtonPressed: () {
-                  splitTopics();
-                  if (widget.isEdit && widget.isEvent) {
-                    Helper.loader(context);
-                    communityEvents.updateCommunityEvent(widget.eventId);
-                    communityWebinars.getCommunityWebinars();
-                  } else {
-                    Helper.loader(context);
-                    communityEvents.createCommunityEvent();
-                    communityWebinars.getCommunityWebinars();
+                  if (eventsFormkey.currentState!.validate()) {
+                    splitTopics();
+                    if (widget.isEdit && widget.isEvent) {
+                      Helper.loader(context);
+                      communityEvents.updateCommunityEvent(widget.eventId);
+                      communityWebinars.getCommunityWebinars();
+                    } else {
+                      Helper.loader(context);
+                      communityEvents.createCommunityEvent();
+                      communityWebinars.getCommunityWebinars();
+                    }
                   }
                 },
                 title: widget.isEdit && widget.isEvent
@@ -838,16 +872,18 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           ),
         ]),
       ]),
-    );
+    ));
   }
 
   webinarTab() {
     addDescription() async {
-      await communityWebinars.descriptionController.setText(communityEvents
-          .communityWebinarsList[widget.index!].description!);
+      await communityWebinars.descriptionController.setText(
+          communityEvents.communityWebinarsList[widget.index!].description!);
     }
 
     return SingleChildScrollView(
+        child: Form(
+      key: webinarsFormkey,
       child: Column(
         children: [
           sizedTextfield,
@@ -860,24 +896,25 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           //         radius: 60,
           //         child: Icon(Icons.add_photo_alternate_outlined, size: 40)),
           widget.isEdit
-                    ? base64 != ""
-                        ? CircleAvatar(
-                            radius: 60,
-                            backgroundImage: MemoryImage(base64Decode(base64)),
-                          )
-                        : CircleAvatar(
-                            radius: 60,
-                            backgroundImage: NetworkImage(communityEvents.communityWebinarsList[widget.index!].image!),
-                          )
-                    : base64 != ""
-                        ? CircleAvatar(
-                            radius: 60,
-                            backgroundImage: MemoryImage(base64Decode(base64)),
-                          )
-                        : const CircleAvatar(
-                        radius: 60,
-                        child:
-                            Icon(Icons.add_photo_alternate_outlined, size: 40)),
+              ? base64 != ""
+                  ? CircleAvatar(
+                      radius: 60,
+                      backgroundImage: MemoryImage(base64Decode(base64)),
+                    )
+                  : CircleAvatar(
+                      radius: 60,
+                      backgroundImage: NetworkImage(communityEvents
+                          .communityWebinarsList[widget.index!].image!),
+                    )
+              : base64 != ""
+                  ? CircleAvatar(
+                      radius: 60,
+                      backgroundImage: MemoryImage(base64Decode(base64)),
+                    )
+                  : const CircleAvatar(
+                      radius: 60,
+                      child:
+                          Icon(Icons.add_photo_alternate_outlined, size: 40)),
           const SizedBox(
             height: 12,
           ),
@@ -901,11 +938,13 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           ),
           sizedTextfield,
           MyCustomTextField.textField(
+            valText: "Please enter service title",
               lableText: "Title",
               hintText: "Enter service title",
               controller: communityWebinars.titleController),
           sizedTextfield,
           MyCustomTextField.htmlTextField(
+            
             hintText: "Enter service description",
             controller: communityWebinars.descriptionController,
             lableText: "Description",
@@ -939,6 +978,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
                         height: 0,
                       ),
                     ),
+                    valText: "Please select date",
                     hintText: "Select date",
                     lableText: "Date",
                     readonly: true,
@@ -960,6 +1000,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
               const SizedBox(width: 12),
               Expanded(
                   child: MyCustomTextField.textField(
+                    valText: "Please enter duartion",
                 hintText: "Enter duration (min.)",
                 lableText: "Duration (min.)",
                 textInputType: TextInputType.number,
@@ -973,11 +1014,13 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             children: [
               Expanded(
                 child: MyCustomTextField.textField(
+                  valText: "Please select start time",
                   hintText: "Select start time",
                   readonly: true,
                   lableText: "Start Time",
                   onTap: () async {
-                    DateTime? selectedTime = await selectTime(context, false, "community");
+                    DateTime? selectedTime =
+                        await selectTime(context, false, "community");
 
                     if (selectedTime != null) {
                       communityWebinars.startTimeController.text =
@@ -991,11 +1034,13 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
               const SizedBox(width: 12),
               Expanded(
                 child: MyCustomTextField.textField(
+                  valText: "Please select end time",
                   hintText: "Select end time",
                   readonly: true,
                   lableText: "End Time",
                   onTap: () async {
-                    DateTime? selectedTime = await selectTime(context, false, "community");
+                    DateTime? selectedTime =
+                        await selectTime(context, false, "community");
                     if (selectedTime != null) {
                       communityWebinars.endTimeController.text =
                           DateFormat('hh:mm a').format(selectedTime);
@@ -1009,12 +1054,14 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           ),
           sizedTextfield,
           MyCustomTextField.textField(
+            valText: "Please Enter Price",
               textInputType: TextInputType.number,
               lableText: "Price",
               hintText: "Enter price",
               controller: communityWebinars.priceController),
           sizedTextfield,
           MyCustomTextField.textField(
+            valText: "Please Enter discount (%)",
               textInputType: TextInputType.number,
               lableText: "Discount (%)",
               hintText: "Enter discount (%)",
@@ -1037,13 +1084,16 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
             Expanded(
               child: AppButton.primaryButton(
                   onButtonPressed: () {
-                    if (widget.isEdit && widget.isWebinar) {
-                      Helper.loader(context);
-                      communityWebinars.updateCommunityWebinar(
-                          base64, widget.webinarId);
-                    } else {
-                      Helper.loader(context);
-                      communityWebinars.createCommunityWebinar(context, base64);
+                    if (webinarsFormkey.currentState!.validate()) {
+                      if (widget.isEdit && widget.isWebinar) {
+                        Helper.loader(context);
+                        communityWebinars.updateCommunityWebinar(
+                            base64, widget.webinarId);
+                      } else {
+                        Helper.loader(context);
+                        communityWebinars.createCommunityWebinar(
+                            context, base64);
+                      }
                     }
                   },
                   title: widget.isEdit && widget.isWebinar
@@ -1053,7 +1103,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           ]),
         ],
       ),
-    );
+    ));
   }
 
   uploadBottomSheet() {

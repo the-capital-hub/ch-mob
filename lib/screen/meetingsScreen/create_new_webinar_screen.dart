@@ -57,6 +57,7 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
     });
   }
 
+  GlobalKey<FormState> webinarsFormkey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -72,12 +73,15 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
           autoAction: true,
         ),
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
+            child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Form(
+            key: webinarsFormkey,
             child: Column(
               children: [
                 sizedTextfield,
                 MyCustomTextField.textField(
+                    valText: "Please enter title",
                     lableText: "Webinar Title",
                     hintText: "Enter Title",
                     controller: webinarController.titleController),
@@ -100,6 +104,7 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                               height: 0,
                             ),
                           ),
+                          valText: "Please select date",
                           hintText: "Select Date",
                           readonly: true,
                           lableText: "Date",
@@ -122,6 +127,7 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                     const SizedBox(width: 12),
                     Expanded(
                         child: MyCustomTextField.textField(
+                      valText: "Please enter duration",
                       hintText: "Enter Duration(min)",
                       lableText: "Duration(min)",
                       textInputType: TextInputType.number,
@@ -140,6 +146,7 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                   children: [
                     Expanded(
                       child: MyCustomTextField.textField(
+                        valText: "Please selct start time",
                         hintText: "Select Start Time",
                         readonly: true,
                         lableText: "Start Time",
@@ -159,6 +166,7 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: MyCustomTextField.textField(
+                        valText: "Please select end time",
                         hintText: "Select End Time",
                         readonly: true,
                         lableText: "End Time",
@@ -180,12 +188,14 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                     }),
                 sizedTextfield,
                 MyCustomTextField.textField(
+                    valText: "Please enter price",
                     textInputType: TextInputType.number,
                     lableText: "Webinar Price",
                     hintText: "Enter Price",
                     controller: webinarController.priceController),
                 sizedTextfield,
                 MyCustomTextField.textField(
+                    valText: "Please enter Discount (%)",
                     textInputType: TextInputType.number,
                     lableText: "Price Discount(%)",
                     hintText: "Enter Discount(%)",
@@ -194,15 +204,17 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
               ],
             ),
           ),
-        ),
+        )),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(12),
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Expanded(
               child: AppButton.primaryButton(
                   onButtonPressed: () {
-                    Helper.loader(context);
-                    webinarController.createWebinar();
+                    if (webinarsFormkey.currentState!.validate()) {
+                      Helper.loader(context);
+                      webinarController.createWebinar();
+                    }
                   },
                   title: "Create Webinar"),
             ),
