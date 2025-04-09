@@ -311,9 +311,10 @@ class MeetingController extends GetxController {
     Get.back();
     Get.back();
     if (data["status"]) {
+      answerController.clear();
       HelperSnackBar.snackBar("Success", data["message"]);
       getPriorityDMForUser();
-
+      getPriorityDMForFounder();
       return true;
     } else {
       HelperSnackBar.snackBar("Error", data["message"]);
