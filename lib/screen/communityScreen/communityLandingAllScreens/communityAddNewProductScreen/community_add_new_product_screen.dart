@@ -36,6 +36,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
   String base64 = "";
   List<TextEditingController> controllers = [TextEditingController()];
   CommunityProductsAndMembersController communityProducts = Get.find();
+  GlobalKey<FormState> formkey = GlobalKey();
   // void _startCursorHideTimer() {
   //     // After the specified delay (in seconds), unfocus the editor
   //     Timer(Duration(seconds: cursorHideDelayInSeconds), () {
@@ -220,17 +221,15 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                             foregroundImage: NetworkImage(communityProducts
                                 .communityProductsList[widget.index!].image),
                           )
-                    : 
-                    base64 != ""
+                    : base64 != ""
                         ? CircleAvatar(
                             radius: 60,
                             backgroundImage: MemoryImage(base64Decode(base64)),
                           )
-                        :
-                    const CircleAvatar(
-                        radius: 60,
-                        child:
-                            Icon(Icons.add_photo_alternate_outlined, size: 40)),
+                        : const CircleAvatar(
+                            radius: 60,
+                            child: Icon(Icons.add_photo_alternate_outlined,
+                                size: 40)),
                 const SizedBox(
                   height: 12,
                 ),
@@ -257,97 +256,113 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                     ),
                   ]),
                 ),
-                const SizedBox(height: 12),
-                MyCustomTextField.textField(
-                    hintText: "eg : Hub",
-                    controller: addNewProduct.productNameController,
-                    lableText: "Product Name"),
-                const SizedBox(height: 12),
-                MyCustomTextField.htmlTextField(
-                  hintText: "Enter description",
-                  controller: addNewProduct.productDescriptionController,
-                  lableText: "Description",
-                  onEditorCreated: () async {
-                    if (widget.isEdit) {
-                      addDescription();
-                    }
-                  },
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: addNewProduct.isFree,
-                      checkColor: GetStoreData.getStore.read('isInvestor')
-                          ? AppColors.black
-                          : AppColors.white,
-                      activeColor: GetStoreData.getStore.read('isInvestor')
-                          ? AppColors.primaryInvestor
-                          : AppColors.primary,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          addNewProduct.isFree = value!;
-                        });
-                      },
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
-                    const TextWidget(text: "Free Resource", textSize: 16),
-                  ],
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                if (!addNewProduct.isFree)
-                  MyCustomTextField.textField(
-                      textInputType: TextInputType.number,
-                      hintText: "Enter amount",
-                      controller: addNewProduct.productAmountController,
-                      lableText: "Amount"),
-                if (!addNewProduct.isFree)
-                  const SizedBox(
-                    height: 12,
-                  ),
-                ListView.separated(
-                  separatorBuilder: (context, index) => const SizedBox(
-                    height: 12,
-                  ),
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemCount: controllers.length,
-                  itemBuilder: (context, index) {
-                    return MyCustomTextField.textField(
-                      hintText: "Enter resource URL",
-                      controller: controllers[index],
-                      lableText: "Resource URLs",
-                      suffixIcon: index > 0
-                          ? IconButton(
-                              icon: const Icon(Icons.delete),
-                              color: AppColors.redColor,
-                              onPressed: () => removeTextField(index),
-                            )
-                          : null,
-                    );
-                  },
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                InkWell(
-                  child: const TextWidget(
-                    text: "+ Add Another URL",
-                    textSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  onTap: () {
-                    addNewTextField();
-                  },
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
+                Form(
+                    key: formkey,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 12),
+                        MyCustomTextField.textField(
+                            valText: "Please enter product name",
+                            hintText: "eg : Hub",
+                            controller: addNewProduct.productNameController,
+                            lableText: "Product Name"),
+
+                        const SizedBox(height: 12),
+                        MyCustomTextField.htmlTextField(
+                          hintText: "Enter description",
+                          controller:
+                              addNewProduct.productDescriptionController,
+                          lableText: "Description",
+                          onEditorCreated: () async {
+                            if (widget.isEdit) {
+                              addDescription();
+                            }
+                          },
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: addNewProduct.isFree,
+                              checkColor:
+                                  GetStoreData.getStore.read('isInvestor')
+                                      ? AppColors.black
+                                      : AppColors.white,
+                              activeColor:
+                                  GetStoreData.getStore.read('isInvestor')
+                                      ? AppColors.primaryInvestor
+                                      : AppColors.primary,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  addNewProduct.isFree = value!;
+                                });
+                              },
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            const TextWidget(
+                                text: "Free Resource", textSize: 16),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        if (!addNewProduct.isFree)
+                          MyCustomTextField.textField(
+                              textInputType: TextInputType.number,
+                              hintText: "Enter amount",
+                              valText: "Please enter amount",
+                              controller: addNewProduct.productAmountController,
+                              lableText: "Amount"),
+                        if (!addNewProduct.isFree)
+                          const SizedBox(
+                            height: 12,
+                          ),
+                        //  ],)),
+                        ListView.separated(
+                          separatorBuilder: (context, index) => const SizedBox(
+                            height: 12,
+                          ),
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          itemCount: controllers.length,
+                          itemBuilder: (context, index) {
+                            return MyCustomTextField.textField(
+                              hintText: "Enter resource URL",
+                              controller: controllers[index],
+                              lableText: "Resource URLs",
+                              valText: "Please enter resource URL",
+                              suffixIcon: index > 0
+                                  ? IconButton(
+                                      icon: const Icon(Icons.delete),
+                                      color: AppColors.redColor,
+                                      onPressed: () => removeTextField(index),
+                                    )
+                                  : null,
+                            );
+                          },
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        InkWell(
+                          child: const TextWidget(
+                            text: "+ Add Another URL",
+                            textSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          onTap: () {
+                            addNewTextField();
+                          },
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                      ],
+                    )),
               ]),
             ),
           ),
@@ -368,27 +383,24 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               Expanded(
                 child: AppButton.primaryButton(
                     onButtonPressed: () {
-                      if (!widget.isEdit && base64 == "") {
-                        HelperSnackBar.snackBar(
-                            "Error", "Upload an Image for the Product.");
-                      } else if (!addNewProduct.isFree &&
-                          (addNewProduct.productAmountController.text.isEmpty ||
-                              addNewProduct.productAmountController.text ==
-                                  "0")) {
-                        HelperSnackBar.snackBar(
-                            "Error", "Enter a valid Product Price Amount");
-                      } else {
-                        List<String> urls = controllers
-                            .map((controller) => controller.text)
-                            .toList();
-
-                        if (!widget.isEdit) {
-                          Helper.loader(context);
-                          addNewProduct.addProductToCommunity(base64, urls);
+                      if (formkey.currentState!.validate()) {
+                        if (!widget.isEdit && base64 == "") {
+                          HelperSnackBar.snackBar(
+                              "Error", "Upload an Image for the Product.");
                         } else {
-                          Helper.loader(context);
-                          addNewProduct.updateCommunityProduct(
-                              base64, widget.productId!);
+                          List<String> urls = controllers
+                              .map((controller) => controller.text)
+                              .toList();
+
+                          if (!widget.isEdit) {
+                            Helper.loader(context);
+                            addNewProduct.addProductToCommunity(base64, urls);
+                          } else {
+                            Helper.loader(context);
+
+                            addNewProduct.updateCommunityProduct(
+                                base64, widget.productId!);
+                          }
                         }
                       }
                     },

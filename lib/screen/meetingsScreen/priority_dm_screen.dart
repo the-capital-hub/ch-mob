@@ -187,6 +187,13 @@ class _PriorityDMScreenState extends State<PriorityDMScreen>
                                 );
                               },
                             ),
+                  founderController.isLoading.value
+                      ? Helper.pageLoading()
+                      : founderController.founderList.isEmpty
+                          ? const Center(
+                              child: TextWidget(
+                                  text: "No Questions Available", textSize: 16))
+                          : 
                   ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     itemCount: founderController.founderList.length,
@@ -269,6 +276,13 @@ class _PriorityDMScreenState extends State<PriorityDMScreen>
                       return const SizedBox.shrink();
                     },
                   ),
+                  founderController.isLoading.value
+                      ? Helper.pageLoading()
+                      : founderController.founderList.isEmpty
+                          ? const Center(
+                              child: TextWidget(
+                                  text: "No Questions Available", textSize: 16))
+                          : 
                   ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     itemCount: founderController.founderList.length,

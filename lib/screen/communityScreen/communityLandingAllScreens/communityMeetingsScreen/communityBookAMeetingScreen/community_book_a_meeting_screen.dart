@@ -39,6 +39,21 @@ class _CommunityBookAMeetingScreenState
   String startTime = "";
   String endTime = "";
   @override
+  void initState() {
+    super.initState();
+
+    autoFillDetails();
+  }
+
+  void autoFillDetails() {
+    communityMeetings.nameController.text =
+        GetStoreData.getStore.read('name');
+    communityMeetings.emailController.text =
+        GetStoreData.getStore.read('email');
+    communityMeetings.mobileController.text =
+        GetStoreData.getStore.read('phone');
+  }
+  @override
   Widget build(BuildContext context) {
     return Container(
         decoration: bgDec,
