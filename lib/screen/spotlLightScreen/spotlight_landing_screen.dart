@@ -61,7 +61,20 @@ class _SpotLightLandingScreenState extends State<SpotLightLandingScreen>
       child: Scaffold(
         backgroundColor: AppColors.transparent,
         drawer: const DrawerWidget(),
-        appBar: HelperAppBar.appbarHelper(title: "Spotlight", hideBack: true),
+        appBar: HelperAppBar.appbarHelper(
+            title: "Spotlight",
+            hideBack: true,
+            action: [
+              InkWell(
+                onTap: () {},
+                child: const TextWidget(
+                    text: "+ Product",
+                    fontWeight: FontWeight.w500,
+                    textSize: 14,
+                    color: AppColors.primary),
+              ),
+              const SizedBox(width: 12)
+            ]),
         body: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(

@@ -4,7 +4,7 @@ import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'product_detail_screen.dart';
+import 'productDetailsScreen/product_detail_screen.dart';
 
 class ProductCardList extends StatelessWidget {
   final List<Map<String, dynamic>> data = List.generate(

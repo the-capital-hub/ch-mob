@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-import '../../utils/constant/asset_constant.dart';
+import '../../../utils/constant/asset_constant.dart';
+import 'product_detail_comments_screen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({super.key});
@@ -192,7 +193,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const TextWidget(text: "Founding Team", textSize: 14),
+                      const TextWidget(
+                          text: "Founding Team",
+                          textSize: 16,
+                          fontWeight: FontWeight.w500),
                       const SizedBox(height: 8),
                       SizedBox(
                         height: 205,
@@ -261,7 +265,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ],
                   ),
                 ),
-                     sizedTextfield,
+                sizedTextfield,
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(12),
@@ -272,7 +276,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const TextWidget(text: "Founding Team", textSize: 16,fontWeight: FontWeight.w500),
+                      const TextWidget(
+                          text: "Product Images",
+                          textSize: 16,
+                          fontWeight: FontWeight.w500),
                       const SizedBox(height: 8),
                       SizedBox(
                         height: 205,
@@ -284,63 +291,31 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return Container(
-                                width: Get.width / 1.5,
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: AppColors.white12,
+                              width: Get.width / 1.4,
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: AppColors.white12,
+                                image: const DecorationImage(
+                                  image: AssetImage(PngAssetPath.appIcon),
+                                  fit: BoxFit.cover,
                                 ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const CircleAvatar(
-                                          radius: 18,
-                                          backgroundImage:
-                                              AssetImage(PngAssetPath.appIcon),
-                                        ),
-                                        const SizedBox(width: 12),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const TextWidget(
-                                                text: "Dhairya Jain",
-                                                textSize: 14),
-                                            TextWidget(
-                                                text: "Full Stack Developer",
-                                                color: AppColors.white54,
-                                                textSize: 12),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(height: 6),
-                                    const TextWidget(
-                                        text: "Capital Hub",
-                                        fontWeight: FontWeight.w500,
-                                        textSize: 12),
-                                    const SizedBox(height: 2),
-                                    const TextWidget(
-                                        text:
-                                            "I have been associated with The Capital Hub as a Full-Stack Developer for more than 6 months The Capital Hub as a Full-Stack Developer for more than 6 months",
-                                        maxLine: 4,
-                                        textSize: 11),
-                                    const SizedBox(height: 8),
-                                    AppButton.primaryButton(
-                                        onButtonPressed: () {},
-                                        title: "LinkedIn",
-                                        height: 40,
-                                        bgColor: AppColors.blue)
-                                  ],
-                                ));
+                              ),
+                            );
                           },
                         ),
-                      )
+                      ),
                     ],
                   ),
-                )
+                ),
+                sizedTextfield,
+                Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.blackCard,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: CommentSectionPage())
               ],
             ),
           ),
