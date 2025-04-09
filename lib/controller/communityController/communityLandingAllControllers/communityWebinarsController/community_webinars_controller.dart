@@ -215,18 +215,22 @@ class CommunityWebinarsController extends GetxController {
   TextEditingController infoController = TextEditingController();
 
   Future communityScheduleEvent(webinarId, day, startTime, endTime) async {
+    var body = {
+      "name": nameController.text,
+      "email": emailController.text,
+      "additionalInfo": infoController.text,
+      "date": formattedDate,
+      "startTime": DateFormat("HH:mm").format(DateFormat("hh:mm a").parse(startTime)),
+      "endTime": DateFormat("HH:mm").format(DateFormat("hh:mm a").parse(endTime)),
+    };
     var response = await ApiBase.postRequest(
-      body: {
-        "name": nameController.text,
-        "email": emailController.text,
-        "additionalInfo": infoController.text,
-        "date": formattedDate,
-        "startTime": startTime.replaceAll(RegExp(r"\sAM|\sPM"), ""),
-        "endTime": endTime.replaceAll(RegExp(r"\sAM|\sPM"), ""),
-      },
+      body: body,
       withToken: true,
       extendedURL: ApiUrl.scheduleEvent + webinarId,
     );
+    print(startTime);
+    print(endTime);
+    print(body);
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"]) {
