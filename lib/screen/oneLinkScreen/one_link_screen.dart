@@ -37,6 +37,7 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
   PageController _pageController = PageController();
   int _currentIndex = 0;
   String selectedMonth = "Select Month";
+  GlobalKey<FormState> formkey = GlobalKey();
   @override
   void initState() {
     fetchApi();
@@ -67,7 +68,11 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                   : SingleChildScrollView(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Column(
+                        child: 
+                        Form(
+                              key: formkey,
+                              child:
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             if (oneLinkController.oneLinkReqData.isFounder ??
@@ -83,16 +88,18 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                             const TextWidget(
                                 text: "Create one link", textSize: 16),
                             sizedTextfield,
-                            MyCustomTextField.textField(
-                                hintText: "Type link here",
-                                readonly: false,
-                                controller: oneLinkController.linkController,
-                                prefixIcon: Icon(
-                                  Icons.link,
-                                  color: AppColors.white54,
-                                ),
-                                lableText:
-                                    "Now share all your startup details in OneLink"),
+                             MyCustomTextField.textField(
+                                  valText: "Please enter the link",
+                                  hintText: "Type link here",
+                                  readonly: false,
+                                  controller: oneLinkController.linkController,
+                                  prefixIcon: Icon(
+                                    Icons.link,
+                                    color: AppColors.white54,
+                                  ),
+                                  lableText:
+                                      "Now share all your startup details in OneLink"),
+                          
                             sizedTextfield,
                             // MyCustomTextField.textField(
                             //     hintText: "Type your text here",
@@ -133,7 +140,7 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                             Stack(
                               children: [
                                 MyCustomTextField.htmlTextField(
-                                    hintText: "hintText",
+                                    hintText: "Enter introductory message",
                                     lableText: "Introductory message",
                                     onEditorCreated: () {
                                       oneLinkController.introMsgController
@@ -495,6 +502,8 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                             sizedTextfield,
                             if (GetStoreData.getStore.read('isInvestor'))
                               MyCustomTextField.textField(
+                                maxLine: 3,
+                                  valText: "Please enter investment philosophy",
                                   suffixIcon: InkWell(
                                     onTap: () {
                                       oneLinkController
@@ -563,6 +572,7 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                                     height: 500,
                                     child: ListView.separated(
                                       // shrinkWrap: true,
+                                      // physics: const NeverScrollableScrollPhysics(),
                                       itemCount:
                                           oneLinkController.thesisData.length,
                                       itemBuilder: (context, index) {
@@ -591,17 +601,24 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                                                 const SizedBox(
                                                   height: 8,
                                                 ),
-                                                Container(
-                                                  child: MyCustomTextField
-                                                      .textField(
-                                                    hintText: 'Add your answer',
-                                                    maxLine: 2,
-                                                    controller:
-                                                        oneLinkController
-                                                            .thesisData[index]
-                                                            .answer!,
+                                                // Form(
+                                                //   key: formkey,
+                                                  // child: 
+                                                  Container(
+                                                    child: MyCustomTextField
+                                                        .textField(
+                                                      valText:
+                                                          "Please add your answer",
+                                                      hintText:
+                                                          'Add your answer',
+                                                      maxLine: 2,
+                                                      controller:
+                                                          oneLinkController
+                                                              .thesisData[index]
+                                                              .answer!,
+                                                    // ),
                                                   ),
-                                                ),
+                                                )
                                               ],
                                             ),
                                             const SizedBox(height: 10),
@@ -622,12 +639,15 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                               padding: const EdgeInsets.all(8.0),
                               child: AppButton.primaryButton(
                                   onButtonPressed: () {
-                                    oneLinkPostDilogue();
+                                    if (formkey.currentState!.validate()) {
+                                      oneLinkPostDilogue();
+                                    }
                                   },
                                   title: "Create one link"),
                             )
                           ],
                         ),
+                      )
                       ),
                     ),
         )));
@@ -703,24 +723,32 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                 ),
               if (oneLinkController.genratedIntroMessage.isNotEmpty)
                 const SizedBox(height: 12),
-              MyCustomTextField.textField(
-                  hintText: "Enter Secret Key",
-                  lableText: "Assign Secret Key",
-                  borderClr: AppColors.white38,
-                  maxLength: 4,
-                  textInputType: TextInputType.number,
-                  controller: oneLinkController.secrateKeyController),
+              Form(
+                key: formkey,
+                child: MyCustomTextField.textField(
+                    valText: "Please enter secret key",
+                    hintText: "Enter Secret Key",
+                    lableText: "Assign Secret Key",
+                    borderClr: AppColors.white38,
+                    maxLength: 4,
+                    textInputType: TextInputType.number,
+                    controller: oneLinkController.secrateKeyController),
+              ),
               const SizedBox(height: 12),
               AppButton.primaryButton(
                   onButtonPressed: () {
-                    if (oneLinkController.secrateKeyController.text.length ==
-                        4) {
-                      if (GetStoreData.getStore.read('isInvestor')) {
-                        oneLinkController.editOneLinkDetails(context);
-                      } else {
-                        oneLinkController.createSecrateKey(context).then((val) {
-                          setState(() {});
-                        });
+                    if (formkey.currentState!.validate()) {
+                      if (oneLinkController.secrateKeyController.text.length ==
+                          4) {
+                        if (GetStoreData.getStore.read('isInvestor')) {
+                          oneLinkController.editOneLinkDetails(context);
+                        } else {
+                          oneLinkController
+                              .createSecrateKey(context)
+                              .then((val) {
+                            setState(() {});
+                          });
+                        }
                       }
                     }
                   },

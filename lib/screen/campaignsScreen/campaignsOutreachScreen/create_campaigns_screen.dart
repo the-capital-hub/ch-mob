@@ -23,6 +23,7 @@ class CreateCampaignsScreen extends StatefulWidget {
 
 class _CreateCampaignsScreenState extends State<CreateCampaignsScreen> {
   CampaignsController campaignsController = Get.find();
+  GlobalKey<FormState> formkey = GlobalKey();
   @override
   void initState() {
     campaignsController.campaignSubjectController.text =
@@ -152,10 +153,14 @@ class _CreateCampaignsScreenState extends State<CreateCampaignsScreen> {
                   ),
                 ),
                 sizedTextfield,
-                MyCustomTextField.textField(
-                    hintText: "Enter Campaign Name",
-                    lableText: "Campaign Name",
-                    controller: campaignsController.campaignNameController),
+                Form(
+                  key: formkey,
+                  child: MyCustomTextField.textField(
+                      valText: "Please enter campaign name",
+                      hintText: "Enter Campaign Name",
+                      lableText: "Campaign Name",
+                      controller: campaignsController.campaignNameController),
+                ),
                 sizedTextfield,
                 MyCustomTextField.textField(
                     hintText: "Enter Subject",
@@ -265,44 +270,47 @@ class _CreateCampaignsScreenState extends State<CreateCampaignsScreen> {
                 sizedTextfield,
                 AppButton.primaryButton(
                     onButtonPressed: () {
-                      Helper.loader(context);
-                      campaignsController
-                          .createCampaign(widget.templateId)
-                          .then((val) {
-                        if (val) {
-                          campaignCreatedPopup(
-                            context,
-                            () {
-                              Get.back(closeOverlays: true);
-                              Get.back();
-                            },
-                            () {
-                              scheduleCampaignPopup(context, () {
+                      if (formkey.currentState!.validate()) {
+                        Helper.loader(context);
+                        campaignsController
+                            .createCampaign(widget.templateId)
+                            .then((val) {
+                          if (val) {
+                            campaignCreatedPopup(
+                              context,
+                              () {
+                                Get.back(closeOverlays: true);
+                                Get.back();
+                              },
+                              () {
+                                scheduleCampaignPopup(context, () {
+                                  Helper.loader(context);
+                                  campaignsController
+                                      .scheduleOutreachCampaign(
+                                          isCancel: false,
+                                          id: campaignsController.newCampaignID,
+                                          fromViewScreen: false)
+                                      .then((v) {
+                                    Get.back(closeOverlays: true);
+                                    Get.back(closeOverlays: true);
+                                  });
+                                });
+                              },
+                              () {
                                 Helper.loader(context);
                                 campaignsController
-                                    .scheduleOutreachCampaign(
-                                        isCancel: false,
-                                        id: campaignsController.newCampaignID,
-                                        fromViewScreen: false)
-                                    .then((v) {
+                                    .runOutreachCampaign(
+                                        campaignsController.newCampaignID,
+                                        false)
+                                    .then((val) {
                                   Get.back(closeOverlays: true);
                                   Get.back(closeOverlays: true);
                                 });
-                              });
-                            },
-                            () {
-                              Helper.loader(context);
-                              campaignsController
-                                  .runOutreachCampaign(
-                                      campaignsController.newCampaignID, false)
-                                  .then((val) {
-                                Get.back(closeOverlays: true);
-                                Get.back(closeOverlays: true);
-                              });
-                            },
-                          );
-                        }
-                      });
+                              },
+                            );
+                          }
+                        });
+                      }
                     },
                     title: "Create Campaign")
               ],

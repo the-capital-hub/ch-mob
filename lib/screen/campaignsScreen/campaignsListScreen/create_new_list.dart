@@ -21,6 +21,7 @@ class CreateNewList extends StatefulWidget {
 
 class _CreateNewListState extends State<CreateNewList> {
   CampaignsController campaignsController = Get.find();
+  GlobalKey<FormState> formkey = GlobalKey();
   @override
   void initState() {
     if (widget.isEdit) {
@@ -46,40 +47,48 @@ class _CreateNewListState extends State<CreateNewList> {
         appBar: HelperAppBar.appbarHelper(title: "Create New List"),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              MyCustomTextField.textField(
-                  hintText: "Enter List Name",
-                  lableText: "List Name",
-                  controller: campaignsController.listNameController),
-              sizedTextfield,
-              MyCustomTextField.textField(
-                  hintText: "Enter Description",
-                  lableText: "Description",
-                  maxLine: 4,
-                  controller: campaignsController.descriptionController),
-              sizedTextfield,
-              DropDownWidget(
-                  status: campaignsController.sharingType,
-                  lable: "Sharing",
-                  statusList: const ["Private", "Public", "Team"],
-                  onChanged: (v) {
-                    campaignsController.sharingType = v!;
-                    setState(() {});
-                  }),
-            ],
+          child: Form(
+            key: formkey,
+            child: Column(
+              children: [
+                MyCustomTextField.textField(
+                    valText: "Please enter list name",
+                    hintText: "Enter List Name",
+                    lableText: "List Name",
+                    controller: campaignsController.listNameController),
+                sizedTextfield,
+                MyCustomTextField.textField(
+                    valText: "Please enter description",
+                    hintText: "Enter Description",
+                    lableText: "Description",
+                    maxLine: 4,
+                    controller: campaignsController.descriptionController),
+                sizedTextfield,
+                DropDownWidget(
+                    status: campaignsController.sharingType,
+                    lable: "Sharing",
+                    statusList: const ["Private", "Public", "Team"],
+                    onChanged: (v) {
+                      campaignsController.sharingType = v!;
+                      setState(() {});
+                    }),
+              ],
+            ),
           ),
         ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(12),
           child: AppButton.primaryButton(
               onButtonPressed: () {
-                Helper.loader(context);
-                campaignsController.createCampaignList(
-                    isEdit: widget.isEdit,
-                    listId: widget.isEdit
-                        ? campaignsController.campaignList[widget.index!].listId
-                        : null);
+                if (formkey.currentState!.validate()) {
+                  Helper.loader(context);
+                  campaignsController.createCampaignList(
+                      isEdit: widget.isEdit,
+                      listId: widget.isEdit
+                          ? campaignsController
+                              .campaignList[widget.index!].listId
+                          : null);
+                }
               },
               title: widget.isEdit ? "Update" : "Create"),
         ),

@@ -107,9 +107,7 @@ class _CommunityLandingScreenState extends State<CommunityLandingScreen> {
                       Icons.settings,
                       size: 22,
                     ),
-                    iconColor: GetStoreData.getStore.read('isInvestor')
-                        ? AppColors.black
-                        : AppColors.white,
+                    iconColor: AppColors.white,
                     color: AppColors.blackCard,
                     offset: Offset(100, 55),
                     itemBuilder: (context) => [
