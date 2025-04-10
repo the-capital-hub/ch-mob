@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:capitalhub_crm/controller/profileController/profile_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
+import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
@@ -33,6 +34,7 @@ class PersonalInfoScreen extends StatefulWidget {
 
 class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   ProfileController profileController = Get.put(ProfileController());
+  GlobalKey<FormState> formkey = GlobalKey();
   @override
   void initState() {
     populateData();
@@ -47,8 +49,10 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
           backgroundColor: AppColors.transparent,
           appBar: HelperAppBar.appbarHelper(title: "Personal Information"),
           body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
+              child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Form(
+              key: formkey,
               child: Column(
                 children: [
                   InkWell(
@@ -72,16 +76,19 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                   sizedTextfield,
                   sizedTextfield,
                   MyCustomTextField.textField(
+                      valText: "Please enter first name",
                       lableText: "First name",
                       hintText: "Enter First Name",
                       controller: profileController.firstNameController),
                   sizedTextfield,
                   MyCustomTextField.textField(
+                      valText: "Please enter last name",
                       lableText: "Last Name",
                       hintText: "Enter Last Name",
                       controller: profileController.lastNameController),
                   sizedTextfield,
                   MyCustomTextField.textField(
+                      valText: "Please enter user name",
                       lableText: "User Name",
                       hintText: "Enter User Name",
                       controller: profileController.userNameController),
@@ -115,25 +122,30 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                 ),
                               ),
                               MyCustomTextField.textField(
+                                  valText: "Please enter company name",
                                   lableText: "Company",
                                   hintText: "Enter Company Name",
                                   controller: companyInfo[index].companyName),
                               sizedTextfield,
                               MyCustomTextField.textField(
+                                  valText: "Please enter location",
                                   lableText: "Location",
                                   hintText: "Enter Location",
                                   controller:
                                       companyInfo[index].companyLocation),
                               sizedTextfield,
                               MyCustomTextField.textField(
+                                  valText: "Please enter role",
                                   lableText: "Role",
                                   hintText: "Enter Role",
                                   controller: companyInfo[index].companyRole),
                               sizedTextfield,
                               Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: MyCustomTextField.textField(
+                                        valText: "Please select start date",
                                         hintText: "Start Date",
                                         readonly: true,
                                         lableText: "Start Date",
@@ -155,6 +167,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                   const SizedBox(width: 12),
                                   Expanded(
                                     child: MyCustomTextField.textField(
+                                        valText: "Please select end date",
                                         hintText: "End Date",
                                         readonly: true,
                                         lableText: "End Date",
@@ -177,6 +190,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                               ),
                               sizedTextfield,
                               MyCustomTextField.textField(
+                                  valText: "Please enter description",
                                   lableText: "Description",
                                   hintText: "Enter Description",
                                   controller:
@@ -274,24 +288,28 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                   ),
                                 ),
                                 MyCustomTextField.textField(
+                                    valText: "Please enter school name",
                                     lableText: "School",
                                     hintText: "Enter School Name",
                                     controller:
                                         educationInfo[index].educationSchool),
                                 sizedTextfield,
                                 MyCustomTextField.textField(
+                                    valText: "Please enter location",
                                     lableText: "Location",
                                     hintText: "Enter Location",
                                     controller:
                                         educationInfo[index].educationLocation),
                                 sizedTextfield,
                                 MyCustomTextField.textField(
-                                    lableText: "Cource",
-                                    hintText: "Enter Cource Name",
+                                    valText: "Please enter course name",
+                                    lableText: "Course",
+                                    hintText: "Enter Course Name",
                                     controller:
                                         educationInfo[index].educationCourse),
                                 sizedTextfield,
                                 MyCustomTextField.textField(
+                                    valText: "Please enter passout date",
                                     hintText: "Passout Date",
                                     readonly: true,
                                     lableText: "Passout Date",
@@ -311,6 +329,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                         .educationPassoutDate),
                                 sizedTextfield,
                                 MyCustomTextField.textField(
+                                    valText: "Please enter description",
                                     lableText: "Description",
                                     hintText: "Enter Description",
                                     controller: educationInfo[index]
@@ -378,7 +397,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 ],
               ),
             ),
-          ),
+          )),
           bottomNavigationBar: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Row(
@@ -394,8 +413,14 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 Expanded(
                     child: AppButton.primaryButton(
                         onButtonPressed: () {
-                          profileController.updateProfile(
-                              base64Image, companyInfo, educationInfo, context);
+                          if (formkey.currentState!.validate()) {
+                            if (base64 == "") {
+                              HelperSnackBar.snackBar(
+                                  "Error", "Upload an Image for the Profile.");
+                            }
+                            profileController.updateProfile(base64Image,
+                                companyInfo, educationInfo, context);
+                          }
                         },
                         title: "Save"))
               ],

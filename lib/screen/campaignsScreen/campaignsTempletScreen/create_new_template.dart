@@ -22,6 +22,7 @@ class CreateNewTemplate extends StatefulWidget {
 
 class _CreateNewTemplateState extends State<CreateNewTemplate> {
   CampaignsController campaignsController = Get.find();
+  GlobalKey<FormState> formkey = GlobalKey();
   @override
   void initState() {
     if (widget.isEdit) {
@@ -63,17 +64,21 @@ class _CreateNewTemplateState extends State<CreateNewTemplate> {
         backgroundColor: AppColors.transparent,
         appBar: HelperAppBar.appbarHelper(title: "Create New Template"),
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: formkey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 MyCustomTextField.textField(
+                    valText: "Please enter template name",
                     hintText: "Enter Template Name",
                     lableText: "Template Name",
                     controller: campaignsController.templateNameController),
                 sizedTextfield,
                 MyCustomTextField.textField(
+                    valText: "Please enter email subject",
                     hintText: "Enter Email Subject",
                     lableText: "Email Subject",
                     controller: campaignsController.templateSubjectController),
@@ -129,17 +134,19 @@ class _CreateNewTemplateState extends State<CreateNewTemplate> {
               ],
             ),
           ),
-        ),
+        )),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(12),
           child: AppButton.primaryButton(
               onButtonPressed: () {
-                Helper.loader(context);
-                if (widget.isEdit) {
-                  campaignsController.editTemplate(campaignsController
-                      .templateList[widget.index!].templateId);
-                } else {
-                  campaignsController.createTemplate();
+                if (formkey.currentState!.validate()) {
+                  Helper.loader(context);
+                  if (widget.isEdit) {
+                    campaignsController.editTemplate(campaignsController
+                        .templateList[widget.index!].templateId);
+                  } else {
+                    campaignsController.createTemplate();
+                  }
                 }
               },
               title: widget.isEdit ? "Update" : "Create"),

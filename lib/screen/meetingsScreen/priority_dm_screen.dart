@@ -24,6 +24,7 @@ class _PriorityDMScreenState extends State<PriorityDMScreen>
     with SingleTickerProviderStateMixin {
   MeetingController userController = Get.put(MeetingController());
   MeetingController founderController = Get.put(MeetingController());
+  bool anyUnanswered = false;
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
@@ -36,6 +37,8 @@ class _PriorityDMScreenState extends State<PriorityDMScreen>
         WidgetsBinding.instance.addPostFrameCallback((_) {});
       });
     });
+    anyUnanswered = founderController.founderList.any((founder) => founder.isAnswered == false);
+
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
   }
@@ -189,7 +192,7 @@ class _PriorityDMScreenState extends State<PriorityDMScreen>
                             ),
                   founderController.isLoading.value
                       ? Helper.pageLoading()
-                      : founderController.founderList.isEmpty
+                      : founderController.founderList.isEmpty || !anyUnanswered
                           ? const Center(
                               child: TextWidget(
                                   text: "No Questions Available", textSize: 16))
@@ -278,7 +281,7 @@ class _PriorityDMScreenState extends State<PriorityDMScreen>
                   ),
                   founderController.isLoading.value
                       ? Helper.pageLoading()
-                      : founderController.founderList.isEmpty
+                      : founderController.founderList.isEmpty || anyUnanswered
                           ? const Center(
                               child: TextWidget(
                                   text: "No Questions Available", textSize: 16))

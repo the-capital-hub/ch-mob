@@ -429,72 +429,101 @@ class _EventCalendarState extends State<CommunityEventsCalendar> {
     return slots.any((slot) => slot.isAvailable!);
   }
 
- @override
+  // @override
+  // void initState() {
+  //   super.initState();
+
+  //   // Set the selected day to today if it's available, otherwise set it to the next available day
+  //   _selectedDay = _getNextAvailableDay(widget.availableDays);
+  //   communityWebinars.formattedDate = DateFormat('MMMM d').format(_selectedDay);
+  //   _focusedDay = _selectedDay;
+  //   communityWebinars.selectedDayIndex;
+
+  //   // Generate available weekdays
+  //   _generateAvailableWeekdays(widget.availableDays);
+
+  //   // communityWebinars.isDaySelected = false;
+  // }
+
+  DateTime _getNextAvailableDay(List<String> availableDays) {
+    int currentWeekday = DateTime.now().weekday; // Get current weekday
+
+    // Loop through available days and find the next available day from today onwards
+    for (String day in availableDays) {
+      int dayIndex = _getWeekdayIndex(day); // Get index of available day
+      if (dayIndex >= currentWeekday) {
+        // If day is today or later
+        return _getDateForNextWeekday(dayIndex); // Return the day
+      }
+    }
+
+    // If no available day is later in the week, return the first available day in the next week
+    int firstAvailableDayIndex = _getWeekdayIndex(availableDays.first);
+    return _getDateForNextWeekday(firstAvailableDayIndex);
+  }
+
+  @override
 void initState() {
   super.initState();
-  
-  // Set the selected day to today if it's available, otherwise set it to the next available day
+
+  // Get the next available DateTime based on availableDays
   _selectedDay = _getNextAvailableDay(widget.availableDays);
-  communityWebinars.formattedDate =
-                            DateFormat('MMMM d').format(_selectedDay);
   _focusedDay = _selectedDay;
-  communityWebinars.selectedDayIndex = 0;
-  
-  // Generate available weekdays
+
+  // Format and assign to the controller
+  communityWebinars.formattedDate = DateFormat('MMMM d').format(_selectedDay);
+
+  // Generate available weekdays (for checking valid days)
   _generateAvailableWeekdays(widget.availableDays);
-  
-  // communityWebinars.isDaySelected = false;
+
+  // Find the day name from the selected DateTime (e.g., 'Monday')
+  String selectedDayName = _getDayName(_selectedDay).toLowerCase();
+
+  // Find index of this day name in the original availableDays list
+  selectedDayIndex = widget.availableDays.indexWhere(
+    (day) => day.toLowerCase() == selectedDayName,
+  );
+
+  // Also update in your controller if needed
+  communityWebinars.selectedDayIndex = selectedDayIndex!;
 }
 
-DateTime _getNextAvailableDay(List<String> availableDays) {
-  int currentWeekday = DateTime.now().weekday;  // Get current weekday
-  
-  // Loop through available days and find the next available day from today onwards
-  for (String day in availableDays) {
-    int dayIndex = _getWeekdayIndex(day);  // Get index of available day
-    if (dayIndex >= currentWeekday) {  // If day is today or later
-      return _getDateForNextWeekday(dayIndex);  // Return the day
+
+  int _getWeekdayIndex(String day) {
+    switch (day.toLowerCase()) {
+      case "monday":
+        return DateTime.monday;
+      case "tuesday":
+        return DateTime.tuesday;
+      case "wednesday":
+        return DateTime.wednesday;
+      case "thursday":
+        return DateTime.thursday;
+      case "friday":
+        return DateTime.friday;
+      case "saturday":
+        return DateTime.saturday;
+      case "sunday":
+        return DateTime.sunday;
+      default:
+        return -1; // Invalid day
     }
   }
 
-  // If no available day is later in the week, return the first available day in the next week
-  int firstAvailableDayIndex = _getWeekdayIndex(availableDays.first);
-  return _getDateForNextWeekday(firstAvailableDayIndex);
-}
+  DateTime _getDateForNextWeekday(int weekday) {
+    DateTime today = DateTime.now();
+    int daysToAdd =
+        (weekday - today.weekday + 7) % 7; // Calculate how many days to add
 
-int _getWeekdayIndex(String day) {
-  switch (day.toLowerCase()) {
-    case "monday":
-      return DateTime.monday;
-    case "tuesday":
-      return DateTime.tuesday;
-    case "wednesday":
-      return DateTime.wednesday;
-    case "thursday":
-      return DateTime.thursday;
-    case "friday":
-      return DateTime.friday;
-    case "saturday":
-      return DateTime.saturday;
-    case "sunday":
-      return DateTime.sunday;
-    default:
-      return -1;  // Invalid day
-  }
-}
+    if (daysToAdd == 0) {
+      daysToAdd = 0; // If it's today, no need to add any days
+    } else if (daysToAdd < 0) {
+      daysToAdd = daysToAdd + 7; // If the day is in the next week
+    }
 
-DateTime _getDateForNextWeekday(int weekday) {
-  DateTime today = DateTime.now();
-  int daysToAdd = (weekday - today.weekday + 7) % 7;  // Calculate how many days to add
-  
-  if (daysToAdd == 0) {
-    daysToAdd = 0; // If it's today, no need to add any days
-  } else if (daysToAdd < 0) {
-    daysToAdd = daysToAdd + 7;  // If the day is in the next week
+    return today
+        .add(Duration(days: daysToAdd)); // Return the next available day
   }
-  
-  return today.add(Duration(days: daysToAdd));  // Return the next available day
-}
 
   @override
   Widget build(BuildContext context) {
@@ -572,7 +601,6 @@ DateTime _getDateForNextWeekday(int weekday) {
                         fontWeight: FontWeight.w500,
                         color: AppColors.white,
                       ),
-                     
                       headerMargin: EdgeInsets.only(bottom: 10),
                       decoration: BoxDecoration(
                         color: AppColors.primary.withOpacity(0.1),
@@ -592,7 +620,8 @@ DateTime _getDateForNextWeekday(int weekday) {
             ),
           ),
           _hasAvailableSlots()
-              ? Wrap(alignment: WrapAlignment.start,
+              ? Wrap(
+                  alignment: WrapAlignment.start,
                   spacing: 4.0,
                   runSpacing: 4.0,
                   children: List.generate(

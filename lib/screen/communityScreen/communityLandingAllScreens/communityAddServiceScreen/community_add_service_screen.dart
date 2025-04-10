@@ -419,6 +419,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           height: 16,
         ),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
                 child: MyCustomTextField.textField(
@@ -530,6 +531,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           height: 16,
         ),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
                 child: MyCustomTextField.textField(
@@ -596,6 +598,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           height: 16,
         ),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: MyCustomTextField.textField(
@@ -806,6 +809,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           height: 16,
         ),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
                 child: MyCustomTextField.textField(
@@ -967,6 +971,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           //     :
 
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: MyCustomTextField.textField(
@@ -1011,6 +1016,7 @@ class _CommunityAddServiceScreenState extends State<CommunityAddServiceScreen>
           ),
           sizedTextfield,
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: MyCustomTextField.textField(

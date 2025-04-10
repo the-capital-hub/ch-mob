@@ -93,6 +93,7 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                 ),
                 sizedTextfield,
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: MyCustomTextField.textField(
@@ -143,6 +144,7 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                 ),
                 sizedTextfield,
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: MyCustomTextField.textField(
