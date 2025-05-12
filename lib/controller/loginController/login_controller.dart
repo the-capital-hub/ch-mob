@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:developer' as log;
-import 'package:capitalhub_crm/screen/01-Investor-Section/landingScreen/landing_screen_inv.dart';
+import 'package:capitalhub_crm/screen/landingScreen/landing_screen_inv.dart';
 import 'package:capitalhub_crm/screen/Auth-Process/authScreen/signup_otp_page.dart';
 import 'package:capitalhub_crm/screen/Auth-Process/userDetailsScreen/username_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../../model/mystartupModel/my_startup_model.dart';
 import '../../screen/Auth-Process/authScreen/otp_page.dart';
 import '../../screen/landingScreen/landing_screen.dart';
 import '../../utils/apiService/api_base.dart';
@@ -32,7 +33,13 @@ class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController companyNameController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
-  TextEditingController designationController = TextEditingController();
+  List<MyInvestment> myInvestments = [];
+  String? myInvbase64;
+  TextEditingController myinvcompanyNameController = TextEditingController();
+  TextEditingController myInvcompanyDescriptionController =
+      TextEditingController();
+  TextEditingController myInvequityController = TextEditingController();
+  List<TextEditingController> sectorsList = [];
   String selectedIndustry = "";
   bool isLogin = true;
   String orderId = "";
@@ -465,12 +472,17 @@ class LoginController extends GetxController {
       "firstName": firstNameController.text,
       "lastName": lastNameController.text,
       "email": emailController.text,
-      "userName": userNameController.text
+      "userName": userNameController.text,
+      "investorData": {
+        "companyName": myinvcompanyNameController.text,
+        "sectorInterested": sectorsList.map((e) => {"name": e.text}).toList(),
+        "startupsInvested": myInvestments.map((e) => e.toJson()).toList()
+      }
     };
-    log.log(body.toString());
     var response = await ApiBase.postRequest(
         body: body, extendedURL: ApiUrl.saveRequiredData, withToken: true);
     var data = json.decode(response.body);
+    Get.back();
     if (data["status"] == true) {
       GetStoreData.storeUserData(
           id: data['data']['_id'],

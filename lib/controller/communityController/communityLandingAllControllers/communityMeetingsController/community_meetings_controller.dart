@@ -2,24 +2,19 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/controller/loginController/login_controller.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityMeetingsModel/communityMeetingsModel.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityMeetingsModel/community_member_emails_model.dart';
-import 'package:capitalhub_crm/screen/Auth-Process/authScreen/login_page.dart';
+import 'package:capitalhub_crm/model/communityModel/communityLandingAllModels/communityMeetingsModel/communityMeetingsModel.dart';
+import 'package:capitalhub_crm/model/communityModel/communityLandingAllModels/communityMeetingsModel/community_member_emails_model.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
-import 'package:capitalhub_crm/utils/apiService/google_service.dart';
-import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
-import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
-import 'package:capitalhub_crm/widget/buttons/button.dart';
-import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 import 'package:capitalhub_crm/widget/dilogue/communityDialog/login_dialog.dart';
+
+import '../../../../widget/bottomSheet/create_post_bottomsheet.dart';
 
 LoginController loginMobileController = Get.put(LoginController());
 CommunityController communityLogin = Get.put(CommunityController());
@@ -30,7 +25,7 @@ class CommunityMeetingsController extends GetxController {
   String day = "";
   bool isDaySelected = false;
   RxList<CommunityMeetings> communityMeetingsList = <CommunityMeetings>[].obs;
-   DateTime dateSelected  = DateTime.now();
+  DateTime dateSelected = DateTime.now();
 
   Future<void> getCommunityMeetings() async {
     try {
@@ -175,9 +170,11 @@ class CommunityMeetingsController extends GetxController {
     if (data["status"]) {
       Get.back();
       Get.back();
-      HelperSnackBar.snackBar("Success", data["message"]);
+      // HelperSnackBar.snackBar("Success", data["message"]);
       getCommunityMeetings();
       memberEmailController.clear();
+      showPostUpdateBottomSheet(
+          postDescription: data['postText'], sheetDescription:"Meeting");
       return true;
     } else if (data["message"] == "googleLogin") {
       Get.back();
@@ -289,14 +286,16 @@ class CommunityMeetingsController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
   Future bookCommunityMeeting(meetingId, day, startTime, endTime) async {
-    var response = await ApiBase.postRequest(
-      body: {
-        "slot": {
-          "day": day,
-          "startTime": startTime,
-          "endTime": endTime,
-        },
+    var body = {
+      "slot": {
+        "day": day,
+        "startTime": startTime,
+        "endTime": endTime,
       },
+    };
+    log(body.toString());
+    var response = await ApiBase.postRequest(
+      body: body,
       withToken: true,
       extendedURL:
           "${ApiUrl.bookCommunityMeeting}$createdCommunityId/$meetingId",
@@ -304,14 +303,12 @@ class CommunityMeetingsController extends GetxController {
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"]) {
-      
       Get.back();
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       getCommunityMeetings();
       return true;
     } else {
-      
       Get.back();
       Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);

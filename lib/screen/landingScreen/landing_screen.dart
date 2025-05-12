@@ -1,6 +1,6 @@
 import 'package:capitalhub_crm/controller/homeController/home_controller.dart';
 import 'package:capitalhub_crm/controller/notificationController/notification_controller.dart';
-import 'package:capitalhub_crm/screen/Auth-Process/authScreen/signup_info_page.dart';
+import 'package:capitalhub_crm/screen/Auth-Process/authScreen/signupInfoScreens/signup_info_page.dart';
 import 'package:capitalhub_crm/screen/communityScreen/myCommunityScreen/my_community_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';

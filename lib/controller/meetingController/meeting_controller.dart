@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:capitalhub_crm/model/01-StartupModel/meetingModel/get_availability_model.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/meetingModel/get_events_model.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/meetingModel/get_meetings_model.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/meetingModel/get_priority_dm_founder_model.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/meetingModel/get_priority_dm_user_model.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/meetingModel/get_webinars_model.dart';
+import 'package:capitalhub_crm/model/meetingModel/get_availability_model.dart';
+import 'package:capitalhub_crm/model/meetingModel/get_events_model.dart';
+import 'package:capitalhub_crm/model/meetingModel/get_meetings_model.dart';
+import 'package:capitalhub_crm/model/meetingModel/get_priority_dm_founder_model.dart';
+import 'package:capitalhub_crm/model/meetingModel/get_priority_dm_user_model.dart';
+import 'package:capitalhub_crm/model/meetingModel/get_webinars_model.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
+
+import '../../widget/bottomSheet/create_post_bottomsheet.dart';
 
 class MeetingController extends GetxController {
   List<Map<String, dynamic>> availabilityData = [];
@@ -50,25 +52,27 @@ class MeetingController extends GetxController {
       required String eventType,
       required String price,
       required String discount}) async {
+    var body = {
+      "title": title,
+      "description": description,
+      "duration": duration,
+      "eventType": eventType,
+      "price": price,
+      "discount": discount,
+    };
     var response = await ApiBase.postRequest(
-      body: {
-        "title": title,
-        "description": description,
-        "duration": duration,
-        "eventType": eventType,
-        "price": price,
-        "discount": discount,
-        "communityId": "communityId"
-      },
+      body: body,
       withToken: true,
       extendedURL: ApiUrl.createEvent,
     );
-    log(response.body);
+    log(body.toString());
     Get.back();
     Get.back();
     var data = json.decode(response.body);
     if (data["status"]) {
-      HelperSnackBar.snackBar("Success", data["message"]);
+      // HelperSnackBar.snackBar("Success", data["message"]);
+      showPostUpdateBottomSheet(
+          postDescription: data['postText'], sheetDescription: "Event");
       return true;
     } else {
       HelperSnackBar.snackBar("Error", data["message"]);
@@ -183,6 +187,7 @@ class MeetingController extends GetxController {
     var data = json.decode(response.body);
     if (data["status"]) {
       HelperSnackBar.snackBar("Success", data["message"]);
+     await getWebinars();
       return true;
     } else {
       HelperSnackBar.snackBar("Error", data["message"]);
@@ -245,7 +250,11 @@ class MeetingController extends GetxController {
     Get.back();
     var data = json.decode(response.body);
     if (data["status"]) {
-      HelperSnackBar.snackBar("Success", data["message"]);
+      // HelperSnackBar.snackBar("Success", data["message"]);
+      await getWebinars();
+      showPostUpdateBottomSheet(
+          postDescription: data['postText'], sheetDescription: "Webinar");
+
       return true;
     } else {
       HelperSnackBar.snackBar("Error", data["message"]);
@@ -302,8 +311,7 @@ class MeetingController extends GetxController {
         "answer": answerController.text,
       },
       withToken: true,
-      extendedURL:
-          "${ApiUrl.answerPriorityDM}$priorityDMId",
+      extendedURL: "${ApiUrl.answerPriorityDM}$priorityDMId",
     );
 
     log(response.body);

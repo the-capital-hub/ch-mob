@@ -1,5 +1,5 @@
 import 'package:capitalhub_crm/controller/meetingController/meeting_controller.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/create_events_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
@@ -24,12 +24,6 @@ class EventsScreen extends StatefulWidget {
 }
 
 class _EventsScreenState extends State<EventsScreen> {
-  final List<Color> containerColors = [
-    AppColors.lightBlue,
-    AppColors.navyBlue,
-    AppColors.oliveGreen
-  ];
-
   MeetingController eventController = Get.put(MeetingController());
   ScrollController scrollController = ScrollController();
 
@@ -49,30 +43,29 @@ class _EventsScreenState extends State<EventsScreen> {
       decoration: bgDec,
       child: Scaffold(
         drawer: GetStoreData.getStore.read('isInvestor')
-              ? const DrawerWidgetInvestor()
-              : const DrawerWidget(),
+            ? const DrawerWidgetInvestor()
+            : const DrawerWidget(),
         backgroundColor: AppColors.transparent,
         appBar: HelperAppBar.appbarHelper(
             title: "Events", hideBack: true, autoAction: true),
         body: Obx(() => Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(10.0),
             child: eventController.isLoading.value
                 ? Helper.pageLoading()
                 : eventController.eventsList.isEmpty
                     ? const Center(
                         child: TextWidget(
                             text: "No Events Available", textSize: 16))
-                    : ListView.builder(
+                    : ListView.separated(
                         itemCount: eventController.eventsList.length,
                         shrinkWrap: true,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 8),
                         itemBuilder: (context, index) {
-                          Color containerColor =
-                              containerColors[index % containerColors.length];
-
                           return Card(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6)),
-                            color: containerColor,
+                            color: AppColors.blackCard,
                             child: Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: Column(
@@ -81,12 +74,13 @@ class _EventsScreenState extends State<EventsScreen> {
                                   TextWidget(
                                       text: eventController
                                           .eventsList[index].title,
-                                      textSize: 25),
+                                      fontWeight: FontWeight.w500,
+                                      textSize: 18),
                                   eventController.eventsList[index].isActive
                                       ? const SizedBox()
                                       : TextWidget(
                                           text: "This meeting is cancelled.",
-                                          textSize: 16,
+                                          textSize: 15,
                                           color: AppColors.grey,
                                         ),
                                   const SizedBox(height: 8),
@@ -123,13 +117,13 @@ class _EventsScreenState extends State<EventsScreen> {
                                                   textSize: 15),
                                               const TextWidget(
                                                   text: "Video Meeting",
-                                                  textSize: 15),
+                                                  textSize: 14),
                                             ],
                                           ),
                                           const Spacer(),
                                           Container(
                                             padding: const EdgeInsets.symmetric(
-                                                horizontal: 5, vertical: 5),
+                                                horizontal: 12, vertical: 5),
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(20),
@@ -221,8 +215,9 @@ class _EventsScreenState extends State<EventsScreen> {
                                                                   'Cancel Event',
                                                               onButtonPressed:
                                                                   () {
-                                                                    Get.back();
-                                                                    Helper.loader(context);
+                                                                Get.back();
+                                                                Helper.loader(
+                                                                    context);
                                                                 eventController.disableEvent(
                                                                     eventController
                                                                         .eventsList[

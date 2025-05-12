@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 
-import '../../model/01-StartupModel/profileModel/profile_post_model.dart';
+import '../../model/profileModel/profile_post_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 

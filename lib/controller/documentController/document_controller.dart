@@ -5,11 +5,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-import '../../model/01-StartupModel/documentationModel/documentation_model.dart';
-import '../../model/01-StartupModel/documentationModel/pitch_recording_model.dart';
+import '../../model/documentationModel/documentation_model.dart';
+import '../../model/documentationModel/pitch_recording_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import '../../utils/helper/helper_sncksbar.dart';
+import '../../widget/bottomSheet/create_post_bottomsheet.dart';
 
 class DocumentController extends GetxController {
   List<PlatformFile> selectedFiles = [];
@@ -65,7 +66,10 @@ class DocumentController extends GetxController {
     if (data['status'] == true) {
       DocumentationModel documentationModel = DocumentationModel.fromJson(data);
       docList.addAll(documentationModel.data!);
-      HelperSnackBar.snackBar("Success", data["message"]);
+      // HelperSnackBar.snackBar("Success", data["message"]);
+      showPostUpdateBottomSheet(
+          postDescription: data['postText'],
+          sheetDescription: "Upload Document");
     } else {
       HelperSnackBar.snackBar("Error", data["message"]);
     }

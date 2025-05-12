@@ -1,13 +1,7 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityEventsController/community_events_controller.dart';
-import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityMeetingsController/community_meetings_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityWebinarsController/community_webinars_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
-import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
-import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
-import 'package:capitalhub_crm/widget/appbar/appbar.dart';
-import 'package:capitalhub_crm/widget/buttons/button.dart';
-import 'package:capitalhub_crm/widget/datePicker/datePicker.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,7 +20,7 @@ import 'package:table_calendar/table_calendar.dart';
 // }
 
 // class _EventCalendarState extends State<CommunityEventsCalendar> {
-//   CommunityWebinarsController communityWebinars =
+//   CommunityWebinarsController communityEvents =
 //       Get.put(CommunityWebinarsController());
 //   late DateTime _selectedDay;
 //   late DateTime _focusedDay;
@@ -107,15 +101,15 @@ import 'package:table_calendar/table_calendar.dart';
 //   }
 // bool noSlot = true;
 //   checkSlots(){
-//     for(int i=0;i<communityWebinars
+//     for(int i=0;i<communityEvents
 //                         .communityWebinarsList[widget.index]
-//                         .availability![communityWebinars.selectedDayIndex]
+//                         .availability![communityEvents.selectedDayIndex]
 //                         .slots!
 //                         .length; i++)
 //                         {
-//                           if (communityWebinars
+//                           if (communityEvents
 //                         .communityWebinarsList[widget.index]
-//                         .availability![communityWebinars.selectedDayIndex]
+//                         .availability![communityEvents.selectedDayIndex]
 //                         .slots![i].isAvailable!){
 //                           setState(() {
 //                             noSlot = !noSlot;
@@ -143,40 +137,40 @@ import 'package:table_calendar/table_calendar.dart';
 //                     lastDay: DateTime(2050, 1, 1),
 //                     onDaySelected: (selectedDay, focusedDay) {
 //                       setState(() {
-//                         // communityWebinars.isDaySelected =
-//                         //     !communityWebinars.isDaySelected;
+//                         // communityEvents.isDaySelected =
+//                         //     !communityEvents.isDaySelected;
 //                         _selectedDay = _normalizeDate(selectedDay);
 //                         _focusedDay = focusedDay;
 //                         checkSlots();
 
 //                         // Store the selected date and corresponding day name
 //                         selectedDate = selectedDay; // Store the selected date
-//                         communityWebinars.formattedDate =
+//                         communityEvents.formattedDate =
 //                             DateFormat('MMMM d').format(selectedDate);
-//                         communityWebinars.selectedDayName = _getDayName(
+//                         communityEvents.selectedDayName = _getDayName(
 //                             selectedDay); // Store the name of the day
 //                         for (int i = 0;
 //                             i <
-//                                 communityWebinars.communityWebinarsList[0]
+//                                 communityEvents.communityWebinarsList[0]
 //                                     .availability!.length;
 //                             i++) {
-//                           if (communityWebinars
+//                           if (communityEvents
 //                                   .communityWebinarsList[widget.index]
 //                                   .availability![i]
 //                                   .day! ==
-//                               communityWebinars.selectedDayName) {
-//                             communityWebinars.selectedDayIndex = i;
+//                               communityEvents.selectedDayName) {
+//                             communityEvents.selectedDayIndex = i;
 //                           }
 //                         }
-//                         print(communityWebinars.formattedDate);
-//                         print(communityWebinars.selectedDayName);
-//                         print(communityWebinars.selectedDayIndex);
+//                         print(communityEvents.formattedDate);
+//                         print(communityEvents.selectedDayName);
+//                         print(communityEvents.selectedDayIndex);
 //                       });
 
 //                       // You can print or use the values as required
 //                       // print("Selected Date: $selectedDate");
 //                       // print("Selected Day: $selectedDayName");
-//                       // print("Selected Day2: ${communityWebinars.formattedDate}");
+//                       // print("Selected Day2: ${communityEvents.formattedDate}");
 //                     },
 //                     selectedDayPredicate: (day) {
 //                       return isSameDay(_selectedDay, day);
@@ -254,7 +248,7 @@ import 'package:table_calendar/table_calendar.dart';
 //           // Text('Selected Date: ${selectedDate.toLocal()}'),
 //           // Text('Selected Day: $selectedDayName'),
 //           // sizedTextfield,
-//           // if (communityWebinars.isDaySelected)
+//           // if (communityEvents.isDaySelected)
 
 //                 // :
 
@@ -268,17 +262,17 @@ import 'package:table_calendar/table_calendar.dart';
 //                     spacing: 4.0,
 //                     runSpacing: 4.0,
 //                     children: List.generate(
-//                       communityWebinars
+//                       communityEvents
 //                           .communityWebinarsList[widget.index]
-//                           .availability![communityWebinars.selectedDayIndex]
+//                           .availability![communityEvents.selectedDayIndex]
 //                           .slots!
 //                           .length,
 //                       (index) {
 //                         bool isSlotSelected = _selectedIndex == index;
-//                         return communityWebinars
+//                         return communityEvents
 //                                 .communityWebinarsList[widget.index]
 //                                 .availability![
-//                                     communityWebinars.selectedDayIndex]
+//                                     communityEvents.selectedDayIndex]
 //                                 .slots![index]
 //                                 .isAvailable!
 //                             ? InkWell(
@@ -291,20 +285,20 @@ import 'package:table_calendar/table_calendar.dart';
 //                                       _selectedIndex = index;
 //                                     }
 
-//                                     communityWebinars.slot = isSlotSelected
-//                                         ? "${communityWebinars.communityWebinarsList[widget.index].availability![communityWebinars.selectedDayIndex].slots![index].startTime} - ${communityWebinars.communityWebinarsList[widget.index].availability![communityWebinars.selectedDayIndex].slots![index].endTime}"
+//                                     communityEvents.slot = isSlotSelected
+//                                         ? "${communityEvents.communityWebinarsList[widget.index].availability![communityEvents.selectedDayIndex].slots![index].startTime} - ${communityEvents.communityWebinarsList[widget.index].availability![communityEvents.selectedDayIndex].slots![index].endTime}"
 //                                         : "";
-//                                     communityWebinars.startTime =
-//                                         communityWebinars
+//                                     communityEvents.startTime =
+//                                         communityEvents
 //                                             .communityWebinarsList[widget.index]
-//                                             .availability![communityWebinars
+//                                             .availability![communityEvents
 //                                                 .selectedDayIndex]
 //                                             .slots![index]
 //                                             .startTime!;
-//                                     communityWebinars.endTime =
-//                                         communityWebinars
+//                                     communityEvents.endTime =
+//                                         communityEvents
 //                                             .communityWebinarsList[widget.index]
-//                                             .availability![communityWebinars
+//                                             .availability![communityEvents
 //                                                 .selectedDayIndex]
 //                                             .slots![index]
 //                                             .endTime!;
@@ -323,7 +317,7 @@ import 'package:table_calendar/table_calendar.dart';
 //                                         horizontal: 12, vertical: 4),
 //                                     child: TextWidget(
 //                                       text:
-//                                           "${communityWebinars.communityWebinarsList[widget.index].availability![communityWebinars.selectedDayIndex].slots![index].startTime} - ${communityWebinars.communityWebinarsList[widget.index].availability![communityWebinars.selectedDayIndex].slots![index].endTime}",
+//                                           "${communityEvents.communityWebinarsList[widget.index].availability![communityEvents.selectedDayIndex].slots![index].startTime} - ${communityEvents.communityWebinarsList[widget.index].availability![communityEvents.selectedDayIndex].slots![index].endTime}",
 //                                       textSize: 14,
 //                                       color: AppColors.white,
 //                                     ),
@@ -343,15 +337,13 @@ class CommunityEventsCalendar extends StatefulWidget {
   final List<String> availableDays;
   final int index;
 
-  CommunityEventsCalendar({required this.availableDays, required this.index});
+  const CommunityEventsCalendar({super.key, required this.availableDays, required this.index});
 
   @override
   _EventCalendarState createState() => _EventCalendarState();
 }
 
 class _EventCalendarState extends State<CommunityEventsCalendar> {
-  CommunityWebinarsController communityWebinars =
-      Get.put(CommunityWebinarsController());
   late DateTime _selectedDay;
   late DateTime _focusedDay;
   int? _selectedIndex;
@@ -359,14 +351,14 @@ class _EventCalendarState extends State<CommunityEventsCalendar> {
 
   List<int> availableWeekdays = [];
   DateTime selectedDate = DateTime.now();
-
+  CommunityEventsController communityEvents = Get.find();
   // @override
   // void initState() {
   //   super.initState();
   //   _selectedDay = _normalizeDate(DateTime.now());
   //   _focusedDay = _normalizeDate(DateTime.now());
   //   _generateAvailableWeekdays(widget.availableDays);
-  //   communityWebinars.isDaySelected = true;
+  //   communityEvents.isDaySelected = true;
   // }
 
   DateTime _normalizeDate(DateTime date) {
@@ -424,8 +416,8 @@ class _EventCalendarState extends State<CommunityEventsCalendar> {
 
   // Helper method to check if there are any available slots
   bool _hasAvailableSlots() {
-    final slots = communityWebinars.communityWebinarsList[widget.index]
-        .availability![communityWebinars.selectedDayIndex].slots!;
+    final slots = communityEvents.communityEventList[widget.index]
+        .availability![communityEvents.selectedDayIndex].slots!;
     return slots.any((slot) => slot.isAvailable!);
   }
 
@@ -435,14 +427,14 @@ class _EventCalendarState extends State<CommunityEventsCalendar> {
 
   //   // Set the selected day to today if it's available, otherwise set it to the next available day
   //   _selectedDay = _getNextAvailableDay(widget.availableDays);
-  //   communityWebinars.formattedDate = DateFormat('MMMM d').format(_selectedDay);
+  //   communityEvents.formattedDate = DateFormat('MMMM d').format(_selectedDay);
   //   _focusedDay = _selectedDay;
-  //   communityWebinars.selectedDayIndex;
+  //   communityEvents.selectedDayIndex;
 
   //   // Generate available weekdays
   //   _generateAvailableWeekdays(widget.availableDays);
 
-  //   // communityWebinars.isDaySelected = false;
+  //   // communityEvents.isDaySelected = false;
   // }
 
   DateTime _getNextAvailableDay(List<String> availableDays) {
@@ -463,31 +455,30 @@ class _EventCalendarState extends State<CommunityEventsCalendar> {
   }
 
   @override
-void initState() {
-  super.initState();
+  void initState() {
+    super.initState();
 
-  // Get the next available DateTime based on availableDays
-  _selectedDay = _getNextAvailableDay(widget.availableDays);
-  _focusedDay = _selectedDay;
+    // Get the next available DateTime based on availableDays
+    _selectedDay = _getNextAvailableDay(widget.availableDays);
+    _focusedDay = _selectedDay;
 
-  // Format and assign to the controller
-  communityWebinars.formattedDate = DateFormat('MMMM d').format(_selectedDay);
+    // Format and assign to the controller
+    communityEvents.formattedDate = DateFormat('MMMM d').format(_selectedDay);
 
-  // Generate available weekdays (for checking valid days)
-  _generateAvailableWeekdays(widget.availableDays);
+    // Generate available weekdays (for checking valid days)
+    _generateAvailableWeekdays(widget.availableDays);
 
-  // Find the day name from the selected DateTime (e.g., 'Monday')
-  String selectedDayName = _getDayName(_selectedDay).toLowerCase();
+    // Find the day name from the selected DateTime (e.g., 'Monday')
+    String selectedDayName = _getDayName(_selectedDay).toLowerCase();
 
-  // Find index of this day name in the original availableDays list
-  selectedDayIndex = widget.availableDays.indexWhere(
-    (day) => day.toLowerCase() == selectedDayName,
-  );
+    // Find index of this day name in the original availableDays list
+    selectedDayIndex = widget.availableDays.indexWhere(
+      (day) => day.toLowerCase() == selectedDayName,
+    );
 
-  // Also update in your controller if needed
-  communityWebinars.selectedDayIndex = selectedDayIndex!;
-}
-
+    // Also update in your controller if needed
+    communityEvents.selectedDayIndex = selectedDayIndex!;
+  }
 
   int _getWeekdayIndex(String day) {
     switch (day.toLowerCase()) {
@@ -547,22 +538,20 @@ void initState() {
                         _focusedDay = focusedDay;
 
                         selectedDate = selectedDay;
-                        communityWebinars.formattedDate =
+                        communityEvents.formattedDate =
                             DateFormat('MMMM d').format(selectedDate);
-                        communityWebinars.selectedDayName =
+                        communityEvents.selectedDayName =
                             _getDayName(selectedDay);
 
                         for (int i = 0;
                             i <
-                                communityWebinars.communityWebinarsList[0]
-                                    .availability!.length;
+                                communityEvents
+                                    .communityEventList[0].availability!.length;
                             i++) {
-                          if (communityWebinars
-                                  .communityWebinarsList[widget.index]
-                                  .availability![i]
-                                  .day! ==
-                              communityWebinars.selectedDayName) {
-                            communityWebinars.selectedDayIndex = i;
+                          if (communityEvents.communityEventList[widget.index]
+                                  .availability![i].day! ==
+                              communityEvents.selectedDayName) {
+                            communityEvents.selectedDayIndex = i;
                           }
                         }
                       });
@@ -577,7 +566,7 @@ void initState() {
                       defaultTextStyle: TextStyle(color: AppColors.white),
                       disabledTextStyle: TextStyle(color: AppColors.white12),
                       todayTextStyle: TextStyle(color: AppColors.white54),
-                      todayDecoration: BoxDecoration(
+                      todayDecoration: const BoxDecoration(
                         color: AppColors.blue,
                         shape: BoxShape.circle,
                       ),
@@ -625,36 +614,31 @@ void initState() {
                   spacing: 4.0,
                   runSpacing: 4.0,
                   children: List.generate(
-                    communityWebinars
-                        .communityWebinarsList[widget.index]
-                        .availability![communityWebinars.selectedDayIndex]
+                    communityEvents
+                        .communityEventList[widget.index]
+                        .availability![communityEvents.selectedDayIndex]
                         .slots!
                         .length,
                     (index) {
-                      final slot = communityWebinars
-                          .communityWebinarsList[widget.index]
-                          .availability![communityWebinars.selectedDayIndex]
+                      final slot = communityEvents
+                          .communityEventList[widget.index]
+                          .availability![communityEvents.selectedDayIndex]
                           .slots![index];
 
                       return slot.isAvailable!
                           ? InkWell(
                               onTap: () {
                                 setState(() {
-                                  // Toggle the selected slot
                                   if (_selectedIndex == index) {
                                     _selectedIndex = null;
-                                    // communityWebinars.isDaySelected = false;
                                   } else {
                                     _selectedIndex = index;
                                   }
-
-                                  // Update slot details in the controller
-                                  communityWebinars.slot = _selectedIndex !=
-                                          null
+                                  communityEvents.slot = _selectedIndex != null
                                       ? "${slot.startTime} - ${slot.endTime}"
                                       : "";
-                                  communityWebinars.startTime = slot.startTime!;
-                                  communityWebinars.endTime = slot.endTime!;
+                                  communityEvents.startTime = slot.startTime!;
+                                  communityEvents.endTime = slot.endTime!;
                                 });
                               },
                               child: Card(

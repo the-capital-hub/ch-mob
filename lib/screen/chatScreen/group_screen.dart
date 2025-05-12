@@ -1,6 +1,6 @@
 import 'package:capitalhub_crm/controller/chatController/chat_controller.dart';
 import 'package:capitalhub_crm/screen/chatScreen/chat_screen.dart';
-import 'package:capitalhub_crm/screen/chatScreen/create_community_screen.dart';
+import 'package:capitalhub_crm/screen/chatScreen/create_group_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';

@@ -1,5 +1,5 @@
 import 'package:capitalhub_crm/controller/meetingController/meeting_controller.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/events_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
@@ -59,6 +59,7 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
     });
     super.initState();
   }
+
   GlobalKey<FormState> eventsFormkey = GlobalKey();
 
   @override
@@ -75,102 +76,85 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(12),
-            child: 
-            Form(
-            key: eventsFormkey,
-            child:
-            Column(
-              children: [
-                sizedTextfield,
-                MyCustomTextField.textField(
-                  valText: "Please enter event title",
-                    lableText: "Event Title",
-                    hintText: "Enter Title",
-                    controller: titleController),
-                sizedTextfield,
-                MyCustomTextField.htmlTextField(
-                  hintText: "Enter Description",
-                  controller: descriptionController,
-                  lableText: "Description",
-                ),
-                sizedTextfield,
-                MyCustomTextField.textField(
-                  valText: "Please enter duration",
-                  hintText: "Enter Duration(Minutes)",
-                  lableText: "Duration(Minutes)",
-                  textInputType: TextInputType.number,
-                  onChange: (value) {
-                    _validateDuration(value, durationMinutesController);
-                  },
-                  controller: durationMinutesController,
-                ),
-                sizedTextfield,
-                DropDownWidget(
-                    status: privacyStatus,
-                    lable: "Event Privacy",
-                    statusList: const ["Public", "Private", "Pitch Day"],
-                    onChanged: (val) {
-                      setState(() {
-                        privacyStatus = val.toString();
-                      });
-                    }),
-                sizedTextfield,
-                MyCustomTextField.textField(
-                  valText: "Please enter price",
+            child: Form(
+              key: eventsFormkey,
+              child: Column(
+                children: [
+                  sizedTextfield,
+                  MyCustomTextField.textField(
+                      valText: "Please enter event title",
+                      lableText: "Event Title",
+                      hintText: "Enter Title",
+                      controller: titleController),
+                  sizedTextfield,
+                  MyCustomTextField.htmlTextField(
+                    hintText: "Enter Description",
+                    controller: descriptionController,
+                    lableText: "Description",
+                  ),
+                  sizedTextfield,
+                  MyCustomTextField.textField(
+                    valText: "Please enter duration",
+                    hintText: "Enter Duration(Minutes)",
+                    lableText: "Duration(Minutes)",
                     textInputType: TextInputType.number,
-                    lableText: "Event Price",
-                    hintText: "Enter Price",
-                    controller: priceController),
-                sizedTextfield,
-                MyCustomTextField.textField(
-                  valText: "Please enter Discount(%)",
-                    textInputType: TextInputType.number,
-                    lableText: "Price Discount(%)",
-                    hintText: "Enter Price Discount(%)",
-                    controller: priceDiscountController),
-                sizedTextfield,
-              ],
+                    onChange: (value) {
+                      _validateDuration(value, durationMinutesController);
+                    },
+                    controller: durationMinutesController,
+                  ),
+                  sizedTextfield,
+                  DropDownWidget(
+                      status: privacyStatus,
+                      lable: "Event Privacy",
+                      statusList: const ["Public", "Private", "Pitch Day"],
+                      onChanged: (val) {
+                        setState(() {
+                          privacyStatus = val.toString();
+                        });
+                      }),
+                  sizedTextfield,
+                  MyCustomTextField.textField(
+                      valText: "Please enter price",
+                      textInputType: TextInputType.number,
+                      lableText: "Event Price",
+                      hintText: "Enter Price",
+                      controller: priceController),
+                  sizedTextfield,
+                  MyCustomTextField.textField(
+                      valText: "Please enter Discount(%)",
+                      textInputType: TextInputType.number,
+                      lableText: "Price Discount(%)",
+                      hintText: "Enter Price Discount(%)",
+                      controller: priceDiscountController),
+                  sizedTextfield,
+                ],
+              ),
             ),
           ),
         ),
-        ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(12),
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Expanded(
-              child: AppButton.primaryButton(
-                  onButtonPressed: () async {
-                    if (eventsFormkey.currentState!.validate()) {
-                    Helper.loader(context);
-                    String description = "";
-                    await descriptionController
-                        .getText()
-                        .then((val) => description = val);
+          child: AppButton.primaryButton(
+              onButtonPressed: () async {
+                if (eventsFormkey.currentState!.validate()) {
+                  Helper.loader(context);
+                  String description = "";
+                  await descriptionController
+                      .getText()
+                      .then((val) => description = val);
 
-                    await MeetingController().createEvent(
-                      title: titleController.text,
-                      description: description,
-                      duration: durationMinutesController.text,
-                      eventType: privacyStatus,
-                      price: priceController.text,
-                      discount: priceDiscountController.text,
-                    );
-                    }
-                  },
-                  title: "Create Event"),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: AppButton.outlineButton(
-                  borderColor: GetStoreData.getStore.read('isInvestor')
-                      ? AppColors.primaryInvestor
-                      : AppColors.primary,
-                  onButtonPressed: () {
-                    Get.back();
-                  },
-                  title: "Cancel"),
-            ),
-          ]),
+                  await MeetingController().createEvent(
+                    title: titleController.text,
+                    description: description,
+                    duration: durationMinutesController.text,
+                    eventType: privacyStatus,
+                    price: priceController.text,
+                    discount: priceDiscountController.text,
+                  );
+                }
+              },
+              title: "Create Event"),
         ),
       ),
     );

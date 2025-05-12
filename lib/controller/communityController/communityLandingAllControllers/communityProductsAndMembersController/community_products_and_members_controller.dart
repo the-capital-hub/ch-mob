@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/getCommunityProductsAndMembersModel/get_community_products_and_members_model.dart';
+import 'package:capitalhub_crm/model/communityModel/communityLandingAllModels/getCommunityProductsAndMembersModel/get_community_products_and_members_model.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
@@ -13,7 +13,7 @@ class CommunityProductsAndMembersController extends GetxController {
   var isLoading = false.obs;
   RxList<CommunityProductsAndMembers> communityProductsAndMembersList =
       <CommunityProductsAndMembers>[].obs;
-  RxList<Product> communityProductsList = <Product>[].obs;
+  RxList<CommunityProduct> communityProductsList = <CommunityProduct>[].obs;
   RxList<Member> communityMembersList = <Member>[].obs;
   Future<void> getCommunityProductsandMembers(memberName) async {
     try {
@@ -48,8 +48,8 @@ class CommunityProductsAndMembersController extends GetxController {
     );
     log(response.body);
     var data = json.decode(response.body);
-    if(!isFree){
-    Get.back();
+    if (!isFree) {
+      Get.back();
     }
     Get.back();
     if (data["status"]) {

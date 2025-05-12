@@ -11,9 +11,10 @@ import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multi_image_picker_plus/multi_image_picker_plus.dart';
+import 'package:quill_html_editor/quill_html_editor.dart';
 
-import '../../model/01-StartupModel/profileModel/profile_post_model.dart';
-import '../../model/01-StartupModel/publicPostModel/public_post_model.dart';
+import '../../model/profileModel/profile_post_model.dart';
+import '../../model/publicPostModel/public_post_model.dart';
 
 class CreatePostController extends GetxController {
   List<String> base64ImageList = [];
@@ -22,7 +23,7 @@ class CreatePostController extends GetxController {
   List<String> pollOptions = [];
   bool isPublicPost = true;
   bool isCommunityPost = false;
-  TextEditingController titleController = TextEditingController();
+  QuillEditorController titleController = QuillEditorController();
 
   base64Convert(context, List<Asset> selectedImages, video, document,
       String postId) async {
@@ -51,8 +52,10 @@ class CreatePostController extends GetxController {
   }
 
   Future addPost(String? postId) async {
+    String title = "";
+    await titleController.getText().then((val) => title = val);
     var body = {
-      "description": titleController.text,
+      "description": title,
       "images": base64ImageList,
       "video": videoBase64,
       "documentUrl": documentBase64,

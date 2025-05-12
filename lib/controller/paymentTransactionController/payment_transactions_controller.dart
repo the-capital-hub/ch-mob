@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 
-import '../../model/01-StartupModel/paymentTransactionModel/payment_transaction_model.dart';
+import '../../model/paymentTransactionModel/payment_transaction_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 
@@ -13,7 +13,7 @@ class PaymentTransactionsController extends GetxController {
   PaymentData paymentData = PaymentData();
 
   Future getPaymentList() async {
-    try {
+    try {   
       isLoading.value = true;
       var response =
           await ApiBase.getRequest(extendedURL: ApiUrl.paymentListing);

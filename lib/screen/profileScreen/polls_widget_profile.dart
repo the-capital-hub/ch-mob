@@ -1,5 +1,5 @@
 import 'package:capitalhub_crm/controller/homeController/home_controller.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/profileModel/profile_post_model.dart';
+import 'package:capitalhub_crm/model/profileModel/profile_post_model.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';

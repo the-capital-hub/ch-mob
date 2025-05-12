@@ -17,8 +17,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:video_player/video_player.dart';
-import '../../model/01-StartupModel/chatModel/chat_memberlist_model.dart';
-import '../../model/01-StartupModel/chatModel/member_chats.dart';
+import '../../model/chatModel/chat_memberlist_model.dart';
+import '../../model/chatModel/member_chats.dart';
 import 'video_preview.dart';
 
 class ChatScreen extends StatefulWidget {

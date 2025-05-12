@@ -75,6 +75,7 @@ class AppButton {
           elevation: 0,
           minimumSize: const Size.fromHeight(4),
           shape: StadiumBorder(),
+          padding: const EdgeInsets.symmetric(horizontal: 14),
           backgroundColor: bgColor ?? AppColors.transparent,
         ),
         onPressed: onButtonPressed,
@@ -83,6 +84,60 @@ class AppButton {
           textSize: fontSize ?? 14,
           fontWeight: FontWeight.w500,
           color: AppColors.white,
+        ),
+      ),
+    );
+  }
+
+  static Widget outlineGradient({
+    required void Function()? onButtonPressed,
+    required String title,
+    double? height,
+    Widget? icon,
+    Color? bgColor,
+    Color? textColor,
+    double? width,
+    double? fontSize,
+  }) {
+    return InkWell(
+      onTap: onButtonPressed,
+      splashColor: AppColors.transparent,
+      child: Container(
+        width: width ,
+        height: height ?? 26,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppColors.green700.withOpacity(0.7),
+              AppColors.primary,
+            ],
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          decoration: BoxDecoration(
+            color: bgColor ?? AppColors.black,
+            borderRadius: BorderRadius.circular(100),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon ?? const SizedBox(),
+              if (icon != null) const SizedBox(width: 2),
+              TextWidget(
+                text: title,
+                textSize: fontSize ?? 12,
+                maxLine: 2,
+                fontWeight: FontWeight.w500,
+                align: TextAlign.center,
+                color: textColor ?? AppColors.white,
+              ),
+            ],
+          ),
         ),
       ),
     );

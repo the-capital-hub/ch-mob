@@ -1,7 +1,6 @@
-import 'dart:ui';
 
 import 'package:capitalhub_crm/controller/newsController/news_controller.dart';
-import 'package:capitalhub_crm/screen/Auth-Process/authScreen/signup_info_page.dart';
+import 'package:capitalhub_crm/screen/Auth-Process/authScreen/signupInfoScreens/signup_info_page.dart';
 import 'package:capitalhub_crm/screen/campaignsScreen/campaign_landing_screen.dart';
 import 'package:capitalhub_crm/screen/chatScreen/group_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
@@ -28,12 +27,9 @@ import 'package:capitalhub_crm/screen/spotlLightScreen/spotlight_landing_screen.
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../controller/homeController/home_controller.dart';
 import '../../controller/profileController/profile_controller.dart';
 import '../../utils/appcolors/app_colors.dart';
@@ -42,7 +38,6 @@ import '../../widget/textwidget/text_widget.dart';
 import '../connectionScreen/connection_screen.dart';
 import '../documentationScreen/documentation_screen.dart';
 import '../helpScreen/help_screen.dart';
-import '../paymentTransactionScreen/payment_transaction_screen.dart';
 import '../savedPostScreen/saved_post_screen.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -65,14 +60,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     "One link",
     "Resources",
     "Campaign",
-    "Meetings",
+    // "Meetings",
     "Analytics",
     "Saved Post",
     "News",
     "Team",
     "Community",
     "Meetings",
-    "Payments",
     "Spotlight",
     "Help",
     "Log Out",
@@ -97,15 +91,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     PngAssetPath.onelinkIcon,
     PngAssetPath.resourceIcon,
     PngAssetPath.campaignIcon,
-    PngAssetPath.meetingIcon,
+    // PngAssetPath.meetingIcon,
     PngAssetPath.customerIcon, // Analytics
     PngAssetPath.saveIcon, // Saved Post
     PngAssetPath.newsIcon,
     PngAssetPath.teamIcon,
     PngAssetPath.communityIcon,
     PngAssetPath.meetingIcon,
-    PngAssetPath.paymentIcon,
-    PngAssetPath.paymentIcon,
+    PngAssetPath.spotlightIcon,
     PngAssetPath.helpIcon,
     PngAssetPath.logoutIcon,
   ];
@@ -117,14 +110,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     const OneLinkScreeen(),
     const ResourceScreen(),
     const CampaignLandingScreen(),
-    const EventsScreen(),
+    // const EventsScreen(),
     const AnalyticsScreen(),
     const SavedPostScreen(),
     const NewsScreen(),
     const ConnectionScreen(), // Team
     const CommunityLandingScreen(),
     const EventsScreen(),
-    const PaymentTransactionScreen(),
     const SpotLightLandingScreen(),
     const HelpScreen(),
     const LogoutScreen(),
@@ -230,7 +222,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                 curve:
                                     Curves.easeOutBack, // Adds a bounce effect
                                 child: FadeInAnimation(
-                                    child: (index == 12 || index == 13)
+                                    child: (index == 11 || index == 12)
                                         ? _buildExpansionTile(index)
                                         : InkWell(
                                             onTap: () {
@@ -379,7 +371,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           ],
         ),
-        children: index == 12
+        children: index == 11
             ? communitySubItems.map((communitySubItemsTitle) {
                 int communitySubItemsIndex =
                     communitySubItems.indexOf(communitySubItemsTitle);

@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-import '../../model/01-StartupModel/mystartupModel/my_startup_model.dart';
+import '../../model/mystartupModel/my_startup_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import '../../utils/helper/helper_sncksbar.dart';

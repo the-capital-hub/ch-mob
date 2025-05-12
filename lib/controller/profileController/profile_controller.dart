@@ -8,9 +8,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../model/01-StartupModel/profileModel/profile_model.dart';
-import '../../model/01-StartupModel/profileModel/profile_post_model.dart';
-import '../../model/01-StartupModel/profileModel/subscription_model.dart';
+import '../../model/profileModel/profile_model.dart';
+import '../../model/profileModel/profile_post_model.dart';
+import '../../model/profileModel/subscription_model.dart';
 import '../../screen/Auth-Process/selectWhatYouAreScreen/select_role_screen.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';

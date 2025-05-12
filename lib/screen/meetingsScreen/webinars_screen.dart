@@ -1,5 +1,5 @@
 import 'package:capitalhub_crm/controller/meetingController/meeting_controller.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/create_new_webinar_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
+import '../../utils/helper/helper_sncksbar.dart';
 
 class WebinarsScreen extends StatefulWidget {
   const WebinarsScreen({super.key});
@@ -33,8 +35,6 @@ class _WebinarsScreenState extends State<WebinarsScreen> {
     });
     super.initState();
   }
-
-   
 
   @override
   Widget build(BuildContext context) {
@@ -57,14 +57,200 @@ class _WebinarsScreenState extends State<WebinarsScreen> {
                   ? const Center(
                       child: TextWidget(
                           text: "No Webinars Available", textSize: 16))
-                  : ListView.builder(
+                  : ListView.separated(
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 10),
                       padding: const EdgeInsets.all(12),
                       itemCount: webinarController.webinarsList.length,
                       itemBuilder: (context, index) {
                         return Card(
                           shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6)),
+                          color: AppColors.blackCard,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TextWidget(
+                                    text: webinarController
+                                        .webinarsList[index].title,
+                                    fontWeight: FontWeight.w500,
+                                    textSize: 18),
+                                webinarController.webinarsList[index].isActive
+                                    ? const SizedBox()
+                                    : TextWidget(
+                                        text: "This meeting is cancelled.",
+                                        textSize: 15,
+                                        color: AppColors.grey,
+                                      ),
+                                const SizedBox(height: 8),
+                                Card(
+                                  color: AppColors.white38,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(7),
+                                              color: AppColors.primary),
+                                          child: Center(
+                                            child: Image.asset(
+                                              PngAssetPath.meetingIcon,
+                                              color: AppColors.white,
+                                              height: 22,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            TextWidget(
+                                                text: webinarController
+                                                    .webinarsList[index]
+                                                    .duration
+                                                    .toString(),
+                                                textSize: 15),
+                                            const TextWidget(
+                                                text: "Video Meeting",
+                                                textSize: 14),
+                                          ],
+                                        ),
+                                        const Spacer(),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 12, vertical: 5),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            border: Border.all(
+                                                color: AppColors.white,
+                                                width: 1),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              TextWidget(
+                                                  text:
+                                                      "Rs ${webinarController.webinarsList[index].price} +",
+                                                  textSize: 12),
+                                              const SizedBox(width: 5),
+                                              Icon(Icons.arrow_forward,
+                                                  color: AppColors.white,
+                                                  size: 12),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                sizedTextfield,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: AppButton.primaryButton(
+                                          onButtonPressed: webinarController
+                                                  .webinarsList[index].isActive
+                                              ? () async {
+                                                  Helper.launchUrl(
+                                                      webinarController
+                                                          .webinarsList[index]
+                                                          .webinarLink);
+                                                }
+                                              : null,
+                                          title: "Join Webinar",
+                                          height: 40,
+                                          bgColor: webinarController
+                                                  .webinarsList[index].isActive
+                                              ? AppColors.green700
+                                              : AppColors.grey),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: AppButton.primaryButton(
+                                          onButtonPressed: webinarController
+                                                  .webinarsList[index].isActive
+                                              ? () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        backgroundColor:
+                                                            AppColors.blackCard,
+                                                        title: const TextWidget(
+                                                          text:
+                                                              'Are you sure you want to cancel this webinar?',
+                                                          textSize: 16,
+                                                          maxLine: 2,
+                                                        ),
+                                                        content: TextWidget(
+                                                          text:
+                                                              'No. of Users who have joined this webinar : ${webinarController.webinarsList[index].joinedUsers.length}',
+                                                          textSize: 16,
+                                                          maxLine: 2,
+                                                        ),
+                                                        actions: [
+                                                          AppButton
+                                                              .primaryButton(
+                                                            title:
+                                                                'Cancel Webinar',
+                                                            onButtonPressed:
+                                                                () {
+                                                              Get.back();
+                                                              webinarController
+                                                                  .disableWebinar(
+                                                                      webinarController
+                                                                          .webinarsList[
+                                                                              index]
+                                                                          .id);
+                                                            },
+                                                          ),
+                                                          sizedTextfield,
+                                                          AppButton
+                                                              .outlineButton(
+                                                            borderColor:
+                                                                AppColors
+                                                                    .primary,
+                                                            title: 'Back',
+                                                            onButtonPressed:
+                                                                () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                }
+                                              : null,
+                                          title: "Cancel Webinar",
+                                          height: 40,
+                                          bgColor: webinarController
+                                                  .webinarsList[index].isActive
+                                              ? AppColors.redColor
+                                              : AppColors.grey),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                        Card(
+                          shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
-                          color: AppColors.navyBlue,
+                          color: AppColors.blackCard,
                           child: Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Column(

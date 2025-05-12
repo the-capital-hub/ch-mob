@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../model/01-StartupModel/documentationModel/pitch_recording_model.dart';
+import '../../model/documentationModel/pitch_recording_model.dart';
 
 class PitchRecordingScreen extends StatefulWidget {
   @override

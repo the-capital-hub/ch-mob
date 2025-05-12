@@ -7,7 +7,7 @@ import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../model/01-StartupModel/profileModel/subscription_model.dart';
+import '../../model/profileModel/subscription_model.dart';
 import '../../utils/helper/helper.dart';
 import '../../utils/paymentService/payment_service.dart';
 

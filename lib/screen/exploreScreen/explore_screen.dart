@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:capitalhub_crm/controller/exploreController/explore_controller.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
+import 'package:capitalhub_crm/screen/exploreScreen/ai_search_bottomsheet.dart';
 import 'package:capitalhub_crm/screen/exploreScreen/filter_explore_screen.dart';
 import 'package:capitalhub_crm/screen/exploreScreen/vc_profile.dart';
 import 'package:capitalhub_crm/screen/publicProfileScreen/public_profile_screen.dart';
@@ -22,7 +23,7 @@ import 'package:get/get.dart';
 
 import '../../utils/getStore/get_store.dart';
 import '../../utils/helper/placeholder.dart';
-import '../01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import '../drawerScreen/drawer_screen_inv.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -1079,39 +1080,56 @@ class _ExploreScreenState extends State<ExploreScreen>
                       textSize: 12,
                     ),
                     const Spacer(),
-                    if (selectedInvestorIds.isNotEmpty)
-                      InkWell(
-                        onTap: () {
-                          exploreController.getCampaignLists();
-                          addInvestorPopup(context, selectedInvestorIds, true)
-                              .then((val) {
-                            if (val) {
-                              selectedInvestorIds.clear();
-                              for (var investor
-                                  in exploreController.investorExploreList) {
-                                investor.isChecked = false;
-                              }
-                              isAllChecked = false;
-                              setState(() {});
-                            }
-                          });
-                        },
-                        child: Container(
-                            margin: const EdgeInsets.only(right: 6),
-                            decoration: BoxDecoration(
-                                color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(6)),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 4),
-                            child: TextWidget(
-                                text: "+ ADD (${selectedInvestorIds.length})",
-                                textSize: 12,
-                                fontWeight: FontWeight.w500)),
-                      )
+                    selectedInvestorIds.isNotEmpty
+                        ? InkWell(
+                            onTap: () {
+                              exploreController.getCampaignLists();
+                              addInvestorPopup(
+                                      context, selectedInvestorIds, true)
+                                  .then((val) {
+                                if (val) {
+                                  selectedInvestorIds.clear();
+                                  for (var investor in exploreController
+                                      .investorExploreList) {
+                                    investor.isChecked = false;
+                                  }
+                                  isAllChecked = false;
+                                  setState(() {});
+                                }
+                              });
+                            },
+                            child: Container(
+                                margin: const EdgeInsets.only(right: 6),
+                                decoration: BoxDecoration(
+                                    color: AppColors.primary,
+                                    borderRadius: BorderRadius.circular(6)),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 4),
+                                child: TextWidget(
+                                    text:
+                                        "+ ADD (${selectedInvestorIds.length})",
+                                    textSize: 12,
+                                    fontWeight: FontWeight.w500)),
+                          )
+                        : TextButton.icon(
+                            onPressed: () {
+                              showInvestorSearchSheet(context);
+                            },
+                            label: TextWidget(
+                                text: "AI Search",
+                                color: AppColors.whiteCard,
+                                textSize: 12),
+                            iconAlignment: IconAlignment.end,
+                            icon: Icon(
+                              Icons.person_search,
+                              color: AppColors.whiteCard,
+                              size: 18,
+                            ),
+                          ),
                   ],
                 ),
-              if (GetStoreData.getStore.read('isInvestor') == false)
-                const SizedBox(height: 4),
+              // if (GetStoreData.getStore.read('isInvestor') == false)
+                // const SizedBox(height: 4),
               Expanded(
                 child: ListView.separated(
                   itemCount: exploreController.investorExploreList.length,

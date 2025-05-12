@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:get/get.dart';
 
-import '../../model/01-StartupModel/notificationModel/notification_model.dart';
+import '../../model/notificationModel/notification_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import '../../utils/helper/helper.dart';

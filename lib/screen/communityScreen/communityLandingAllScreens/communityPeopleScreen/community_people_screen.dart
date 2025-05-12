@@ -94,115 +94,106 @@ class _CommunityPeopleScreenState extends State<CommunityPeopleScreen> {
                                       margin: EdgeInsets.zero,
                                       color: AppColors.blackCard,
                                       child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Row(
+                                            CircleAvatar(
+                                              radius: 25,
+                                              foregroundImage: NetworkImage(
+                                                communityMembers
+                                                    .communityMembersList[index]
+                                                    .profilePicture,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                CircleAvatar(
-                                                  radius: 25,
-                                                  foregroundImage: NetworkImage(
-                                                    communityMembers
-                                                        .communityMembersList[
-                                                            index]
-                                                        .profilePicture,
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  width: 12,
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    TextWidget(
-                                                        text:
-                                                            "${communityMembers.communityMembersList[index].firstName} ${communityMembers.communityMembersList[index].lastName}",
-                                                        textSize: 20),
-                                                    if (communityMembers
+                                                TextWidget(
+                                                    text:
+                                                        "${communityMembers.communityMembersList[index].firstName} ${communityMembers.communityMembersList[index].lastName}",
+                                                    textSize: 18),
+                                                if (communityMembers
+                                                    .communityMembersList[index]
+                                                    .designation
+                                                    .toString()
+                                                    .isNotEmpty)
+                                                  TextWidget(
+                                                    text: communityMembers
                                                         .communityMembersList[
                                                             index]
                                                         .designation
-                                                        .toString()
-                                                        .isNotEmpty)
-                                                      TextWidget(
-                                                        text: communityMembers
-                                                            .communityMembersList[
-                                                                index]
-                                                            .designation
-                                                            .toString(),
-                                                        textSize: 13,
-                                                        color: GetStoreData
-                                                                .getStore
-                                                                .read(
-                                                                    'isInvestor')
-                                                            ? AppColors
-                                                                .primaryInvestor
-                                                            : AppColors.primary,
-                                                      ),
-                                                    if (communityMembers
-                                                        .communityMembersList[
-                                                            index]
-                                                        .company
-                                                        .toString()
-                                                        .isNotEmpty)
-                                                      TextWidget(
-                                                          text: communityMembers
-                                                              .communityMembersList[
-                                                                  index]
-                                                              .company
-                                                              .toString(),
-                                                          textSize: 15),
-                                                    if (communityMembers
-                                                        .communityMembersList[
-                                                            index]
-                                                        .location
-                                                        .toString()
-                                                        .isNotEmpty)
-                                                      TextWidget(
-                                                          text: communityMembers
-                                                              .communityMembersList[
-                                                                  index]
-                                                              .location
-                                                              .toString(),
-                                                          textSize: 15),
-                                                    if (communityMembers
-                                                        .communityMembersList[
-                                                            index]
-                                                        .joinedDate
-                                                        .isNotEmpty)
-                                                      TextWidget(
-                                                          text: communityMembers
-                                                              .communityMembersList[
-                                                                  index]
-                                                              .joinedDate,
-                                                          textSize: 15),
-                                                  ],
-                                                ),
-                                                const Spacer(),
-                                                if (isAdmin)
-                                                  IconButton(
-                                                      onPressed: () {
-                                                        Helper.loader(context);
-                                                        communityMembers
-                                                            .removeCommunityMember(
-                                                                communityMembers
-                                                                    .communityMembersList[
-                                                                        index]
-                                                                    .id);
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons.person_remove,
-                                                        color:
-                                                            AppColors.redColor,
-                                                      ))
+                                                        .toString(),
+                                                    textSize: 14,
+                                                    color: GetStoreData.getStore
+                                                            .read('isInvestor')
+                                                        ? AppColors
+                                                            .primaryInvestor
+                                                        : AppColors.primary,
+                                                  ),
+                                                if (communityMembers
+                                                    .communityMembersList[index]
+                                                    .company
+                                                    .toString()
+                                                    .isNotEmpty)
+                                                  TextWidget(
+                                                      text: communityMembers
+                                                          .communityMembersList[
+                                                              index]
+                                                          .company
+                                                          .toString(),
+                                                      textSize: 14),
+                                                if (communityMembers
+                                                    .communityMembersList[index]
+                                                    .location
+                                                    .toString()
+                                                    .isNotEmpty)
+                                                  TextWidget(
+                                                      text: communityMembers
+                                                          .communityMembersList[
+                                                              index]
+                                                          .location
+                                                          .toString(),
+                                                      textSize: 14),
+                                                if (communityMembers
+                                                    .communityMembersList[index]
+                                                    .joinedDate
+                                                    .isNotEmpty)
+                                                  TextWidget(
+                                                      text: communityMembers
+                                                          .communityMembersList[
+                                                              index]
+                                                          .joinedDate,
+                                                      textSize: 14),
                                               ],
                                             ),
-                                            const SizedBox(
-                                              height: 16,
-                                            ),
+                                            const Spacer(),
+                                            if (isAdmin)
+                                              InkWell(
+                                                  onTap: () {
+                                                    Helper.loader(context);
+                                                    communityMembers
+                                                        .removeCommunityMember(
+                                                            communityMembers
+                                                                .communityMembersList[
+                                                                    index]
+                                                                .id);
+                                                  },
+                                                  child: CircleAvatar(
+                                                    backgroundColor: AppColors
+                                                        .redColor
+                                                        .withOpacity(0.2),
+                                                    radius: 20,
+                                                    child: Icon(
+                                                      Icons.person_remove,
+                                                      color:
+                                                          AppColors.whiteCard,
+                                                      size: 20,
+                                                    ),
+                                                  ))
                                           ],
                                         ),
                                       ),

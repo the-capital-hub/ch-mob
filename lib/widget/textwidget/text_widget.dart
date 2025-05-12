@@ -43,7 +43,7 @@ class TextWidget extends StatelessWidget {
         googleFont==null||googleFont==true?
          GoogleFonts.outfit(
             textStyle: TextStyle(
-          fontSize: scaledTextSize.clamp(12, 24) ,
+          fontSize: scaledTextSize.clamp(11, 24) ,
           decoration: textDecoration,
           fontWeight: fontWeight ?? FontWeight.normal,
           color: color ?? AppColors.white,
@@ -52,7 +52,7 @@ class TextWidget extends StatelessWidget {
         googleStyle ??
             Theme.of(context).textTheme.displayLarge!.copyWith(
                   decoration: textDecoration,
-                  fontSize: scaledTextSize.clamp(12, 24),
+                  fontSize: scaledTextSize.clamp(11, 24),
                   fontWeight: fontWeight ?? FontWeight.normal,
                   color: color??AppColors.white,
                 ),

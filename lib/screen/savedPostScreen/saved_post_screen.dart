@@ -17,7 +17,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../utils/getStore/get_store.dart';
 import '../../utils/helper/placeholder.dart';
-import '../01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import '../drawerScreen/drawer_screen_inv.dart';
 import '../homeScreen/widget/video_player.dart';
 
 class SavedPostScreen extends StatefulWidget {

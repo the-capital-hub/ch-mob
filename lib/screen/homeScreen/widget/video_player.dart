@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
@@ -15,7 +14,7 @@ class VideoPlayerItem extends StatefulWidget {
 
 class _VideoPlayerItemState extends State<VideoPlayerItem> {
   late VideoPlayerController _controller;
-  bool _showControls = true; 
+  bool _showControls = true;
   Timer? _hideControlsTimer;
 
   @override
@@ -37,12 +36,14 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
   }
 
   void _startHideControlsTimer() {
-    _hideControlsTimer?.cancel(); 
-    _hideControlsTimer = Timer(const Duration(seconds: 3), () {
-      setState(() {
-        _showControls = false; 
+    _hideControlsTimer?.cancel();
+    if (_controller.value.isPlaying) {
+      _hideControlsTimer = Timer(const Duration(seconds: 3), () {
+        setState(() {
+          _showControls = false;
+        });
       });
-    });
+    }
   }
 
   void _togglePlayback() {
@@ -62,39 +63,32 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          _showControls = true; 
+          _showControls = true;
         });
         _startHideControlsTimer();
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: SizedBox(
-          height: 200,width: Get.width,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              // Video Player
-              _controller.value.isInitialized
-                  ? AspectRatio(
-                      aspectRatio: _controller.value.aspectRatio,
-                      child: VideoPlayer(_controller),
-                    )
-                  : const Center(child: CircularProgressIndicator()),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          _controller.value.isInitialized
+              ? AspectRatio(
+                  aspectRatio: _controller.value.aspectRatio,
+                  child: VideoPlayer(_controller),
+                )
+              : const Center(child: CircularProgressIndicator()),
 
-              if (_showControls)
-                IconButton(
-                  icon: Icon(
-                    _controller.value.isPlaying
-                        ? Icons.pause
-                        : Icons.play_arrow,
-                    color: Colors.white,
-                    size: 50,
-                  ),
-                  onPressed: _togglePlayback,
-                ),
-            ],
-          ),
-        ),
+          if (_showControls || !_controller.value.isPlaying) 
+            IconButton(
+              icon: Icon(
+                _controller.value.isPlaying
+                    ? Icons.pause
+                    : Icons.play_arrow,
+                color: Colors.white,
+                size: 50,
+              ),
+              onPressed: _togglePlayback,
+            ),
+        ],
       ),
     );
   }

@@ -30,7 +30,9 @@ import 'package:path_provider/path_provider.dart';
 class CreatePostScreen extends StatefulWidget {
   String? postid;
   bool? isPublicPost;
-  CreatePostScreen({this.postid, super.key, this.isPublicPost});
+  String? description;
+  CreatePostScreen(
+      {this.postid, super.key, this.isPublicPost, this.description});
 
   @override
   State<CreatePostScreen> createState() => _CreatePostScreenState();
@@ -164,10 +166,19 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       ],
                     ),
                     sizedTextfield,
-                    MyCustomTextField.textField(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6),
+                      child: MyCustomTextField.htmlTextField(
                         hintText: "What do you want to talk about ?",
+                        onEditorCreated: () {
+                          if (widget.description != null) {
+                            createPostController.titleController
+                                .setText(widget.description!);
+                          }
+                        },
                         controller: createPostController.titleController,
-                        maxLine: widget.postid != null ? 7 : 15),
+                      ),
+                    ),
                     if (widget.postid != null && isLoading.value == false)
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -223,7 +234,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                   builder: (BuildContext context) {
                                     return PollOptionsDialog();
                                   },
-                                );
+                                ).then((v) {
+                                  setState(() {});
+                                });
                               },
                               child: CircleAvatar(
                                 backgroundColor: AppColors.white12,
@@ -237,35 +250,226 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         ),
                       ),
                     ),
+                    sizedTextfield,
+                    if (selectedImages.isNotEmpty ||
+                        selectedVideo != null ||
+                        selectedDocument != null ||
+                        createPostController.pollOptions.isNotEmpty)
+                      Card(
+                        color: AppColors.blackCard,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (selectedImages.isNotEmpty)
+                                const TextWidget(text: "Images", textSize: 14),
+                              if (selectedImages.isNotEmpty)
+                                const SizedBox(height: 4),
+                              SizedBox(
+                                height: selectedImages.isEmpty ? 0 : 100,
+                                width: Get.width,
+                                child: ListView.separated(
+                                    shrinkWrap: true,
+                                    separatorBuilder: (context, index) =>
+                                        const SizedBox(width: 8),
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: selectedImages.length,
+                                    itemBuilder: (context, index) {
+                                      return SizedBox(
+                                        height: 100,
+                                        width: 100,
+                                        child: Stack(
+                                          clipBehavior: Clip.none,
+                                          children: [
+                                            ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                child: Image.memory(
+                                                  imageByteData[index],
+                                                  width: 100,
+                                                  height: 100,
+                                                  fit: BoxFit.cover,
+                                                )),
+                                            Positioned(
+                                              top: -5,
+                                              right: -5,
+                                              child: IconButton(
+                                                icon: const Icon(
+                                                    Icons.remove_circle,
+                                                    color: Colors.red),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    selectedImages
+                                                        .removeAt(index);
+                                                    imageByteData
+                                                        .removeAt(index);
+                                                  });
+                                                  setState(() {});
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }),
+                              ),
+                              const SizedBox(height: 6),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  if (selectedVideo != null)
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const TextWidget(
+                                            text: "Video", textSize: 14),
+                                        const SizedBox(height: 4),
+                                        SizedBox(
+                                          height: 150,
+                                          width: 110,
+                                          child: Stack(
+                                            clipBehavior: Clip.none,
+                                            children: [
+                                              _videoController!
+                                                      .value.isInitialized
+                                                  ? SizedBox(
+                                                      height: 150,
+                                                      width: 110,
+                                                      child: AspectRatio(
+                                                        aspectRatio:
+                                                            _videoController!
+                                                                .value
+                                                                .aspectRatio,
+                                                        child: VideoPlayer(
+                                                            _videoController!),
+                                                      ),
+                                                    )
+                                                  : const CircularProgressIndicator(),
+                                              Positioned(
+                                                top: -5,
+                                                right: -5,
+                                                child: IconButton(
+                                                  icon: const Icon(
+                                                      Icons.remove_circle,
+                                                      color: Colors.red),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      selectedVideo = null;
+                                                      _videoController
+                                                          ?.dispose();
+                                                      _videoController = null;
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  const SizedBox(width: 12),
+                                  if (selectedDocument != null)
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const TextWidget(
+                                            text: "Document", textSize: 14),
+                                        const SizedBox(height: 4),
+                                        SizedBox(
+                                          height: 150,
+                                          width: 110,
+                                          child: Stack(
+                                            clipBehavior: Clip.none,
+                                            children: [
+                                              _buildDocumentPreview(
+                                                  selectedDocument!),
+                                              Positioned(
+                                                top: -5,
+                                                right: -5,
+                                                child: IconButton(
+                                                  icon: const Icon(
+                                                      Icons.remove_circle,
+                                                      color: Colors.red),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      selectedDocument = null;
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                ],
+                              ),
+                              const SizedBox(height: 6),
+                              if (createPostController.pollOptions.isNotEmpty)
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(children: [
+                                      const TextWidget(
+                                          text: "Polls", textSize: 14),
+                                      IconButton(
+                                        icon: const Icon(Icons.remove_circle,
+                                            color: Colors.red),
+                                        visualDensity: VisualDensity.compact,
+                                        onPressed: () {
+                                          createPostController.pollOptions
+                                              .clear();
+                                          setState(() {});
+                                        },
+                                      ),
+                                    ]),
+                                    Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: createPostController
+                                            .pollOptions
+                                            .asMap()
+                                            .entries
+                                            .map((e) {
+                                          int index = e.key + 1;
+                                          String item = e.value;
+
+                                          return Row(
+                                            children: [
+                                              TextWidget(
+                                                  text: "Option $index  -  ",
+                                                  textSize: 14),
+                                              TextWidget(
+                                                text: item,
+                                                textSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ],
+                                          );
+                                        }).toList())
+                                  ],
+                                )
+                            ],
+                          ),
+                        ),
+                      ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 12),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: AppButton.outlineButton(
-                                onButtonPressed: () {
-                                  _previewSelections();
-                                },
-                                title: "Preview"),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: AppButton.primaryButton(
-                                onButtonPressed: () {
-                                  createPostController
-                                      .base64Convert(
-                                          context,
-                                          selectedImages,
-                                          selectedVideo,
-                                          selectedDocument,
-                                          widget.postid ?? "")
-                                      .th;
-                                },
-                                title: "Post"),
-                          ),
-                        ],
-                      ),
+                      child: AppButton.primaryButton(
+                          onButtonPressed: () {
+                            createPostController.base64Convert(
+                                context,
+                                selectedImages,
+                                selectedVideo,
+                                selectedDocument,
+                                widget.postid ?? "");
+                          },
+                          title: "Create Post"),
                     ),
                   ],
                 ),
@@ -287,13 +491,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       selectedImages.clear();
       imageByteData.clear();
       selectedImages = await MultiImagePicker.pickImages(
-        selectedAssets: selectedImages,
-      );
-      // Pre-load images into memory for efficient display
-      // for (var asset in selectedImages) {
-      //   final byteData = await _getImageByteData(asset);
-      //   imageByteData.add(byteData);
-      // }
+          selectedAssets: selectedImages,
+          androidOptions: AndroidOptions(maxImages: 3));
+
       List<File> croppedFiles = [];
 
       for (var asset in selectedImages) {
@@ -311,6 +511,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           imageByteData.add(croppedBytes);
         }
       }
+      setState(() {});
     } catch (e) {
       print("Error picking images: $e");
     }
@@ -326,7 +527,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   Future<void> _pickVideo() async {
     try {
-      final pickedFile = await _picker.pickVideo(source: ImageSource.gallery);
+      final pickedFile = await _picker.pickVideo(
+        source: ImageSource.gallery,
+      );
       if (pickedFile != null) {
         setState(() {
           selectedVideo = File(pickedFile.path);
@@ -334,6 +537,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             ..initialize().then((_) {
               setState(() {});
             });
+          if (_videoController != null) {
+            _videoController!.play();
+          }
         });
       }
     } catch (e) {

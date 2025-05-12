@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../../model/01-StartupModel/companyModel/company_model.dart';
-import '../../model/01-StartupModel/companyModel/company_search_moel.dart';
+import '../../model/companyModel/company_model.dart';
+import '../../model/companyModel/company_search_moel.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import 'dart:convert';
@@ -9,6 +9,7 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import '../../utils/getStore/get_store.dart';
 import '../../utils/helper/helper_sncksbar.dart';
+import '../../widget/bottomSheet/create_post_bottomsheet.dart';
 
 // all model are commanly used in investor and startup
 //in case of changes in response make it carefully
@@ -162,6 +163,8 @@ class CompanyInvController extends GetxController {
       companyData = companyModel.data!;
       Get.back(closeOverlays: true);
       Get.back();
+      showPostUpdateBottomSheet(
+          postDescription: data['postText'], sheetDescription:"Company");
       return true;
     } else {
       Get.back(closeOverlays: true);

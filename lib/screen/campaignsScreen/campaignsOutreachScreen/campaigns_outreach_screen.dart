@@ -6,7 +6,7 @@ import 'package:capitalhub_crm/widget/dilogue/campaignDilogue/schedule_campaign_
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../model/01-StartupModel/campaignModel/outreach_list_model.dart';
+import '../../../model/campaignModel/outreach_list_model.dart';
 import '../../../utils/appcolors/app_colors.dart';
 import '../../../utils/helper/placeholder.dart';
 import '../../../widget/textwidget/text_widget.dart';

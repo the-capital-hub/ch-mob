@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityPostModel/community_post_model.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/communityModel/savedCommunityCollectionModel/saved_community_collection_model.dart';
+import 'package:capitalhub_crm/model/communityModel/communityLandingAllModels/communityPostModel/community_post_model.dart';
+import 'package:capitalhub_crm/model/communityModel/savedCommunityCollectionModel/saved_community_collection_model.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';

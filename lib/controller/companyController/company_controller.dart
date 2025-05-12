@@ -1,11 +1,12 @@
+import 'package:capitalhub_crm/widget/bottomSheet/create_post_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../model/01-StartupModel/companyModel/company_model.dart';
-import '../../model/01-StartupModel/companyModel/company_search_moel.dart';
-import '../../model/01-StartupModel/companyModel/get_affilation_request_model.dart';
-import '../../model/01-StartupModel/companyModel/get_team_member.dart';
-import '../../model/01-StartupModel/companyModel/search_user_model.dart';
+import '../../model/companyModel/company_model.dart';
+import '../../model/companyModel/company_search_moel.dart';
+import '../../model/companyModel/get_affilation_request_model.dart';
+import '../../model/companyModel/get_team_member.dart';
+import '../../model/companyModel/search_user_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import 'dart:convert';
@@ -192,6 +193,9 @@ class CompanyController extends GetxController {
       companyData = companyModel.data!;
       Get.back(closeOverlays: true);
       Get.back();
+      showPostUpdateBottomSheet(
+          postDescription: data['postText'], sheetDescription: "Company");
+
       return true;
     } else {
       Get.back(closeOverlays: true);
@@ -209,11 +213,15 @@ class CompanyController extends GetxController {
     establishedDateController.text = companyData.foundingDate!;
     selectedSector = companyData.sector;
     numOfEmpController.text = companyData.numberOfEmployees!;
-    websiteUrlController.text = companyData.socialLinks!
-        .firstWhere(
-          (val) => val.name == "website",
-        )
-        .link!;
+    try {
+      websiteUrlController.text = companyData.socialLinks!
+              .firstWhere(
+                (val) => val.name == "website",
+              )
+              .link ??
+          '';
+    } catch (_) {}
+
     visionController.text = companyData.vision!;
     missionController.text = companyData.mission!;
     keyFocusController.text =
@@ -224,21 +232,27 @@ class CompanyController extends GetxController {
     lastFundingDateController.text = companyData.lastFunding!;
     selectedInvestmentStage = companyData.stage!;
     selectedProductStage = null;
-    linkedInLinkController.text = companyData.socialLinks!
-        .firstWhere(
-          (val) => val.name == "linkedin",
-        )
-        .link!;
-    twitterLinkController.text = companyData.socialLinks!
-        .firstWhere(
-          (val) => val.name == "twitter",
-        )
-        .link!;
-    instagramLinkController.text = companyData.socialLinks!
-        .firstWhere(
-          (val) => val.name == "instagram",
-        )
-        .link!;
+    try {
+      linkedInLinkController.text = companyData.socialLinks!
+              .firstWhere((val) => val.name == "linkedin")
+              .link ??
+          '';
+    } catch (_) {}
+
+    try {
+      twitterLinkController.text = companyData.socialLinks!
+              .firstWhere((val) => val.name == "twitter")
+              .link ??
+          '';
+    } catch (_) {}
+
+    try {
+      instagramLinkController.text = companyData.socialLinks!
+              .firstWhere((val) => val.name == "instagram")
+              .link ??
+          '';
+    } catch (_) {}
+
     companyDescriptionController.text = companyData.description!;
     totalInvestmentController.text = companyData.totalInvestment!;
     noOfInvestorController.text = companyData.noOfInvesters!;
@@ -252,6 +266,7 @@ class CompanyController extends GetxController {
     //     .map((team) => CoreTeamModel.fromTeam(team))
     //     .toList();
   }
+
   Future clearData() async {
     image = null;
     companyNameController.clear();
@@ -260,7 +275,7 @@ class CompanyController extends GetxController {
     establishedDateController.clear();
     selectedSector = null;
     numOfEmpController.clear();
-    
+
     websiteUrlController.clear();
     visionController.clear();
     missionController.clear();
@@ -284,7 +299,6 @@ class CompanyController extends GetxController {
     lastYearRevenueController.clear();
     targetController.clear();
   }
-
 
   TextEditingController roleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();

@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-import '../../model/01-StartupModel/exploreModel/explore_filter_model.dart';
-import '../../model/01-StartupModel/exploreModel/explore_founder_model.dart';
-import '../../model/01-StartupModel/exploreModel/explore_investor_model.dart';
-import '../../model/01-StartupModel/exploreModel/explore_startup_model.dart';
-import '../../model/01-StartupModel/exploreModel/explore_vc_details_model.dart';
-import '../../model/01-StartupModel/exploreModel/explore_vc_model.dart';
-import '../../model/01-StartupModel/exploreModel/get_campaignList_model.dart';
+import '../../model/exploreModel/explore_filter_model.dart';
+import '../../model/exploreModel/explore_founder_model.dart';
+import '../../model/exploreModel/explore_investor_model.dart';
+import '../../model/exploreModel/explore_startup_model.dart';
+import '../../model/exploreModel/explore_vc_details_model.dart';
+import '../../model/exploreModel/explore_vc_model.dart';
+import '../../model/exploreModel/get_campaignList_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import '../../utils/helper/helper.dart';
@@ -33,6 +33,8 @@ class ExploreController extends GetxController {
   String? selectedGender;
   String? selectedYearOfExp;
   String? selectedInvestmentSize;
+ String aiInvestorQuery="";
+  String displayedResponse = "";
   cleaarFilter() {
     selectedSectore = null;
     selectedCity = null;
@@ -56,7 +58,7 @@ class ExploreController extends GetxController {
       isLoading.value = true;
       var response = await ApiBase.getRequest(
           extendedURL:
-              "${ApiUrl.exploreUrl}type=$selectedType&sector=${selectedSectore ?? ""}&gender=${selectedGender ?? ""}&city=${selectedCity ?? ""}&size=${selectedEmployeeSize ?? ""}&fundingRaised=${selectedFundingRaise ?? ""}&age=${selectedAgeOfStartup ?? ""}&stage=${selectedStartupStage ?? ""}&yearsOfExperience=${selectedYearOfExp ?? ""}&investmentSize=${selectedInvestmentSize ?? ""}&investmentStage=${selectedInvestmentStage ?? ""}&searchQuery=${searchFilterController.text}");
+              "${ApiUrl.exploreUrl}type=$selectedType&sector=${selectedSectore ?? ""}&gender=${selectedGender ?? ""}&city=${selectedCity ?? ""}&size=${selectedEmployeeSize ?? ""}&fundingRaised=${selectedFundingRaise ?? ""}&age=${selectedAgeOfStartup ?? ""}&stage=${selectedStartupStage ?? ""}&yearsOfExperience=${selectedYearOfExp ?? ""}&investmentSize=${selectedInvestmentSize ?? ""}&investmentStage=${selectedInvestmentStage ?? ""}&searchQuery=${searchFilterController.text}&aiMessage=$aiInvestorQuery");
       log(response.body);
       var data = jsonDecode(response.body);
       if (data['status'] == true) {

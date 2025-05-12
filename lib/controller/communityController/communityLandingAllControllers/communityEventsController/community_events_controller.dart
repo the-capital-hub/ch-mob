@@ -2,36 +2,36 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityWebinarsController/community_webinars_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityEventsModel/community_events_model.dart';
+import 'package:capitalhub_crm/model/communityModel/communityLandingAllModels/communityWebinarsModel/community_webinar_model.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 
-CommunityWebinarsController communityWebinars =
-    Get.put(CommunityWebinarsController());
+import '../../../../model/communityModel/communityLandingAllModels/communityEventsModel/community_event_model.dart';
+import '../../../../widget/bottomSheet/create_post_bottomsheet.dart';
 
 class CommunityEventsController extends GetxController {
   var isLoading = false.obs;
-
-  RxList<Webinar> communityWebinarsList = <Webinar>[].obs;
-  Future<void> getCommunityEvents() async {
+  RxList<CommunityEvents> communityEventList = <CommunityEvents>[].obs;
+  Future<void> getCommunityEvent() async {
     try {
       isLoading.value = true;
-     communityWebinarsList.clear();
+      communityEventList.clear();
       var response = await ApiBase.getRequest(
-          extendedURL: ApiUrl.getWebinarsByCommunityId + createdCommunityId);
+          extendedURL: ApiUrl.getCommunityEvent + createdCommunityId);
       log(response.body);
       var data = json.decode(response.body);
       if (data["status"]) {
-        GetCommunityEventsModel communityEventsModel =
+        GetCommunityEventsModel communityWebinarsModel =
             GetCommunityEventsModel.fromJson(data);
-        communityWebinarsList.assignAll(communityEventsModel.data.webinars!);
+        communityEventList.assignAll(communityWebinarsModel.data!);
       }
     } catch (e) {
-      log("getCommunityEvents $e");
+      log("getCommunityevent $e");
     } finally {
       isLoading.value = false;
     }
@@ -82,8 +82,10 @@ class CommunityEventsController extends GetxController {
     if (data["status"]) {
       Get.back();
       Get.back();
-      HelperSnackBar.snackBar("Success", data["message"]);
-      communityWebinars.getCommunityWebinars();
+      // HelperSnackBar.snackBar("Success", data["message"]);
+      await getCommunityEvent();
+      showPostUpdateBottomSheet(
+          postDescription: data['postText'], sheetDescription: "Event");
       return true;
     } else {
       Get.back();
@@ -116,7 +118,7 @@ class CommunityEventsController extends GetxController {
       Get.back();
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
-      communityWebinars.getCommunityWebinars();
+      getCommunityEvent();
       return true;
     } else {
       Get.back();
@@ -137,7 +139,7 @@ class CommunityEventsController extends GetxController {
       if (data["status"]) {
         Get.back();
         HelperSnackBar.snackBar("Success", data["message"]);
-        communityWebinars.getCommunityWebinars();
+        getCommunityEvent();
         return true;
       } else {
         Get.back();
@@ -153,32 +155,45 @@ class CommunityEventsController extends GetxController {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController mobileController = TextEditingController();
-  Future registerCommunityWebinar(webinarId) async {
-    var bod = {
+  TextEditingController infoController = TextEditingController();
+  String formattedDate = "";
+  String selectedDayName = "";
+  int selectedDayIndex = 0;
+  bool isDaySelected = false;
+  String slot = "";
+  String startTime = "";
+  String endTime = "";
+
+  Future communityScheduleEvent(webinarId, day, startTime, endTime) async {
+    var body = {
       "name": nameController.text,
       "email": emailController.text,
-      "mobile": mobileController.text
+      "additionalInfo": infoController.text,
+      "date": formattedDate,
+      "startTime":
+          DateFormat("HH:mm").format(DateFormat("hh:mm a").parse(startTime)),
+      "endTime":
+          DateFormat("HH:mm").format(DateFormat("hh:mm a").parse(endTime)),
     };
-    log(bod.toString());
     var response = await ApiBase.postRequest(
-      body: {
-        "name": nameController.text,
-        "email": emailController.text,
-        "mobile": mobileController.text
-      },
+      body: body,
       withToken: true,
-      extendedURL: ApiUrl.registerWebinar + webinarId,
+      extendedURL: ApiUrl.scheduleEvent + webinarId,
     );
+    print(startTime);
+    print(endTime);
+    print(body);
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"]) {
       Get.back();
       Get.back();
+      Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
-      communityWebinars.getCommunityWebinars();
+      getCommunityEvent();
       return true;
     } else {
+      Get.back();
       Get.back();
       Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);

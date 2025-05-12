@@ -3,7 +3,7 @@ import 'package:capitalhub_crm/controller/communityController/communityLandingAl
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityProductsAndMembersController/community_products_and_members_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
-import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityPurchaseScreen/community_purchase_screen.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityProductsAndServicesScreen/communityProductsScreen/communityPurchaseScreen/community_purchase_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
@@ -78,90 +78,49 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                         child: Column(children: [
                         Column(
                           children: [
-                            Stack(children: [
-                              Container(
-                                width: double.infinity,
-                                height: 310,
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      AppColors.black,
-                                      AppColors.brown,
-                                      AppColors.purple,
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    stops: const [0.0, 0.5, 1.0],
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 30,
-                                    ),
-                                    CircleAvatar(
-                                      radius: 60,
-                                      foregroundImage: NetworkImage(
-                                          aboutCommunity.aboutCommunityList[0]
-                                              .community!.image
-                                              .toString()),
-                                    ),
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const TextWidget(
-                                          text: "Welcome to the ",
-                                          textSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        TextWidget(
-                                          text: aboutCommunity
-                                              .aboutCommunityList[0]
-                                              .community!
-                                              .name
-                                              .toString(),
-                                          textSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                          color: GetStoreData.getStore
-                                                  .read('isInvestor')
-                                              ? AppColors.primaryInvestor
-                                              : AppColors.primary,
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 30),
-                                      child: Container(
-                                        height: 150,
-                                        decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                image: NetworkImage(
-                                                  aboutCommunity
-                                                      .aboutCommunityList[0]
-                                                      .community!
-                                                      .image
-                                                      .toString(),
-                                                ),
-                                                fit: BoxFit.fill),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                      ),
-                                    ),
+                            Container(
+                              width: double.infinity,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    AppColors.black,
+                                    AppColors.brown,
+                                    AppColors.purple,
                                   ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  stops: const [0.0, 0.5, 1.0],
                                 ),
                               ),
-                            ]),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 50,
+                                    foregroundImage: NetworkImage(aboutCommunity
+                                        .aboutCommunityList[0].community!.image
+                                        .toString()),
+                                  ),
+                                  const SizedBox(
+                                    height: 12,
+                                  ),
+                                  const TextWidget(
+                                    text: "Welcome to the",
+                                    textSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  TextWidget(
+                                    text: aboutCommunity
+                                        .aboutCommunityList[0].community!.name
+                                        .toString(),
+                                    textSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.redColor,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                         Padding(
@@ -200,22 +159,15 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                             const CommunityLandingScreen());
                                       },
                                       title: "Join Community"),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
+                                  const SizedBox(height: 12),
                                 ],
                                 TextWidget(
                                   text: "About Community",
-                                  textSize: 20,
-                                  color:
-                                      GetStoreData.getStore.read('isInvestor')
-                                          ? AppColors.primaryInvestor
-                                          : AppColors.primary,
+                                  textSize: 16,
+                                  color: AppColors.grey,
                                   fontWeight: FontWeight.w500,
                                 ),
-                                const SizedBox(
-                                  height: 12,
-                                ),
+                                const SizedBox(height: 6),
                                 HtmlWidget(
                                   aboutCommunity
                                       .aboutCommunityList[0].community!.about
@@ -226,99 +178,109 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                   ),
                                 ),
                                 const SizedBox(
-                                  height: 12,
+                                  height: 8,
                                 ),
-                                Column(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: TextWidget(
-                                        text: "Community Admin",
-                                        textSize: 20,
-                                        color: GetStoreData.getStore
-                                                .read('isInvestor')
-                                            ? AppColors.primaryInvestor
-                                            : AppColors.primary,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 12,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: CircleAvatar(
-                                        radius: 40,
-                                        backgroundImage: NetworkImage(
-                                            aboutCommunity.aboutCommunityList[0]
-                                                .admin!.profilePicture
-                                                .toString()),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 12,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: TextWidget(
-                                        text:
-                                            "${aboutCommunity.aboutCommunityList[0].admin!.firstName} ${aboutCommunity.aboutCommunityList[0].admin!.lastName}",
-                                        textSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 12,
-                                    ),
-                                    TextWidget(
-                                        text: aboutCommunity
-                                            .aboutCommunityList[0]
-                                            .admin!
-                                            .designation
-                                            .toString(),
-                                        textSize: 16),
-                                    const SizedBox(
-                                      height: 12,
-                                    ),
-                                    TextWidget(
-                                      text: aboutCommunity
-                                          .aboutCommunityList[0].admin!.bio
-                                          .toString(),
-                                      textSize: 14,
-                                      maxLine: 9,
-                                      align: TextAlign.center,
-                                    ),
-                                  ],
+                                TextWidget(
+                                  text: "Community Admin",
+                                  textSize: 16,
+                                  color: AppColors.grey,
+                                  fontWeight: FontWeight.w500,
                                 ),
+                                const SizedBox(height: 6),
+                                Card(
+                                    margin: EdgeInsets.zero,
+                                    color: AppColors.blackCard,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: 80,
+                                            child: Column(
+                                              children: [
+                                                CircleAvatar(
+                                                  radius: 35,
+                                                  backgroundImage: NetworkImage(
+                                                      aboutCommunity
+                                                          .aboutCommunityList[0]
+                                                          .admin!
+                                                          .profilePicture
+                                                          .toString()),
+                                                ),
+                                                const SizedBox(
+                                                  height: 6,
+                                                ),
+                                                TextWidget(
+                                                  text:
+                                                      "${aboutCommunity.aboutCommunityList[0].admin!.firstName} ${aboutCommunity.aboutCommunityList[0].admin!.lastName}",
+                                                  textSize: 16,
+                                                  maxLine: 3,
+                                                  align: TextAlign.center,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 12,
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              children: [
+                                                TextWidget(
+                                                  text: aboutCommunity
+                                                      .aboutCommunityList[0]
+                                                      .admin!
+                                                      .bio
+                                                      .toString(),
+                                                  textSize: 12,
+                                                  maxLine: 7,
+                                                  align: TextAlign.start,
+                                                ),
+                                                const SizedBox(height: 4),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: TextWidget(
+                                                      text: aboutCommunity
+                                                          .aboutCommunityList[0]
+                                                          .admin!
+                                                          .designation
+                                                          .toString(),
+                                                      align: TextAlign.end,
+                                                      textSize: 14),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )),
                                 const SizedBox(
-                                  height: 12,
+                                  height: 10,
                                 ),
                                 TextWidget(
                                   text: "Terms and Conditions",
-                                  textSize: 20,
-                                  color:
-                                      GetStoreData.getStore.read('isInvestor')
-                                          ? AppColors.primaryInvestor
-                                          : AppColors.primary,
+                                  textSize: 16,
+                                  color: AppColors.grey,
                                   fontWeight: FontWeight.w500,
                                 ),
+                                const SizedBox(height: 6),
                                 aboutCommunity.aboutCommunityList[0].community!
                                         .termsAndConditions!.isEmpty
-                                    ? Align(
-                                        alignment: Alignment.center,
-                                        child: SizedBox(
-                                            height: 100,
-                                            child: TextWidget(
-                                              align: TextAlign.center,
-                                              text:
-                                                  "No Community Terms and Conditions Available",
-                                              textSize: 16,
-                                              color: AppColors.grey,
-                                            )),
-                                      )
-                                    : const SizedBox(
-                                        height: 12,
-                                      ),
+                                    ? SizedBox(
+                                        height: 100,
+                                        child: Center(
+                                          child: TextWidget(
+                                            text:
+                                                "No Terms and Conditions Available",
+                                            textSize: 16,
+                                            color: AppColors.white38,
+                                          ),
+                                        ))
+                                    : const SizedBox(),
                                 for (int i = 0;
                                     i <
                                         aboutCommunity
@@ -327,22 +289,21 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                             .termsAndConditions!
                                             .length;
                                     i++)
-                                  Row(crossAxisAlignment: CrossAxisAlignment.start,
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      TextWidget(
-                                        
-                                        maxLine: 3,
-                                          text:
-                                              "•  ",
-                                          textSize: 14),
-                                          Expanded(
-                                            child: TextWidget(
-                                                                                    
-                                                                                    maxLine: 3,
-                                            text:
-                                                "${aboutCommunity.aboutCommunityList[0].community!.termsAndConditions![i]}",
+                                      const TextWidget(
+                                          text: "•  ", textSize: 14),
+                                      Expanded(
+                                        child: TextWidget(
+                                            maxLine: 3,
+                                            text: aboutCommunity
+                                                .aboutCommunityList[0]
+                                                .community!
+                                                .termsAndConditions![i],
                                             textSize: 14),
-                                          ),
+                                      ),
                                     ],
                                   ),
                                 const SizedBox(
@@ -353,11 +314,8 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                     children: [
                                       TextWidget(
                                         text: "Recent Posts From Admin",
-                                        textSize: 20,
-                                        color: GetStoreData.getStore
-                                                .read('isInvestor')
-                                            ? AppColors.primaryInvestor
-                                            : AppColors.primary,
+                                        textSize: 16,
+                                        color: AppColors.grey,
                                         fontWeight: FontWeight.w500,
                                       ),
                                       Spacer(),
@@ -368,21 +326,11 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                             });
                                           },
                                           icon: isPostsVisible
-                                              ? Icon(
-                                                  Icons.keyboard_arrow_up,
-                                                  color: GetStoreData.getStore
-                                                          .read('isInvestor')
-                                                      ? AppColors
-                                                          .primaryInvestor
-                                                      : AppColors.primary,
-                                                )
+                                              ? Icon(Icons.keyboard_arrow_up,
+                                                  color: AppColors.whiteShade)
                                               : Icon(
                                                   Icons.keyboard_arrow_down,
-                                                  color: GetStoreData.getStore
-                                                          .read('isInvestor')
-                                                      ? AppColors
-                                                          .primaryInvestor
-                                                      : AppColors.primary,
+                                                  color: AppColors.whiteShade,
                                                 ))
                                     ],
                                   ),
@@ -397,12 +345,13 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                             alignment: Alignment.center,
                                             child: SizedBox(
                                                 height: 100,
-                                                child: TextWidget(
-                                                  align: TextAlign.center,
-                                                  text:
-                                                      "No Community Posts Available",
-                                                  textSize: 16,
-                                                  color: AppColors.grey,
+                                                child: Center(
+                                                  child: TextWidget(
+                                                    text:
+                                                        "No Community Posts Available",
+                                                    textSize: 14,
+                                                    color: AppColors.white54,
+                                                  ),
                                                 )),
                                           )
                                         : ListView.separated(
@@ -434,36 +383,23 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                                               aboutCommunity
                                                                   .aboutCommunityPostsList[
                                                                       index]
-                                                                  .image
+                                                                  .user!
+                                                                  .profilePicture
                                                                   .toString(),
                                                             ),
                                                           ),
                                                           const SizedBox(
                                                             width: 8,
                                                           ),
-                                                          Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              // TextWidget(
-                                                              //     text:
-                                                              //         "${aboutCommunity.aboutCommunityPostsList[index].user!}",
-                                                              //     textSize: 16),
-                                                              TextWidget(
-                                                                  text: aboutCommunity
-                                                                      .aboutCommunityPostsList[
-                                                                          index]
-                                                                      .createdAt
-                                                                      .toString(),
-                                                                  textSize: 14)
-                                                            ],
+                                                          Expanded(
+                                                            child: TextWidget(
+                                                                text: aboutCommunity
+                                                                    .aboutCommunityPostsList[
+                                                                        index]
+                                                                    .createdAt
+                                                                    .toString(),
+                                                                textSize: 14),
                                                           ),
-                                                          const SizedBox(
-                                                            width: 8,
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 50),
                                                         ],
                                                       ),
                                                       Divider(
@@ -484,26 +420,28 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                                       const SizedBox(
                                                         height: 12,
                                                       ),
-                                                      Container(
-                                                        height: 200,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                                image:
-                                                                    DecorationImage(
-                                                                        image:
-                                                                            NetworkImage(
-                                                                          aboutCommunity
-                                                                              .aboutCommunityPostsList[index]
-                                                                              .image
-                                                                              .toString(),
-                                                                        ),
-                                                                        fit: BoxFit
-                                                                            .fill),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            15)),
-                                                      ),
+                                                      if (aboutCommunity
+                                                          .aboutCommunityPostsList[
+                                                              index]
+                                                          .image!
+                                                          .isNotEmpty)
+                                                        Container(
+                                                          height: 200,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  image:
+                                                                      DecorationImage(
+                                                                          image:
+                                                                              NetworkImage(
+                                                                            aboutCommunity.aboutCommunityPostsList[index].image.toString(),
+                                                                          ),
+                                                                          fit: BoxFit
+                                                                              .fill),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              15)),
+                                                        ),
                                                     ],
                                                   ),
                                                 ),
@@ -517,11 +455,8 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                     children: [
                                       TextWidget(
                                         text: "Community Products",
-                                        textSize: 20,
-                                        color: GetStoreData.getStore
-                                                .read('isInvestor')
-                                            ? AppColors.primaryInvestor
-                                            : AppColors.primary,
+                                        textSize: 16,
+                                        color: AppColors.grey,
                                         fontWeight: FontWeight.w500,
                                       ),
                                       Spacer(),
@@ -535,19 +470,11 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                           icon: isProductsVisible
                                               ? Icon(
                                                   Icons.keyboard_arrow_up,
-                                                  color: GetStoreData.getStore
-                                                          .read('isInvestor')
-                                                      ? AppColors
-                                                          .primaryInvestor
-                                                      : AppColors.primary,
+                                                  color: AppColors.whiteShade,
                                                 )
                                               : Icon(
                                                   Icons.keyboard_arrow_down,
-                                                  color: GetStoreData.getStore
-                                                          .read('isInvestor')
-                                                      ? AppColors
-                                                          .primaryInvestor
-                                                      : AppColors.primary,
+                                                  color: AppColors.whiteShade,
                                                 ))
                                     ],
                                   ),
@@ -562,12 +489,13 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                             alignment: Alignment.center,
                                             child: SizedBox(
                                                 height: 100,
-                                                child: TextWidget(
-                                                  align: TextAlign.center,
-                                                  text:
-                                                      "No Community Products Available",
-                                                  textSize: 16,
-                                                  color: AppColors.grey,
+                                                child: Center(
+                                                  child: TextWidget(
+                                                    text:
+                                                        "No Community Products Available",
+                                                    textSize: 14,
+                                                    color: AppColors.white54,
+                                                  ),
                                                 )),
                                           )
                                         : ListView.separated(
@@ -590,7 +518,7 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             15)),
-                                                color: AppColors.navyBlue,
+                                                color: AppColors.blackCard,
                                                 child: Padding(
                                                   padding: const EdgeInsets.all(
                                                       12.0),
@@ -680,7 +608,7 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                                                   index]
                                                               .name
                                                               .toString(),
-                                                          textSize: 18,
+                                                          textSize: 16,
                                                           maxLine: 2,
                                                           fontWeight:
                                                               FontWeight.w500,
@@ -702,7 +630,7 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                                               .description
                                                               .toString(),
                                                           textStyle: TextStyle(
-                                                            fontSize: 14,
+                                                            fontSize: 12,
                                                             color:
                                                                 AppColors.white,
                                                           ),
@@ -794,220 +722,210 @@ class _CommunityAboutScreenState extends State<CommunityAboutScreen> {
                                               );
                                             },
                                           ),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  Row(
-                                    children: [
-                                      TextWidget(
-                                        text: "Upcoming Events",
-                                        textSize: 20,
-                                        color: GetStoreData.getStore
-                                                .read('isInvestor')
-                                            ? AppColors.primaryInvestor
-                                            : AppColors.primary,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      Spacer(),
-                                      IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              isEventsVisible =
-                                                  !isEventsVisible;
-                                            });
-                                          },
-                                          icon: isEventsVisible
-                                              ? Icon(
-                                                  Icons.keyboard_arrow_up,
-                                                  color: GetStoreData.getStore
-                                                          .read('isInvestor')
-                                                      ? AppColors
-                                                          .primaryInvestor
-                                                      : AppColors.primary,
-                                                )
-                                              : Icon(
-                                                  Icons.keyboard_arrow_down,
-                                                  color: GetStoreData.getStore
-                                                          .read('isInvestor')
-                                                      ? AppColors
-                                                          .primaryInvestor
-                                                      : AppColors.primary,
-                                                ))
-                                    ],
-                                  ),
-                                  if (isEventsVisible)
-                                    const SizedBox(
-                                      height: 12,
-                                    ),
-                                  if (isEventsVisible)
-                                    aboutCommunity
-                                            .aboutCommunityEventsList.isEmpty
-                                        ? Align(
-                                            alignment: Alignment.center,
-                                            child: SizedBox(
-                                                height: 100,
-                                                child: TextWidget(
-                                                  align: TextAlign.center,
-                                                  text:
-                                                      "No Community Events Available",
-                                                  textSize: 16,
-                                                  color: AppColors.grey,
-                                                )),
-                                          )
-                                        : ListView.separated(
-                                            separatorBuilder: (context, index) {
-                                              return const SizedBox(
-                                                height: 12,
-                                              );
-                                            },
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            itemCount: aboutCommunity
-                                                .aboutCommunityEventsList
-                                                .length,
-                                            shrinkWrap: true,
-                                            itemBuilder: (context, index) {
-                                              Color containerColor =
-                                                  containerColors[index %
-                                                      containerColors.length];
+                                  // const SizedBox(
+                                  //   height: 12,
+                                  // ),
+                                  // Row(
+                                  //   children: [
+                                  //     TextWidget(
+                                  //       text: "Upcoming Events",
+                                  //       textSize: 16,
+                                  //       color: AppColors.grey,
+                                  //       fontWeight: FontWeight.w500,
+                                  //     ),
+                                  //     Spacer(),
+                                  //     IconButton(
+                                  //         onPressed: () {
+                                  //           setState(() {
+                                  //             isEventsVisible =
+                                  //                 !isEventsVisible;
+                                  //           });
+                                  //         },
+                                  //         icon: isEventsVisible
+                                  //             ? Icon(
+                                  //                 Icons.keyboard_arrow_up,
+                                  //                 color: AppColors.whiteShade,
+                                  //               )
+                                  //             : Icon(
+                                  //                 Icons.keyboard_arrow_down,
+                                  //                 color: AppColors.whiteShade,
+                                  //               ))
+                                  //   ],
+                                  // ),
+                                  // if (isEventsVisible)
+                                  //   const SizedBox(
+                                  //     height: 12,
+                                  //   ),
+                                  // if (isEventsVisible)
+                                  //   aboutCommunity
+                                  //           .aboutCommunityEventsList.isEmpty
+                                  //       ? Align(
+                                  //           alignment: Alignment.center,
+                                  //           child: SizedBox(
+                                  //               height: 100,
+                                  //               child: Center(
+                                  //                 child: TextWidget(
+                                  //                   text:
+                                  //                       "No Community Events Available",
+                                  //                   textSize: 14,
+                                  //                   color: AppColors.white54,
+                                  //                 ),
+                                  //               )),
+                                  //         )
+                                  //       : ListView.separated(
+                                  //           separatorBuilder: (context, index) {
+                                  //             return const SizedBox(
+                                  //               height: 12,
+                                  //             );
+                                  //           },
+                                  //           physics:
+                                  //               NeverScrollableScrollPhysics(),
+                                  //           itemCount: aboutCommunity
+                                  //               .aboutCommunityEventsList
+                                  //               .length,
+                                  //           shrinkWrap: true,
+                                  //           itemBuilder: (context, index) {
+                                  //             Color containerColor =
+                                  //                 containerColors[index %
+                                  //                     containerColors.length];
 
-                                              return Card(
-                                                margin: EdgeInsets.zero,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            6)),
-                                                color: containerColor,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      12.0),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      TextWidget(
-                                                          text: aboutCommunity
-                                                              .aboutCommunityEventsList[
-                                                                  index]
-                                                              .title
-                                                              .toString(),
-                                                          textSize: 25),
-                                                      // communityEvents.communityEventsList[0].webinars[index].isActive?const SizedBox():
-                                                      // TextWidget(text: "This meeting is cancelled.", textSize: 16,color: AppColors.grey,),
-                                                      const SizedBox(height: 8),
-                                                      Card(
-                                                        color:
-                                                            AppColors.white38,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Row(
-                                                            children: [
-                                                              Container(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        8.0),
-                                                                decoration: BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                                7),
-                                                                    color: GetStoreData.getStore.read(
-                                                                            'isInvestor')
-                                                                        ? AppColors
-                                                                            .primaryInvestor
-                                                                        : AppColors
-                                                                            .primary),
-                                                                child: Center(
-                                                                  child: Image
-                                                                      .asset(
-                                                                    PngAssetPath
-                                                                        .meetingIcon,
-                                                                    color: GetStoreData.getStore.read(
-                                                                            'isInvestor')
-                                                                        ? AppColors
-                                                                            .black
-                                                                        : AppColors
-                                                                            .white,
-                                                                    height: 22,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              const SizedBox(
-                                                                  width: 8),
-                                                              Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  TextWidget(
-                                                                      text:
-                                                                          "${aboutCommunity.aboutCommunityEventsList[index].duration}",
-                                                                      textSize:
-                                                                          15),
-                                                                  const TextWidget(
-                                                                      text:
-                                                                          "Video Meeting",
-                                                                      textSize:
-                                                                          15),
-                                                                ],
-                                                              ),
-                                                              const Spacer(),
-                                                              Container(
-                                                                padding: const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        5,
-                                                                    vertical:
-                                                                        5),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              20),
-                                                                  border: Border.all(
-                                                                      color: AppColors
-                                                                          .white,
-                                                                      width: 1),
-                                                                ),
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    TextWidget(
-                                                                        text:
-                                                                            "Rs ${aboutCommunity.aboutCommunityEventsList[index].price} +",
-                                                                        textSize:
-                                                                            12),
-                                                                    const SizedBox(
-                                                                        width:
-                                                                            5),
-                                                                    Icon(
-                                                                        Icons
-                                                                            .arrow_forward,
-                                                                        color: AppColors
-                                                                            .white,
-                                                                        size:
-                                                                            12),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      sizedTextfield,
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
+                                  //             return Card(
+                                  //               margin: EdgeInsets.zero,
+                                  //               shape: RoundedRectangleBorder(
+                                  //                   borderRadius:
+                                  //                       BorderRadius.circular(
+                                  //                           6)),
+                                  //               color: containerColor,
+                                  //               child: Padding(
+                                  //                 padding: const EdgeInsets.all(
+                                  //                     12.0),
+                                  //                 child: Column(
+                                  //                   crossAxisAlignment:
+                                  //                       CrossAxisAlignment
+                                  //                           .start,
+                                  //                   children: [
+                                  //                     TextWidget(
+                                  //                         text: aboutCommunity
+                                  //                             .aboutCommunityEventsList[
+                                  //                                 index]
+                                  //                             .title
+                                  //                             .toString(),
+                                  //                         textSize: 25),
+                                  //                     // communityEvents.communityEventsList[0].webinars[index].isActive?const SizedBox():
+                                  //                     // TextWidget(text: "This meeting is cancelled.", textSize: 16,color: AppColors.grey,),
+                                  //                     const SizedBox(height: 8),
+                                  //                     Card(
+                                  //                       color:
+                                  //                           AppColors.white38,
+                                  //                       child: Padding(
+                                  //                         padding:
+                                  //                             const EdgeInsets
+                                  //                                 .all(8.0),
+                                  //                         child: Row(
+                                  //                           children: [
+                                  //                             Container(
+                                  //                               padding:
+                                  //                                   const EdgeInsets
+                                  //                                       .all(
+                                  //                                       8.0),
+                                  //                               decoration: BoxDecoration(
+                                  //                                   borderRadius:
+                                  //                                       BorderRadius
+                                  //                                           .circular(
+                                  //                                               7),
+                                  //                                   color: GetStoreData.getStore.read(
+                                  //                                           'isInvestor')
+                                  //                                       ? AppColors
+                                  //                                           .primaryInvestor
+                                  //                                       : AppColors
+                                  //                                           .primary),
+                                  //                               child: Center(
+                                  //                                 child: Image
+                                  //                                     .asset(
+                                  //                                   PngAssetPath
+                                  //                                       .meetingIcon,
+                                  //                                   color: GetStoreData.getStore.read(
+                                  //                                           'isInvestor')
+                                  //                                       ? AppColors
+                                  //                                           .black
+                                  //                                       : AppColors
+                                  //                                           .white,
+                                  //                                   height: 22,
+                                  //                                 ),
+                                  //                               ),
+                                  //                             ),
+                                  //                             const SizedBox(
+                                  //                                 width: 8),
+                                  //                             Column(
+                                  //                               crossAxisAlignment:
+                                  //                                   CrossAxisAlignment
+                                  //                                       .start,
+                                  //                               children: [
+                                  //                                 TextWidget(
+                                  //                                     text:
+                                  //                                         "${aboutCommunity.aboutCommunityEventsList[index].duration}",
+                                  //                                     textSize:
+                                  //                                         15),
+                                  //                                 const TextWidget(
+                                  //                                     text:
+                                  //                                         "Video Meeting",
+                                  //                                     textSize:
+                                  //                                         15),
+                                  //                               ],
+                                  //                             ),
+                                  //                             const Spacer(),
+                                  //                             Container(
+                                  //                               padding: const EdgeInsets
+                                  //                                   .symmetric(
+                                  //                                   horizontal:
+                                  //                                       5,
+                                  //                                   vertical:
+                                  //                                       5),
+                                  //                               decoration:
+                                  //                                   BoxDecoration(
+                                  //                                 borderRadius:
+                                  //                                     BorderRadius
+                                  //                                         .circular(
+                                  //                                             20),
+                                  //                                 border: Border.all(
+                                  //                                     color: AppColors
+                                  //                                         .white,
+                                  //                                     width: 1),
+                                  //                               ),
+                                  //                               child: Row(
+                                  //                                 mainAxisAlignment:
+                                  //                                     MainAxisAlignment
+                                  //                                         .center,
+                                  //                                 children: [
+                                  //                                   TextWidget(
+                                  //                                       text:
+                                  //                                           "Rs ${aboutCommunity.aboutCommunityEventsList[index].price} +",
+                                  //                                       textSize:
+                                  //                                           12),
+                                  //                                   const SizedBox(
+                                  //                                       width:
+                                  //                                           5),
+                                  //                                   Icon(
+                                  //                                       Icons
+                                  //                                           .arrow_forward,
+                                  //                                       color: AppColors
+                                  //                                           .white,
+                                  //                                       size:
+                                  //                                           12),
+                                  //                                 ],
+                                  //                               ),
+                                  //                             ),
+                                  //                           ],
+                                  //                         ),
+                                  //                       ),
+                                  //                     ),
+                                  //                     sizedTextfield,
+                                  //                   ],
+                                  //                 ),
+                                  //               ),
+                                  //             );
+                                  //           },
+                                  //         ),
                                 ],
                               ]),
                         ),

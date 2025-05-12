@@ -1,5 +1,5 @@
 import 'package:capitalhub_crm/controller/homeController/home_controller.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/landingScreen/landing_screen_inv.dart';
+import 'package:capitalhub_crm/screen/landingScreen/landing_screen_inv.dart';
 import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:capitalhub_crm/screen/profileScreen/profile_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';

@@ -1,6 +1,6 @@
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityAboutController/community_about_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
@@ -76,9 +76,8 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
                       TextWidget(
                         align: TextAlign.center,
                           text:
-                              "Congrats! ${aboutCommunity.aboutCommunityDetailsList[0].name}\nis live!",
+                              "${aboutCommunity.aboutCommunityDetailsList[0].name} is live",
                           textSize: 20,),
-                      sizedTextfield,
                       sizedTextfield,
                       CircleAvatar(
                         radius: 60,
@@ -91,16 +90,16 @@ class _CreateCommunityOverScreenState extends State<CreateCommunityOverScreen> {
                         text: aboutCommunity.aboutCommunityDetailsList[0].name!,
                         textSize: 20,
                       ),
-                      sizedTextfield,
+                      const SizedBox(height: 4),
                       aboutCommunity.aboutCommunityList[0].community!
                                   .subscription! ==
                               "free"
                           ? const TextWidget(
-                              text: "Any one can join for free", textSize: 13)
+                              text: "Any one can join for free", textSize: 14)
                           : TextWidget(
                               text:
                                   "Subscription Amount : \u{20B9}${aboutCommunity.aboutCommunityList[0].community!.amount}",
-                              textSize: 13),
+                              textSize: 14),
                       sizedTextfield,
                       Divider(
                         thickness: 1,

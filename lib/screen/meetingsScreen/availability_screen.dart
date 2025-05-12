@@ -1,6 +1,6 @@
 import 'package:capitalhub_crm/controller/meetingController/meeting_controller.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/meetingModel/get_availability_model.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/model/meetingModel/get_availability_model.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
@@ -11,6 +11,7 @@ import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:capitalhub_crm/widget/timePicker/timePicker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
@@ -129,26 +130,26 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
         decoration: bgDec,
         child: Scaffold(
             drawer: GetStoreData.getStore.read('isInvestor')
-              ? const DrawerWidgetInvestor()
-              : const DrawerWidget(),
+                ? const DrawerWidgetInvestor()
+                : const DrawerWidget(),
             backgroundColor: AppColors.transparent,
             appBar: HelperAppBar.appbarHelper(
                 title: "Availability", hideBack: true, autoAction: true),
             body: Obx(
               () => Padding(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(10),
                 child: availabilityController.isLoading.value
                     ? Helper.pageLoading()
                     : Card(
                         color: AppColors.blackCard,
                         child: Padding(
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Flexible(
-                                child: ListView.builder(
+                                child: ListView.separated(separatorBuilder: (context, index) => const SizedBox(height: 8),
                                   scrollDirection: Axis.vertical,
                                   shrinkWrap: true,
                                   itemCount: daysOfWeek.length,
@@ -157,32 +158,51 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                       children: [
                                         Row(
                                           children: [
-                                            Checkbox(
-                                              value: isChecked[index],
-                                              checkColor: GetStoreData.getStore
-                                                      .read('isInvestor')
-                                                  ? AppColors.black
-                                                  : AppColors.white,
-                                              activeColor: GetStoreData.getStore
-                                                      .read('isInvestor')
-                                                  ? AppColors.primaryInvestor
-                                                  : AppColors.primary,
-                                              onChanged: (bool? value) {
-                                                setState(() {
-                                                  isChecked[index] = value!;
-                                                });
-                                              },
-                                              materialTapTargetSize:
-                                                  MaterialTapTargetSize
-                                                      .shrinkWrap,
+                                            Transform.scale(
+                                              scaleY: 0.8,
+                                              scaleX: 0.8,
+                                              child: CupertinoSwitch(
+                                                value: isChecked[index],
+                                                onChanged: (bool value) {
+                                                  setState(() {
+                                                    isChecked[index] = value;
+                                                  });
+                                                },
+                                                activeColor: GetStoreData
+                                                        .getStore
+                                                        .read('isInvestor')
+                                                    ? AppColors.primaryInvestor
+                                                    : AppColors.primary,
+                                                trackColor: AppColors.grey,
+                                              ),
                                             ),
+                                            // Checkbox(
+                                            //   value: isChecked[index],
+                                            //   checkColor: GetStoreData.getStore
+                                            //           .read('isInvestor')
+                                            //       ? AppColors.black
+                                            //       : AppColors.white,
+                                            //   activeColor: GetStoreData.getStore
+                                            //           .read('isInvestor')
+                                            //       ? AppColors.primaryInvestor
+                                            //       : AppColors.primary,
+                                            //   onChanged: (bool? value) {
+                                            //     setState(() {
+                                            //       isChecked[index] = value!;
+                                            //     });
+                                            //   },
+                                            //   materialTapTargetSize:
+                                            //       MaterialTapTargetSize
+                                            //           .shrinkWrap,
+                                            // ),
                                             TextWidget(
                                               text: daysOfWeek[index],
                                               textSize: 16,
                                             ),
                                           ],
                                         ),
-                                        if (isChecked[index])
+                                        if (isChecked[index]) ...[
+                                          const SizedBox(height: 3),
                                           Padding(
                                             padding:
                                                 const EdgeInsets.only(left: 10),
@@ -336,6 +356,8 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                               ],
                                             ),
                                           ),
+                                          const SizedBox(height: 3),
+                                        ]
                                       ],
                                     );
                                   },

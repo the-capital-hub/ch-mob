@@ -1,5 +1,5 @@
 import 'package:capitalhub_crm/controller/meetingController/meeting_controller.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
@@ -111,72 +111,118 @@ class _PlansScreenState extends State<PlansScreen>
                                       itemCount:
                                           meetingController.meetingsList.length,
                                       separatorBuilder: (context, index) {
-                                        return const SizedBox(
-                                          height: 20,
-                                        );
+                                        return sizedTextfield;
                                       },
                                       itemBuilder: (context, index) {
                                         return Card(
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(10)),
-                                          color: AppColors.navyBlue,
+                                          color: AppColors.blackCard,
                                           child: Padding(
                                             padding: const EdgeInsets.all(12.0),
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                sizedTextfield,
+                                                Row(
+                                                  children: [
+                                                    CircleAvatar(
+                                                      radius: 15,
+                                                      backgroundImage: NetworkImage(
+                                                          meetingController
+                                                                  .meetingsList[
+                                                                      index]
+                                                                  .userProfile ??
+                                                              ""),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 8,
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        TextWidget(
+                                                            text: meetingController
+                                                                .meetingsList[
+                                                                    index]
+                                                                .name,
+                                                            textSize: 16),
+                                                        TextWidget(
+                                                            text: meetingController
+                                                                .meetingsList[
+                                                                    index]
+                                                                .email,
+                                                            color: AppColors
+                                                                .white54,
+                                                            textSize: 12),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                                 sizedTextfield,
                                                 TextWidget(
                                                   text: meetingController
                                                       .meetingsList[index]
                                                       .title,
-                                                  textSize: 25,
-                                                  fontWeight: FontWeight.bold,
+                                                  textSize: 18,
+                                                  fontWeight: FontWeight.w500,
                                                 ),
                                                 sizedTextfield,
                                                 Row(
                                                   children: [
                                                     Icon(
                                                       Icons.schedule,
-                                                      color: AppColors.white,
-                                                      size: 22,
+                                                      color: AppColors.green700,
+                                                      size: 20,
                                                     ),
                                                     const SizedBox(
                                                       width: 5,
                                                     ),
                                                     TextWidget(
-                                                        text: meetingController
-                                                            .meetingsList[index]
-                                                            .startTime,
-                                                        textSize: 16)
+                                                      text: meetingController
+                                                          .meetingsList[index]
+                                                          .startTime,
+                                                      textSize: 14,
+                                                      color:
+                                                          AppColors.whiteShade,
+                                                    ),
+                                                    TextWidget(
+                                                      text: " - Start Time",
+                                                      textSize: 14,
+                                                      color: AppColors.grey,
+                                                    )
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 8),
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.schedule,
+                                                      color: AppColors.redColor,
+                                                      size: 20,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    TextWidget(
+                                                      text: meetingController
+                                                          .meetingsList[index]
+                                                          .endTime,
+                                                      textSize: 14,
+                                                      color:
+                                                          AppColors.whiteShade,
+                                                    ),
+                                                    TextWidget(
+                                                      text: " - End Time",
+                                                      textSize: 14,
+                                                      color: AppColors.grey,
+                                                    )
                                                   ],
                                                 ),
                                                 sizedTextfield,
-                                                Row(
-                                                  children: [
-                                                    const CircleAvatar(
-                                                      radius: 15,
-                                                      backgroundImage:
-                                                          AssetImage(
-                                                              PngAssetPath
-                                                                  .accountImg),
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 8,
-                                                    ),
-                                                    TextWidget(
-                                                        text: meetingController
-                                                            .meetingsList[index]
-                                                            .name,
-                                                        textSize: 20)
-                                                  ],
-                                                ),
-                                                const SizedBox(
-                                                  height: 15,
-                                                ),
                                                 Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
@@ -184,10 +230,17 @@ class _PlansScreenState extends State<PlansScreen>
                                                     Expanded(
                                                       child: AppButton
                                                           .primaryButton(
-                                                        onButtonPressed: () {},
+                                                        onButtonPressed: () {
+                                                          Helper.launchUrl(
+                                                              meetingController
+                                                                  .meetingsList[
+                                                                      index]
+                                                                  .meetingLink!);
+                                                        },
                                                         title: "Join",
+                                                        height: 40,
                                                         bgColor:
-                                                            AppColors.brown,
+                                                            AppColors.green700,
                                                       ),
                                                     ),
                                                     const SizedBox(width: 8),
@@ -195,7 +248,8 @@ class _PlansScreenState extends State<PlansScreen>
                                                       child: AppButton
                                                           .primaryButton(
                                                         onButtonPressed: () {
-                                                          Helper.loader(context);
+                                                          Helper.loader(
+                                                              context);
                                                           meetingController
                                                               .cancelScheduledMeeting(
                                                                   meetingController
@@ -204,6 +258,7 @@ class _PlansScreenState extends State<PlansScreen>
                                                                       .id);
                                                         },
                                                         title: "Cancel",
+                                                        height: 40,
                                                         bgColor:
                                                             AppColors.redColor,
                                                       ),
@@ -219,72 +274,118 @@ class _PlansScreenState extends State<PlansScreen>
                                       itemCount:
                                           meetingController.meetingsList.length,
                                       separatorBuilder: (context, index) {
-                                        return const SizedBox(
-                                          height: 20,
-                                        );
+                                        return sizedTextfield;
                                       },
                                       itemBuilder: (context, index) {
                                         return Card(
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(10)),
-                                          color: AppColors.navyBlue,
+                                          color: AppColors.blackCard,
                                           child: Padding(
                                             padding: const EdgeInsets.all(12.0),
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                sizedTextfield,
+                                                Row(
+                                                  children: [
+                                                    CircleAvatar(
+                                                      radius: 15,
+                                                      backgroundImage: NetworkImage(
+                                                          meetingController
+                                                                  .meetingsList[
+                                                                      index]
+                                                                  .userProfile ??
+                                                              ""),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 8,
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        TextWidget(
+                                                            text: meetingController
+                                                                .meetingsList[
+                                                                    index]
+                                                                .name,
+                                                            textSize: 16),
+                                                        TextWidget(
+                                                            text: meetingController
+                                                                .meetingsList[
+                                                                    index]
+                                                                .email,
+                                                            color: AppColors
+                                                                .white54,
+                                                            textSize: 12),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                                 sizedTextfield,
                                                 TextWidget(
                                                   text: meetingController
                                                       .meetingsList[index]
                                                       .title,
-                                                  textSize: 25,
-                                                  fontWeight: FontWeight.bold,
+                                                  textSize: 18,
+                                                  fontWeight: FontWeight.w500,
                                                 ),
                                                 sizedTextfield,
                                                 Row(
                                                   children: [
                                                     Icon(
                                                       Icons.schedule,
-                                                      color: AppColors.white,
-                                                      size: 22,
+                                                      color: AppColors.green700,
+                                                      size: 20,
                                                     ),
                                                     const SizedBox(
                                                       width: 5,
                                                     ),
                                                     TextWidget(
-                                                        text: meetingController
-                                                            .meetingsList[index]
-                                                            .startTime,
-                                                        textSize: 16)
+                                                      text: meetingController
+                                                          .meetingsList[index]
+                                                          .startTime,
+                                                      textSize: 14,
+                                                      color:
+                                                          AppColors.whiteShade,
+                                                    ),
+                                                    TextWidget(
+                                                      text: " - Start Time",
+                                                      textSize: 14,
+                                                      color: AppColors.grey,
+                                                    )
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 8),
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.schedule,
+                                                      color: AppColors.redColor,
+                                                      size: 20,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    TextWidget(
+                                                      text: meetingController
+                                                          .meetingsList[index]
+                                                          .endTime,
+                                                      textSize: 14,
+                                                      color:
+                                                          AppColors.whiteShade,
+                                                    ),
+                                                    TextWidget(
+                                                      text: " - End Time",
+                                                      textSize: 14,
+                                                      color: AppColors.grey,
+                                                    )
                                                   ],
                                                 ),
                                                 sizedTextfield,
-                                                Row(
-                                                  children: [
-                                                    const CircleAvatar(
-                                                      radius: 15,
-                                                      backgroundImage:
-                                                          AssetImage(
-                                                              PngAssetPath
-                                                                  .accountImg),
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 8,
-                                                    ),
-                                                    TextWidget(
-                                                        text: meetingController
-                                                            .meetingsList[index]
-                                                            .name,
-                                                        textSize: 20)
-                                                  ],
-                                                ),
-                                                const SizedBox(
-                                                  height: 15,
-                                                ),
                                                 Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
@@ -292,10 +393,17 @@ class _PlansScreenState extends State<PlansScreen>
                                                     Expanded(
                                                       child: AppButton
                                                           .primaryButton(
-                                                        onButtonPressed: () {},
+                                                        onButtonPressed: () {
+                                                          Helper.launchUrl(
+                                                              meetingController
+                                                                  .meetingsList[
+                                                                      index]
+                                                                  .meetingLink!);
+                                                        },
                                                         title: "Join",
+                                                        height: 40,
                                                         bgColor:
-                                                            AppColors.brown,
+                                                            AppColors.green700,
                                                       ),
                                                     ),
                                                     const SizedBox(width: 8),
@@ -303,6 +411,8 @@ class _PlansScreenState extends State<PlansScreen>
                                                       child: AppButton
                                                           .primaryButton(
                                                         onButtonPressed: () {
+                                                          Helper.loader(
+                                                              context);
                                                           meetingController
                                                               .cancelScheduledMeeting(
                                                                   meetingController
@@ -311,6 +421,7 @@ class _PlansScreenState extends State<PlansScreen>
                                                                       .id);
                                                         },
                                                         title: "Cancel",
+                                                        height: 40,
                                                         bgColor:
                                                             AppColors.redColor,
                                                       ),

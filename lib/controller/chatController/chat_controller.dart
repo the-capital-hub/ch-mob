@@ -5,11 +5,11 @@ import 'package:capitalhub_crm/screen/chatScreen/chat_screen.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:get/get.dart';
 
-import '../../model/01-StartupModel/chatModel/chat_memberlist_model.dart';
-import '../../model/01-StartupModel/chatModel/create_chat_model.dart';
-import '../../model/01-StartupModel/chatModel/group_memberlist_model.dart';
-import '../../model/01-StartupModel/chatModel/member_chats.dart';
-import '../../model/01-StartupModel/chatModel/search_member_model.dart';
+import '../../model/chatModel/chat_memberlist_model.dart';
+import '../../model/chatModel/create_chat_model.dart';
+import '../../model/chatModel/group_memberlist_model.dart';
+import '../../model/chatModel/member_chats.dart';
+import '../../model/chatModel/search_member_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import '../../utils/helper/helper_sncksbar.dart';

@@ -9,7 +9,7 @@ import '../../utils/getStore/get_store.dart';
 import '../../utils/helper/helper.dart';
 import '../../widget/appbar/appbar.dart';
 import '../../widget/textwidget/text_widget.dart';
-import '../01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import '../drawerScreen/drawer_screen_inv.dart';
 import '../drawerScreen/drawer_screen.dart';
 
 class ConnectionScreen extends StatefulWidget {

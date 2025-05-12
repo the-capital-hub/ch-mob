@@ -1,6 +1,6 @@
 import 'package:capitalhub_crm/controller/profileController/profile_controller.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/profileModel/profile_model.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/model/profileModel/profile_model.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/Auth-Process/userDetailsScreen/bio_screen.dart';
 import 'package:capitalhub_crm/screen/companyScreen/company_screen.dart';
 import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';

@@ -1,7 +1,7 @@
 import 'package:capitalhub_crm/controller/meetingController/meeting_controller.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/meetingModel/get_priority_dm_founder_model.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/meetingModel/get_priority_dm_user_model.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/model/meetingModel/get_priority_dm_founder_model.dart';
+import 'package:capitalhub_crm/model/meetingModel/get_priority_dm_user_model.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';

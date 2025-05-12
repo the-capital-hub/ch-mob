@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:capitalhub_crm/model/01-StartupModel/publicPostModel/public_post_model.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/savedCollectionModel/saved_collection_model.dart';
+import 'package:capitalhub_crm/model/publicPostModel/public_post_model.dart';
+import 'package:capitalhub_crm/model/savedCollectionModel/saved_collection_model.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../model/01-StartupModel/communityModel/communityCornerModel/community_corner_model.dart';
-import '../../model/01-StartupModel/newsModel/startup_corner_news_model.dart';
+import '../../model/communityModel/communityCornerModel/community_corner_model.dart';
+import '../../model/newsModel/startup_corner_news_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import '../../utils/helper/helper.dart';
@@ -251,7 +251,6 @@ class HomeController extends GetxController {
   Future getUserCollection() async {
     try {
       collectionList.clear();
-      isLoading.value = true;
       var response = await ApiBase.getRequest(
           extendedURL: ApiUrl.collectionGetUrl +
               GetStoreData.getStore.read('id').toString());
@@ -265,7 +264,6 @@ class HomeController extends GetxController {
     } catch (e) {
       log("getcollection $e");
     } finally {
-      isLoading.value = false;
     }
   }
 

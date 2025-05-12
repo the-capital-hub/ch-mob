@@ -17,6 +17,10 @@ class ApiUrl {
   static const String googleLogin = "users/googleLogin";
 
 //startup
+  static const String getHomeLandingUrl = "users/getHomePage";
+  static const String getAllFeedUrl = "api/posts/getPostFeed?";
+  static const String getCommentsUrl = "api/posts/getDetailedComments/";
+
   static const String getPublicPostUrl = "api/posts/getPublicPosts?page=";
   static const String likeUnlikePostUrl = "api/posts/likeUnlikePost/";
   static const String commentPostUrl = "api/posts/comment/";
@@ -35,7 +39,34 @@ class ApiUrl {
       "Communities/getAllCommunitiesUserIsNotMemberOf";
   static const String getNewsByDateUrl = "news/getNewsByDate";
   static const String getTodaysNewsUrl = "news/getTodaysNews";
-
+  static const String spotLightlistUrl =
+      "spotlight_products/getSpotlightProducts?";
+  static const String spotLightUserProductlistUrl =
+      "spotlight_products/getUserSpotlightProducts";
+  static const String spotLightProductUrl =
+      "spotlight_products/getSpotlightProductById";
+  static const String addSpotLightProduct =
+      "spotlight_products/addSpotlightProduct";
+  static const String addSpotlightCommentProduct =
+      "spotlight_products/addSpotlightProductComment";
+  static const String likeSpotLightCommentProduct =
+      "spotlight_products/likeSpotlightProductComment/";
+  static const String replySpotlightCommentProduct =
+      "spotlight_products/replySpotlightProductComment";
+  static const String upvoteProduct =
+      "spotlight_products/upvoteSpotlightProduct/";
+  static const String downvoteProduct =
+      "spotlight_products/downvoteSpotlightProduct/";
+  static const String upvoteComment =
+      "spotlight_products/upvoteSpotlightProductComment/";
+  static const String downvoteComment =
+      "spotlight_products/downvoteSpotlightProductComment/";
+      static const String upvoteCommentReply =
+      "spotlight_products/upvoteSpotlightProductReply/";
+  static const String downvoteCommentReply =
+      "spotlight_products/downvoteSpotlightProductReply/";
+      static const String spotlightRequest =
+      "spotlight_products/getSpotlightRequests";
   static const String exploreUrl = "users/explore?";
   static const String exploreFilterUrl = "users/exploreFilters?type=";
   static const String toggleIntrestInvUrl = "investor/toggleInterestInInvestor";
@@ -165,7 +196,8 @@ class ApiUrl {
   static const String joinCommunity = "Communities/addMembersToCommunity/";
   static const String updateCommunity = "Communities/updateCommunity/";
   static const String toggleReceiveEmail = "communities/toggleRecieveEmail/";
-  static const String communityMemberSettings = "communities/getCommunityMemberSettings/";
+  static const String communityMemberSettings =
+      "communities/getCommunityMemberSettings/";
   static const String addProductToCommunity =
       "Communities/addProductToCommunity/";
   static const String updateCommunityProduct = "Communities/updateProduct/";
@@ -195,7 +227,7 @@ class ApiUrl {
       "communities/services/priorityDMs/";
   static const String getCommunityPriorityDMYourQuestions =
       "communities/priorityDM/userQuestions/";
-  static const String getCommunityWebinars = "communities/services/events/";
+  static const String getCommunityEvent = "communities/services/events/";
   static const String deleteCommunityWebinar = "webinars/deleteWebinar/";
   static const String getCommunityMeetings = "communities/services/meetings/";
   static const String sendJoinRequest = "Communities/sendJoinRequest/";
@@ -231,6 +263,8 @@ class ApiUrl {
   static const String delMyInterest = "investor/interest";
   static const String addPastInvestment =
       "investor/past-investment"; //same for add edit del
+
+  static const String getAnnalytics = "users/getUserAnalytics?timePeriod=";
 
   static const String getCampaignUrl =
       "campaign/lists/getFilteredInvestorsList";
