@@ -136,6 +136,7 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                             //           )),
                             //     ),
                             //     maxLine: 3,
+                            
                             //     lableText: "Introductory message"),
                             Stack(
                               children: [
@@ -253,247 +254,247 @@ class _OneLinkScreeenState extends State<OneLinkScreeen> {
                                         ),
                                       ],
                                     ),
-                                    sizedTextfield,
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 170),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: AppColors.white38),
-                                            borderRadius:
-                                                BorderRadius.circular(7)),
-                                        child: DropDownWidget(
-                                            status: selectedMonth,
-                                            statusList: const [
-                                              'January',
-                                              'February',
-                                              'March',
-                                              'April',
-                                              'May',
-                                              'June',
-                                              'July',
-                                              'August',
-                                              'September',
-                                              'October',
-                                              'November',
-                                              'December'
-                                            ],
-                                            onChanged: (val) {
-                                              setState(() {
-                                                selectedMonth = val.toString();
-                                              });
-                                            }),
-                                      ),
-                                    ),
-                                    sizedTextfield,
-                                    oneLinkController.companyPosts.isEmpty
-                                        ? TextWidget(
-                                            text: "No Company Update Posts",
-                                            textSize: 12,
-                                            color: AppColors.white54)
-                                        : Row(
-                                            children: [
-                                              Expanded(
-                                                child: SizedBox(
-                                                  height: 250,
-                                                  child: ListView.separated(
-                                                    itemCount: oneLinkController
-                                                        .companyPosts.length,
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    shrinkWrap: true,
-                                                    separatorBuilder:
-                                                        (context, index) {
-                                                      return const SizedBox(
-                                                          width: 8);
-                                                    },
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int index) {
-                                                      return SizedBox(
-                                                        width: Get.width / 1.7,
-                                                        child: Card(
-                                                          elevation: 3,
-                                                          shadowColor:
-                                                              AppColors.white12,
-                                                          color: AppColors
-                                                              .blackCard,
-                                                          surfaceTintColor:
-                                                              AppColors
-                                                                  .blackCard,
-                                                          child:
-                                                              SingleChildScrollView(
-                                                            child: Column(
-                                                                children: [
-                                                                  Padding(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(
-                                                                            8.0),
-                                                                    child: Row(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        CircleAvatar(
-                                                                          backgroundColor:
-                                                                              AppColors.transparent,
-                                                                          radius:
-                                                                              18,
-                                                                          child:
-                                                                              CircleAvatar(
-                                                                            radius:
-                                                                                20,
-                                                                            backgroundImage:
-                                                                                NetworkImage('${oneLinkController.companyPosts[index].userProfilePicture}'),
-                                                                          ),
-                                                                        ),
-                                                                        const SizedBox(
-                                                                            width:
-                                                                                8),
-                                                                        Expanded(
-                                                                          child:
-                                                                              Column(
-                                                                            crossAxisAlignment:
-                                                                                CrossAxisAlignment.start,
-                                                                            children: [
-                                                                              Row(
-                                                                                children: [
-                                                                                  TextWidget(text: "${oneLinkController.companyPosts[index].userFirstName} ${oneLinkController.companyPosts[index].userLastName}", textSize: 12),
-                                                                                  const Expanded(child: SizedBox()),
-                                                                                  InkWell(
-                                                                                    onTap: () {
-                                                                                      oneLinkController.deletePost(context, oneLinkController.companyPosts[index].postId!).then((v) {
-                                                                                        oneLinkController.companyPosts.removeAt(index);
-                                                                                        setState(() {});
-                                                                                      });
-                                                                                    },
-                                                                                    child: const Icon(
-                                                                                      Icons.delete,
-                                                                                      color: AppColors.redColor,
-                                                                                      size: 18,
-                                                                                    ),
-                                                                                  )
-                                                                                ],
-                                                                              ),
-                                                                              // const SizedBox(height: 1),
-                                                                              TextWidget(
-                                                                                text: "${oneLinkController.companyPosts[index].userDesignation}  ${oneLinkController.companyPosts[index].userLocation}",
-                                                                                textSize: 10,
-                                                                                color: AppColors.whiteCard,
-                                                                              ),
-                                                                              // const SizedBox(height: 1),
-                                                                              TextWidget(
-                                                                                text: "${oneLinkController.companyPosts[index].age}",
-                                                                                textSize: 10,
-                                                                                color: AppColors.white54,
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                  Divider(
-                                                                      height: 0,
-                                                                      color: AppColors
-                                                                          .white38,
-                                                                      thickness:
-                                                                          0.5),
-                                                                  Padding(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(
-                                                                            8),
-                                                                    child:
-                                                                        Column(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        HtmlWidget(
-                                                                          "${oneLinkController.companyPosts[index].description}",
-                                                                          // onTapUrl: (url) async {
-                                                                          //   return await launch(
-                                                                          //       url);
-                                                                          // },
-                                                                          textStyle: TextStyle(
-                                                                              fontSize: 10,
-                                                                              color: AppColors.white),
-                                                                        ),
-                                                                        const SizedBox(
-                                                                            height:
-                                                                                6),
-                                                                        if (oneLinkController
-                                                                            .companyPosts[
-                                                                                index]
-                                                                            .pollOptions!
-                                                                            .isNotEmpty)
-                                                                          PollWidgetProfile(
-                                                                              pollOptions: oneLinkController.companyPosts[index].pollOptions!,
-                                                                              totalVotes: oneLinkController.companyPosts[index].totalVotes!,
-                                                                              myVotes: oneLinkController.companyPosts[index].myVotes!),
-                                                                        oneLinkController.companyPosts[index].images!.isEmpty
-                                                                            ? const SizedBox(height: 145)
-                                                                            : Column(children: [
-                                                                                SizedBox(
-                                                                                  height: 133,
-                                                                                  child: PageView.builder(
-                                                                                    controller: _pageController,
-                                                                                    itemCount: oneLinkController.companyPosts[index].images!.length,
-                                                                                    onPageChanged: (ind) {
-                                                                                      setState(() {
-                                                                                        _currentIndex = ind;
-                                                                                      });
-                                                                                    },
-                                                                                    itemBuilder: (context, ind) {
-                                                                                      return Container(
-                                                                                        decoration: BoxDecoration(
-                                                                                          borderRadius: BorderRadius.circular(12),
-                                                                                          image: DecorationImage(
-                                                                                            fit: BoxFit.cover,
-                                                                                            image: NetworkImage(oneLinkController.companyPosts[index].images![ind]),
-                                                                                          ),
-                                                                                        ),
-                                                                                      );
-                                                                                    },
-                                                                                  ),
-                                                                                ),
-                                                                                if (oneLinkController.companyPosts[index].images!.isNotEmpty && oneLinkController.companyPosts[index].images!.length > 1)
-                                                                                  Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                                                    children: List.generate(
-                                                                                      oneLinkController.companyPosts[index].images!.length,
-                                                                                      (index) => Container(
-                                                                                        margin: const EdgeInsets.only(left: 4, right: 4, top: 8),
-                                                                                        width: _currentIndex == index ? 5 : 3,
-                                                                                        height: _currentIndex == index ? 5 : 3,
-                                                                                        decoration: BoxDecoration(
-                                                                                          shape: BoxShape.circle,
-                                                                                          color: _currentIndex == index
-                                                                                              ? GetStoreData.getStore.read('isInvestor')
-                                                                                                  ? AppColors.primaryInvestor
-                                                                                                  : AppColors.primary
-                                                                                              : AppColors.grey,
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ),
-                                                                              ])
-                                                                      ],
-                                                                    ),
-                                                                  )
-                                                                ]),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                    // sizedTextfield,
+                                    // Padding(
+                                    //   padding:
+                                    //       const EdgeInsets.only(right: 170),
+                                    //   child: Container(
+                                    //     decoration: BoxDecoration(
+                                    //         border: Border.all(
+                                    //             color: AppColors.white38),
+                                    //         borderRadius:
+                                    //             BorderRadius.circular(7)),
+                                    //     child: DropDownWidget(
+                                    //         status: selectedMonth,
+                                    //         statusList: const [
+                                    //           'January',
+                                    //           'February',
+                                    //           'March',
+                                    //           'April',
+                                    //           'May',
+                                    //           'June',
+                                    //           'July',
+                                    //           'August',
+                                    //           'September',
+                                    //           'October',
+                                    //           'November',
+                                    //           'December'
+                                    //         ],
+                                    //         onChanged: (val) {
+                                    //           setState(() {
+                                    //             selectedMonth = val.toString();
+                                    //           });
+                                    //         }),
+                                    //   ),
+                                    // ),
+                                    // sizedTextfield,
+                                    // oneLinkController.companyPosts.isEmpty
+                                    //     ? TextWidget(
+                                    //         text: "No Company Update Posts",
+                                    //         textSize: 12,
+                                    //         color: AppColors.white54)
+                                    //     : Row(
+                                    //         children: [
+                                    //           Expanded(
+                                    //             child: SizedBox(
+                                    //               height: 250,
+                                    //               child: ListView.separated(
+                                    //                 itemCount: oneLinkController
+                                    //                     .companyPosts.length,
+                                    //                 scrollDirection:
+                                    //                     Axis.horizontal,
+                                    //                 shrinkWrap: true,
+                                    //                 separatorBuilder:
+                                    //                     (context, index) {
+                                    //                   return const SizedBox(
+                                    //                       width: 8);
+                                    //                 },
+                                    //                 itemBuilder:
+                                    //                     (BuildContext context,
+                                    //                         int index) {
+                                    //                   return SizedBox(
+                                    //                     width: Get.width / 1.7,
+                                    //                     child: Card(
+                                    //                       elevation: 3,
+                                    //                       shadowColor:
+                                    //                           AppColors.white12,
+                                    //                       color: AppColors
+                                    //                           .blackCard,
+                                    //                       surfaceTintColor:
+                                    //                           AppColors
+                                    //                               .blackCard,
+                                    //                       child:
+                                    //                           SingleChildScrollView(
+                                    //                         child: Column(
+                                    //                             children: [
+                                    //                               Padding(
+                                    //                                 padding:
+                                    //                                     const EdgeInsets
+                                    //                                         .all(
+                                    //                                         8.0),
+                                    //                                 child: Row(
+                                    //                                   crossAxisAlignment:
+                                    //                                       CrossAxisAlignment
+                                    //                                           .start,
+                                    //                                   children: [
+                                    //                                     CircleAvatar(
+                                    //                                       backgroundColor:
+                                    //                                           AppColors.transparent,
+                                    //                                       radius:
+                                    //                                           18,
+                                    //                                       child:
+                                    //                                           CircleAvatar(
+                                    //                                         radius:
+                                    //                                             20,
+                                    //                                         backgroundImage:
+                                    //                                             NetworkImage('${oneLinkController.companyPosts[index].userProfilePicture}'),
+                                    //                                       ),
+                                    //                                     ),
+                                    //                                     const SizedBox(
+                                    //                                         width:
+                                    //                                             8),
+                                    //                                     Expanded(
+                                    //                                       child:
+                                    //                                           Column(
+                                    //                                         crossAxisAlignment:
+                                    //                                             CrossAxisAlignment.start,
+                                    //                                         children: [
+                                    //                                           Row(
+                                    //                                             children: [
+                                    //                                               TextWidget(text: "${oneLinkController.companyPosts[index].userFirstName} ${oneLinkController.companyPosts[index].userLastName}", textSize: 12),
+                                    //                                               const Expanded(child: SizedBox()),
+                                    //                                               InkWell(
+                                    //                                                 onTap: () {
+                                    //                                                   oneLinkController.deletePost(context, oneLinkController.companyPosts[index].postId!).then((v) {
+                                    //                                                     oneLinkController.companyPosts.removeAt(index);
+                                    //                                                     setState(() {});
+                                    //                                                   });
+                                    //                                                 },
+                                    //                                                 child: const Icon(
+                                    //                                                   Icons.delete,
+                                    //                                                   color: AppColors.redColor,
+                                    //                                                   size: 18,
+                                    //                                                 ),
+                                    //                                               )
+                                    //                                             ],
+                                    //                                           ),
+                                    //                                           // const SizedBox(height: 1),
+                                    //                                           TextWidget(
+                                    //                                             text: "${oneLinkController.companyPosts[index].userDesignation}  ${oneLinkController.companyPosts[index].userLocation}",
+                                    //                                             textSize: 10,
+                                    //                                             color: AppColors.whiteCard,
+                                    //                                           ),
+                                    //                                           // const SizedBox(height: 1),
+                                    //                                           TextWidget(
+                                    //                                             text: "${oneLinkController.companyPosts[index].age}",
+                                    //                                             textSize: 10,
+                                    //                                             color: AppColors.white54,
+                                    //                                           ),
+                                    //                                         ],
+                                    //                                       ),
+                                    //                                     ),
+                                    //                                   ],
+                                    //                                 ),
+                                    //                               ),
+                                    //                               Divider(
+                                    //                                   height: 0,
+                                    //                                   color: AppColors
+                                    //                                       .white38,
+                                    //                                   thickness:
+                                    //                                       0.5),
+                                    //                               Padding(
+                                    //                                 padding:
+                                    //                                     const EdgeInsets
+                                    //                                         .all(
+                                    //                                         8),
+                                    //                                 child:
+                                    //                                     Column(
+                                    //                                   crossAxisAlignment:
+                                    //                                       CrossAxisAlignment
+                                    //                                           .start,
+                                    //                                   children: [
+                                    //                                     HtmlWidget(
+                                    //                                       "${oneLinkController.companyPosts[index].description}",
+                                    //                                       // onTapUrl: (url) async {
+                                    //                                       //   return await launch(
+                                    //                                       //       url);
+                                    //                                       // },
+                                    //                                       textStyle: TextStyle(
+                                    //                                           fontSize: 10,
+                                    //                                           color: AppColors.white),
+                                    //                                     ),
+                                    //                                     const SizedBox(
+                                    //                                         height:
+                                    //                                             6),
+                                    //                                     if (oneLinkController
+                                    //                                         .companyPosts[
+                                    //                                             index]
+                                    //                                         .pollOptions!
+                                    //                                         .isNotEmpty)
+                                    //                                       PollWidgetProfile(
+                                    //                                           pollOptions: oneLinkController.companyPosts[index].pollOptions!,
+                                    //                                           totalVotes: oneLinkController.companyPosts[index].totalVotes!,
+                                    //                                           myVotes: oneLinkController.companyPosts[index].myVotes!),
+                                    //                                     oneLinkController.companyPosts[index].images!.isEmpty
+                                    //                                         ? const SizedBox(height: 145)
+                                    //                                         : Column(children: [
+                                    //                                             SizedBox(
+                                    //                                               height: 133,
+                                    //                                               child: PageView.builder(
+                                    //                                                 controller: _pageController,
+                                    //                                                 itemCount: oneLinkController.companyPosts[index].images!.length,
+                                    //                                                 onPageChanged: (ind) {
+                                    //                                                   setState(() {
+                                    //                                                     _currentIndex = ind;
+                                    //                                                   });
+                                    //                                                 },
+                                    //                                                 itemBuilder: (context, ind) {
+                                    //                                                   return Container(
+                                    //                                                     decoration: BoxDecoration(
+                                    //                                                       borderRadius: BorderRadius.circular(12),
+                                    //                                                       image: DecorationImage(
+                                    //                                                         fit: BoxFit.cover,
+                                    //                                                         image: NetworkImage(oneLinkController.companyPosts[index].images![ind]),
+                                    //                                                       ),
+                                    //                                                     ),
+                                    //                                                   );
+                                    //                                                 },
+                                    //                                               ),
+                                    //                                             ),
+                                    //                                             if (oneLinkController.companyPosts[index].images!.isNotEmpty && oneLinkController.companyPosts[index].images!.length > 1)
+                                    //                                               Row(
+                                    //                                                 mainAxisAlignment: MainAxisAlignment.center,
+                                    //                                                 children: List.generate(
+                                    //                                                   oneLinkController.companyPosts[index].images!.length,
+                                    //                                                   (index) => Container(
+                                    //                                                     margin: const EdgeInsets.only(left: 4, right: 4, top: 8),
+                                    //                                                     width: _currentIndex == index ? 5 : 3,
+                                    //                                                     height: _currentIndex == index ? 5 : 3,
+                                    //                                                     decoration: BoxDecoration(
+                                    //                                                       shape: BoxShape.circle,
+                                    //                                                       color: _currentIndex == index
+                                    //                                                           ? GetStoreData.getStore.read('isInvestor')
+                                    //                                                               ? AppColors.primaryInvestor
+                                    //                                                               : AppColors.primary
+                                    //                                                           : AppColors.grey,
+                                    //                                                     ),
+                                    //                                                   ),
+                                    //                                                 ),
+                                    //                                               ),
+                                    //                                           ])
+                                    //                                   ],
+                                    //                                 ),
+                                    //                               )
+                                    //                             ]),
+                                    //                       ),
+                                    //                     ),
+                                    //                   );
+                                    //                 },
+                                    //               ),
+                                    //             ),
+                                    //           ),
+                                    //         ],
+                                    //       ),
                                     sizedTextfield,
                                   ],
                                 ),

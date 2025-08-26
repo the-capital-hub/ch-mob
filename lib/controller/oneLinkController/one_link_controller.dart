@@ -1,17 +1,20 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:capitalhub_crm/model/01-StartupModel/oneLinkGetModel/one_link_model.dart';
+import 'package:capitalhub_crm/model/oneLinkGetModel/one_link_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 
-import '../../model/01-StartupModel/oneLinkGetModel/one_link_request_model.dart';
-import '../../model/01-StartupModel/profileModel/profile_post_model.dart';
+import '../../model/homeScreenLandingModel/post_data_model.dart';
+import '../../model/oneLinkGetModel/company_post_model.dart';
+import '../../model/oneLinkGetModel/one_link_request_model.dart';
+import '../../model/profileModel/profile_post_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import '../../utils/helper/helper.dart';
 import '../../utils/helper/helper_sncksbar.dart';
+import '../../widget/bottomSheet/create_post_bottomsheet.dart';
 
 class OneLinkController extends GetxController {
   // TextEditingController introMsgController = TextEditingController();
@@ -40,6 +43,7 @@ class OneLinkController extends GetxController {
         secrateKeyController.text = oneLinkData.secretOneLinkKey!;
         investmentPhilosophyController.text = oneLinkData.investmentPhilosophy!;
         thesisData = oneLinkData.thesis!;
+        introMsgController.setText(oneLinkData.introductoryMessage!);
       }
     } catch (e) {
       log("getOnelinkData list $e");
@@ -68,8 +72,7 @@ class OneLinkController extends GetxController {
     }
   }
 
-  Future acceptOnelink(
-      String startupid, String reqId, bool isAccept) async {
+  Future acceptOnelink(String startupid, String reqId, bool isAccept) async {
     var response = await ApiBase.postRequest(
       body: {"startUpId": startupid, "requestId": reqId},
       withToken: true,
@@ -172,7 +175,6 @@ class OneLinkController extends GetxController {
       var data = jsonDecode(response.body);
       if (data['status'] == true) {
         ProfilePostModel profilePostModel = ProfilePostModel.fromJson(data);
-        companyPosts.addAll(profilePostModel.data!);
       }
     } catch (e) {
       log("getnotification list $e");

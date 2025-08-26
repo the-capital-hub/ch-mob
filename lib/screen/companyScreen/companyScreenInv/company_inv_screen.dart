@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/companyScreen/add_company_screen.dart';
 import 'package:capitalhub_crm/screen/companyScreen/companyScreenInv/add_company_inv_screen.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';

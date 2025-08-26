@@ -3,7 +3,9 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 
-import '../../model/01-StartupModel/profileModel/profile_post_model.dart';
+import '../../model/homeScreenLandingModel/post_data_model.dart';
+import '../../model/profileModel/profile_post_model.dart';
+import '../../model/savedCollectionModel/saved_post_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 
@@ -31,7 +33,7 @@ class SavedPostController extends GetxController {
     }
   }
 
-  List<ProfilePost> savedPost = [];
+  List<PostData> savedPost = [];
   RxBool isTabLoading = false.obs;
 
   Future getSavedPost(tabValue) async {
@@ -45,7 +47,7 @@ class SavedPostController extends GetxController {
       log(response.body);
       var data = jsonDecode(response.body);
       if (data['status'] == true) {
-        ProfilePostModel profilePostModel = ProfilePostModel.fromJson(data);
+        SavedPostModel profilePostModel = SavedPostModel.fromJson(data);
         savedPost.addAll(profilePostModel.data!);
       }
     } catch (e) {

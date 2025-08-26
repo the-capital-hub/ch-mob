@@ -16,7 +16,7 @@ import '../../../widget/text_field/text_field.dart';
 import '../../../widget/textwidget/text_widget.dart';
 import '../../../utils/constant/app_var.dart';
 import '../../../utils/constant/asset_constant.dart';
-import 'signup_info_page.dart';
+import 'signupInfoScreens/signup_info_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

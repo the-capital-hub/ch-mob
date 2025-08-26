@@ -1,8 +1,10 @@
 import 'package:capitalhub_crm/screen/chatScreen/chat_member_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
+import 'package:capitalhub_crm/widget/dilogue/share_dilogue.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,8 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:get/get.dart';
 import '../../controller/publicProfileController/public_profile_controller.dart';
 import '../../utils/helper/helper.dart';
+import '../../utils/helper/helper_sncksbar.dart';
+import '../subscriptionScreen/subscription_screen.dart';
 
 class PublicProfileScreen extends StatefulWidget {
   String id;
@@ -21,7 +25,7 @@ class PublicProfileScreen extends StatefulWidget {
 
 class _PublicProfileScreenState extends State<PublicProfileScreen> {
   PublicProfileController publicProfileController =
-      Get.put(PublicProfileController());
+      Get.put(PublicProfileController(), permanent: true);
   @override
   void initState() {
     publicProfileController.getPublicProfile(widget.id);
@@ -37,7 +41,25 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
       decoration: bgDec,
       child: Scaffold(
           backgroundColor: AppColors.transparent,
-          appBar: HelperAppBar.appbarHelper(title: "Profile"),
+          appBar: HelperAppBar.appbarHelper(title: "Profile", action: [
+            Obx(
+              () => publicProfileController.isLoading.value
+                  ? const SizedBox()
+                  : InkWell(
+                      onTap: () {
+                        sharePostPopup(context, "",
+                            "https://www.thecapitalhub.in/user/${publicProfileController.publicData.userProfile!.userName}");
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Image.asset(
+                          PngAssetPath.share,
+                          height: 25,
+                        ),
+                      ),
+                    ),
+            ),
+          ]),
           body: Obx(
             () => publicProfileController.isLoading.value
                 ? Helper.pageLoading()
@@ -112,19 +134,31 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                 child: AppButton.primaryButton(
                                     onButtonPressed: () {
                                       if (publicProfileController.publicData
-                                              .userProfile!.connectionStatus ==
-                                          "not_connected") {
-                                        publicProfileController
-                                            .connectionRequest(
-                                                userId: widget.id)
-                                            .then((val) {
-                                          if (val) {
-                                            publicProfileController
+                                          .userProfile!.isSubscribed!) {
+                                        if (publicProfileController
                                                 .publicData
                                                 .userProfile!
-                                                .connectionStatus = "Pending";
-                                            setState(() {});
-                                          }
+                                                .connectionStatus ==
+                                            "not_connected") {
+                                          publicProfileController
+                                              .connectionRequest(
+                                                  userId: widget.id)
+                                              .then((val) {
+                                            if (val) {
+                                              publicProfileController
+                                                  .publicData
+                                                  .userProfile!
+                                                  .connectionStatus = "Pending";
+                                              setState(() {});
+                                            }
+                                          });
+                                        }
+                                      } else {
+                                        Get.to(() => SubscriptionScreen(
+                                                fromCampaign: false))!
+                                            .whenComplete(() {
+                                          publicProfileController
+                                              .getPublicProfile(widget.id);
                                         });
                                       }
                                     },
@@ -143,16 +177,18 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                             .connectionStatus!
                                             .capitalizeFirst!),
                               ),
-                              if (publicProfileController
-                                  .publicData.userProfile!.isSubscribed!)
+                              if (publicProfileController.publicData
+                                      .userProfile!.connectionStatus ==
+                                  "connected")
                                 const SizedBox(width: 8),
-                              if (publicProfileController
-                                  .publicData.userProfile!.isSubscribed!)
+                              if (publicProfileController.publicData
+                                      .userProfile!.connectionStatus ==
+                                  "connected")
                                 Expanded(
                                   child: AppButton.primaryButton(
                                       height: 40,
                                       onButtonPressed: () {
-                                        Get.to(ChatMemberScreen());
+                                        Get.to(const ChatMemberScreen());
                                       },
                                       title: "Message"),
                                 ),
@@ -198,11 +234,17 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                         .publicData.userEmail!.isAccessible!)
                                       InkWell(
                                         onTap: () {
-                                          publicProfileController
-                                              .addEmailToFounder(
-                                                  context, widget.id)
-                                              .then((v) {
-                                            setState(() {});
+                                          // publicProfileController
+                                          //     .addEmailToFounder(
+                                          //         context, widget.id)
+                                          //     .then((v) {
+                                          //   setState(() {});
+                                          // });
+                                          Get.to(() => SubscriptionScreen(
+                                                  fromCampaign: false))!
+                                              .whenComplete(() {
+                                            publicProfileController
+                                                .getPublicProfile(widget.id);
                                           });
                                         },
                                         child: const TextWidget(
@@ -216,34 +258,38 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                               ],
                             ),
                           ),
-                          sizedTextfield,
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: AppColors.blackCard,
-                              borderRadius: BorderRadius.circular(12),
+                          if (publicProfileController
+                              .publicData.userProfile!.bio!.isNotEmpty)
+                            sizedTextfield,
+                          if (publicProfileController
+                              .publicData.userProfile!.bio!.isNotEmpty)
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: AppColors.blackCard,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const TextWidget(
+                                        text: "Bio",
+                                        textSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: TextWidget(
+                                              text:
+                                                  "${publicProfileController.publicData.userProfile!.bio}",
+                                              maxLine: 100,
+                                              textSize: 12),
+                                        ),
+                                      ],
+                                    )
+                                  ]),
                             ),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const TextWidget(
-                                      text: "Bio",
-                                      textSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                  const SizedBox(height: 8),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: TextWidget(
-                                            text:
-                                                "${publicProfileController.publicData.userProfile!.bio}",
-                                            maxLine: 100,
-                                            textSize: 12),
-                                      ),
-                                    ],
-                                  )
-                                ]),
-                          ),
                           sizedTextfield,
                           const Align(
                             alignment: Alignment.topLeft,
@@ -486,12 +532,19 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                                 fontWeight: FontWeight.w500,
                                                 color: AppColors.black),
                                             const SizedBox(height: 3),
-                                            TextWidget(
-                                              text:
-                                                  "${publicProfileController.publicData.events![index].description}",
-                                              textSize: 15,
-                                              color: AppColors.black,
-                                              maxLine: 2,
+                                            SizedBox(
+                                              height: 50,
+                                              child: SingleChildScrollView(
+                                                child: HtmlWidget(
+                                                  publicProfileController
+                                                          .publicData
+                                                          .events![index]
+                                                          .description ??
+                                                      "",
+                                                  textStyle: const TextStyle(
+                                                      fontSize: 11),
+                                                ),
+                                              ),
                                             ),
                                             const SizedBox(height: 3),
                                             TextWidget(
@@ -773,8 +826,11 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   TextWidget(
-                                                    text:
-                                                        "${publicProfileController.publicData.userProfile!.experience![index].companyRole!}", // Default text
+                                                    text: publicProfileController
+                                                        .publicData
+                                                        .userProfile!
+                                                        .experience![index]
+                                                        .companyRole!, // Default text
                                                     textSize: 16,
                                                     fontWeight: FontWeight.w500,
                                                   ),
@@ -936,199 +992,39 @@ class _PublicProfileScreenState extends State<PublicProfileScreen> {
                             ),
                           if (publicProfileController
                               .publicData.post!.isNotEmpty)
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                sizedTextfield,
-                                const TextWidget(
-                                    text: "Activity",
-                                    textSize: 16,
-                                    fontWeight: FontWeight.w500),
-                                const SizedBox(height: 6),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: SizedBox(
-                                        height: 250,
-                                        child: ListView.separated(
-                                          itemCount: publicProfileController
-                                              .publicData.post!.length,
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          separatorBuilder: (context, index) {
-                                            return const SizedBox(width: 8);
-                                          },
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return SizedBox(
-                                              width: Get.width / 1.4,
-                                              child: Card(
-                                                elevation: 3,
-                                                shadowColor: AppColors.white12,
-                                                color: AppColors.blackCard,
-                                                surfaceTintColor:
-                                                    AppColors.blackCard,
-                                                child: SingleChildScrollView(
-                                                  child: Column(children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          CircleAvatar(
-                                                            backgroundColor:
-                                                                AppColors
-                                                                    .transparent,
-                                                            radius: 18,
-                                                            child: CircleAvatar(
-                                                              radius: 20,
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      '${publicProfileController.publicData.post![index].userProfilePicture}'),
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 8),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                TextWidget(
-                                                                    text:
-                                                                        "${publicProfileController.publicData.post![index].userFirstName} ${publicProfileController.publicData.post![index].userLastName}",
-                                                                    textSize:
-                                                                        12),
-                                                                // const SizedBox(height: 1),
-                                                                TextWidget(
-                                                                  text:
-                                                                      "${publicProfileController.publicData.post![index].userDesignation}  ${publicProfileController.publicData.post![index].userLocation}",
-                                                                  textSize: 10,
-                                                                  color: AppColors
-                                                                      .whiteCard,
-                                                                ),
-                                                                // const SizedBox(height: 1),
-                                                                TextWidget(
-                                                                  text:
-                                                                      "${publicProfileController.publicData.post![index].age}",
-                                                                  textSize: 10,
-                                                                  color: AppColors
-                                                                      .white54,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Divider(
-                                                        height: 0,
-                                                        color:
-                                                            AppColors.white38,
-                                                        thickness: 0.5),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          HtmlWidget(
-                                                            "${publicProfileController.publicData.post![index].description}",
-                                                            textStyle: TextStyle(
-                                                                fontSize: 10,
-                                                                color: AppColors
-                                                                    .white),
-                                                          ),
-                                                          publicProfileController
-                                                                  .publicData
-                                                                  .post![index]
-                                                                  .images!
-                                                                  .isEmpty
-                                                              ? const SizedBox(
-                                                                  height: 145)
-                                                              : Column(
-                                                                  children: [
-                                                                      SizedBox(
-                                                                        height:
-                                                                            133,
-                                                                        child: PageView
-                                                                            .builder(
-                                                                          controller:
-                                                                              _pageController,
-                                                                          itemCount: publicProfileController
-                                                                              .publicData
-                                                                              .post![index]
-                                                                              .images!
-                                                                              .length,
-                                                                          onPageChanged:
-                                                                              (ind) {
-                                                                            setState(() {
-                                                                              _currentIndex = ind;
-                                                                            });
-                                                                          },
-                                                                          itemBuilder:
-                                                                              (context, ind) {
-                                                                            return Container(
-                                                                              decoration: BoxDecoration(
-                                                                                borderRadius: BorderRadius.circular(12),
-                                                                                image: DecorationImage(
-                                                                                  fit: BoxFit.cover,
-                                                                                  image: NetworkImage(publicProfileController.publicData.post![index].images![ind]),
-                                                                                ),
-                                                                              ),
-                                                                            );
-                                                                          },
-                                                                        ),
-                                                                      ),
-                                                                      if (publicProfileController
-                                                                              .publicData
-                                                                              .post![
-                                                                                  index]
-                                                                              .images!
-                                                                              .isNotEmpty &&
-                                                                          publicProfileController.publicData.post![index].images!.length >
-                                                                              1)
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          children:
-                                                                              List.generate(
-                                                                            publicProfileController.publicData.post![index].images!.length,
-                                                                            (index) =>
-                                                                                Container(
-                                                                              margin: const EdgeInsets.only(left: 4, right: 4, top: 8),
-                                                                              width: _currentIndex == index ? 5 : 3,
-                                                                              height: _currentIndex == index ? 5 : 3,
-                                                                              decoration: BoxDecoration(
-                                                                                shape: BoxShape.circle,
-                                                                                color: _currentIndex == index ? AppColors.primary : AppColors.grey,
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                    ])
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ]),
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                            Container(
+                              padding: const EdgeInsets.only(top: 12),
+                              decoration: BoxDecoration(
+                                color: AppColors.black,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 12),
+                                    child: TextWidget(
+                                        text: "Activity",
+                                        textSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  ListView.separated(
+                                    itemCount: publicProfileController
+                                        .publicData.post!.length,
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    separatorBuilder: (context, index) {
+                                      return const SizedBox(width: 8);
+                                    },
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return SizedBox();
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                         ],
                       ),

@@ -36,10 +36,10 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
       if (widget.isEdit == false) {
         companyController.clearData();
       } else {
+        companyController.getTeamMember();
         companyController.fillData().then((v) {
           setState(() {});
         });
-        companyController.getTeamMember();
       }
     });
     super.initState();
@@ -457,6 +457,7 @@ class _AddCompanyScreenState extends State<AddCompanyScreen> {
                             if (!widget.isEdit && base64 == "") {
                               HelperSnackBar.snackBar(
                                   "Error", "Upload an Image for the Company.");
+                              return;
                             }
                             Helper.loader(context);
                             companyController.createCompany().then((val) {

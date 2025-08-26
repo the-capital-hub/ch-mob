@@ -36,7 +36,7 @@ class CommunityScheduleEventsScreen extends StatefulWidget {
 
 class _CommunityScheduleEventsScreenState
     extends State<CommunityScheduleEventsScreen> {
-  CommunityWebinarsController communityWebinars = Get.find();
+  var communityWebinars = Get.find();
   TextEditingController urlController = TextEditingController();
   int? _selectedIndex;
   List<String> data = [

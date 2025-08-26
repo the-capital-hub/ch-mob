@@ -42,7 +42,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
       children: [
         if (widget.lable != null)
           TextWidget(
-              text: widget.lable!, textSize: 12, fontWeight: FontWeight.w500),
+              text: widget.lable!, textSize: 14, fontWeight: FontWeight.w500),
         if (widget.lable != null) const SizedBox(height: 8),
         Container(
           height: widget.height ?? 50,

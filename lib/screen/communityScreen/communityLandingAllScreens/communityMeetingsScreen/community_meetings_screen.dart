@@ -221,25 +221,6 @@ class _CommunityMeetingScreenState extends State<CommunityMeetingsScreen> {
                                 const SizedBox(
                                   width: 8,
                                 ),
-                                IconButton(
-                                    onPressed: () {
-                                      addServiceIndex = 1;
-                                      Get.to(() => CommunityAddServiceScreen(
-                                            isEdit: true,
-                                            index: index,
-                                            isPriorityDM: false,
-                                            isMeeting: true,
-                                            isEvent: false,
-                                            isWebinar: false,
-                                            meetingId: communityMeetings
-                                                .communityMeetingsList[index]
-                                                .id,
-                                          ));
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: AppColors.white,
-                                    )),
                                 const SizedBox(width: 8),
                                 IconButton(
                                     onPressed: () {

@@ -27,7 +27,7 @@ class AppButton {
                 : AppColors.primary),
       ),
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
+        style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 4),
           elevation: 0,
           minimumSize: const Size.fromHeight(4),
           shape: StadiumBorder(),
@@ -75,6 +75,7 @@ class AppButton {
           elevation: 0,
           minimumSize: const Size.fromHeight(4),
           shape: StadiumBorder(),
+          padding: const EdgeInsets.symmetric(horizontal: 14),
           backgroundColor: bgColor ?? AppColors.transparent,
         ),
         onPressed: onButtonPressed,

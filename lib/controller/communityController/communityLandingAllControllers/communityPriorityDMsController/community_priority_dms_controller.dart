@@ -1,14 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityPriorityDMsModel/community_priority_dms_model.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityPriorityDMsModel/your_questions_model.dart';
+import 'package:capitalhub_crm/model/communityModel/communityLandingAllModels/communityPriorityDMsModel/community_priority_dms_model.dart';
+import 'package:capitalhub_crm/model/communityModel/communityLandingAllModels/communityPriorityDMsModel/your_questions_model.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
+
+import '../../../../widget/bottomSheet/create_post_bottomsheet.dart';
 
 class CommunityPriorityDMsController extends GetxController {
   String selectedTimeLine = "Hours";
@@ -57,7 +59,7 @@ class CommunityPriorityDMsController extends GetxController {
     // }
     String description = "";
     await descriptionController.getText().then((val) => description = val);
-    
+
     var body = {
       "title": titleController.text,
       "description": description,
@@ -224,7 +226,7 @@ class CommunityPriorityDMsController extends GetxController {
     }
   }
 
-  YourQuestions yourQuestionsData = YourQuestions();
+  YourQuestions yourQuestionsData = YourQuestions(questions: []);
   Future<void> getCommunityPriorityDMYourQuestions(priorityDMId) async {
     try {
       isLoading.value = true;

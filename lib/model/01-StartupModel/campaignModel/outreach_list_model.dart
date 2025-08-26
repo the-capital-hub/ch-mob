@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 OutreachListModel outreachListModelFromJson(String str) =>
     OutreachListModel.fromJson(json.decode(str));

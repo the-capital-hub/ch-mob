@@ -1,4 +1,5 @@
-import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityPostModel/community_post_model.dart';
+
+import '../../../../publicPostModel/public_post_model.dart';
 
 class ResharedCommunityPostData {
   String? userProfilePicture;

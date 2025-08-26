@@ -181,7 +181,7 @@ class MyCustomTextField {
                 minHeight: 200,
                 isEnabled: isEnable,
                 backgroundColor: AppColors.blackCard,
-                hintTextStyle: TextStyle(color: AppColors.white12),
+                hintTextStyle: TextStyle(color: AppColors.white54),
                 textStyle: TextStyle(color: AppColors.white),
                 loadingBuilder: (context) {
                   return Container(

@@ -228,8 +228,9 @@ class _DocumentationScreenState extends State<DocumentationScreen>
                                                         SelectedDocumentScreen(
                                                           title:
                                                               documentController
-                                                                      .getFolders[
-                                                                  index],
+                                                                  .getFolders[
+                                                                      index]
+                                                                  .folderName!,
                                                         ));
                                                   },
                                                   contentPadding:
@@ -256,7 +257,8 @@ class _DocumentationScreenState extends State<DocumentationScreen>
                                                   horizontalTitleGap: 8,
                                                   title: TextWidget(
                                                       text: documentController
-                                                          .getFolders[index],
+                                                          .getFolders[index]
+                                                          .folderName!,
                                                       textSize: 15),
                                                   trailing:
                                                       AppButton.primaryButton(
@@ -264,8 +266,9 @@ class _DocumentationScreenState extends State<DocumentationScreen>
                                                             Get.to(() =>
                                                                 SelectedDocumentScreen(
                                                                   title: documentController
-                                                                          .getFolders[
-                                                                      index],
+                                                                      .getFolders[
+                                                                          index]
+                                                                      .folderName!,
                                                                 ));
                                                           },
                                                           title: "Upload",

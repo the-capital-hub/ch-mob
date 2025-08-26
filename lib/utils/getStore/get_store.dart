@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:capitalhub_crm/screen/01-Investor-Section/landingScreen/landing_screen_inv.dart';
+import 'package:capitalhub_crm/screen/landingScreen/landing_screen_inv.dart';
 import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';

@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../model/01-StartupModel/campaignModel/outreach_view_model.dart';
+import '../../../model/campaignModel/outreach_view_model.dart';
 import '../../../widget/dilogue/campaignDilogue/schedule_campaign_dilogue.dart';
 
 class ViewOutreachScreen extends StatefulWidget {

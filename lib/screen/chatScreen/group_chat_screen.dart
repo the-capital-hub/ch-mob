@@ -16,8 +16,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:video_player/video_player.dart';
-import '../../model/01-StartupModel/chatModel/group_memberlist_model.dart';
-import '../../model/01-StartupModel/chatModel/member_chats.dart';
+import '../../model/chatModel/group_memberlist_model.dart';
+import '../../model/chatModel/member_chats.dart';
+import 'add_member_groupchat.dart';
 import 'video_preview.dart';
 
 class GroupChatScreen extends StatefulWidget {
@@ -174,6 +175,10 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
                             .then((v) {
                           setState(() {});
                         });
+                      } else if (value == 'add_member') {
+                        Get.to(() => AddMemberGroupchat(
+                              groupId: widget.member.communityId!,
+                            ));
                       }
                     },
                     itemBuilder: (context) => [
@@ -181,6 +186,12 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
                             value: 'clear_chat',
                             child: TextWidget(text: "Clear Chat", textSize: 14),
                           ),
+                          if (widget.member.isAdmin ?? false)
+                            const PopupMenuItem(
+                              value: 'add_member',
+                              child:
+                                  TextWidget(text: "Add Member", textSize: 14),
+                            ),
                         ])
               ]),
           body: Obx(() => chatController.isLoading.value

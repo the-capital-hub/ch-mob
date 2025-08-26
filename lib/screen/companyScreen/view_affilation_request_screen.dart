@@ -35,7 +35,7 @@ class _ViewAffilationRequestScreenState
                   separatorBuilder: (BuildContext context, int index) {
                     return const SizedBox(height: 8);
                   },
-                  padding: const EdgeInsets.all(12),
+                  // padding: const EdgeInsets.all(12),
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                       padding: const EdgeInsets.all(12),

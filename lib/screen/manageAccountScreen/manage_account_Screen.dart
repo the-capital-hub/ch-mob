@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:capitalhub_crm/controller/profileController/profile_controller.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/Auth-Process/authScreen/login_page.dart';
 import 'package:capitalhub_crm/screen/Auth-Process/selectWhatYouAreScreen/select_role_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
@@ -42,7 +42,7 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
     super.initState();
   }
 
-  ProfileController profileController = Get.find();
+  ProfileController profileController = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {

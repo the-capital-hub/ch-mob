@@ -1,5 +1,5 @@
 import 'package:capitalhub_crm/controller/newsController/news_controller.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';

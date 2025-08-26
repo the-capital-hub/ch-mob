@@ -1,24 +1,20 @@
 import 'package:capitalhub_crm/controller/homeController/home_controller.dart';
 import 'package:capitalhub_crm/controller/notificationController/notification_controller.dart';
-import 'package:capitalhub_crm/screen/Auth-Process/authScreen/signup_info_page.dart';
+import 'package:capitalhub_crm/screen/Auth-Process/authScreen/signupInfoScreens/signup_info_page.dart';
 import 'package:capitalhub_crm/screen/communityScreen/myCommunityScreen/my_community_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
-
 import '../../controller/profileController/profile_controller.dart';
 import '../../utils/appcolors/app_colors.dart';
 import '../../widget/textwidget/text_widget.dart';
-import '../chatScreen/group_screen.dart';
 import '../createPostScreen/create_post_screen.dart';
 import '../homeScreen/home_screen.dart';
 import '../oneLinkScreen/one_link_screen.dart';
 import '../profileScreen/profile_screen.dart';
 
 class LandingScreen extends StatefulWidget {
-  const LandingScreen({
-    super.key,
-  });
+  const LandingScreen({super.key});
 
   @override
   State<LandingScreen> createState() => _LandingScreenState();
@@ -63,24 +59,10 @@ class _LandingScreenState extends State<LandingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.black,
-      resizeToAvoidBottomInset: false,
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
-        decoration: BoxDecoration(
-          color: AppColors.blackCard,
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(18), topRight: Radius.circular(18)),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.white12,
-              spreadRadius: 2,
-              blurRadius: 7,
-              offset: const Offset(0, 2), // changes position of shadow
-            ),
-          ],
-        ),
+        height: 70,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(
             icons.length,

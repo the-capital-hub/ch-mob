@@ -35,7 +35,34 @@ class ApiUrl {
       "Communities/getAllCommunitiesUserIsNotMemberOf";
   static const String getNewsByDateUrl = "news/getNewsByDate";
   static const String getTodaysNewsUrl = "news/getTodaysNews";
-
+  static const String spotLightlistUrl =
+      "spotlight_products/getSpotlightProducts?";
+  static const String spotLightUserProductlistUrl =
+      "spotlight_products/getUserSpotlightProducts";
+  static const String spotLightProductUrl =
+      "spotlight_products/getSpotlightProductById";
+  static const String addSpotLightProduct =
+      "spotlight_products/addSpotlightProduct";
+  static const String addSpotlightCommentProduct =
+      "spotlight_products/addSpotlightProductComment";
+  static const String likeSpotLightCommentProduct =
+      "spotlight_products/likeSpotlightProductComment/";
+  static const String replySpotlightCommentProduct =
+      "spotlight_products/replySpotlightProductComment";
+  static const String upvoteProduct =
+      "spotlight_products/upvoteSpotlightProduct/";
+  static const String downvoteProduct =
+      "spotlight_products/downvoteSpotlightProduct/";
+  static const String upvoteComment =
+      "spotlight_products/upvoteSpotlightProductComment/";
+  static const String downvoteComment =
+      "spotlight_products/downvoteSpotlightProductComment/";
+  static const String upvoteCommentReply =
+      "spotlight_products/upvoteSpotlightProductReply/";
+  static const String downvoteCommentReply =
+      "spotlight_products/downvoteSpotlightProductReply/";
+  static const String spotlightRequest =
+      "spotlight_products/getSpotlightRequests";
   static const String exploreUrl = "users/explore?";
   static const String exploreFilterUrl = "users/exploreFilters?type=";
   static const String toggleIntrestInvUrl = "investor/toggleInterestInInvestor";
@@ -63,11 +90,13 @@ class ApiUrl {
   static String getSubscriptionList =
       "subscription/get_subscription_plans?from_campaign=";
   static String createSubscription = "subscription/create_subscription";
+  static String createPayment = "subscription/create_payment";
 
   static const String searchCompany = "startup/searchStartUps/";
   static const String addCompanyUser = "users/addStartUpToUser";
   static String getCompanyDetail = "startup/getStartupByFounderId/";
   static String getMemberAffilationReq = "startup/getMemberAffiliationRequests";
+  static String getMemberList = "startup/getAllUsersWithThisStartup/";
   static String searchUser = "users/search?searchQuery=";
   static String addTeamMember = "startup/addMemberToStartup";
   static String getTeamMember = "startup/getTeamMembers";
@@ -92,6 +121,7 @@ class ApiUrl {
       "connections/cancelConnectionRequest/";
 
   static const String getDocument = "documentation/getDocumentsByUser";
+  static const String lockUnlockDocument = "documentation/toggleDocumentLock";
   static const String deleteDocument = "documentation/deleteDocument";
   static const String uploadDocument = "documentation/uploadDocument";
   static const String createFolderName = "documentation/uploadDocument";
@@ -108,6 +138,7 @@ class ApiUrl {
   static const String getPostDetail = "api/posts/get_post_by_id";
 
   static const String oneLinkDetailsGet = "startup/onelinkDetails";
+  static const String oneLinkSecrateKey = "users/updateSecretKey";
   static const String getOneLinkPendingReq = "startup/getOneLinkRequests";
   static const String oneLinkDetailsEdit = "investor/editInvestorOneLink";
   static const String onelinkIntroMsgPost = "startup/introMessage";
@@ -128,6 +159,12 @@ class ApiUrl {
 
   static const String groupChatMemberList =
       "community/getAllCommunitiesByUserId";
+  static const String removeConnectionsGroup =
+      "community/removeMembersFromCommunity/";
+  static const String addMembersToCommuntiy =
+      "community/addMembersToCommunity/";
+  static const String getAdminConnections =
+      "community/getCommunityAdminConnections/";
   static const String createGroup = "community/createCommunity";
   static const String acceptOnelink = "startup/approveOneLinkRequest";
   static const String rejectOnelink = "startup/rejectOneLinkRequest";
@@ -165,7 +202,8 @@ class ApiUrl {
   static const String joinCommunity = "Communities/addMembersToCommunity/";
   static const String updateCommunity = "Communities/updateCommunity/";
   static const String toggleReceiveEmail = "communities/toggleRecieveEmail/";
-  static const String communityMemberSettings = "communities/getCommunityMemberSettings/";
+  static const String communityMemberSettings =
+      "communities/getCommunityMemberSettings/";
   static const String addProductToCommunity =
       "Communities/addProductToCommunity/";
   static const String updateCommunityProduct = "Communities/updateProduct/";
@@ -195,7 +233,7 @@ class ApiUrl {
       "communities/services/priorityDMs/";
   static const String getCommunityPriorityDMYourQuestions =
       "communities/priorityDM/userQuestions/";
-  static const String getCommunityWebinars = "communities/services/events/";
+  static const String getCommunityEvent = "communities/services/events/";
   static const String deleteCommunityWebinar = "webinars/deleteWebinar/";
   static const String getCommunityMeetings = "communities/services/meetings/";
   static const String sendJoinRequest = "Communities/sendJoinRequest/";
@@ -231,6 +269,10 @@ class ApiUrl {
   static const String delMyInterest = "investor/interest";
   static const String addPastInvestment =
       "investor/past-investment"; //same for add edit del
+
+  static const String getAnnalytics = "users/getUserAnalytics?timePeriod=";
+  static const String getQuestionList = "contactus/fundingquestions";
+  static const String postAnsFund = "contactUs/lookingForFundingMail";
 
   static const String getCampaignUrl =
       "campaign/lists/getFilteredInvestorsList";

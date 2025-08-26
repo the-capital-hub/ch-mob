@@ -31,15 +31,14 @@ class _CommunityRegisteredUsersScreenState
             hideBack: true,
             autoAction: true,
           ),
-          body: communityEvents.communityWebinarsList[widget.index]
-                  .joinedUsers!.isEmpty
+          body: communityEvents.dateController.text.isEmpty
               ? const Center(
                   child: TextWidget(
                       text: "No Registered Users Available", textSize: 16))
               : Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: ListView.builder(
-                    itemCount: communityEvents.communityWebinarsList[widget.index].joinedUsers!.length,
+                    itemCount: communityEvents.hashCode,
                     itemBuilder: (context, index) {
                       return Card(
                         color: AppColors.blackCard,
@@ -48,12 +47,20 @@ class _CommunityRegisteredUsersScreenState
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                               CircleAvatar(
-                                  backgroundColor: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
-                                  child: TextWidget(text: communityEvents
-                                        .communityWebinarsList[widget.index]
-                                        .joinedUsers![index]
-                                        .name![0].toUpperCase(), textSize: 16,color: GetStoreData.getStore.read('isInvestor')?AppColors.black:AppColors.white,)),
+                              CircleAvatar(
+                                  backgroundColor:
+                                      GetStoreData.getStore.read('isInvestor')
+                                          ? AppColors.primaryInvestor
+                                          : AppColors.primary,
+                                  child: TextWidget(
+                                    text: communityEvents.dateController.text
+                                        .toUpperCase(),
+                                    textSize: 16,
+                                    color:
+                                        GetStoreData.getStore.read('isInvestor')
+                                            ? AppColors.black
+                                            : AppColors.white,
+                                  )),
                               const SizedBox(
                                 width: 8,
                               ),
@@ -61,26 +68,22 @@ class _CommunityRegisteredUsersScreenState
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   TextWidget(
-                                    text: communityEvents
-                                        .communityWebinarsList[widget.index]
-                                        .joinedUsers![index]
-                                        .name!,
+                                    text: communityEvents.dateController.text,
                                     textSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                   sizedTextfield,
                                   Row(
                                     children: [
-                                      Icon(
-                                        Icons.mail,
-                                        color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary
-                                      ),
+                                      Icon(Icons.mail,
+                                          color: GetStoreData.getStore
+                                                  .read('isInvestor')
+                                              ? AppColors.primaryInvestor
+                                              : AppColors.primary),
                                       SizedBox(width: 8),
                                       TextWidget(
                                           text: communityEvents
-                                              .communityWebinarsList[widget.index]
-                                              .joinedUsers![index]
-                                              .email!,
+                                              .emailController.text,
                                           textSize: 16),
                                     ],
                                   ),
@@ -89,14 +92,15 @@ class _CommunityRegisteredUsersScreenState
                                     children: [
                                       Icon(
                                         Icons.phone,
-                                        color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                        color: GetStoreData.getStore
+                                                .read('isInvestor')
+                                            ? AppColors.primaryInvestor
+                                            : AppColors.primary,
                                       ),
                                       SizedBox(width: 8),
                                       TextWidget(
                                           text: communityEvents
-                                              .communityWebinarsList[widget.index]
-                                              .joinedUsers![index]
-                                              .mobile!,
+                                              .mobileController.text,
                                           textSize: 16),
                                     ],
                                   ),

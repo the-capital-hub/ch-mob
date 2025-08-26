@@ -1,13 +1,15 @@
 import 'package:capitalhub_crm/controller/spotlightController/spotlight_controller.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
+import 'package:capitalhub_crm/screen/spotlLightScreen/spotlightHome/spotlight_all_product_Screen.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
-import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
+import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../utils/appcolors/app_colors.dart';
 import '../../utils/constant/app_var.dart';
-import 'product_list_screen.dart';
+import '../../widget/textwidget/text_widget.dart';
+import 'spotlightHome/spotlight_startup_showcase_screen.dart';
 
 class SpotLightLandingScreen extends StatefulWidget {
   const SpotLightLandingScreen({super.key});
@@ -62,19 +64,9 @@ class _SpotLightLandingScreenState extends State<SpotLightLandingScreen>
         backgroundColor: AppColors.transparent,
         drawer: const DrawerWidget(),
         appBar: HelperAppBar.appbarHelper(
-            title: "Spotlight",
-            hideBack: true,
-            action: [
-              InkWell(
-                onTap: () {},
-                child: const TextWidget(
-                    text: "+ Product",
-                    fontWeight: FontWeight.w500,
-                    textSize: 14,
-                    color: AppColors.primary),
-              ),
-              const SizedBox(width: 12)
-            ]),
+          title: "Spotlight",
+          hideBack: true,
+        ),
         body: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
@@ -192,7 +184,6 @@ class _SpotLightLandingScreenState extends State<SpotLightLandingScreen>
                   ),
                 ),
                 sizedTextfield,
-                ProductCardList()
               ],
             )),
       ),

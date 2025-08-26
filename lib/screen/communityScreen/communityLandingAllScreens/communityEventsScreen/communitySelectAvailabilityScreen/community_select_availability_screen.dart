@@ -25,8 +25,7 @@ class SelectAvailabilityScreen extends StatefulWidget {
 
 class _SelectAvailabilityScreenState extends State<SelectAvailabilityScreen> {
   var selectedDate;
-  CommunityWebinarsController communityWebinars =
-      Get.put(CommunityWebinarsController());
+  var communityWebinars = Get.find();
   bool isDaySelected = false;
   bool isSlotSelected = false;
   int availabilityIndex = 0;
@@ -273,7 +272,10 @@ class _SelectAvailabilityScreenState extends State<SelectAvailabilityScreen> {
                           children: [
                             Expanded(
                               child: AppButton.outlineButton(
-                                  borderColor: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                  borderColor:
+                                      GetStoreData.getStore.read('isInvestor')
+                                          ? AppColors.primaryInvestor
+                                          : AppColors.primary,
                                   onButtonPressed: () {
                                     Get.back();
                                     setState(() {
@@ -301,8 +303,7 @@ class _SelectAvailabilityScreenState extends State<SelectAvailabilityScreen> {
                                       //     DateFormat('MMMM d')
                                       //         .format(selectedDate);
 
-                                     communityWebinars.formattedDate != "" 
-                                     &&
+                                      communityWebinars.formattedDate != "" &&
                                               communityWebinars.slot != ""
                                           ? Get.to(() =>
                                               CommunityScheduleEventsScreen(

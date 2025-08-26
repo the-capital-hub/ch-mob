@@ -3,6 +3,7 @@
 //     final getAllResourcesModel = getAllResourcesModelFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:typed_data';
 
 GetAllResourcesModel getAllResourcesModelFromJson(String str) => GetAllResourcesModel.fromJson(json.decode(str));
 

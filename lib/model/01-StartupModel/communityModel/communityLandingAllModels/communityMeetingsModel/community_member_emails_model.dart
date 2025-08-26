@@ -1,6 +1,3 @@
-// To parse this JSON data, do
-//
-//     final getMemberEmailModel = getMemberEmailModelFromJson(jsonString);
 
 import 'dart:convert';
 

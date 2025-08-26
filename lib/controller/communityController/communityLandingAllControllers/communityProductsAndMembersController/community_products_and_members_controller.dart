@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/getCommunityProductsAndMembersModel/get_community_products_and_members_model.dart';
+import 'package:capitalhub_crm/model/communityModel/communityLandingAllModels/getCommunityProductsAndMembersModel/get_community_products_and_members_model.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
@@ -13,12 +13,10 @@ class CommunityProductsAndMembersController extends GetxController {
   var isLoading = false.obs;
   RxList<CommunityProductsAndMembers> communityProductsAndMembersList =
       <CommunityProductsAndMembers>[].obs;
-  RxList<Product> communityProductsList = <Product>[].obs;
   RxList<Member> communityMembersList = <Member>[].obs;
   Future<void> getCommunityProductsandMembers(memberName) async {
     try {
       isLoading.value = true;
-      communityProductsList.clear();
       communityMembersList.clear();
       var response = await ApiBase.getRequest(
           extendedURL:
@@ -28,8 +26,7 @@ class CommunityProductsAndMembersController extends GetxController {
       if (data["status"]) {
         GetCommunityProductsAndMembersModel communityProductsAndMembersModel =
             GetCommunityProductsAndMembersModel.fromJson(data);
-        communityProductsList
-            .assignAll(communityProductsAndMembersModel.data.products);
+      
         communityMembersList
             .assignAll(communityProductsAndMembersModel.data.members);
       }
@@ -72,10 +69,8 @@ class CommunityProductsAndMembersController extends GetxController {
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"]) {
-      communityProductsList.removeWhere((product) => product.id == productId);
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
-
       return true;
     } else {
       Get.back();

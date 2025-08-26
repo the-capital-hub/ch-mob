@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 GetCommunityWebinarsModel getCommunityWebinarsModelFromJson(String str) =>
     GetCommunityWebinarsModel.fromJson(json.decode(str));
 

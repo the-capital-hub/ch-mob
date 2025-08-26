@@ -1,5 +1,7 @@
+import 'dart:convert';
+
 import 'package:capitalhub_crm/controller/meetingController/meeting_controller.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/webinars_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
@@ -12,10 +14,13 @@ import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/datePicker/datePicker.dart';
 import 'package:capitalhub_crm/widget/dropdownWidget/drop_down_widget.dart';
 import 'package:capitalhub_crm/widget/text_field/text_field.dart';
+import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:capitalhub_crm/widget/timePicker/timePicker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
+import '../../widget/imagePickerWidget/image_picker_widget.dart';
 
 class CreateNewWebinarScreen extends StatefulWidget {
   const CreateNewWebinarScreen({super.key});
@@ -27,10 +32,12 @@ class CreateNewWebinarScreen extends StatefulWidget {
 class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
   MeetingController webinarController = Get.find();
   String privacyStatus = "Public";
+
   @override
   void initState() {
     super.initState();
     webinarController.type = privacyStatus;
+    clearData();
   }
 
   static void _validateDuration(
@@ -55,6 +62,21 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
       webinarController.endTimeController.text =
           DateFormat('hh:mm a').format(endTime);
     });
+  }
+
+  clearData() {
+    webinarController.imageBase64 = null;
+    webinarController.titleController.clear();
+    webinarController.descriptionController.clear();
+    webinarController.durationMinutesController.clear();
+    webinarController.endTimeController.clear();
+    webinarController.startTimeController.clear();
+    webinarController.dateSelected = DateTime.now();
+    webinarController.dateController.clear();
+    webinarController.type = "";
+    privacyStatus = "Public";
+    webinarController.priceController.clear();
+    webinarController.priceDiscountController.clear();
   }
 
   GlobalKey<FormState> webinarsFormkey = GlobalKey();
@@ -237,6 +259,7 @@ class _CreateNewWebinarScreenState extends State<CreateNewWebinarScreen> {
                     // webinarController.priceController.clear();
                     // webinarController.priceDiscountController.clear();
                     Get.back();
+                    clearData();
                     setState(() {
                       privacyStatus = "Public";
                     });

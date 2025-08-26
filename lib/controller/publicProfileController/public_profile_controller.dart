@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 
-import '../../model/01-StartupModel/publicProfileModel/public_profile_model.dart';
+import '../../model/publicProfileModel/public_profile_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import '../../utils/helper/helper.dart';

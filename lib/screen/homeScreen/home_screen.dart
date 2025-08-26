@@ -7,18 +7,18 @@ import 'package:capitalhub_crm/controller/homeController/home_controller.dart';
 import 'package:capitalhub_crm/controller/newsController/news_controller.dart';
 import 'package:capitalhub_crm/controller/notificationController/notification_controller.dart';
 import 'package:capitalhub_crm/controller/profileController/profile_controller.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/homeScreen/widget/communities_corner_widget.dart';
 import 'package:capitalhub_crm/screen/homeScreen/widget/fullscreen_image_view.dart';
 import 'package:capitalhub_crm/screen/homeScreen/widget/polls_widget.dart';
 import 'package:capitalhub_crm/screen/homeScreen/widget/startup_corner_widget.dart';
+import 'package:capitalhub_crm/screen/homeScreen/widget/video_player.dart';
 import 'package:capitalhub_crm/screen/publicProfileScreen/public_profile_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
-import 'package:capitalhub_crm/utils/paymentService/payment_service.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dilogue/create_collection.dart';
 import 'package:capitalhub_crm/widget/dilogue/share_dilogue.dart';
@@ -32,20 +32,16 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import '../../controller/resourceController/resource_controller.dart';
 import '../../utils/constant/app_var.dart';
 import '../../utils/constant/asset_constant.dart';
 import '../../utils/helper/placeholder.dart';
-import '../Auth-Process/authScreen/signup_info_page.dart';
 import '../chatScreen/chat_member_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../notificationScreen/notification_screen.dart';
 import '../profileScreen/polls_widget_profile.dart';
 import '../resourceScreen/resource_template.dart';
 import '../subscriptionScreen/subscription_screen.dart';
 import 'widget/animation_feed.dart';
-import 'widget/video_player.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -93,17 +89,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         });
       }
     });
-
-    // _controller = AnimationController(
-    //   duration: const Duration(milliseconds: 1000),
-    //   vsync: this,
-    // );
-    // _animation = CurvedAnimation(
-    //   parent: _controller,
-    //   curve: Curves.easeOutCirc,
-    // )..addListener(() {
-    //     setState(() {});
-    //   });
 
     _animationController = AnimationController(
       vsync: this,
@@ -177,6 +162,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return Container(
         decoration: bgDec,
         child: Scaffold(
+          // floatingActionButton: FloatingActionButton(onPressed: () {
+          //   Get.to(() => LandingScreen());
+          // }),
           backgroundColor: AppColors.transparent,
           drawer: GetStoreData.getStore.read('isInvestor')
               ? const DrawerWidgetInvestor()
@@ -199,7 +187,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               if (!GetStoreData.getStore.read('isSubscribed'))
                 InkWell(
                     onTap: () {
-                      Get.to(SubscriptionScreen(fromCampaign: false));
+                      Get.to(SubscriptionScreen(fromCampaign: false))!
+                          .whenComplete(() {
+                        setState(() {});
+                      });
                     },
                     child: Image.asset(
                       PngAssetPath.subscribeImg,
@@ -371,7 +362,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CircleAvatar(
                           backgroundColor:
@@ -469,13 +460,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   )
                                 ],
                               ),
-                              TextWidget(
-                                text:
-                                    "${homeController.postList[index].userDesignation}  ${homeController.postList[index].userCompany}",
-                                textSize: 12,
-                                maxLine: 2,
-                                color: AppColors.whiteCard,
-                              ),
+                              if (homeController.postList[index]
+                                      .userDesignation!.isNotEmpty ||
+                                  homeController
+                                      .postList[index].userCompany!.isNotEmpty)
+                                TextWidget(
+                                  text:
+                                      "${homeController.postList[index].userDesignation}  ${homeController.postList[index].userCompany}",
+                                  textSize: 12,
+                                  maxLine: 2,
+                                  color: AppColors.whiteCard,
+                                ),
                             ],
                           ),
                         ),

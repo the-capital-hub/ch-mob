@@ -239,26 +239,6 @@ class _CommunityPriorityDMScreenState
                                 const SizedBox(
                                   width: 8,
                                 ),
-                                IconButton(
-                                    onPressed: () {
-                                      addServiceIndex = 0;
-
-                                      Get.to(() => CommunityAddServiceScreen(
-                                          isEdit: true,
-                                          index: index,
-                                          isPriorityDM: true,
-                                          isMeeting: false,
-                                          isEvent: false,
-                                          isWebinar: false,
-                                          priorityDMId: communityPriorityDMs
-                                              .communityPriorityDMsList[index]
-                                              .id
-                                              .toString()));
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: AppColors.white,
-                                    )),
                                 const SizedBox(width: 8),
                                 IconButton(
                                     onPressed: () {

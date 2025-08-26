@@ -5,11 +5,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-import '../../model/01-StartupModel/documentationModel/documentation_model.dart';
-import '../../model/01-StartupModel/documentationModel/pitch_recording_model.dart';
+import '../../model/documentationModel/documentation_model.dart';
+import '../../model/documentationModel/fetch_folder_model.dart';
+import '../../model/documentationModel/pitch_recording_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import '../../utils/helper/helper_sncksbar.dart';
+import '../../widget/bottomSheet/create_post_bottomsheet.dart';
 
 class DocumentController extends GetxController {
   List<PlatformFile> selectedFiles = [];
@@ -48,6 +50,7 @@ class DocumentController extends GetxController {
     if (data['status'] == true) {
       DocumentationModel documentationModel = DocumentationModel.fromJson(data);
       docList.addAll(documentationModel.data!);
+      fetchFolder();
     } else {
       HelperSnackBar.snackBar("Error", data["message"]);
     }
@@ -75,7 +78,7 @@ class DocumentController extends GetxController {
 
   TextEditingController folderNameController = TextEditingController();
 
-  List<String> getFolders = [];
+  List<FolderData> getFolders = [];
   String? base64Image;
 
   Future fetchFolder() async {
@@ -86,8 +89,8 @@ class DocumentController extends GetxController {
     log(response.body);
     var data = json.decode(response.body);
     if (data['status'] == true) {
-      getFolders
-          .addAll(List<String>.from(data['data'].map((e) => e.toString())));
+      FetchFolder fetchFolder = FetchFolder.fromJson(data);
+      getFolders.addAll(fetchFolder.data ?? []);
     } else {
       HelperSnackBar.snackBar("Error", data["message"]);
     }
@@ -147,8 +150,9 @@ class DocumentController extends GetxController {
     log(response.body);
     var data = json.decode(response.body);
     Get.back(closeOverlays: true);
-    Get.back();
+    // Get.back();
     if (data['status'] == true) {
+      pitchRecordList.clear();
       HelperSnackBar.snackBar("Success", data["message"]);
       return true;
     } else {

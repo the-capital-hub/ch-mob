@@ -20,8 +20,7 @@ class CommunityBookingDetailsScreen extends StatefulWidget {
 
 class _CommunityBookingDetailsScreenState
     extends State<CommunityBookingDetailsScreen> {
-  CommunityWebinarsController communityWebinars =
-      Get.put(CommunityWebinarsController());
+  var communityWebinars;
   @override
   Widget build(BuildContext context) {
     return Container(

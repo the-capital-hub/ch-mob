@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 
+import '../../../../widget/bottomSheet/create_post_bottomsheet.dart';
+
 CommunityProductsAndMembersController communityProducts =
     Get.put(CommunityProductsAndMembersController());
 
@@ -57,7 +59,7 @@ class CommunityAddNewProductController extends GetxController {
     if (data["status"]) {
       Get.back();
       Get.back();
-      HelperSnackBar.snackBar("Success", data["message"]);
+      // HelperSnackBar.snackBar("Success", data["message"]);
       communityProducts.getCommunityProductsandMembers("");
       return true;
     } else {

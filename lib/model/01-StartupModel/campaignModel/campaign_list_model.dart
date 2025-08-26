@@ -3,6 +3,7 @@
 //     final allCampaignListModel = allCampaignListModelFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:typed_data';
 
 AllCampaignListModel allCampaignListModelFromJson(String str) =>
     AllCampaignListModel.fromJson(json.decode(str));

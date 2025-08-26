@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
@@ -15,7 +14,7 @@ class VideoPlayerItem extends StatefulWidget {
 
 class _VideoPlayerItemState extends State<VideoPlayerItem> {
   late VideoPlayerController _controller;
-  bool _showControls = true; 
+  bool _showControls = true;
   Timer? _hideControlsTimer;
 
   @override
@@ -62,7 +61,7 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          _showControls = true; 
+          _showControls = true;
         });
         _startHideControlsTimer();
       },

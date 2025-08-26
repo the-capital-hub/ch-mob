@@ -76,7 +76,7 @@ class _ChatMemberScreenState extends State<ChatMemberScreen> {
   //   Member(id: '3', name: 'Charlie'),
   // ];
   TextEditingController searchController = TextEditingController();
-  HomeController homeController = Get.find();
+  HomeController homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -218,152 +218,144 @@ class _ChatMemberScreenState extends State<ChatMemberScreen> {
                                   constraints: const BoxConstraints(
                                     maxHeight: 250,
                                   ),
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8)),
-                                    color: AppColors.blackCard,
-                                    surfaceTintColor: AppColors.blackCard,
-                                    child: ListView.separated(
-                                      itemCount:
-                                          chatController.pinnedChatsList.length,
-                                      padding: const EdgeInsets.all(8),
-                                      shrinkWrap: true,
-                                      separatorBuilder: (context, index) {
-                                        return AnimationConfiguration
-                                            .staggeredList(
-                                                position: index,
-                                                delay: const Duration(
-                                                    milliseconds: 100),
-                                                duration: const Duration(
-                                                    milliseconds: 375),
-                                                child: FadeInAnimation(
-                                                    delay: const Duration(
-                                                        milliseconds: 200),
-                                                    child: Divider(
-                                                        thickness: 0.5,
-                                                        color:
-                                                            AppColors.white38,
-                                                        height: 6)));
-                                      },
-                                      itemBuilder: (context, index) {
-                                        final member = chatController
-                                            .pinnedChatsList[index];
-                                        return AnimationConfiguration
-                                            .staggeredList(
-                                                position: index,
-                                                delay: const Duration(
-                                                    milliseconds: 100),
-                                                duration: const Duration(
-                                                    milliseconds: 375),
-                                                child: SlideAnimation(
-                                                    // horizontalOffset: 1000,
-                                                    verticalOffset: 50.0,
-                                                    child: ListTile(
-                                                      visualDensity:
-                                                          VisualDensity.compact,
-                                                      minVerticalPadding: 14,
-                                                      contentPadding:
-                                                          const EdgeInsets
-                                                              .symmetric(
-                                                              horizontal: 8,
-                                                              vertical: 0),
-                                                      leading: CircleAvatar(
-                                                        radius: 21,
-                                                        backgroundImage:
-                                                            NetworkImage(member
-                                                                .senderImage),
-                                                      ),
-                                                      title: TextWidget(
-                                                        text: member.senderName,
-                                                        textSize: 15,
-                                                      ),
-                                                      subtitle: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(top: 3),
-                                                        child: TextWidget(
+                                  child: ListView.separated(
+                                    itemCount:
+                                        chatController.pinnedChatsList.length,
+                                    padding: const EdgeInsets.all(8),
+                                    shrinkWrap: true,
+                                    separatorBuilder: (context, index) {
+                                      return AnimationConfiguration
+                                          .staggeredList(
+                                              position: index,
+                                              delay: const Duration(
+                                                  milliseconds: 100),
+                                              duration: const Duration(
+                                                  milliseconds: 375),
+                                              child: FadeInAnimation(
+                                                  delay: const Duration(
+                                                      milliseconds: 200),
+                                                  child: Divider(
+                                                      thickness: 0.5,
+                                                      color: AppColors.white38,
+                                                      height: 6)));
+                                    },
+                                    itemBuilder: (context, index) {
+                                      final member =
+                                          chatController.pinnedChatsList[index];
+                                      return AnimationConfiguration
+                                          .staggeredList(
+                                              position: index,
+                                              delay: const Duration(
+                                                  milliseconds: 100),
+                                              duration: const Duration(
+                                                  milliseconds: 375),
+                                              child: SlideAnimation(
+                                                  // horizontalOffset: 1000,
+                                                  verticalOffset: 50.0,
+                                                  child: ListTile(
+                                                    visualDensity:
+                                                        VisualDensity.compact,
+                                                    minVerticalPadding: 14,
+                                                    contentPadding:
+                                                        const EdgeInsets
+                                                            .symmetric(
+                                                            horizontal: 8,
+                                                            vertical: 0),
+                                                    leading: CircleAvatar(
+                                                      radius: 21,
+                                                      backgroundImage:
+                                                          NetworkImage(member
+                                                              .senderImage),
+                                                    ),
+                                                    title: TextWidget(
+                                                      text: member.senderName,
+                                                      textSize: 15,
+                                                    ),
+                                                    subtitle: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 3),
+                                                      child: TextWidget(
+                                                          text:
+                                                              member.senderName,
+                                                          color:
+                                                              AppColors.white54,
+                                                          textSize: 12),
+                                                    ),
+                                                    onTap: () {
+                                                      Get.to(
+                                                        () => ChatScreen(
+                                                            member: member),
+                                                      )!
+                                                          .whenComplete(() {
+                                                        chatController
+                                                            .getChatMemberList();
+                                                      });
+                                                    },
+                                                    trailing: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        TextWidget(
                                                             text: member
-                                                                .senderName,
+                                                                .lastMessageTime,
+                                                            textSize: 12,
                                                             color: AppColors
-                                                                .white54,
-                                                            textSize: 12),
-                                                      ),
-                                                      onTap: () {
-                                                        Get.to(
-                                                          () => ChatScreen(
-                                                              member: member),
-                                                        )!
-                                                            .whenComplete(() {
-                                                          chatController
-                                                              .getChatMemberList();
-                                                        });
-                                                      },
-                                                      trailing: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          TextWidget(
-                                                              text: member
-                                                                  .lastMessageTime,
-                                                              textSize: 12,
-                                                              color: AppColors
-                                                                  .white54),
-                                                          const SizedBox(
-                                                              height: 8),
-                                                          Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            children: [
-                                                              if (member
-                                                                      .unreadCount >
-                                                                  0)
-                                                                CircleAvatar(
-                                                                  radius: 8,
-                                                                  backgroundColor:
-                                                                      AppColors
-                                                                          .primary,
-                                                                  child: TextWidget(
-                                                                      text: member
-                                                                          .unreadCount
-                                                                          .toString(),
-                                                                      textSize:
-                                                                          10),
-                                                                ),
-                                                              InkWell(
-                                                                splashColor:
+                                                                .white54),
+                                                        const SizedBox(
+                                                            height: 8),
+                                                        Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            if (member
+                                                                    .unreadCount >
+                                                                0)
+                                                              CircleAvatar(
+                                                                radius: 8,
+                                                                backgroundColor:
                                                                     AppColors
-                                                                        .transparent,
-                                                                onTap: () {
-                                                                  chatController
-                                                                      .pinUserChat(
-                                                                          member
-                                                                              .chatId);
-                                                                },
-                                                                child:
-                                                                    const Padding(
-                                                                  padding: EdgeInsets
-                                                                      .only(
-                                                                          right:
-                                                                              4.0,
-                                                                          left:
-                                                                              8),
-                                                                  child: Icon(
-                                                                      CupertinoIcons
-                                                                          .pin_fill,
-                                                                      color: AppColors
-                                                                          .redColor,
-                                                                      size: 16),
-                                                                ),
-                                                              )
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                    )));
-                                      },
-                                    ),
+                                                                        .primary,
+                                                                child: TextWidget(
+                                                                    text: member
+                                                                        .unreadCount
+                                                                        .toString(),
+                                                                    textSize:
+                                                                        10),
+                                                              ),
+                                                            InkWell(
+                                                              splashColor:
+                                                                  AppColors
+                                                                      .transparent,
+                                                              onTap: () {
+                                                                chatController
+                                                                    .pinUserChat(
+                                                                        member
+                                                                            .chatId);
+                                                              },
+                                                              child:
+                                                                  const Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        right:
+                                                                            4.0,
+                                                                        left:
+                                                                            8),
+                                                                child: Icon(
+                                                                    CupertinoIcons
+                                                                        .pin_fill,
+                                                                    color: AppColors
+                                                                        .redColor,
+                                                                    size: 16),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                  )));
+                                    },
                                   ),
                                 ),
                               ],
@@ -382,161 +374,151 @@ class _ChatMemberScreenState extends State<ChatMemberScreen> {
                                           fontWeight: FontWeight.w500),
                                       const SizedBox(height: 3),
                                       Expanded(
-                                        child: Card(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8)),
-                                          color: AppColors.blackCard,
-                                          surfaceTintColor: AppColors.blackCard,
-                                          child: ListView.separated(
-                                            itemCount: chatController
-                                                .normalChatsList.length,
-                                            padding: const EdgeInsets.all(8),
-                                            separatorBuilder: (context, index) {
-                                              return AnimationConfiguration
-                                                  .staggeredList(
-                                                      position: index,
-                                                      delay: const Duration(
-                                                          milliseconds: 100),
-                                                      duration: const Duration(
-                                                          milliseconds: 375),
-                                                      child: FadeInAnimation(
-                                                          delay: const Duration(
-                                                              milliseconds:
-                                                                  200),
-                                                          child: Divider(
-                                                              thickness: 0.5,
-                                                              color: AppColors
-                                                                  .white38,
-                                                              height: 6)));
-                                            },
-                                            itemBuilder: (context, index) {
-                                              final member = chatController
-                                                  .normalChatsList[index];
-                                              return AnimationConfiguration
-                                                  .staggeredList(
-                                                      position: index,
-                                                      delay: const Duration(
-                                                          milliseconds: 100),
-                                                      duration: const Duration(
-                                                          milliseconds: 375),
-                                                      child: SlideAnimation(
-                                                          // horizontalOffset: 1000,
-                                                          verticalOffset: 50.0,
-                                                          child: ListTile(
-                                                            visualDensity:
-                                                                VisualDensity
-                                                                    .compact,
-                                                            minVerticalPadding:
-                                                                14,
-                                                            contentPadding:
+                                        child: ListView.separated(
+                                          itemCount: chatController
+                                              .normalChatsList.length,
+                                          padding: const EdgeInsets.all(8),
+                                          separatorBuilder: (context, index) {
+                                            return AnimationConfiguration
+                                                .staggeredList(
+                                                    position: index,
+                                                    delay: const Duration(
+                                                        milliseconds: 100),
+                                                    duration: const Duration(
+                                                        milliseconds: 375),
+                                                    child: FadeInAnimation(
+                                                        delay: const Duration(
+                                                            milliseconds: 200),
+                                                        child: Divider(
+                                                            thickness: 0.5,
+                                                            color: AppColors
+                                                                .white38,
+                                                            height: 6)));
+                                          },
+                                          itemBuilder: (context, index) {
+                                            final member = chatController
+                                                .normalChatsList[index];
+                                            return AnimationConfiguration
+                                                .staggeredList(
+                                                    position: index,
+                                                    delay: const Duration(
+                                                        milliseconds: 100),
+                                                    duration: const Duration(
+                                                        milliseconds: 375),
+                                                    child: SlideAnimation(
+                                                        // horizontalOffset: 1000,
+                                                        verticalOffset: 50.0,
+                                                        child: ListTile(
+                                                          visualDensity:
+                                                              VisualDensity
+                                                                  .compact,
+                                                          minVerticalPadding:
+                                                              14,
+                                                          contentPadding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal: 8,
+                                                                  vertical: 0),
+                                                          leading: CircleAvatar(
+                                                            radius: 21,
+                                                            backgroundImage:
+                                                                NetworkImage(member
+                                                                    .senderImage),
+                                                          ),
+                                                          title: TextWidget(
+                                                            text: member
+                                                                .senderName,
+                                                            textSize: 15,
+                                                          ),
+                                                          subtitle: Padding(
+                                                            padding:
                                                                 const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        8,
-                                                                    vertical:
-                                                                        0),
-                                                            leading:
-                                                                CircleAvatar(
-                                                              radius: 21,
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      member
-                                                                          .senderImage),
-                                                            ),
-                                                            title: TextWidget(
-                                                              text: member
-                                                                  .senderName,
-                                                              textSize: 15,
-                                                            ),
-                                                            subtitle: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      top: 3),
-                                                              child: TextWidget(
+                                                                    .only(
+                                                                    top: 3),
+                                                            child: TextWidget(
+                                                                text: member
+                                                                    .lastMessage,
+                                                                color: AppColors
+                                                                    .white54,
+                                                                textSize: 12),
+                                                          ),
+                                                          onTap: () {
+                                                            Get.to(
+                                                              () => ChatScreen(
+                                                                  member:
+                                                                      member),
+                                                            )!
+                                                                .whenComplete(
+                                                                    () {
+                                                              chatController
+                                                                  .getChatMemberList();
+                                                            });
+                                                          },
+                                                          trailing: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              TextWidget(
                                                                   text: member
-                                                                      .lastMessage,
+                                                                      .lastMessageTime,
+                                                                  textSize: 12,
                                                                   color: AppColors
-                                                                      .white54,
-                                                                  textSize: 12),
-                                                            ),
-                                                            onTap: () {
-                                                              Get.to(
-                                                                () => ChatScreen(
-                                                                    member:
-                                                                        member),
-                                                              )!
-                                                                  .whenComplete(
-                                                                      () {
-                                                                chatController
-                                                                    .getChatMemberList();
-                                                              });
-                                                            },
-                                                            trailing: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                TextWidget(
-                                                                    text: member
-                                                                        .lastMessageTime,
-                                                                    textSize:
-                                                                        12,
-                                                                    color: AppColors
-                                                                        .white54),
-                                                                const SizedBox(
-                                                                    height: 8),
-                                                                Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
-                                                                  children: [
-                                                                    if (member
-                                                                            .unreadCount >
-                                                                        0)
-                                                                      CircleAvatar(
-                                                                        radius:
-                                                                            8,
-                                                                        backgroundColor:
-                                                                            AppColors.primary,
-                                                                        child: TextWidget(
-                                                                            text:
-                                                                                member.unreadCount.toString(),
-                                                                            textSize: 10),
-                                                                      ),
-                                                                    InkWell(
-                                                                      splashColor:
+                                                                      .white54),
+                                                              const SizedBox(
+                                                                  height: 8),
+                                                              Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  if (member
+                                                                          .unreadCount >
+                                                                      0)
+                                                                    CircleAvatar(
+                                                                      radius: 8,
+                                                                      backgroundColor:
                                                                           AppColors
-                                                                              .transparent,
-                                                                      onTap:
-                                                                          () {
-                                                                        chatController
-                                                                            .pinUserChat(member.chatId);
-                                                                      },
-                                                                      child:
-                                                                          Padding(
-                                                                        padding: const EdgeInsets
-                                                                            .only(
-                                                                            right:
-                                                                                4.0,
-                                                                            left:
-                                                                                8),
-                                                                        child: Icon(
-                                                                            CupertinoIcons
-                                                                                .pin,
-                                                                            color:
-                                                                                AppColors.white54,
-                                                                            size: 16),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                )
-                                                              ],
-                                                            ),
-                                                          )));
-                                            },
-                                          ),
+                                                                              .primary,
+                                                                      child: TextWidget(
+                                                                          text: member
+                                                                              .unreadCount
+                                                                              .toString(),
+                                                                          textSize:
+                                                                              10),
+                                                                    ),
+                                                                  InkWell(
+                                                                    splashColor:
+                                                                        AppColors
+                                                                            .transparent,
+                                                                    onTap: () {
+                                                                      chatController
+                                                                          .pinUserChat(
+                                                                              member.chatId);
+                                                                    },
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsets
+                                                                          .only(
+                                                                          right:
+                                                                              4.0,
+                                                                          left:
+                                                                              8),
+                                                                      child: Icon(
+                                                                          CupertinoIcons
+                                                                              .pin,
+                                                                          color: AppColors
+                                                                              .white54,
+                                                                          size:
+                                                                              16),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              )
+                                                            ],
+                                                          ),
+                                                        )));
+                                          },
                                         ),
                                       ),
                                     ],

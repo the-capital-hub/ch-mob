@@ -1,17 +1,13 @@
 import 'dart:ui';
-
-import 'package:capitalhub_crm/controller/newsController/news_controller.dart';
-import 'package:capitalhub_crm/screen/Auth-Process/authScreen/signup_info_page.dart';
 import 'package:capitalhub_crm/screen/campaignsScreen/campaign_landing_screen.dart';
-import 'package:capitalhub_crm/screen/chatScreen/group_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityLandingScreen/create_community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/exploreCommunityScreen/explore_community_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/myCommunityScreen/my_community_screen.dart';
+import 'package:capitalhub_crm/screen/companyScreen/companyScreenInv/company_inv_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/availability_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/events_screen.dart';
 import 'package:capitalhub_crm/screen/analyticsScreen/analytics_screen.dart';
-import 'package:capitalhub_crm/screen/companyScreen/company_screen.dart';
 import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';
 import 'package:capitalhub_crm/screen/exploreScreen/explore_screen.dart';
 import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
@@ -33,7 +29,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../controller/homeController/home_controller.dart';
 import '../../controller/profileController/profile_controller.dart';
 import '../../utils/appcolors/app_colors.dart';
@@ -112,7 +107,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   List page = [
     const LandingScreen(),
     const ExploreScreen(),
-    const CompanyScreen(),
+    const CompanyInvScreen(),
     const DocumentationScreen(),
     const OneLinkScreeen(),
     const ResourceScreen(),

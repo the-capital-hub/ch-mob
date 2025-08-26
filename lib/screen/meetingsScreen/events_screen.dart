@@ -1,5 +1,5 @@
 import 'package:capitalhub_crm/controller/meetingController/meeting_controller.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/screen/meetingsScreen/create_events_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
@@ -15,6 +15,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+
+import '../../controller/communityController/community_controller.dart';
+import 'availability_screen.dart';
+import 'plans_screen.dart';
+import 'priority_dm_screen.dart';
+import 'webinars_screen.dart';
 
 class EventsScreen extends StatefulWidget {
   const EventsScreen({super.key});
@@ -49,8 +55,8 @@ class _EventsScreenState extends State<EventsScreen> {
       decoration: bgDec,
       child: Scaffold(
         drawer: GetStoreData.getStore.read('isInvestor')
-              ? const DrawerWidgetInvestor()
-              : const DrawerWidget(),
+            ? const DrawerWidgetInvestor()
+            : const DrawerWidget(),
         backgroundColor: AppColors.transparent,
         appBar: HelperAppBar.appbarHelper(
             title: "Events", hideBack: true, autoAction: true),
@@ -269,7 +275,8 @@ class _EventsScreenState extends State<EventsScreen> {
                         },
                       ))),
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
+          padding:
+              const EdgeInsets.only(left: 12, right: 12, top: 12, bottom: 12),
           child: AppButton.primaryButton(
             onButtonPressed: () {
               Get.to(() => const CreateEventsScreen());

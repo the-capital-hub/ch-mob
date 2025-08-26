@@ -1,6 +1,6 @@
 import 'package:capitalhub_crm/controller/chatController/chat_controller.dart';
 import 'package:capitalhub_crm/screen/chatScreen/chat_screen.dart';
-import 'package:capitalhub_crm/screen/chatScreen/create_community_screen.dart';
+import 'package:capitalhub_crm/screen/chatScreen/create_group_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
@@ -82,7 +82,7 @@ class _GroupListScreenState extends State<GroupListScreen> {
                             itemCount: chatController.groupChatList.length,
                             shrinkWrap: true,
                             separatorBuilder: (context, index) {
-                              return sizedTextfield;
+                              return const SizedBox(height: 10);
                             },
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
@@ -96,64 +96,74 @@ class _GroupListScreenState extends State<GroupListScreen> {
                                   surfaceTintColor: AppColors.blackCard,
                                   child: Padding(
                                     padding: const EdgeInsets.all(12.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    child: Row(
                                       children: [
-                                        TextWidget(
-                                            text:
-                                                "${chatController.groupChatList[index].communityName}",
-                                            textSize: 14),
-                                        sizedTextfield,
-                                        SizedBox(
-                                          height: 40,
-                                          width: Get.width,
-                                          child: ListView.separated(
-                                            itemCount: chatController
-                                                .groupChatList[index]
-                                                .memberProfileImages!
-                                                .length,
-                                            scrollDirection: Axis.horizontal,
-                                            separatorBuilder: (context, index) {
-                                              return const SizedBox(width: 12);
-                                            },
-                                            itemBuilder: (BuildContext context,
-                                                int ind) {
-                                              // if (index == 5) {
-                                              //   return Stack(
-                                              //     children: [
-                                              //       const CircleAvatar(
-                                              //         radius: 18,
-                                              //         backgroundImage: NetworkImage(
-                                              //             'https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg'),
-                                              //       ),
-                                              //       CircleAvatar(
-                                              //         radius: 18,
-                                              //         backgroundColor: AppColors.black54,
-                                              //         child: const TextWidget(
-                                              //             text: "+10", textSize: 12),
-                                              //       )
-                                              //     ],
-                                              //   );
-                                              // }
-                                              return CircleAvatar(
-                                                radius: 20,
-                                                backgroundImage: NetworkImage(
-                                                    '${chatController.groupChatList[index].memberProfileImages![ind]}'),
-                                              );
-                                            },
+                                        CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              chatController
+                                                  .groupChatList[index]
+                                                  .communityImage!),
+                                          radius: 20,
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              TextWidget(
+                                                text:
+                                                    "${chatController.groupChatList[index].communityName}",
+                                                textSize: 14,
+                                                maxLine: 2,
+                                              ),
+                                              // if (chatController
+                                              //     .groupChatList[index]
+                                              //     .memberProfileImages!
+                                              //     .isNotEmpty) ...[
+                                              //   sizedTextfield,
+                                              //   SizedBox(
+                                              //       height: 40,
+                                              //       width: Get.width,
+                                              //       child: ListView.separated(
+                                              //           itemCount: chatController
+                                              //               .groupChatList[
+                                              //                   index]
+                                              //               .memberProfileImages!
+                                              //               .length,
+                                              //           scrollDirection:
+                                              //               Axis.horizontal,
+                                              //           separatorBuilder:
+                                              //               (context, index) {
+                                              //             return const SizedBox(
+                                              //                 width: 12);
+                                              //           },
+                                              //           itemBuilder:
+                                              //               (BuildContext
+                                              //                       context,
+                                              //                   int ind) {
+                                              //             return CircleAvatar(
+                                              //               radius: 20,
+                                              //               backgroundImage:
+                                              //                   NetworkImage(
+                                              //                       '${chatController.groupChatList[index].memberProfileImages![ind]}'),
+                                              //             );
+                                              //           }))
+                                              // ],
+                                              // sizedTextfield,
+                                              // TextWidget(
+                                              //     text: chatController
+                                              //         .groupChatList[index]
+                                              //         .memberNames
+                                              //         .toString()
+                                              //         .replaceAll('[', '')
+                                              //         .replaceAll(']', ''),
+                                              //     textSize: 12),
+                                            ],
                                           ),
                                         ),
-                                        sizedTextfield,
-                                        TextWidget(
-                                            text: chatController
-                                                .groupChatList[index]
-                                                .memberNames
-                                                .toString()
-                                                .replaceAll('[', '')
-                                                .replaceAll(']', ''),
-                                            textSize: 12),
-                                        sizedTextfield,
+                                        const SizedBox(width: 12),
+
                                         Card(
                                           color: AppColors.green,
                                           shape: RoundedRectangleBorder(

@@ -1,11 +1,14 @@
+import 'package:capitalhub_crm/widget/bottomSheet/create_post_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get_rx/get_rx.dart';
 
-import '../../model/01-StartupModel/companyModel/company_model.dart';
-import '../../model/01-StartupModel/companyModel/company_search_moel.dart';
-import '../../model/01-StartupModel/companyModel/get_affilation_request_model.dart';
-import '../../model/01-StartupModel/companyModel/get_team_member.dart';
-import '../../model/01-StartupModel/companyModel/search_user_model.dart';
+import '../../model/companyModel/all_affilated_member.dart';
+import '../../model/companyModel/company_model.dart';
+import '../../model/companyModel/company_search_moel.dart';
+import '../../model/companyModel/get_affilation_request_model.dart';
+import '../../model/companyModel/get_team_member.dart';
+import '../../model/companyModel/search_user_model.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
 import 'dart:convert';
@@ -69,20 +72,17 @@ class CompanyController extends GetxController {
   Future getCompanyDetail() async {
     try {
       var response = await ApiBase.getRequest(
-          extendedURL: ApiUrl.getCompanyDetail +
+          extendedURL: ApiUrl.getCompanyDetailInv +
               GetStoreData.getStore.read('id').toString());
       log(response.body);
       var data = jsonDecode(response.body);
       if (data['status'] == true) {
         isCompanyFound.value = true;
-        CompanyModel companyModel = CompanyModel.fromJson(data);
-        companyData = companyModel.data!;
       } else {
         isCompanyFound.value = false;
       }
     } catch (e) {
       log("getCompany $e");
-      return companyList;
     } finally {}
   }
 
@@ -260,7 +260,7 @@ class CompanyController extends GetxController {
     establishedDateController.clear();
     selectedSector = null;
     numOfEmpController.clear();
-    
+
     websiteUrlController.clear();
     visionController.clear();
     missionController.clear();
@@ -284,7 +284,6 @@ class CompanyController extends GetxController {
     lastYearRevenueController.clear();
     targetController.clear();
   }
-
 
   TextEditingController roleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -417,7 +416,7 @@ class CompanyController extends GetxController {
   }
 
   var isTeamLoading = false.obs;
-  List<TeamMember> teamMember = [];
+  RxList<TeamMember> teamMember = <TeamMember>[].obs;
   Future getTeamMember() async {
     try {
       isTeamLoading.value = true;
@@ -448,7 +447,6 @@ class CompanyController extends GetxController {
         body: body, extendedURL: ApiUrl.removeTeamMember, withToken: true);
     log(response.body);
     var data = json.decode(response.body);
-    Get.back(closeOverlays: true);
 
     if (data["status"]) {
       HelperSnackBar.snackBar("Success", data["message"]);

@@ -1,19 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityEventsController/community_events_controller.dart';
-import 'package:capitalhub_crm/controller/communityController/communityLandingAllControllers/communityMeetingsController/community_meetings_controller.dart';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
 import 'package:capitalhub_crm/controller/loginController/login_controller.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/communityModel/communityLandingAllModels/communityWebinarsModel/community_webinars_model.dart';
-import 'package:capitalhub_crm/screen/Auth-Process/authScreen/login_page.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
 import 'package:capitalhub_crm/utils/apiService/api_url.dart';
-import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
-import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
 import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
-import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dilogue/communityDialog/login_dialog.dart';
-import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -34,21 +27,14 @@ class CommunityWebinarsController extends GetxController {
   String endTime = "";
   var isLoading = false.obs;
 
-  RxList<CommunityWebinars> communityWebinarsList = <CommunityWebinars>[].obs;
-
   Future<void> getCommunityWebinars() async {
     try {
       isLoading.value = true;
-      communityWebinarsList.clear();
       var response = await ApiBase.getRequest(
-          extendedURL: ApiUrl.getCommunityWebinars + createdCommunityId);
+          extendedURL: ApiUrl.getCommunityById + createdCommunityId);
       log(response.body);
       var data = json.decode(response.body);
-      if (data["status"]) {
-        GetCommunityWebinarsModel communityWebinarsModel =
-            GetCommunityWebinarsModel.fromJson(data);
-        communityWebinarsList.assignAll(communityWebinarsModel.data!);
-      }
+      if (data["status"]) {}
     } catch (e) {
       log("getCommunityWebinars $e");
     } finally {
@@ -197,7 +183,6 @@ class CommunityWebinarsController extends GetxController {
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"]) {
-      communityWebinarsList.removeWhere((webinar) => webinar.id == webinarId);
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       communityEvents.getCommunityEvents();
@@ -220,28 +205,24 @@ class CommunityWebinarsController extends GetxController {
       "email": emailController.text,
       "additionalInfo": infoController.text,
       "date": formattedDate,
-      "startTime": DateFormat("HH:mm").format(DateFormat("hh:mm a").parse(startTime)),
-      "endTime": DateFormat("HH:mm").format(DateFormat("hh:mm a").parse(endTime)),
+      "startTime":
+          DateFormat("HH:mm").format(DateFormat("hh:mm a").parse(startTime)),
+      "endTime":
+          DateFormat("HH:mm").format(DateFormat("hh:mm a").parse(endTime)),
     };
     var response = await ApiBase.postRequest(
       body: body,
       withToken: true,
-      extendedURL: ApiUrl.scheduleEvent + webinarId,
+      extendedURL: ApiUrl.registerWebinar + webinarId,
     );
-    print(startTime);
-    print(endTime);
-    print(body);
     log(response.body);
     var data = json.decode(response.body);
     if (data["status"]) {
-      Get.back();
-      Get.back();
       Get.back();
       HelperSnackBar.snackBar("Success", data["message"]);
       communityWebinars.getCommunityWebinars();
       return true;
     } else {
-      Get.back();
       Get.back();
       Get.back();
       HelperSnackBar.snackBar("Error", data["message"]);

@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
+import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -62,5 +64,25 @@ class ImagePickerWidget {
       ],
     );
     return croppedFile!.path;
+  }
+}
+
+class PdfPickerWidget {
+  File? _pdfFile;
+  String? base64Pdf;
+
+  Future<String?> pickPdf() async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+        withData: true,
+      );
+
+     
+    } catch (e) {
+      log("PDF Picker Error: $e");
+      return null;
+    }
   }
 }

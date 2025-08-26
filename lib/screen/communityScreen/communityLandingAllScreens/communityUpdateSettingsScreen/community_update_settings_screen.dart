@@ -28,6 +28,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
       Get.put(CommunityUpdateSettingsController());
   CommunityAboutController aboutCommunity = Get.put(CommunityAboutController());
   String base64 = "";
+  String bannerBase64 = "";
   List<TextEditingController> controllers = [TextEditingController()];
 
   @override
@@ -133,11 +134,6 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            const TextWidget(
-                              text: "Update Community Settings",
-                              textSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
                             const SizedBox(
                               height: 12,
                             ),
@@ -157,28 +153,20 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                             const SizedBox(
                               height: 12,
                             ),
-
-                            InkWell(
-                              splashColor: AppColors.transparent,
-                              highlightColor: AppColors.transparent,
-                              onTap: () {
-                                uploadBottomSheet();
-                              },
-                              child: Column(children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: AppColors.white12,
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 12),
-                                    child: TextWidget(
-                                        text: "Change community image",
-                                        textSize: 13),
-                                  ),
+                            Column(children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: AppColors.white12,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 12),
+                                  child: TextWidget(
+                                      text: "Change community image",
+                                      textSize: 13),
                                 ),
-                              ]),
-                            ),
+                              ),
+                            ]),
                             const SizedBox(
                               height: 16,
                             ),
@@ -187,16 +175,14 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                 controller:
                                     updateSettings.communityNameController,
                                 lableText: "Community Name"),
-                            const SizedBox(
-                              height: 16,
-                            ),
+                            sizedTextfield,
                             DropDownWidget(
                                 status: updateSettings.communitySize,
                                 lable: "Community Size",
                                 statusList: const [
-                                  "Less than 10K",
-                                  "10K - 100K",
-                                  "100K - 500K",
+                                  "Less than 100K",
+                                  "100K - 200K",
+                                  "200K - 500K",
                                   "Over 500K"
                                 ],
                                 onChanged: (val) {
@@ -205,9 +191,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                         val.toString();
                                   });
                                 }),
-                            const SizedBox(
-                              height: 16,
-                            ),
+                            sizedTextfield,
                             DropDownWidget(
                                 status: updateSettings.subscriptionType,
                                 lable: "Subscription Type",
@@ -218,9 +202,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                         val.toString();
                                   });
                                 }),
-                            const SizedBox(
-                              height: 16,
-                            ),
+                            sizedTextfield,
                             if (updateSettings.subscriptionType == "paid")
                               MyCustomTextField.textField(
                                   textInputType: TextInputType.number,
@@ -229,11 +211,10 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                   controller: updateSettings
                                       .subscriptionAmountController),
                             if (updateSettings.subscriptionType == "Paid")
-                              const SizedBox(
-                                height: 16,
-                              ),
+                              sizedTextfield,
+                            sizedTextfield,
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Checkbox(
                                   checkColor:
@@ -250,14 +231,15 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                       updateSettings.isOpen = value!;
                                     });
                                   },
+                                  visualDensity: VisualDensity.compact,
                                   materialTapTargetSize:
                                       MaterialTapTargetSize.shrinkWrap,
                                 ),
                                 const TextWidget(
-                                    text: "Is Community Open ?", textSize: 16),
+                                    text: "Is Community Open ?", textSize: 14),
                               ],
                             ),
-                            const SizedBox(height: 10),
+                            const SizedBox(height: 8),
                             MyCustomTextField.htmlTextField(
                               hintText: "Enter Community description",
                               controller:
@@ -267,21 +249,18 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                 addAbout();
                               },
                             ),
-                            const SizedBox(
-                              height: 16,
-                            ),
+                            sizedTextfield,
                             MyCustomTextField.textField(
                                 hintText: "Enter whatsapp group link",
                                 controller:
                                     updateSettings.whatsappGroupLinkController,
                                 lableText: "Whatsapp Group Link"),
-                            //  SizedBox(height: 16,),
-                            //  Align(child: TextWidget(text: "Terms and conditions", textSize: 13),alignment: Alignment.centerLeft,),
+                            sizedTextfield,
                             ListView.separated(
                               separatorBuilder: (context, index) =>
-                                  const SizedBox(height: 12),
+                                  sizedTextfield,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               padding: EdgeInsets.zero,
                               itemCount: controllers.length,
                               itemBuilder: (context, index) {
@@ -297,90 +276,80 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                                 );
                               },
                             ),
-
-                            const SizedBox(
-                              height: 16,
-                            ),
-
+                            sizedTextfield,
                             AppButton.primaryButton(
-                                bgColor: AppColors.green700,
+                                bgColor: AppColors.blue,
                                 onButtonPressed: () {
                                   addNewTextField();
                                 },
                                 title: "Add Term"),
-                            const SizedBox(
-                              height: 16,
-                            ),
+                            sizedTextfield,
                             AppButton.primaryButton(
-                                // bgColor: AppColors.primary,
                                 onButtonPressed: () {
                                   Helper.loader(context);
-                                  updateSettings.updateCommunity(base64);
+                                  updateSettings.updateCommunity(
+                                      base64, bannerBase64);
                                 },
                                 title: "Update Community"),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 60, vertical: 0),
-                              child: AppButton.primaryButton(
-                                  // bgColor: AppColors.primary,
-                                  onButtonPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          backgroundColor: AppColors.blackCard,
-                                          title: Column(
-                                            children: [
-                                              CircleAvatar(
-                                                radius: 25,
-                                                foregroundImage: NetworkImage(
-                                                  aboutCommunity
-                                                      .aboutCommunityList[0]
-                                                      .community!
-                                                      .image!,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 12,
-                                              ),
-                                              TextWidget(
-                                                text: aboutCommunity
+                            sizedTextfield,
+                            AppButton.outlineButton(
+                                borderColor:
+                                    GetStoreData.getStore.read('isInvestor')
+                                        ? AppColors.primaryInvestor
+                                        : AppColors.primary,
+                                onButtonPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        backgroundColor: AppColors.blackCard,
+                                        title: Column(
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 25,
+                                              foregroundImage: NetworkImage(
+                                                aboutCommunity
                                                     .aboutCommunityList[0]
                                                     .community!
-                                                    .name!,
-                                                textSize: 20,
-                                                fontWeight: FontWeight.w500,
+                                                    .image!,
                                               ),
-                                            ],
-                                          ),
-                                          content: const Padding(
-                                            padding: EdgeInsets.only(left: 25),
-                                            child: TextWidget(
-                                              text:
-                                                  'Are you sure to delete community',
-                                              textSize: 13,
                                             ),
-                                          ),
-                                          actions: [
-                                            AppButton.primaryButton(
-                                              bgColor: AppColors.primary,
-                                              title: 'Delete Community',
-                                              onButtonPressed: () {
-                                                Helper.loader(context);
-                                                updateSettings
-                                                    .deleteCommunity();
-                                              },
+                                            const SizedBox(
+                                              height: 12,
+                                            ),
+                                            TextWidget(
+                                              text: aboutCommunity
+                                                  .aboutCommunityList[0]
+                                                  .community!
+                                                  .name!,
+                                              textSize: 20,
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  title: "Delete Community"),
-                            ),
+                                        ),
+                                        content: const Padding(
+                                          padding: EdgeInsets.only(left: 25),
+                                          child: TextWidget(
+                                            text:
+                                                'Are you sure to delete community',
+                                            textSize: 13,
+                                          ),
+                                        ),
+                                        actions: [
+                                          AppButton.primaryButton(
+                                            bgColor: AppColors.primary,
+                                            title: 'Delete Community',
+                                            onButtonPressed: () {
+                                              Helper.loader(context);
+                                              updateSettings.deleteCommunity();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                title: "Delete Community"),
                             const SizedBox(
                               height: 16,
                             ),
@@ -402,7 +371,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
         ));
   }
 
-  uploadBottomSheet() {
+  uploadBottomSheet(bool isBanner) {
     return Get.bottomSheet(
         Container(
           height: 250,
@@ -429,15 +398,7 @@ class _UpdateSettingsScreenState extends State<CommunityUpdateSettingsScreen> {
                   fontWeight: FontWeight.w500),
               sizedTextfield,
               InkWell(
-                onTap: () {
-                  ImagePickerWidget imagePickerWidget = ImagePickerWidget();
-                  imagePickerWidget.getImage(false).then((value) {
-                    Get.back();
-
-                    base64 = value;
-                    setState(() {});
-                  });
-                },
+                onTap: () {},
                 child: Container(
                   width: Get.width,
                   padding:

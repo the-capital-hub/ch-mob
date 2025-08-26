@@ -3,6 +3,7 @@
 //     final outreachViewModel = outreachViewModelFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:typed_data';
 
 OutreachViewModel outreachViewModelFromJson(String str) =>
     OutreachViewModel.fromJson(json.decode(str));

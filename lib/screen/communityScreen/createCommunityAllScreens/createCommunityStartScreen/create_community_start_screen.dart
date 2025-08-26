@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityOverScreen/create_community_over_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
@@ -33,9 +33,9 @@ class _CreateCommunityStartScreenState
   TextEditingController nameController = TextEditingController();
   TextEditingController subscriptionAmountController = TextEditingController();
   List<TextEditingController> optionsControllers = [
-    TextEditingController(text: "Less than 10K"),
-    TextEditingController(text: "10K - 100K"),
-    TextEditingController(text: "100K - 500K"),
+    TextEditingController(text: "Less than 100K"),
+    TextEditingController(text: "100K - 200K"),
+    TextEditingController(text: "200K - 500K"),
     TextEditingController(text: "Over 500K"),
   ];
   List<bool> isSelected = [false, false, false, false];
@@ -86,7 +86,7 @@ class _CreateCommunityStartScreenState
                           borderRadius: BorderRadius.circular(20)),
                       child: const Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         child: TextWidget(text: "Upload Pic", textSize: 13),
                       ),
                     ),
@@ -95,7 +95,6 @@ class _CreateCommunityStartScreenState
                 sizedTextfield,
                 const TextWidget(
                     text: "Start Building A Business", textSize: 18),
-                sizedTextfield,
                 sizedTextfield,
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   const TextWidget(

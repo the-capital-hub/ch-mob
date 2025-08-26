@@ -1,5 +1,6 @@
 import 'package:capitalhub_crm/controller/liveDealsController/live_deals_controller.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/liveDealsScreen/live_deal_detail_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import '../../model/01-StartupModel/liveDealsModel/live_deals_model.dart';
+import '../../model/liveDealsModel/live_deals_model.dart';
 import '../../utils/constant/asset_constant.dart';
 import '../../utils/getStore/get_store.dart';
 import '../../utils/helper/helper.dart';
@@ -306,22 +307,11 @@ class _LiveDealScreenState extends State<LiveDealScreen>
                                         surfaceTintColor: AppColors.white12,
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const TextWidget(
-                                                  text: "About the company :",
-                                                  textSize: 14,
-                                                  fontWeight: FontWeight.w500),
-                                              const SizedBox(height: 4),
-                                              TextWidget(
-                                                text:
-                                                    "${liveDealsController.liveDealsList[index].description}",
-                                                textSize: 12,
-                                                maxLine: 10,
-                                              )
-                                            ],
+                                          child: TextWidget(
+                                            text:
+                                                "${liveDealsController.liveDealsList[index].description}",
+                                            textSize: 12,
+                                            maxLine: 10,
                                           ),
                                         ),
                                       ),
@@ -1240,7 +1230,8 @@ class _LiveDealScreenState extends State<LiveDealScreen>
             scrollDirection: Axis.horizontal,
             itemBuilder: (BuildContext context, int ind) {
               return Container(
-                  height: 115,width: 150,
+                  height: 115,
+                  width: 150,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       image: DecorationImage(

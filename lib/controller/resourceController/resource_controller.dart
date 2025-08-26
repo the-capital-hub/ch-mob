@@ -10,7 +10,7 @@ class ResourceController extends GetxController {
   String resourceId = "";
   var isLoading = false.obs;
 
-  AllResources allResources = AllResources();
+  AllResources allResources = AllResources(isSubscribed: false, resources: []);
   Future<void> getAllResources() async {
     try {
       isLoading.value = true;

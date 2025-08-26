@@ -46,12 +46,9 @@ class _CommunityRegisterNowScreenState
   }
 
   void autoFillDetails() {
-    communityEvents.nameController.text =
-        GetStoreData.getStore.read('name');
-    communityEvents.emailController.text =
-        GetStoreData.getStore.read('email');
-    communityEvents.mobileController.text =
-        GetStoreData.getStore.read('phone');
+    communityEvents.nameController.text = GetStoreData.getStore.read('name');
+    communityEvents.emailController.text = GetStoreData.getStore.read('email');
+    communityEvents.mobileController.text = GetStoreData.getStore.read('phone');
   }
 
   @override
@@ -111,8 +108,7 @@ class _CommunityRegisterNowScreenState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TextWidget(
-                                text: communityEvents
-                                    .communityWebinarsList[widget.index].title!,
+                                text: communityEvents.dateController.text!,
                                 textSize: 20,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -130,8 +126,9 @@ class _CommunityRegisterNowScreenState
                                   ),
                                   TextWidget(
                                       text: communityEvents
-                                          .communityWebinarsList[widget.index]
-                                          .date!,
+                                          .descriptionController
+                                          .getText()
+                                          .toString()!,
                                       textSize: 16)
                                 ],
                               ),
@@ -162,9 +159,7 @@ class _CommunityRegisterNowScreenState
                                     width: 5,
                                   ),
                                   TextWidget(
-                                      text: communityEvents
-                                          .communityWebinarsList[widget.index]
-                                          .duration!,
+                                      text: communityEvents.dateController.text,
                                       textSize: 16)
                                 ],
                               ),
@@ -181,12 +176,10 @@ class _CommunityRegisterNowScreenState
                                   ),
                                   TextWidget(
                                       text: communityEvents
-                                                  .communityWebinarsList[
-                                                      widget.index]
-                                                  .price ==
+                                                  .dateController.text ==
                                               "0"
                                           ? "Free"
-                                          : "\u{20B9}${communityEvents.communityWebinarsList[widget.index].price}",
+                                          : "\u{20B9}${communityEvents.dateController.hashCode}",
                                       textSize: 16)
                                 ],
                               ),
@@ -208,9 +201,9 @@ class _CommunityRegisterNowScreenState
                               sizedTextfield,
 
                               HtmlWidget(
-                                communityEvents
-                                    .communityWebinarsList[widget.index]
-                                    .description!,
+                                communityEvents.descriptionController
+                                    .getText()
+                                    .toString(),
                                 textStyle: TextStyle(
                                   fontSize: 16,
                                   color: AppColors.white,
@@ -270,11 +263,6 @@ class _CommunityRegisterNowScreenState
                             AppButton.primaryButton(
                                 onButtonPressed: () {
                                   Helper.loader(context);
-                                  communityEvents.registerCommunityWebinar(
-                                      communityEvents
-                                          .communityWebinarsList[widget.index]
-                                          .id
-                                          .toString());
                                 },
                                 title: "Register Now"),
                             sizedTextfield,

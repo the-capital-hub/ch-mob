@@ -8,7 +8,6 @@ import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../model/01-StartupModel/paymentTransactionModel/payment_transaction_model.dart';
 import '../../widget/text_field/text_field.dart';
 
 class PaymentTransactionScreen extends StatefulWidget {
@@ -33,7 +32,7 @@ class _PaymentTransactionScreenState extends State<PaymentTransactionScreen> {
     'Pending': Colors.orange,
     'Failed': AppColors.redColor,
   };
-  List<PaymentDetail> filteredTransactions = [];
+  List filteredTransactions = [];
 
   @override
   void initState() {
@@ -402,7 +401,7 @@ class _PaymentTransactionScreenState extends State<PaymentTransactionScreen> {
   }
 
   DataRow _buildTransactionRow(
-      BuildContext context, int index, PaymentDetail data) {
+      BuildContext context, int index, var data) {
     return DataRow(
       color: MaterialStateProperty.resolveWith<Color?>(
         (_) => index.isEven ? AppColors.transparent : AppColors.white12,

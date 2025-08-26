@@ -3,6 +3,7 @@
 //     final templateViewModel = templateViewModelFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:typed_data';
 
 TemplateViewModel templateViewModelFromJson(String str) =>
     TemplateViewModel.fromJson(json.decode(str));

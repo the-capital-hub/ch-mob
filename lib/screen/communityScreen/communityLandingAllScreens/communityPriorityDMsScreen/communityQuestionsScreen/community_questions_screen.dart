@@ -32,18 +32,36 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    for (int i = 0;
-        i <
-            communityPriorityDMs
-                .communityPriorityDMsList[widget.index!].questions!.length;
-        i++) {
-      if (communityPriorityDMs
-          .communityPriorityDMsList[widget.index!].questions![i].isAnswered!) {
-        answeredQuestions.add(communityPriorityDMs
-            .communityPriorityDMsList[widget.index!].questions![i]);
+    for (var element in communityPriorityDMs
+        .communityPriorityDMsList[widget.index!].questions!) {
+      if (element.answer == null || element.answer == "") {
+        unansweredQuestions.add(Question(
+            id: element.id,
+            userId: element.userId.toString().isEmpty
+                ? null
+                : UserId(
+                    id: element.userId!.id,
+                    firstName: element.userId!.firstName,
+                    lastName: element.userId!.lastName,
+                    profilePicture: element.userId!.profilePicture),
+            question: element.question,
+            timeToAnswer: element.timeToAnswer,
+            timeAgo: element.timeAgo,
+            answer: element.answer));
       } else {
-        unansweredQuestions.add(communityPriorityDMs
-            .communityPriorityDMsList[widget.index!].questions![i]);
+        answeredQuestions.add(Question(
+            id: element.id,
+            userId: element.userId.toString().isEmpty
+                ? null
+                : UserId(
+                    id: element.userId!.id,
+                    firstName: element.userId!.firstName,
+                    lastName: element.userId!.lastName,
+                    profilePicture: element.userId!.profilePicture),
+            question: element.question,
+            timeToAnswer: element.timeToAnswer,
+            timeAgo: element.timeAgo,
+            answer: element.answer));
       }
     }
     for (int i = 0; i < unansweredQuestions.length; i++) {
@@ -77,7 +95,7 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                 : communityPriorityDMs.communityPriorityDMsList.isEmpty
                     ? const Center(
                         child: TextWidget(
-                          align: TextAlign.center,
+                            align: TextAlign.center,
                             text:
                                 "No PriorityDMs\nQuestions and Answers Available",
                             textSize: 16))
@@ -125,7 +143,7 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                     unansweredQuestions.isEmpty
                                         ? const Center(
                                             child: TextWidget(
-                                              align: TextAlign.center,
+                                                align: TextAlign.center,
                                                 text:
                                                     "No Unanswered\nPriorityDMs Questions Available",
                                                 textSize: 16))
@@ -188,7 +206,14 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                                                 text:
                                                                     "Time to answer :\n${unansweredQuestions[index].timeToAnswer}",
                                                                 textSize: 13,
-                                                                color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                                                color: GetStoreData
+                                                                        .getStore
+                                                                        .read(
+                                                                            'isInvestor')
+                                                                    ? AppColors
+                                                                        .primaryInvestor
+                                                                    : AppColors
+                                                                        .primary,
                                                               ),
                                                             ],
                                                           )
@@ -249,7 +274,7 @@ class _CommunityQuestionsScreenState extends State<CommunityQuestionsScreen>
                                     answeredQuestions.isEmpty
                                         ? const Center(
                                             child: TextWidget(
-                                              align: TextAlign.center,
+                                                align: TextAlign.center,
                                                 text:
                                                     "No Answered\nPriorityDMs Questions Available",
                                                 textSize: 16))

@@ -1,5 +1,5 @@
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/communityScreen/createCommunityAllScreens/createCommunityLandingScreen/create_community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
@@ -8,7 +8,6 @@ import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
-import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dilogue/share_dilogue.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -36,85 +35,115 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: bgDec,
-        child: Scaffold(
-          drawer: GetStoreData.getStore.read('isInvestor')
-              ? const DrawerWidgetInvestor()
-              : const DrawerWidget(),
-          backgroundColor: AppColors.transparent,
-          appBar: HelperAppBar.appbarHelper(
-            title: "My Community",
-            hideBack: true,
-            autoAction: true,
-          ),
-          body: Obx(() => myCommunities.isLoading.value
-              ? Helper.pageLoading()
-              : myCommunities.myCommunitiesDetails.isEmpty
-                  ? const Center(
-                      child: TextWidget(
-                          text: "No Community Available", textSize: 16))
-                  : Padding(
-                      padding: const EdgeInsets.only(
-                          left: 12, right: 12, bottom: 12),
-                      child: ListView.separated(
-                        separatorBuilder: (context, index) => const SizedBox(
-                          height: 12,
-                        ),
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        itemCount: myCommunities.myCommunitiesDetails.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              createdCommunityId =
-                                  myCommunities.myCommunitiesDetails[index].id;
-                              communityLogo = myCommunities
-                                  .myCommunitiesDetails[index].image;
-                              communityName = myCommunities
-                                  .myCommunitiesDetails[index].community;
-                              isAdmin = myCommunities
-                                          .myCommunitiesDetails[index].role ==
-                                      "Admin"
-                                  ? true
-                                  : false;
-                              Get.to(() => const CommunityLandingScreen());
-                            },
-                            child: Card(
-                                color: AppColors.blackCard,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10, top: 12, bottom: 12),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
+    return Scaffold(
+        drawer: GetStoreData.getStore.read('isInvestor')
+            ? const DrawerWidgetInvestor()
+            : const DrawerWidget(),
+        backgroundColor: AppColors.black,
+        appBar: HelperAppBar.appbarHelper(
+          title: "My Community",
+          hideBack: true,
+          autoAction: true,
+        ),
+        body: Obx(() => myCommunities.isLoading.value
+            ? Helper.pageLoading()
+            : myCommunities.myCommunitiesDetails.isEmpty
+                ? const Center(
+                    child: TextWidget(
+                        text: "No Community Available", textSize: 16))
+                : Padding(
+                    padding:
+                        const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => const SizedBox(
+                        height: 4,
+                      ),
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.only(bottom: 70),
+                      itemCount: myCommunities.myCommunitiesDetails.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            createdCommunityId =
+                                myCommunities.myCommunitiesDetails[index].id;
+                            communityLogo =
+                                myCommunities.myCommunitiesDetails[index].image;
+                            communityName = myCommunities
+                                .myCommunitiesDetails[index].community;
+                            isAdmin = myCommunities
+                                        .myCommunitiesDetails[index].role ==
+                                    "Admin"
+                                ? true
+                                : false;
+                            Get.to(() => const CommunityLandingScreen());
+                          },
+                          child: Card(
+                              shadowColor: AppColors.white54,
+                              elevation: 2,
+                              color: AppColors.blackCard,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 70,
+                                      width: 70,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          image: DecorationImage(
+                                              image: NetworkImage(myCommunities
+                                                  .myCommunitiesDetails[index]
+                                                  .image))),
+                                    ),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    Expanded(
+                                      child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
+                                          TextWidget(
+                                            text: myCommunities
+                                                .myCommunitiesDetails[index]
+                                                .community,
+                                            textSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
                                           Row(
                                             children: [
-                                              CircleAvatar(
-                                                foregroundImage: NetworkImage(
-                                                    myCommunities
+                                              Card(
+                                                margin: EdgeInsets.zero,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20)),
+                                                color: AppColors.white12,
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 8,
+                                                      vertical: 4),
+                                                  child: TextWidget(
+                                                    text: myCommunities
                                                         .myCommunitiesDetails[
                                                             index]
-                                                        .image),
+                                                        .size
+                                                        .toString(),
+                                                    textSize: 13,
+                                                    color: GetStoreData.getStore
+                                                            .read('isInvestor')
+                                                        ? AppColors
+                                                            .primaryInvestor
+                                                        : AppColors.primary,
+                                                  ),
+                                                ),
                                               ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              TextWidget(
-                                                text: myCommunities
-                                                    .myCommunitiesDetails[index]
-                                                    .community,
-                                                textSize: 15,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                              const SizedBox(
-                                                width: 3,
-                                              ),
+                                              const SizedBox(width: 4),
                                               Card(
                                                   shape: RoundedRectangleBorder(
                                                       borderRadius:
@@ -124,52 +153,27 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
                                                   child: Padding(
                                                     padding: const EdgeInsets
                                                         .symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 6),
+                                                        horizontal: 8,
+                                                        vertical: 4),
                                                     child: TextWidget(
                                                         text: myCommunities
                                                             .myCommunitiesDetails[
                                                                 index]
                                                             .role
                                                             .toString(),
-                                                        textSize: 11),
+                                                        textSize: 10),
                                                   ))
                                             ],
                                           ),
                                           const SizedBox(
-                                            height: 12,
-                                          ),
-                                          TextWidget(
-                                            text: myCommunities
-                                                .myCommunitiesDetails[index]
-                                                .size
-                                                .toString(),
-                                            textSize: 13,
-                                            color: GetStoreData.getStore
-                                                    .read('isInvestor')
-                                                ? AppColors.primaryInvestor
-                                                : AppColors.primary,
-                                          ),
-                                          const SizedBox(
-                                            height: 12,
+                                            height: 5,
                                           ),
                                           Row(
                                             children: [
                                               TextWidget(
                                                   text:
-                                                      "${myCommunities.myCommunitiesDetails[index].members!.length.toString()} Members",
-                                                  textSize: 14),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              Container(
-                                                  height: 5,
-                                                  width: 5,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20),
-                                                      color: AppColors.white)),
+                                                      "${myCommunities.myCommunitiesDetails[index].members.length.toString()} Members",
+                                                  textSize: 12),
                                               const SizedBox(
                                                 width: 8,
                                               ),
@@ -179,77 +183,84 @@ class _MyCommunityScreenState extends State<MyCommunityScreen> {
                                                           index]
                                                       .createdAtTimeAgo
                                                       .toString(),
-                                                  textSize: 14),
+                                                  color: AppColors.grey,
+                                                  textSize: 12),
                                             ],
                                           )
                                         ],
                                       ),
-                                      Flexible(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            IconButton(
-                                              padding: EdgeInsets.zero,
-                                              icon: Icon(
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            sharePostPopup(
+                                                context,
+                                                "",
+                                                myCommunities
+                                                    .myCommunitiesDetails[index]
+                                                    .shareLink
+                                                    .toString());
+                                          },
+                                          child: CircleAvatar(
+                                            radius: 16,
+                                            backgroundColor:
+                                                AppColors.blue.withOpacity(0.5),
+                                            child: Icon(
                                                 Icons
                                                     .mobile_screen_share_rounded,
                                                 color: AppColors.whiteCard,
-                                                // size: 22,
-                                              ),
-                                              onPressed: () {
-                                                sharePostPopup(
-                                                    context,
-                                                    "",
-                                                    myCommunities
-                                                        .myCommunitiesDetails[
-                                                            index]
-                                                        .shareLink
-                                                        .toString());
-                                              },
-                                            ),
-                                            if (myCommunities
-                                                    .myCommunitiesDetails[index]
-                                                    .role ==
-                                                "Member")
-                                              IconButton(
-                                                padding: EdgeInsets.zero,
-                                                icon: const Icon(Icons.logout),
-                                                color: GetStoreData.getStore
-                                                        .read('isInvestor')
-                                                    ? AppColors.primaryInvestor
-                                                    : AppColors.primary,
-                                                onPressed: () {
-                                                  Helper.loader(context);
-                                                  myCommunities.leaveCommunity(
-                                                      myCommunities
-                                                          .myCommunitiesDetails[
-                                                              index]
-                                                          .id);
-                                                },
-                                              ),
-                                          ],
+                                                size: 20),
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                          );
-                        },
-                      ),
-                    )),
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.only(
-              left: 12,
-              right: 12,
-              bottom: 12,
-            ),
-            child: AppButton.primaryButton(
-                onButtonPressed: () {
-                  Get.to(() => const CreateCommunityLandingScreen());
-                },
-                title: "Create new Community"),
-          ),
+                                        if (myCommunities
+                                                .myCommunitiesDetails[index]
+                                                .role ==
+                                            "Member")
+                                          const SizedBox(height: 10),
+                                        if (myCommunities
+                                                .myCommunitiesDetails[index]
+                                                .role ==
+                                            "Member")
+                                          InkWell(
+                                            onTap: () {
+                                              Helper.loader(context);
+                                              myCommunities.leaveCommunity(
+                                                  myCommunities
+                                                      .myCommunitiesDetails[
+                                                          index]
+                                                      .id);
+                                            },
+                                            child: CircleAvatar(
+                                              radius: 16,
+                                              backgroundColor: AppColors
+                                                  .redColor
+                                                  .withOpacity(0.5),
+                                              child: Icon(Icons.logout,
+                                                  color: AppColors.whiteCard,
+                                                  size: 20),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        );
+                      },
+                    ),
+                  )),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Get.to(() => const CreateCommunityLandingScreen());
+          },
+          backgroundColor: AppColors.primary,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+          child: Icon(Icons.add, color: AppColors.white),
         ));
   }
 }

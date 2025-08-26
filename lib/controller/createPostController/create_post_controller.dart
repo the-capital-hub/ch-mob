@@ -11,9 +11,10 @@ import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multi_image_picker_plus/multi_image_picker_plus.dart';
+import 'package:quill_html_editor/quill_html_editor.dart';
 
-import '../../model/01-StartupModel/profileModel/profile_post_model.dart';
-import '../../model/01-StartupModel/publicPostModel/public_post_model.dart';
+import '../../model/profileModel/profile_post_model.dart';
+import '../../model/publicPostModel/public_post_model.dart';
 
 class CreatePostController extends GetxController {
   List<String> base64ImageList = [];
@@ -63,7 +64,7 @@ class CreatePostController extends GetxController {
               ? "public"
               : "company",
       "resharedPostId": postId ?? "",
-      "communityId": createdCommunityId,
+      isCommunityPost ? "communityId" : createdCommunityId: "",
     };
     var response = await ApiBase.postRequest(
         body: body, extendedURL: ApiUrl.addPost, withToken: true);

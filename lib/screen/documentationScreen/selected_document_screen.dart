@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import '../../model/01-StartupModel/documentationModel/documentation_model.dart';
+import '../../model/documentationModel/documentation_model.dart';
 import '../../utils/appcolors/app_colors.dart';
 import '../../utils/constant/app_var.dart';
 import '../../utils/helper/helper.dart';
@@ -109,6 +109,7 @@ class _SelectedDocumentScreenState extends State<SelectedDocumentScreen> {
                                       true,
                                       documentController.docList[index],
                                       PlatformFile(name: "", size: 0));
+                                  
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(

@@ -8,9 +8,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../model/01-StartupModel/profileModel/profile_model.dart';
-import '../../model/01-StartupModel/profileModel/profile_post_model.dart';
-import '../../model/01-StartupModel/profileModel/subscription_model.dart';
+import '../../model/homeScreenLandingModel/post_data_model.dart';
+import '../../model/profileModel/profile_model.dart';
+import '../../model/profileModel/profile_post_model.dart';
+import '../../model/profileModel/subscription_model.dart';
 import '../../screen/Auth-Process/selectWhatYouAreScreen/select_role_screen.dart';
 import '../../utils/apiService/api_base.dart';
 import '../../utils/apiService/api_url.dart';
@@ -55,21 +56,14 @@ class ProfileController extends GetxController {
   List<ProfilePost> profilePosts = [];
   Future getProfilePost(tabindex) async {
     try {
-      var tabValue = tabindex == 0
-          ? "mypost"
-          : tabindex == 1
-              ? "featured"
-              : "company";
+      var tabValue = "company";
       profilePosts.clear();
       isTabLoading.value = true;
       var response = await ApiBase.getRequest(
           extendedURL: ApiUrl.getProfilePost + tabValue);
       log(response.body);
       var data = jsonDecode(response.body);
-      if (data['status'] == true) {
-        ProfilePostModel profilePostModel = ProfilePostModel.fromJson(data);
-        profilePosts.addAll(profilePostModel.data!);
-      }
+      if (data['status'] == true) {}
     } catch (e) {
       log("getPost $e");
     } finally {

@@ -1,11 +1,11 @@
 import 'package:capitalhub_crm/controller/meetingController/meeting_controller.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
-import 'package:capitalhub_crm/screen/meetingsScreen/events_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/getStore/get_store.dart';
 import 'package:capitalhub_crm/utils/helper/helper.dart';
+import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
 import 'package:capitalhub_crm/widget/dropdownWidget/drop_down_widget.dart';
@@ -13,6 +13,7 @@ import 'package:capitalhub_crm/widget/text_field/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
+import '../../controller/communityController/community_controller.dart';
 
 class CreateEventsScreen extends StatefulWidget {
   const CreateEventsScreen({super.key});
@@ -30,6 +31,8 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
   TextEditingController priceController = TextEditingController();
   TextEditingController priceDiscountController = TextEditingController();
   String privacyStatus = "Public";
+  String? selectedCommunityStatus;
+  String? selectedCommunityId;
 
   static void _validateDuration(
       String value, TextEditingController controller) {
@@ -45,8 +48,12 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
     }
   }
 
+  CommunityController myCommunities = Get.put(CommunityController());
+
   @override
   void initState() {
+    myCommunities.getMyCommunities();
+
     titleController.clear();
     descriptionController.clear();
 
@@ -59,6 +66,7 @@ class _CreateEventsScreenState extends State<CreateEventsScreen> {
     });
     super.initState();
   }
+
   GlobalKey<FormState> eventsFormkey = GlobalKey();
 
   @override

@@ -3,6 +3,7 @@
 //     final proceedTemplateModel = proceedTemplateModelFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:typed_data';
 
 ProceedTemplateModel proceedTemplateModelFromJson(String str) => ProceedTemplateModel.fromJson(json.decode(str));
 

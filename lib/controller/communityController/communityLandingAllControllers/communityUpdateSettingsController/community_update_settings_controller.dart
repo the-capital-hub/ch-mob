@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:capitalhub_crm/controller/communityController/community_controller.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/landingScreen/landing_screen_inv.dart';
+import 'package:capitalhub_crm/screen/landingScreen/landing_screen_inv.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityLandingScreen/community_landing_screen.dart';
 import 'package:capitalhub_crm/screen/landingScreen/landing_screen.dart';
 import 'package:capitalhub_crm/utils/apiService/api_base.dart';
@@ -11,6 +11,8 @@ import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
+
+import '../../../../widget/bottomSheet/create_post_bottomsheet.dart';
 
 class CommunityUpdateSettingsController extends GetxController {
   Future deleteCommunity() async {
@@ -55,7 +57,7 @@ class CommunityUpdateSettingsController extends GetxController {
   //   return description;
   // }
 
-  Future updateCommunity(base64) async {
+  Future updateCommunity(base64,bannerBase64) async {
     String description = "";
     await aboutCommunityController.getText().then((val) => description = val);
     // description = cleanHtmlDescription(description);
@@ -70,6 +72,7 @@ class CommunityUpdateSettingsController extends GetxController {
             : int.tryParse(subscriptionAmountController.text),
         "isOpen": isOpen,
         "image": base64,
+        "banner": bannerBase64,
         "whatsapp_group_link": whatsappGroupLinkController.text,
         "terms_and_conditions": termsAndConditions
       },

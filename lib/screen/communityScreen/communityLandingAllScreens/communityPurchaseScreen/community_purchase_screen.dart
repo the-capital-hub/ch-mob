@@ -24,8 +24,7 @@ class PurchaseScreen extends StatefulWidget {
 
 class _PurchaseScreenState extends State<PurchaseScreen> {
   TextEditingController urlController = TextEditingController();
-  CommunityProductsAndMembersController communityProducts =
-      Get.put(CommunityProductsAndMembersController());
+  var communityProducts = Get.find();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -97,11 +96,13 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                             color: AppColors.white38,
                           ),
                           const SizedBox(height: 8),
-                         TextWidget(
+                          TextWidget(
                             text: "Name:",
                             textSize: 16,
                             fontWeight: FontWeight.w500,
-                            color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                            color: GetStoreData.getStore.read('isInvestor')
+                                ? AppColors.primaryInvestor
+                                : AppColors.primary,
                           ),
                           const SizedBox(height: 8),
                           TextWidget(
@@ -113,11 +114,13 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                             color: AppColors.white38,
                           ),
                           const SizedBox(height: 8),
-                           TextWidget(
+                          TextWidget(
                             text: "Description:",
                             textSize: 16,
                             fontWeight: FontWeight.w500,
-                            color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                            color: GetStoreData.getStore.read('isInvestor')
+                                ? AppColors.primaryInvestor
+                                : AppColors.primary,
                           ),
                           const SizedBox(height: 8),
                           HtmlWidget(
@@ -138,11 +141,14 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                   TextWidget(
+                                  TextWidget(
                                     text: "Resources",
                                     textSize: 16,
                                     fontWeight: FontWeight.w500,
-                                    color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                    color:
+                                        GetStoreData.getStore.read('isInvestor')
+                                            ? AppColors.primaryInvestor
+                                            : AppColors.primary,
                                   ),
                                   const SizedBox(height: 8),
                                   TextWidget(
@@ -151,14 +157,17 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                       textSize: 13),
                                 ],
                               ),
-                               Column(
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   TextWidget(
                                     text: "Access",
                                     textSize: 16,
                                     fontWeight: FontWeight.w500,
-                                    color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                    color:
+                                        GetStoreData.getStore.read('isInvestor')
+                                            ? AppColors.primaryInvestor
+                                            : AppColors.primary,
                                   ),
                                   SizedBox(height: 8),
                                   TextWidget(text: "Lifetime", textSize: 13),
@@ -171,7 +180,10 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                     text: "Price",
                                     textSize: 16,
                                     fontWeight: FontWeight.w500,
-                                    color: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                    color:
+                                        GetStoreData.getStore.read('isInvestor')
+                                            ? AppColors.primaryInvestor
+                                            : AppColors.primary,
                                   ),
                                   const SizedBox(height: 8),
                                   TextWidget(
@@ -198,7 +210,10 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                         children: [
                           Expanded(
                             child: AppButton.outlineButton(
-                                borderColor: GetStoreData.getStore.read('isInvestor')?AppColors.primaryInvestor:AppColors.primary,
+                                borderColor:
+                                    GetStoreData.getStore.read('isInvestor')
+                                        ? AppColors.primaryInvestor
+                                        : AppColors.primary,
                                 onButtonPressed: () {
                                   Get.back();
                                 },
@@ -210,7 +225,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                 onButtonPressed: () {
                                   Helper.loader(context);
                                   communityProducts.buyProduct(
-                                     false,
+                                      false,
                                       communityProducts
                                           .communityProductsList[widget.index]
                                           .id);

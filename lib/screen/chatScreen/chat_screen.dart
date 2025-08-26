@@ -17,8 +17,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:video_player/video_player.dart';
-import '../../model/01-StartupModel/chatModel/chat_memberlist_model.dart';
-import '../../model/01-StartupModel/chatModel/member_chats.dart';
+import '../../model/chatModel/chat_memberlist_model.dart';
+import '../../model/chatModel/member_chats.dart';
 import 'video_preview.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -32,7 +32,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   ChatController chatController = Get.find();
-  OneLinkController oneLinkController = Get.find();
+  OneLinkController oneLinkController = Get.put(OneLinkController());
   final TextEditingController _controller = TextEditingController();
   ScrollController scrollController = ScrollController();
   final ImagePicker _picker = ImagePicker();
@@ -188,7 +188,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           PopupMenuItem(
                             value: 'block_user',
                             child: TextWidget(
-                                text: widget.member.isBlockByMe
+                                text: widget.member.isBlockByMe!
                                     ? "Unblock User"
                                     : "Block User",
                                 textSize: 14),
@@ -382,14 +382,14 @@ class _ChatScreenState extends State<ChatScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: MyCustomTextField.textField(
-                          hintText: widget.member.isBlockByMe
+                          hintText: widget.member.isBlockByMe!
                               ? "Unblock to continue"
-                              : widget.member.isBlockByOtheUser
+                              : widget.member.isBlockByOtheUser!
                                   ? "You cannot reply anymore"
                                   : "Type here...",
                           controller: _controller,
-                          readonly: widget.member.isBlockByMe ||
-                                  widget.member.isBlockByOtheUser
+                          readonly: widget.member.isBlockByMe! ||
+                                  widget.member.isBlockByOtheUser!
                               ? true
                               : false,
                           suffixIcon: Padding(
@@ -399,8 +399,8 @@ class _ChatScreenState extends State<ChatScreen> {
                               children: [
                                 IconButton(
                                     onPressed: () {
-                                      if (!widget.member.isBlockByMe ||
-                                          !widget.member.isBlockByOtheUser) {
+                                      if (!widget.member.isBlockByMe! ||
+                                          !widget.member.isBlockByOtheUser!) {
                                         _showAttachmentOptions();
                                       }
                                     },
@@ -436,9 +436,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                               size: 18,
                                             ),
                                             onPressed:
-                                                widget.member.isBlockByMe ||
+                                                widget.member.isBlockByMe! ||
                                                         widget.member
-                                                            .isBlockByOtheUser
+                                                            .isBlockByOtheUser!
                                                     ? null
                                                     : _sendMessage,
                                           ),

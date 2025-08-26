@@ -27,8 +27,7 @@ class CommunityEventsScreen extends StatefulWidget {
 }
 
 class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
-  CommunityWebinarsController communityWebinars =
-      Get.put(CommunityWebinarsController());
+  var communityWebinars = Get.find();
   CommunityEventsController communityEvents =
       Get.put(CommunityEventsController());
   bool _isExpanded = false;
@@ -93,31 +92,7 @@ class _CommunityEventsScreenState extends State<CommunityEventsScreen> {
                                             .title!,
                                         textSize: 20),
                                     const Spacer(),
-                                    if (isAdmin) ...[
-                                      IconButton(
-                                        padding: EdgeInsets.zero,
-                                        icon: Icon(
-                                          Icons.edit,
-                                          color: AppColors.whiteCard,
-                                          size: 20,
-                                        ),
-                                        onPressed: () {
-                                          addServiceIndex = 2;
-                                          Get.to(
-                                              () => CommunityAddServiceScreen(
-                                                    eventId: communityWebinars
-                                                        .communityWebinarsList[
-                                                            index]
-                                                        .eventId,
-                                                    index: index,
-                                                    isEdit: true,
-                                                    isPriorityDM: false,
-                                                    isMeeting: false,
-                                                    isEvent: true,
-                                                    isWebinar: false,
-                                                  ));
-                                        },
-                                      ),
+                                    ...[
                                       IconButton(
                                           onPressed: () {
                                             showCustomPopup(

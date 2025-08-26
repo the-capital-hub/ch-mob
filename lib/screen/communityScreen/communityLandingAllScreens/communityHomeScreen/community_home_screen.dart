@@ -8,7 +8,7 @@ import 'package:capitalhub_crm/controller/homeController/home_controller.dart';
 import 'package:capitalhub_crm/screen/communityScreen/communityDrawerScreen/community_drawer_screen.dart';
 import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';
 
-import 'package:capitalhub_crm/screen/homeScreen/widget/community_polls_widget.dart';
+import 'package:capitalhub_crm/screen/communityScreen/communityLandingAllScreens/communityHomeScreen/community_polls_widget.dart';
 import 'package:capitalhub_crm/screen/homeScreen/widget/fullscreen_image_view.dart';
 
 import 'package:capitalhub_crm/screen/homeScreen/widget/startup_corner_widget.dart';
@@ -36,6 +36,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
+import 'package:like_button/like_button.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -214,7 +215,8 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                   //       :
 
                   Padding(
-                      padding: EdgeInsets.only(left: 8, right: 8, top: 8),
+                      padding: EdgeInsets.only(
+                          left: 8, right: 8, top: isCardVisible ? 0 : 8),
                       child: RefreshIndicator(
                           onRefresh: () async {
                             return _fetchAllApis();
@@ -222,37 +224,33 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                           child: Column(children: [
                             if (isCardVisible)
                               Card(
+                                margin: const EdgeInsets.only(
+                                    bottom: 8, left: 4, right: 4),
                                 color: AppColors.darkGreen,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      vertical: 12, horizontal: 12),
+                                      vertical: 10, horizontal: 12),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Icon(
-                                        Icons.chat_bubble_rounded,
-                                        color: AppColors.white,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            TextWidget(
+                                            const TextWidget(
                                               text:
-                                                  "Join our WhatsApp Community",
-                                              textSize: 16,
+                                                  "Join our Whatsapp Community",
+                                              textSize: 14,
                                               fontWeight: FontWeight.bold,
                                             ),
-                                            TextWidget(
+                                            const TextWidget(
                                                 text:
                                                     "Get instant updates and connect with members",
-                                                textSize: 11),
-                                            sizedTextfield,
+                                                textSize: 10),
+                                            const SizedBox(height: 6),
+                                            // sizedTextfield,
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   right: 25),
@@ -373,42 +371,68 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
+                                const SizedBox(width: 4),
+                                InkWell(
+                                  onTap: () {
+                                    _popupMenuKey.currentState
+                                        ?.showButtonMenu();
+                                  },
+                                  child: Row(
+                                    children: [
+                                      PopupMenuButton<String>(
+                                          key: _popupMenuKey,
+                                          color: AppColors.blackCard,
+                                          offset: const Offset(0, 50),
+                                          onSelected: (value) {
+                                            Helper.loader(context);
+                                            setState(() {
+                                              postFilter = value;
+                                            });
+                                            onPostTypeChanged();
+                                          },
+                                          itemBuilder: (context) => [
+                                                const PopupMenuItem(
+                                                  value: "",
+                                                  child: TextWidget(
+                                                      text: "All Posts",
+                                                      textSize: 14),
+                                                ),
+                                                const PopupMenuItem(
+                                                  value: "admin",
+                                                  child: TextWidget(
+                                                      text: "Admin Posts",
+                                                      textSize: 14),
+                                                ),
+                                                const PopupMenuItem(
+                                                  value: "members",
+                                                  child: TextWidget(
+                                                      text: "Member Posts",
+                                                      textSize: 14),
+                                                ),
+                                              ],
+                                          child: CircleAvatar(
+                                            radius: 24,
+                                            backgroundColor: GetStoreData
+                                                    .getStore
+                                                    .read('isInvestor')
+                                                ? AppColors.primaryInvestor
+                                                : AppColors.primary,
+                                            child: Icon(
+                                              Icons.filter_list,
+                                              color: GetStoreData.getStore
+                                                      .read('isInvestor')
+                                                  ? AppColors.black
+                                                  : AppColors.white,
+                                              size: 25,
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
                                 Expanded(
-                                  child: InkWell(
-                                      child: Card(
-                                        color: GetStoreData.getStore
-                                                .read('isInvestor')
-                                            ? AppColors.primaryInvestor
-                                            : AppColors.primary,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                Icons.post_add,
-                                                color: GetStoreData.getStore
-                                                        .read('isInvestor')
-                                                    ? AppColors.black
-                                                    : AppColors.white,
-                                              ),
-                                              SizedBox(
-                                                width: 8,
-                                              ),
-                                              TextWidget(
-                                                text: "Create Post",
-                                                textSize: 16,
-                                                color: GetStoreData.getStore
-                                                        .read('isInvestor')
-                                                    ? AppColors.black
-                                                    : AppColors.white,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () {
+                                  child: AppButton.primaryButton(
+                                      onButtonPressed: () {
                                         Get.to(CreatePostScreen());
                                         log(createCommunityPostController
                                             .isCommunityPost
@@ -421,120 +445,12 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                               .isCommunityPost
                                               .toString());
                                         });
-                                      }),
+                                      },
+                                      title: "Create Post"),
                                 ),
-
-                                //                   InkWell(
-                                //                     child: CircleAvatar(
-                                //                       radius: 25,
-                                //                       backgroundColor: AppColors.primary,
-                                //                       child: Icon(Icons.filter_list,color: AppColors.white,)
-                                //                     ),
-                                //                     onTap: (){
-                                //         //               DropDownWidget(
-                                //         // status: postType,
-                                //         // lable: "Filter",
-                                //         // statusList: const ["Public", "Private", "Pitch Day"],
-                                //         // onChanged: (val) {
-                                //         //   setState(() {
-                                //         //     privacyStatus = val.toString();
-                                //         //   });
-                                //         // });
-                                //           DropdownButton<String>(
-                                //   value: selectedItem,
-                                //   onChanged: (String? newValue) {
-                                //     setState(() {
-                                //       selectedItem = newValue!;
-                                //     });
-                                //   },
-                                //   items: postType.map<DropdownMenuItem<String>>((String value) {
-                                //     return DropdownMenuItem<String>(
-                                //       value: value,
-                                //       child: Text(value),
-                                //     );
-                                //   }).toList(),
-                                // ),
-                                //         }
-                                //                   ),
-                                SizedBox(width: 4),
-                                InkWell(
-                                  onTap: () {
-                                    _popupMenuKey.currentState
-                                        ?.showButtonMenu();
-                                  },
-                                  child: Card(
-                                    color:
-                                        GetStoreData.getStore.read('isInvestor')
-                                            ? AppColors.primaryInvestor
-                                            : AppColors.primary,
-                                    child: Row(
-                                      children: [
-                                        PopupMenuButton<String>(
-                                            key: _popupMenuKey,
-                                            icon: Icon(
-                                              Icons.filter_list,
-                                              size: 25,
-                                            ),
-                                            iconColor: GetStoreData.getStore
-                                                    .read('isInvestor')
-                                                ? AppColors.black
-                                                : AppColors.white,
-                                            color: AppColors.blackCard,
-                                            offset: Offset(100, 55),
-                                            onSelected: (value) {
-                                              Helper.loader(context);
-                                              setState(() {
-                                                postFilter = value;
-                                              });
-                                              onPostTypeChanged();
-                                            },
-                                            itemBuilder: (context) => [
-                                                  const PopupMenuItem(
-                                                    value: "",
-                                                    child: TextWidget(
-                                                        text: "All Posts",
-                                                        textSize: 14),
-                                                  ),
-                                                  PopupMenuItem(
-                                                    value: "admin",
-                                                    child: TextWidget(
-                                                        text: "Admin Posts",
-                                                        textSize: 14),
-                                                  ),
-                                                  const PopupMenuItem(
-                                                    value: "members",
-                                                    child: TextWidget(
-                                                        text: "Member Posts",
-                                                        textSize: 14),
-                                                  ),
-                                                ]),
-                                        // TextWidget(
-                                        //   text: "Filter Post",
-                                        //   textSize: 16,
-                                        // ),
-                                      ],
-                                    ),
-                                  ),
-                                )
                               ],
                             ),
-
-                            // sizedTextfield,
-                            // Flexible(
-                            //   child: ListView.separated(
-                            //       itemCount: communityHomeController.communityPostList.length,
-                            //       shrinkWrap: true,
-                            //       controller : scrollController,
-                            //       separatorBuilder: (context, index) {
-                            //         return const SizedBox(
-                            //           height: 8,
-                            //         );
-                            //       },
-                            //       itemBuilder: (context, index) {
-                            //         return feeds(index);
-                            //       }),
-                            // ),
-
+                            const SizedBox(height: 8),
                             Expanded(
                               child: Stack(
                                   alignment: Alignment.bottomCenter,
@@ -929,54 +845,6 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                       ],
                     ),
                   ),
-                  Divider(height: 0, color: AppColors.white38, thickness: 0.5),
-                  if (communityHomeController
-                      .communityPostList[index].likes!.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 12,
-                            backgroundColor: AppColors.white12,
-                            child: const Icon(
-                              Icons.favorite,
-                              color: AppColors.redColor,
-                              size: 15,
-                            ),
-                          ),
-                          // const SizedBox(width: 4),
-                          // CircleAvatar(
-                          //   radius: 12,
-                          //   backgroundColor:
-                          //       AppColors.white12,
-                          //   child: Icon(
-                          //     CupertinoIcons
-                          //         .chat_bubble_text_fill,
-                          //     color: AppColors.whiteCard,
-                          //     size: 15,
-                          //   ),
-                          // ),
-                          const SizedBox(width: 8),
-                          if (communityHomeController
-                              .communityPostList[index].likes!.isNotEmpty)
-                            Expanded(
-                              child: TextWidget(
-                                text:
-                                    "${communityHomeController.communityPostList[index].likes!.first.firstName} and Many Others",
-                                textSize: 11,
-                                maxLine: 2,
-                              ),
-                            ),
-                          if (communityHomeController
-                              .communityPostList[index].comments!.isNotEmpty)
-                            TextWidget(
-                                text:
-                                    "${communityHomeController.communityPostList[index].comments!.length} Comments",
-                                textSize: 10)
-                        ],
-                      ),
-                    ),
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: const BoxDecoration(
@@ -985,118 +853,139 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                             bottomRight: Radius.circular(12)),
                         color: Color(0xff54545433)),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        InkWell(
-                          splashColor: AppColors.transparent,
-                          onTap: () {
-                            communityHomeController
-                                    .communityPostList[index].isLiked =
-                                !communityHomeController
-                                    .communityPostList[index].isLiked!;
-                            communityHomeController.likeUnlikeCommunityPost(
-                                communityHomeController
-                                    .communityPostList[index].postId);
+                        Expanded(
+                          child: LikeButton(
+                            size: 22,
+                            isLiked: communityHomeController
+                                .communityPostList[index].isLiked,
+                            likeCount: communityHomeController
+                                .communityPostList[index].likeCount!,
+                            circleColor: const CircleColor(
+                                start: AppColors.redColor,
+                                end: Colors.redAccent),
+                            bubblesColor: const BubblesColor(
+                              dotPrimaryColor: AppColors.redColor,
+                              dotSecondaryColor: Colors.redAccent,
+                            ),
+                            likeBuilder: (bool isLiked) {
+                              return Icon(
+                                isLiked
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: isLiked
+                                    ? AppColors.redColor
+                                    : AppColors.whiteCard,
+                                size: 22,
+                              );
+                            },
+                            onTap: (bool isLiked) async {
+                              communityHomeController
+                                  .communityPostList[index].isLiked = !isLiked;
 
-                            setState(() {});
-                          },
-                          child: Icon(
-                            communityHomeController
-                                    .communityPostList[index].isLiked!
-                                ? Icons.favorite
-                                : Icons.favorite_border_outlined,
-                            color: communityHomeController
-                                    .communityPostList[index].isLiked!
-                                ? AppColors.redColor
-                                : AppColors.whiteCard,
-                            size: 22,
+                              communityHomeController.likeUnlikeCommunityPost(
+                                  communityHomeController
+                                      .communityPostList[index].postId);
+
+                              return !isLiked;
+                            },
                           ),
                         ),
-                        const SizedBox(width: 4),
-                        const TextWidget(text: "Like", textSize: 13),
-                        const SizedBox(width: 10),
-                        InkWell(
-                          onTap: () {
-                            commentBottomSheet(index);
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                CupertinoIcons.chat_bubble_text,
-                                color: AppColors.whiteCard,
-                                size: 21,
-                              ),
-                              const SizedBox(width: 4),
-                              const TextWidget(text: "Comments", textSize: 13),
-                            ],
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              commentBottomSheet(index);
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  CupertinoIcons.chat_bubble_text,
+                                  color: AppColors.whiteCard,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 4),
+                                // if (homeController.postList[index].commentCount! >
+                                //     0)
+                                TextWidget(
+                                  text:
+                                      " ${communityHomeController.communityPostList[index].commentCount!}",
+                                  textSize: 14,
+                                  color: AppColors.grey,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        const Spacer(),
-                        InkWell(
-                          onTap: () {
-                            sharePostPopup(
-                                context,
-                                communityHomeController
-                                    .communityPostList[index].postId!,
-                                "");
-                          },
-                          child: Icon(
-                            Icons.mobile_screen_share_rounded,
-                            color: AppColors.whiteCard,
-                            size: 22,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        InkWell(
-                          onTap: () {
-                            Get.to(CreatePostScreen(
-                              postid: communityHomeController
-                                  .communityPostList[index].postId,
-                            ));
-                          },
-                          child: Transform.rotate(
-                            angle: 0.77,
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              sharePostPopup(
+                                  context,
+                                  communityHomeController
+                                      .communityPostList[index].postId!,
+                                  "");
+                            },
                             child: Icon(
-                              Icons.screen_rotation_alt,
+                              Icons.ios_share_outlined,
                               color: AppColors.whiteCard,
                               size: 22,
                             ),
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        InkWell(
-                          onTap: () {
-                            if (communityHomeController
-                                .communityPostList[index].isSaved!) {
-                              communityHomeController
-                                  .unsaveCommunityPost(
-                                context,
-                                postID: communityHomeController
-                                    .communityPostList[index].postId!,
-                              )
-                                  .then((val) {
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              Get.to(CreatePostScreen(
+                                postid: communityHomeController
+                                    .communityPostList[index].postId,
+                              ));
+                            },
+                            child: Icon(
+                              Icons.autorenew,
+                              color: AppColors.whiteCard,
+                              size: 22,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              if (communityHomeController
+                                  .communityPostList[index].isSaved!) {
                                 communityHomeController
-                                    .getCommunityPosts(page, false, postFilter)
+                                    .unsaveCommunityPost(
+                                  context,
+                                  postID: communityHomeController
+                                      .communityPostList[index].postId!,
+                                )
                                     .then((val) {
-                                  Get.back();
-                                  setState(() {});
+                                  communityHomeController
+                                      .getCommunityPosts(
+                                          page, false, postFilter)
+                                      .then((val) {
+                                    Get.back();
+                                    setState(() {});
+                                  });
                                 });
-                              });
-                            } else {
-                              saveUnsavePost(index);
-                            }
-                          },
-                          child: Icon(
-                            communityHomeController
-                                    .communityPostList[index].isSaved!
-                                ? Icons.bookmark
-                                : Icons.bookmark_border_outlined,
-                            color: AppColors.whiteCard,
-                            size: 22,
+                              } else {
+                                saveUnsavePost(index);
+                              }
+                            },
+                            child: Icon(
+                              communityHomeController
+                                      .communityPostList[index].isSaved!
+                                  ? Icons.bookmark
+                                  : Icons.bookmark_add_outlined,
+                              color: AppColors.whiteCard,
+                              size: 22,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ]),
               ),
               if (tapindex == index)
@@ -1451,7 +1340,6 @@ class _CommunityHomeScreenState extends State<CommunityHomeScreen>
                                     reportReason: reportReason)
                                 .then((val) {
                               if (val) {
-                                
                                 communityHomeController.getCommunityPosts(
                                     1, true, postFilter);
                               }

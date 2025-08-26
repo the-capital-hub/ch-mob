@@ -1,17 +1,26 @@
+import 'package:animate_do/animate_do.dart';
+import 'package:capitalhub_crm/controller/spotlightController/spotlight_controller.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
+import 'package:capitalhub_crm/utils/helper/helper.dart';
+import 'package:capitalhub_crm/utils/helper/helper_sncksbar.dart';
+import 'package:capitalhub_crm/utils/helper/placeholder.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/buttons/button.dart';
+import 'package:capitalhub_crm/widget/dilogue/share_dilogue.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/constant/asset_constant.dart';
+import '../spotlight_animation.dart';
 import 'product_detail_comments_screen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  const ProductDetailScreen({super.key});
+  final String productId;
+  const ProductDetailScreen({super.key, required this.productId});
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();

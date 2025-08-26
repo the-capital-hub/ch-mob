@@ -2,6 +2,7 @@ import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen.dart';
 import 'package:capitalhub_crm/utils/appcolors/app_colors.dart';
 import 'package:capitalhub_crm/utils/constant/app_var.dart';
 import 'package:capitalhub_crm/utils/constant/asset_constant.dart';
+import 'package:capitalhub_crm/utils/helper/helper.dart';
 import 'package:capitalhub_crm/widget/appbar/appbar.dart';
 import 'package:capitalhub_crm/widget/textwidget/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -52,21 +53,30 @@ class _HelpScreenState extends State<HelpScreen> {
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                        color: AppColors.blackCard,
-                        surfaceTintColor: AppColors.blackCard,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            children: [
-                              Image.asset(imageList[index], height: 85),
-                              sizedTextfield,
-                              TextWidget(
-                                  text: titleList[index],
-                                  maxLine: 2,
-                                  align: TextAlign.center,
-                                  textSize: 15)
-                            ],
+                      return InkWell(
+                        onTap: () {
+                          if (index == 0) {
+                            Helper.launchUrl("tel:6366255319");
+                          } else {
+                            Helper.launchMail("investments@thecapitalhub.in");
+                          }
+                        },
+                        child: Card(
+                          color: AppColors.blackCard,
+                          surfaceTintColor: AppColors.blackCard,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              children: [
+                                Image.asset(imageList[index], height: 85),
+                                sizedTextfield,
+                                TextWidget(
+                                    text: titleList[index],
+                                    maxLine: 2,
+                                    align: TextAlign.center,
+                                    textSize: 15)
+                              ],
+                            ),
                           ),
                         ),
                       );

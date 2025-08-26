@@ -3,6 +3,7 @@
 //     final campaignListViewModel = campaignListViewModelFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:typed_data';
 
 CampaignListViewModel campaignListViewModelFromJson(String str) =>
     CampaignListViewModel.fromJson(json.decode(str));

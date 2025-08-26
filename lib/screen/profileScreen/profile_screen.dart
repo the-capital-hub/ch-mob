@@ -1,6 +1,7 @@
 import 'package:capitalhub_crm/controller/profileController/profile_controller.dart';
-import 'package:capitalhub_crm/model/01-StartupModel/profileModel/profile_model.dart';
-import 'package:capitalhub_crm/screen/01-Investor-Section/drawerScreen/drawer_screen_inv.dart';
+import 'package:capitalhub_crm/model/profileModel/profile_model.dart';
+import 'package:capitalhub_crm/screen/companyScreen/companyScreenInv/company_inv_screen.dart';
+import 'package:capitalhub_crm/screen/drawerScreen/drawer_screen_inv.dart';
 import 'package:capitalhub_crm/screen/Auth-Process/userDetailsScreen/bio_screen.dart';
 import 'package:capitalhub_crm/screen/companyScreen/company_screen.dart';
 import 'package:capitalhub_crm/screen/createPostScreen/create_post_screen.dart';
@@ -24,9 +25,11 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 
+import '../../controller/chatController/chat_controller.dart';
 import '../../utils/constant/app_var.dart';
 import '../../utils/helper/placeholder.dart';
 import '../chatScreen/chat_member_screen.dart';
+import '../chatScreen/chat_screen.dart';
 import 'add_edit_philosophy.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -38,7 +41,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
-  ProfileController profileController = Get.find();
+  ProfileController profileController = Get.put(ProfileController());
 
   late TabController _tabController;
   final List<String> tabs = ["My Posts", "Featured Posts", "Company Update"];
@@ -850,7 +853,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ],
                             ),
                           ),
-                        postsSection(),
                         if (profileController
                             .profileData.user!.recentConnections!.isNotEmpty)
                           sizedTextfield,
@@ -911,8 +913,34 @@ class _ProfileScreenState extends State<ProfileScreen>
                                           const SizedBox(height: 8),
                                           AppButton.primaryButton(
                                               onButtonPressed: () {
-                                                Get.to(
-                                                    const ChatMemberScreen());
+                                                ChatController chatController =
+                                                    Get.put(ChatController());
+                                                if (profileController
+                                                        .profileData
+                                                        .user!
+                                                        .recentConnections![
+                                                            index]
+                                                        .chats ==
+                                                    null) {
+                                                  chatController.createChat(
+                                                      context,
+                                                      profileController
+                                                          .profileData
+                                                          .user!
+                                                          .recentConnections![
+                                                              index]
+                                                          .userId);
+                                                } else {
+                                                  Get.to(
+                                                    () => ChatScreen(
+                                                        member: profileController
+                                                            .profileData
+                                                            .user!
+                                                            .recentConnections![
+                                                                index]
+                                                            .chats!),
+                                                  );
+                                                }
                                               },
                                               title: "Message",
                                               // width: 100,
@@ -951,7 +979,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                               )
                             ],
                           ),
-                        sizedTextfield,
+                        if (GetStoreData.getStore.read('isInvestor'))
+                          sizedTextfield,
                         if (GetStoreData.getStore.read('isInvestor'))
                           SizedBox(
                             height: 210,
@@ -1091,7 +1120,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     profileController
                                         .profileData.user!.milestoneCompany!,
                                     "Company profile", () {
-                                  Get.to(() => const CompanyScreen());
+                                  Get.to(() => const CompanyInvScreen());
                                 }),
                                 mileStoneWidget(
                                     profileController
@@ -1114,6 +1143,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ]),
                         ),
                         const SizedBox(height: 8),
+                        postsSection(),
                       ],
                     ),
                   ),
@@ -1261,7 +1291,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               if (!profileController.profileData.banner!.isCompanyAdded)
                 InkWell(
                   onTap: () {
-                    Get.to(() => const CompanyScreen());
+                    Get.to(() => const CompanyInvScreen());
                   },
                   child: Card(
                     shape: RoundedRectangleBorder(
@@ -1499,7 +1529,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
                 const SizedBox(height: 12),
                 SizedBox(
-                  height: 250,
+                  height: 400,
                   child: profileController.isTabLoading.value
                       ? Helper.tabLoading()
                       : profileController.profilePosts.isEmpty
